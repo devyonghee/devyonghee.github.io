@@ -1,28 +1,13 @@
 {
-  "name": "gatsby-starter-ghost",
-  "description": "A starter template to build lightning fast websites with Ghost and Gatsby",
+  "name": "devonyhgee-blog",
+  "description": "Blog posted",
   "version": "1.0.0",
-  "license": "MIT",
-  "author": "Ghost Foundation",
-  "homepage": "https://docs.ghost.org/api/gatsby/",
+  "author": "devyonghee",
+  "homepage": "https://devyonghee.github.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tryghost/gatsby-starter-ghost.git"
+    "url": "git+https://github.com/devyonghee/devyonghee.github.io.git"
   },
-  "resolutions": {
-    "sharp": "0.25.4"
-  },
-  "engines": {
-    "node": ">= 10.13.0"
-  },
-  "bugs": {
-    "url": "https://github.com/tryghost/gatsby-starter-ghost/issues"
-  },
-  "keywords": [
-    "gatsby",
-    "ghost"
-  ],
-  "main": "n/a",
   "scripts": {
     "serve": "gatsby build && NODE_ENV=production gatsby serve",
     "build": "gatsby build",
