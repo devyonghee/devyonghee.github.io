@@ -17,11 +17,14 @@ const toggle = () => {
 const themer = () => {
   const theme = localStorage.getItem("theme");
   const dark = document.getElementById("dark");
+  const light = document.getElementById("light");
 
   if (theme === "dark") {
+    light.setAttribute("disabled", "true");
     dark.removeAttribute("disabled");
     return;
   }
+  light.removeAttribute("disabled");
   dark.setAttribute("disabled", "true");
 };
 
