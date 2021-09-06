@@ -8,6 +8,15 @@
         </a>
       </li>
     {% endif %}
+
+    {% if site.tag_nav_enabled %}
+    <li>
+      <a href="{{ 'tags' | relative_url }}" title="Tags">
+        {% include svg-icon.html icon="tag" %}
+      </a>
+    </li>
+    {% endif %}
+
     {% if site.social.twitter %}
       <li>
         <a href="https://twitter.com/{{ site.social.twitter }}" rel="noreferrer noopener" target="_blank" title="Twitter">
@@ -171,24 +180,10 @@
     {% endif %}
     {% if site.theme_toggle == true %}
       <li>
-        <a onclick="toggle()" title="Toggle Theme">
+        <a id="toggleBtn" title="Toggle Theme">
           {% include svg-icon.html icon="theme" %}
         </a>
       </li>
     {% endif %}
   </ul>
 </nav>
-
-{% if site.tag_nav_enabled %}
-  <ul class="header-tags {% if site.scrollappear_enabled %}scrollappear{% endif %}">
-    {% assign tags = site.tags | sort %}
-    {% for tag in tags %}
-      {% if forloop.index > 10 %}
-        <li>...</li>
-        <li><a href="/tags">Show all</a></li>
-        {% break %}
-      {% endif %}
-        <li><a href="{{ 'tag/' | relative_url }}{{ tag[0] }}">{{ tag[0] | capitalize }}</a></li>
-    {% endfor %}
-  </ul>
-{% endif %}

@@ -1,0 +1,14 @@
+{% if paginator.total_pages > 1 %}
+<li class="article-pagination {% if site.settings.scrollappear_enabled %}scrollappear{% endif %}">
+    {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path }}" class="article-pagination-left">
+        {% include svg-icon.html icon="arrow-left" %} Newer posts
+    </a>
+    {% endif %}
+    {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path }}" class="article-pagination-right">
+        Older posts {% include svg-icon.html icon="arrow-right" %}
+    </a>
+    {% endif %}
+</li>
+{% endif %}

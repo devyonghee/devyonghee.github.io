@@ -8,18 +8,13 @@
   </script>
 {% endif %}
 
-{% asset vendor.js %}
-
-{% unless site.local_fonts %}
-  {% asset webfonts.js %}
-{% endunless %}
+  <script src="{{ '/assets/js/' | append: site.data.manifest['application.js'] | relative_url }}"></script>
 
 {% if site.scrollappear_enabled %}
-  {% asset scrollappear.js %}
+  <script src="{{ '/assets/js/' | append: site.data.manifest['scrollappear.js'] | relative_url }}"></script>
 {% endif %}
 
-{% asset application.js %}
 
 {% if site.theme_toggle == true %}
-  {% asset themetoggle.js %}
+  <script src="{{ '/assets/js/' | append: site.data.manifest['themetoggle.js'] | relative_url }}"></script>
 {% endif %}

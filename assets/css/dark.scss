@@ -1,3 +1,5 @@
+---
+---
 // =============================================================================
 // Dark theme
 // =============================================================================
@@ -50,9 +52,9 @@ $article-paginator-color-hover: $gray-lightest;
 
 // Settings
 
-@import "variables";
-@import "mixins";
-@import "base";
+@import "../_sass/variables";
+@import "../_sass/mixins";
+@import "../_sass/base";
 
 // Layouts
 
