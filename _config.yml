@@ -7,7 +7,7 @@ url: https://devyonghee.github.io
 # Optional settings
 about_enabled: true # Change to true if you wish to show an icon in the navigation that redirects to the about page
 discus_identifier: # Add your Disqus identifier
-ga_analytics: # Add your GA Tracking Id
+ga_analytics: G-Q7PS3PZYZ6 # Add your GA Tracking Id
 rss_enabled: true # Change to false if not
 scrollappear_enabled: true # Change to false to disable
 tag_nav_enabled: true # Change to true if you wish to show an additional 'tag-list' navigation below the header
