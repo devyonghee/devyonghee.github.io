@@ -2,7 +2,7 @@
   "name": "chalk",
   "scripts": {
     "serve": "webpack --watch | bundle exec jekyll serve",
-    "build": "cross-env NODE_ENV=production webpack build | bundle exec jekyll build"
+    "build": "cross-env NODE_ENV=production webpack build"
   },
   "dependencies": {
     "zooming": "^2.0.0"
