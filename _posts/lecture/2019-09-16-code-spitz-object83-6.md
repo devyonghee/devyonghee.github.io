@@ -3,6 +3,8 @@ title: 코드 스피츠 Object83 6회차 정리
 tags: [강의, 설계]
 ---
 
+<!--more-->
+
 디자인 pattern 에서 가장 중요한 pattern 은 **abstract factory method pattern**, **command pattern** 이다.
 
 ## 합성과 의존성
@@ -153,7 +155,7 @@ public class AmountPolicy extends DiscountPolicy {
 이처럼 `abstract class` 를 `interface` 처럼 사용해야 상속을 잘 사용하는 것이고 잘 만들어진 추상 layer 는 **strategy pattern** 로 쉽게 변경할 수 있다.
 
 
-![template-with-strategy1](/images/lecture/code-spitz/template-with-strategy1.jpg)
+{% include image.html alt="template-with-strategy1" path="/images/lecture/code-spitz/template-with-strategy1.jpg" %}
 
 상속을 사용해서 **template method pattern** 을 사용할 때 장점은 의존성 관계가 단순해진다.
 관계가 `DiscountPolicy` 와 상속 받고 있는 `AmountPolicy` 밖에 없고 의존성도 역전 되었다.
@@ -172,7 +174,7 @@ public class AmountPolicy extends DiscountPolicy {
 
 ### Template Method & strategy 
 
-![template-with-strategy2](/images/lecture/code-spitz/template-with-strategy2.jpg)
+{% include image.html alt="template-with-strategy2" path="/images/lecture/code-spitz/template-with-strategy2.jpg" %}
 
 **template method** 를 사용하게 된다면 `if` 를 통해서 원하는 `class` 를 선택하는 거에 비해
 **strategy** 은 `DiscountPolicy`를 생성하고 합성해야 할 객체를 `if` 를 통해서 생성해야 한다.
@@ -185,7 +187,7 @@ public class AmountPolicy extends DiscountPolicy {
 이에 비해 합성은 Runtime 에 필요한 것들만 넣어주면 되므로 조합 폭발이 일어나지 않지만 의존성이 폭발한다. 
 관계에 대해 알아야 되는 경우의 수만큼 들어오기 때문에 의존성 폭발이 발생한다.
 
-![template-with-strategy3](/images/lecture/code-spitz/template-with-strategy3.jpg)
+{% include image.html alt="template-with-strategy3" path="/images/lecture/code-spitz/template-with-strategy3.jpg" %}
 
 **template method pattern**를 사용해도 상속의 문제가 해결되지 않는다.
 하지만 **strategy pattern**에서의 의존성 폭발은 해결할 수 있다.
@@ -199,14 +201,14 @@ public class AmountPolicy extends DiscountPolicy {
 
 ### 생성 사용 패턴
 
-![create-use-pattern](/images/lecture/code-spitz/create-use-pattern.jpg)
+{% include image.html alt="create-use-pattern" path="/images/lecture/code-spitz/create-use-pattern.jpg" %}
 
 생성 사용 패턴 이용해서 생성 코드와 이용 코드를 구분하고 **client** 쪽으로 밀어내서 **service** 코드를 줄이도록 한다.
 그러면 **client** 에서 **service** 쪽으로 객체를 주입할 수 밖에 없는 일이 생긴다.
 
 ### Injection
 
-![discountPolicy-injection.jpg](/images/lecture/code-spitz/discountPolicy-injection.jpg)
+{% include image.html alt="discountPolicy-injection.jpg" path="/images/lecture/code-spitz/discountPolicy-injection.jpg" %}
 
 `Calculator` 는 바깥쪽에서 주도적으로 주입되었다.
 **Injection**이 좋아 보이지만 바깥쪽에서 강제로 주입 당하고 있기 때문에 독립된 책임과 역할을 가지고 있던 `DiscountPolicy`이 제어권을 상실하게 된다.
@@ -280,7 +282,7 @@ public class DiscountPolicy {
 원할 때, `Calculator` 를 사용하게 되었지만 pointer 의 pointer 를 사용하고 있기 때문에 `DiscountPolicy` 는 `Factory` 가 어떤 `Calculator` 를 주고 있는지는 모르게 된다.
 지연 연산을 통해 **Runtime** 에 다른 `Calculator` 를 받을 수 있는 가능성을 갖고 있는 것이다.
 
-![lazy-pull1](/images/lecture/code-spitz/lazy-pull1.jpg)
+{% include image.html alt="lazy-pull1" path="/images/lecture/code-spitz/lazy-pull1.jpg" %}
 
 그런데 여기에는 **디미터법칙**을 위반하는 (열차 전복 사고) 문제가 있다.
 `DiscountPolicy` 는 필드나 속성에도 `Calculator` 에 대한 정보가 없지만 `Calculator` 지식을 사용하고 있다.
@@ -288,7 +290,7 @@ public class DiscountPolicy {
 
 **디미터 법칙** 위반을 해결하기 위해 우리는 `DiscountPolicy` 가 `factory` 와 `calculator` 를 동시에 알게 하거나 `factory` 만 알도록 한다.
 
-![lazy-pull2](/images/lecture/code-spitz/lazy-pull2.jpg)
+{% include image.html alt="lazy-pull2" path="/images/lecture/code-spitz/lazy-pull2.jpg" %}
 
 `DiscountPolicy` 에 지역 변수나 field 에 선언해서 `factory` 와 `calculator` 를 알게 한다면 위와 같은 관계도를 얻게 된다.
 `Factory` 와 `Calculator` 추상 클래스와 구상 클래스들 순환 참조가 생긴다. 
@@ -297,7 +299,7 @@ public class DiscountPolicy {
 
 ### 위임된 팩토리
 
-![lazy-pull3](/images/lecture/code-spitz/lazy-pull3.jpg)
+{% include image.html alt="lazy-pull3" path="/images/lecture/code-spitz/lazy-pull3.jpg" %}
 
 그래서 `factory`에게 책임을 위임해서  `factory` 만 알도록 변경한다.
 `calculateFee` 자체를 위임한다.
@@ -361,25 +363,25 @@ public class DiscountPolicy {
 
 이렇게 되면 `DiscountPolicy` 코드를 줄일 수 있고 **열차 전복 사고**가 사라지고 **디미터의 법칙**을 지킬 수 있다.
 
-![commission-to-factory1](/images/lecture/code-spitz/commission-to-factory1.jpg)
+{% include image.html alt="commission-to-factory1" path="/images/lecture/code-spitz/commission-to-factory1.jpg" %}
 
 **위임된 factory**를 사용했는데 `factory` 의 `method` 가 `Calculator` 와 동일하다.
 결국, **위임된 factory**는 구상 `Calculator` 자체가 되고 **위임된 factory** 의 `interface` 는 **factoring** 하려던 객체의 `interface` 와 일치 되는게 정상이다.
 설계 중, 이 사실을 이해하지 못했다면 혼란이 왔을 것이다.
 
-![commission-to-factory2](/images/lecture/code-spitz/commission-to-factory2.jpg)
+{% include image.html alt="commission-to-factory2" path="/images/lecture/code-spitz/commission-to-factory2.jpg" %}
 
 `DiscountPolicy` 도 결국 `factory` 를 참고할 필요가 없기 때문에 원래대로 돌아온다.
 **위임된 factory** 은 `factory` 가 보이지 않는다는 것이 특징이다. 
 `Calculator` 를 위임했기 때문에 `Calculator` 와 똑같은 것이다.
 
-![commission-to-factory3](/images/lecture/code-spitz/commission-to-factory3.jpg)
+{% include image.html alt="commission-to-factory3" path="/images/lecture/code-spitz/commission-to-factory3.jpg" %}
 
 **위임된 factory**로 바꾸면 그림과 같은 관계도가 된다.
 **factory pattern** 을 사용하여 `Calculator` 와 `AmountCalculatorFactory` 와 `AmountCalculator` 가 삼각형을 돌면서 순환참조가 생기는 것 같지만 
 `AmountCalculator` 의 역할이 `AmountCalculatorFactory` 로 겸하게 되니까 `AmountCalculatorFactory` 가 사라지게 된다.
 
-![commission-to-factory4](/images/lecture/code-spitz/commission-to-factory4.jpg)
+{% include image.html alt="commission-to-factory4" path="/images/lecture/code-spitz/commission-to-factory4.jpg" %}
 
 그래서 **위임된 factory pattern** 를 사용하면 한줄만 남게 되면서 순환이 없어진다. 
 
@@ -388,7 +390,7 @@ public class DiscountPolicy {
 **abstract factory method**는 의존성 폭발을 해결하기 위한 **pattern** 이기 때문에 
  `factory` 는 여러 객체를 반환할 수 있는 능력을 갖게 된다.
 
-![discountCondition-change](/images/lecture/code-spitz/discountCondition-change.jpg)
+{% include image.html alt="discountCondition-change" path="/images/lecture/code-spitz/discountCondition-change.jpg" %}
 
 `factory` 에게 `DiscountCondition` 도 반환하도록 변경하고 `DiscountPolicy` 는 `factory` 만 알도록 한다.
 `factory` 에서 공급받는 종류가 2가지가 된다.
@@ -441,7 +443,7 @@ public class AmountCalculatorFactory implements PolicyFactory {
 사용 코드와 생성 코드가 나눠지고 `DiscountPolicy` 에는 사용 코드만 남았다.
 **의존성**을 줄이기 위해서 **abstract factory method**을 사용했지만 **열차 전복 사고**를 주의 해야 한다.
  
-![discountPolicy-demeter](/images/lecture/code-spitz/discountPolicy-demeter.jpg)
+{% include image.html alt="discountPolicy-demeter" path="/images/lecture/code-spitz/discountPolicy-demeter.jpg" %}
 
 `foreach` 를 사용하기 때문에 `conditions` 에 대한 `iterator method` 호출로 **열차 전복 사고**가 내장되어 있다.
 내부에서 `iterator` 를 호출하기 때문에 디미터의 법칙을 위반한다.

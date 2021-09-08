@@ -4,6 +4,8 @@ tags: [강의, 설계]
 
 ---
 
+<!--more-->
+
 > 강의 시작 전에 '개발자가 반드시 알아야할 객체 지향과 디자인 패턴' 책을 추천한다. 
 > 얇은 분량으로 코드 실무적으로 자세하게 적은 책이라고 한다.
 
@@ -22,13 +24,13 @@ tags: [강의, 설계]
 **LSP**은 자식형을 부모형으로 안전하게 치환할 수 있다라는 원칙이다.
 당연한 내용이지만 실제로 개발을 하려고 하면 잘 지켜지지 않는다.
   
-![hasty-abstract1](/images/lecture/code-spitz/hasty-abstract.jpg)
+{% include image.html alt="hasty-abstract1" path="/images/lecture/code-spitz/hasty-abstract.jpg" %}
 
 `concreate1`, `concreate2` 클래스를 만들었는데 a b c 메소드라는 공통점이 있어서 추상화를 했다.
 추상층 a b c 를 만들고 구상층을 만들 수 있다.
 하지만 `concreate3` 도 같은 구상층이 생긴다면 c 의 책임을 주려고한다.
 
-![hasty-abstract2](/images/lecture/code-spitz/hasty-abstract2.jpg)
+{% include image.html alt="hasty-abstract2" path="/images/lecture/code-spitz/hasty-abstract2.jpg" %}
 
 그래서 위와 같이 fake C()를 만들어 버린다.
 여기서 `concreate3` 같은 추상층에 존재하면 안되지만 억지로 그 역할을 수행하려고 하는 것이다.
@@ -36,13 +38,13 @@ tags: [강의, 설계]
 성급한 추상화로 인해 `runtime error`, `compile error` 보다 더 심각한 `context error `가 발생 한다.
 
 
-![hasty-abstract3](/images/lecture/code-spitz/hasty-abstract3.jpg)
+{% include image.html alt="hasty-abstract3" path="/images/lecture/code-spitz/hasty-abstract3.jpg" %}
 
 리스코프 치환 원칙을 지키기 위해서 fake C()를 만들지 말고 새로운 추상층을 만들어야 한다.
 이러면 우리는 안전하게 리스코프 치환 원칙을 준수할 수 있다.
 리스코프 치환 원칙은 기존 보다 기능이 감소하면 어렵지 않은 방법으로 지켜낼 수 있다. 하지만 반대의 경우에는 어떻게 될 것인가
 
-![hasty-abstract4](/images/lecture/code-spitz/hasty-abstract4.jpg)
+{% include image.html alt="hasty-abstract4" path="/images/lecture/code-spitz/hasty-abstract4.jpg" %}
 
 
 `concreate3`에 d 가 생겼다고 가정했다.   
@@ -51,13 +53,13 @@ tags: [강의, 설계]
 **리스코프 치환 원칙**을 지키려고 다운 캐스팅을 하지 않으려고 했지만 d를 사용하기 위해서는 다운캐스팅을 하는 방법밖에 떠오르지 않는다.
 그래서 다운캐스팅을 사용하니까 **리스코프 치환원칙**을 지켜지지 않고 자동으로 **OCP** 를 어기게 된다. 
 
-![hasty-abstract5](/images/lecture/code-spitz/hasty-abstract5.jpg)
+{% include image.html alt="hasty-abstract5" path="/images/lecture/code-spitz/hasty-abstract5.jpg" %}
 
 그래서 우리는 `Generic` 을 이용하여 확장이 일어날때 **리스코프 치환 원칙**을 지키는 방법을 찾는다.
 
 ## 개발자의 세계 (코드)
 
-![programmer-world](/images/lecture/code-spitz/programmer-world.jpg)
+{% include image.html alt="programmer-world" path="/images/lecture/code-spitz/programmer-world.jpg" %}
 
 
 `Director` 는 `Paper`(기획서)를 받고, `Paper` 는 `ServerClient` 와 `Client` 로 만드는 사양서로 이루어져 있다.  
@@ -236,7 +238,7 @@ LSP 나 OCP 를 위반하면 프로그램이 불안정해진다. 설계사가 LS
 
 ## LSP 위반 시행착오
 
-![frontend-programmer-code](/images/lecture/code-spitz/frontend-programmer-code.jpg)
+{% include image.html alt="frontend-programmer-code" path="/images/lecture/code-spitz/frontend-programmer-code.jpg" %}
 
 그림에서 빨간 영역이 **LSP** 를 위반하는 부분이다.
 자식형을 부모형으로 치환해도 충분해야 하지만 그러지 못하기 때문에 다운캐스팅을 하고 있다.
@@ -383,7 +385,7 @@ public class ServerClient implements Paper {
 하지만 여기서 **의존성을 역전(관계 역전)** 시켰더니 1:n 관계로 되어 n개에 대한 case 를 처리하는 코드가 된다.
 모든 종류의 프로그래머에게 성립하도록 해야 하므로 책임이 더 많아 졌다.
 
-![paper-code](/images/lecture/code-spitz/paper-code.jpg)
+{% include image.html alt="paper-code" path="/images/lecture/code-spitz/paper-code.jpg" %}
 
 `Client`은 `programmer` 를 받아서 **다운캐스팅**으로 `setData` 를 처리했다.
 `BackEnd` 개발자의 경우는 처리하지 않게 됐고 그에 다라 모든 경우의 수를 파악하여 처리하기 힘들어졌다.
@@ -396,7 +398,7 @@ class 형 언어는 이런 상황을 유도하게 된다.
 TDD 의 진실된 의미는 객체를 어떤 측면에서 어떻게 사용되는지 시각적으로 확보하도록 도움을 주는 것이다. 
 결국, 설계에 영향을 미치는게 아니라 method 의 영향을 미치게 된다.
 
-![paper-code-with-generic](/images/lecture/code-spitz/paper-code-with-generic.jpg)
+{% include image.html alt="paper-code-with-generic" path="/images/lecture/code-spitz/paper-code-with-generic.jpg" %}
 
 이 문제를 해소할 수 있는 것은 `Generic` 이다.
 `if` 문과의 차이점은 형으로 결정한다는 것이다. 
@@ -434,7 +436,7 @@ public class Client implements Paper<FrontEnd> {
 이전 `Client` 는 범용이었지만 여기서는 강력하게 `FrontEnd` 와 binding 되었고,
 용도가 감소되어 제약 범위 안에서 코드를 작성할 수 있게 되었다.
 
-![serverclient-code-with-generic](/images/lecture/code-spitz/serverclient-code-with-generic.jpg)
+{% include image.html alt="serverclient-code-with-generic" path="/images/lecture/code-spitz/serverclient-code-with-generic.jpg" %}
 
 `Paper` 는 여러 `Programmer` 가 들어오는 큰 책임을 가져서 문제가 생긴다.
 이전 `Client` 는 매핑 되는게 `FrontEnd` 한 가지이기 때문에 정확하게 T를 이용할 수 있었다.
@@ -573,7 +575,7 @@ FrontEnd 도 마찬가지로 수정해준다.
 서비스 층이 안정화됐으니 **client** 에서의 할 일이 많아졌지만 역할 책임 모델로 책임을 분산했기 때문에 **client** 가 뭉쳐진 책임을 갖게 되지 않는다.
 코드에 if 를 가져오지 않고 형으로 해결하게 된다.
 
-![director-code](/images/lecture/code-spitz/director-code.jpg)
+{% include image.html alt="director-code" path="/images/lecture/code-spitz/director-code.jpg" %}
 
 기존에 `Paper` 를 처리하는 코드를 보면  `program` 을 만든 것을 가지고 `deploy` 하는 책임이 있다는 것을 확인하면
 중복적인 코드가 있다는 것을 알 수 있다.
@@ -649,7 +651,7 @@ Director 가 n개의 Paper 를 갖고 있기 때문에 Director 가 Paper 를 �
 `Paper` 가 `Director` 에게 서비스를 제공하고 추상화하면 된다. 
 
 
-![director-code-ocp-fail](/images/lecture/code-spitz/director-code-ocp-fail.jpg)
+{% include image.html alt="director-code-ocp-fail" path="/images/lecture/code-spitz/director-code-ocp-fail.jpg" %}
 
 
 `Director` 에서 조차도 `if instanceof` 분기를 사용해서 **OCP** 위반을 하고 있다.

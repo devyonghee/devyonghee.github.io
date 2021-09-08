@@ -4,6 +4,8 @@ tags: [강의, 설계]
 
 ---
 
+<!--more-->
+
 
 ## 분해
 
@@ -25,21 +27,21 @@ tags: [강의, 설계]
 
 하나의 **flow** 로 이루어졌다고 생각해서 프로그램을 쪼갤 수 있다고 생각하기 때문에 **Function decomposition** 이 일어난다.
 
-![functional-decomposition1](/images/lecture/code-spitz/functional-decomposition1.jpg)
+{% include image.html alt="functional-decomposition1" path="/images/lecture/code-spitz/functional-decomposition1.jpg" %}
 
 **주황색 상태**를 처리하기 위한 **flow** 가 있고 다음 단계까지도 **주황색 상태**를 가공하려고 한다. 
 여기서 말하는 상태들은 **flow** 바깥쪽에 존재하는 전역 변수이다. 
 
-![functional-decomposition2](/images/lecture/code-spitz/functional-decomposition2.jpg)
+{% include image.html alt="functional-decomposition2" path="/images/lecture/code-spitz/functional-decomposition2.jpg" %}
 
 하지만 두번째 단계에서 **하늘색 상태**가 필요한 것을 알게 됐고 처음부터 **하늘색 상태**가 필요하다고 생각한다.
 
-![functional-decomposition3](/images/lecture/code-spitz/functional-decomposition3.jpg)
+{% include image.html alt="functional-decomposition3" path="/images/lecture/code-spitz/functional-decomposition3.jpg" %}
 
 이 하늘색 상태는 2단계에서 사용하려고 할 때 생성 되는게 아니라 처음부터 존재했어야 되므로 1단계에도 추가된다.
 그럼, 이 **flow** 는 기반된 상태가 달라졌기 때문에 **오염**돼서 처음부터 다시 만들어야 한다.
 
-![functional-decomposition4](/images/lecture/code-spitz/functional-decomposition4.jpg)
+{% include image.html alt="functional-decomposition4" path="/images/lecture/code-spitz/functional-decomposition4.jpg" %}
 
 더 나아가, **flow** 를 처리하면서 분기를 해야 되는 것을 알았고 특정 조건 **초록색 상태**에 따라 처리를 하도록 한다.
 이 **초록색 데이터**는 분기에만 사용되고 다른 곳에서는 사용되지 않기 때문에 **scope** 를 이용해서 변수의 유효범위를 정할 수 있다. 
@@ -49,23 +51,23 @@ scope 는 flow 시스템상에서로직을 전체를 검토하지 않도록 해�
 
 이어서, 최종 단계 작업을 한다. 
 
-![functional-decomposition5](/images/lecture/code-spitz/functional-decomposition5.jpg)
+{% include image.html alt="functional-decomposition5" path="/images/lecture/code-spitz/functional-decomposition5.jpg" %}
 
 근데 빨간생 상태가 필요하다는 것을 여기서 깨달았고
 
-![functional-decomposition6](/images/lecture/code-spitz/functional-decomposition6.jpg)
+{% include image.html alt="functional-decomposition6" path="/images/lecture/code-spitz/functional-decomposition6.jpg" %}
 
 결국 제일 처음부터 빨간색을 선언하게 되고 결국 모든게 빨간색으로 된다.
 
 ## 2. Abstract Data Type (추상 데이터 타입)
 
-![abstract-data-type1](/images/lecture/code-spitz/abstract-data-type1.jpg)
+{% include image.html alt="abstract-data-type1" path="/images/lecture/code-spitz/abstract-data-type1.jpg" %}
 
 이전까지 절차와 절차에 필요한 데이터를 깨닫는 과정이었지만 **ADT(Abstract Data Type)** 부터 **데이터**를 기준으로 판단한다. 
 flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기 때문에 마지막에 떠오르게 된지만 
 **ADT(Abstract Data Type)** 부터는 데이터에 따라 해야 될 동작들을 정리한다.
 
-![abstract-data-type2](/images/lecture/code-spitz/abstract-data-type2.jpg)
+{% include image.html alt="abstract-data-type2" path="/images/lecture/code-spitz/abstract-data-type2.jpg" %}
 
 데이터의 차이점만 있고 **flow** 내부 동작의 공통점을 추상화의 단계에서 인식할 수 있다라면 위 그림과 같이 묶일 수 있다.
 이 안에 `if` 문이나 `switch` 를 통해 **case** 상태를 수용한다면 코드 응집성이 높아져서 관리하기가 편해진다
@@ -73,17 +75,17 @@ flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기
 바깥쪽에서는 하나의 형으로 인식하고 내부에서는 복잡한 로직을 감춰서 좋을 수 있다.
 
 
-![abstract-data-type3](/images/lecture/code-spitz/abstract-data-type3.jpg)
+{% include image.html alt="abstract-data-type3" path="/images/lecture/code-spitz/abstract-data-type3.jpg" %}
 
 모든 종류의 상태를 수용하고 있으므로 내부에서 다 해결할 수 있다.
 버그의 양도 적고, 코드도 짧고, 외부의 영향도 없고, 기능을 늘리기가 굉장히 쉽다. 
 
-![abstract-data-type4](/images/lecture/code-spitz/abstract-data-type4.jpg)
+{% include image.html alt="abstract-data-type4" path="/images/lecture/code-spitz/abstract-data-type4.jpg" %}
 
 하지만 새로운 유형의 데이터가 추가되면 전체 클래스가 파기되고 모든 메소드의 코드를 수정해야 한다.
 이렇게 기능이 추가되거나 변화가 없다라면 장점 존재하기 때문에 이 책에서도 상태가 안정화 됐다면 **ADT** 도 나쁘지 않은 선택이라고 한다. 
 
-![abstract-data-type5](/images/lecture/code-spitz/abstract-data-type5.jpg)
+{% include image.html alt="abstract-data-type5" path="/images/lecture/code-spitz/abstract-data-type5.jpg" %}
 
 하지만 초록색 상태일 때만 해당되는 기능을 추가한다면 ADT 로는 해결할 수 없다.
 즉, **ADT**는 
@@ -94,14 +96,14 @@ flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기
 
 ## 3. Object Oriented
 
-![object-oriented1](/images/lecture/code-spitz/object-oriented1.jpg)
+{% include image.html alt="object-oriented1" path="/images/lecture/code-spitz/object-oriented1.jpg" %}
 
 **객체 지향**의 사고방식에서는 상태가 없는 수준에서 추상화를 하고 상태에 따라 상속 구조를 변경하면서 형을 더 만든다.
 **ADT** 는 상태에 따라서 형을 줄어 들지만 **객체 지향**에서는 증가한다.
 심지어, 상태 따라 생성된 형을 통합하는 **추상형**도 필요하다.
 
 
-![object-oriented2](/images/lecture/code-spitz/object-oriented2.jpg)
+{% include image.html alt="object-oriented2" path="/images/lecture/code-spitz/object-oriented2.jpg" %}
  
 여파를 끼치지 않고 초록색에 필요한 코드만 만들 수 있게 됐다.
 상태별로 if 문으로 관리하던 것에 비해, 지금은 상태만큼 객체의 클래스 형만 만들면 된다.
@@ -117,7 +119,7 @@ flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기
 그래서 **kotlin** 같은 경우, 상속 범위를 한정 짓고 구상 클래스의 범위를 제한하는 **shield class** 을 이용한다.
 
 
-![object-oriented3](/images/lecture/code-spitz/object-oriented3.jpg)
+{% include image.html alt="object-oriented3" path="/images/lecture/code-spitz/object-oriented3.jpg" %}
 
 **oop**에서 초록색 상태에서만 필요한 메소드가 추가됐을 때,
 **추상 클래스**로 인식하고 있다면 **리스코프 치환원칙**에 의해서 이 메소드를 사용할 수 있는 방법은 제한적이다.
@@ -129,7 +131,7 @@ flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기
 우리는 습관적으로 ADT 로 코드를 짜기 때문에 ADT 를 인식하기가 힘들다. 
 그래서 객체 지향과 ADT 의 차이점을 인식하기 위해 개발자의 세계를 ADT 버전으로 만든다.
 
-![programmer-world](/images/lecture/code-spitz/programmer-world.jpg)
+{% include image.html alt="programmer-world" path="/images/lecture/code-spitz/programmer-world.jpg" %}
 
 이전에 했던 개발자의 세계는 객체 지향을 통해 코드의 변화를 형으로 나누고 있다. 
 `if` 에 대한 **case** 만큼 형으로 치환하게 됐으므로 형이 증가하게 된다.
@@ -211,7 +213,7 @@ public class Paper {
 
 모든 상태를 소유할수 있도록 하고 **flag** 에 따라 분기를 나누게 된다. 
 
-![paper-adt](/images/lecture/code-spitz/paper-adt.jpg)
+{% include image.html alt="paper-adt" path="/images/lecture/code-spitz/paper-adt.jpg" %}
 
 **flag** 변수에 대한 여파로 코드는 내부의 모든 상태를  커버할 수 있도록 변경해야 한다.
 
@@ -322,7 +324,7 @@ public class Programmer {
 그래서 `frontEndLibrary` 로 바꿔줘야 한다.
 **ADT** 는 시간순으로 상태가 추가될 때마다 이름 충돌로 인해 전부 나눠지게 되고 평소에 이름을 길게 짓게 되는 것이 문제다.
 
-![programmer-adt](/images/lecture/code-spitz/programmer-adt.jpg)
+{% include image.html alt="programmer-adt" path="/images/lecture/code-spitz/programmer-adt.jpg" %}
 
 `boolean` 을 통해 모든 개발자를 통합한 추상형을 만들었다.
 원래는 두개의 함수로 나눠져 있던게 이제는 if 를 통해서 하나의 함수로 모여져 **지식의 통합**이 발생했다.
@@ -333,7 +335,7 @@ public class Programmer {
 본인 상태를 사용해서 분리하고 상태를 감추기 때문에 **ADT 연쇄** 로 인해 `Paper` 도 구분할 수 없으므로 통합 메소드를 통해 불러올 수 밖에 없다.
 `Paper` 의 상태는 신경쓰지 않고 `Programmer` 상태가 `frontEnd` 라면 `Paper` 에게 `frontEndLanguage` 를 요청하는 **getter** 추상메소드를 만들게 된다.
  
-![paper-adt-getter](/images/lecture/code-spitz/paper-adt-getter.jpg)
+{% include image.html alt="paper-adt-getter" path="/images/lecture/code-spitz/paper-adt-getter.jpg" %}
 
 `Paper` 의 기능을 확장하면 위 코드와 같이 만들어진다.
 `method` 들은 다시 `isClient` 에 따라 달라진다.
@@ -371,7 +373,7 @@ public class Director {
 
 이전 Director 에서는 Paper 의 형에 따라서 동작이 다르다. 
 
-![director-adt](/images/lecture/code-spitz/director-adt.jpg)
+{% include image.html alt="director-adt" path="/images/lecture/code-spitz/director-adt.jpg" %}
 
 **ADT** 로 바꾸면 코드가 많이 달라지진 않지만 `Director` 에서 접근하려면 반드시 `Paper` 의 내부를 확인할 수 밖에 없다.
 특정 `Director` 마다 이 코드가 달라질 수 있으므로 `Paper` 로 옮길 수도 없다.

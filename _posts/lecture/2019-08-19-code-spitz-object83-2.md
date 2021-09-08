@@ -3,6 +3,8 @@ title: 코드 스피츠 Object83 2회차 정리
 tags: [강의, 설계]
 ---
 
+<!--more-->
+
 ## Type(형)
 
 **변수**는 메모리 주소의 별명을 의미한다. 변수는 데이터 타입을 가지고 있는데 이 데이터 타입은 
@@ -145,11 +147,11 @@ jvm 에 쓸 수 있는 도용 가능한 타입 3가지
 
 
 ## 실습 Theater with Reservation
-![theater-dependency-refactor](/images/lecture/code-spitz/theater-dependency-refactor.jpg)
+{% include image.html alt="theater-dependency-refactor" path="/images/lecture/code-spitz/theater-dependency-refactor.jpg" %}
 
 이전 시간 모델
 
-![theater-dependency-add-movie](/images/lecture/code-spitz/theater-dependency-add-movie.jpg)
+{% include image.html alt="theater-dependency-add-movie" path="/images/lecture/code-spitz/theater-dependency-add-movie.jpg" %}
 
 - 이 책에서는 `Screening`이 적당한 전문가라고 소개(**expert pattern**)  
 > 전문가 패턴(expert pattern) : 자신의 정보를 외부에 보여주지 않고 자신의 정보만 가지고 처리할 수 있는 일을 받도록 하는 패턴  
