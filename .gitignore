@@ -7,9 +7,9 @@ Thumbs.db
 !.keep
 *.sass-cache
 /node_modules/
-/_assets/yarn/
 /_site/
 /.jekyll-cache/
+/javascripts/
 Gemfile.lock
 package-lock.json
 yarn.lock

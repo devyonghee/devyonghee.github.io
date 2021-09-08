@@ -5,13 +5,13 @@ const isProduction = process.env.NODE_ENV === "production";
 module.exports = {
   mode: isProduction ? "production" : "development",
   entry: {
-    application: "./javascripts/application.js",
-    scrollappear: "./javascripts/scrollappear.js",
-    themetoggle: "./javascripts/themetoggle.js",
+    application: "./src/application.js",
+    scrollappear: "./src/scrollappear.js",
+    themetoggle: "./src/themetoggle.js",
   },
   output: {
     filename: isProduction ? "[name].[chunkhash].js" : "[name].js",
-    path: path.resolve(__dirname, "assets/js"),
+    path: path.resolve(__dirname, "javascripts"),
     publicPath: ""
   },
   plugins: [
