@@ -3,6 +3,7 @@
 blog_theme: dark # Or use dark
 name: Devyong`s Blog
 url: https://devyonghee.github.io
+permalink: pretty
 
 # Optional settings
 about_enabled: true # Change to true if you wish to show an icon in the navigation that redirects to the about page
@@ -36,6 +37,12 @@ social:
   stackoverflow: # Add your Stack Overflow ID number
   steam: # Add your Steam handle
 
+defaults:
+  - scope:
+      path: "" # an empty string here means all files in the project
+      type: "posts" # previously `post` in Jekyll 2.2.
+    values:
+      layout: "post"
 
 # Important settings (change at own risk)
 pagination:
@@ -58,16 +65,14 @@ autopages:
     title: 'Posts with :tag'
     permalink: '/tag/:tag'
 exclude:
-  - bin/*
+  - src/*
   - Gemfile
   - Gemfile.lock
   - package.json
   - package-lock.json
-  - javascripts/*
   - webpack.config.js
   - README.md
 plugins:
   - jekyll-paginate-v2
   - jekyll-sitemap
   - jemoji
-permalink: posts/:slug
