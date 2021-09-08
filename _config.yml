@@ -58,6 +58,8 @@ autopages:
   enabled: true
   collections:
     enabled: false
+  categories:
+    enabled: false
   tags:
     enabled: true
     layouts:
