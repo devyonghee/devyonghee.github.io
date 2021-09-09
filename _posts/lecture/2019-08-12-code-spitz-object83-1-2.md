@@ -1,6 +1,6 @@
 ---
 title: 코드 스피츠 Object83 1회차 정리(2)
-tags: [강의, 설계]
+tags: [강의, 책, object, OOP]
 categories: lecture
 ---
 

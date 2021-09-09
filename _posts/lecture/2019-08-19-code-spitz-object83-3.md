@@ -1,8 +1,11 @@
 ---
 title: 코드 스피츠 Object83 3회차 정리
-tags: [강의, 설계]
+tags: [강의, 책, object, OOP]
 categories: lecture
 ---
+
+객체 통신 구조가 순환이 돌면 잘못된 설계이다.  
+SOLID 원칙, GRASP 패턴 등 다양한 원칙과 패턴을 이용하여 객체를 설계하자.   
 
 <!--more-->
 

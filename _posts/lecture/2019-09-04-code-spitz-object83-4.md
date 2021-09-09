@@ -1,8 +1,11 @@
 ---
 title: 코드 스피츠 Object83 4회차 정리
-tags: [강의, 설계]
+tags: [강의, 책, object, OOP]
 categories: lecture
 ---
+
+실제로 리스코프 치환 원칙(LSP) 지켜지는 것이 힘들다.  
+다양한 역할로 나누어질 경우 최대한 client 쪽으로 밀어내면서 **type**으로 해결하자
 
 <!--more-->
 

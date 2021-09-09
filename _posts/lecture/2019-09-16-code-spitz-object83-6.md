@@ -1,12 +1,14 @@
 ---
 title: 코드 스피츠 Object83 6회차 정리
-tags: [강의, 설계]
+tags: [강의, 책, object, OOP]
 categories: lecture
 ---
 
+객체망을 구성할 때는 의존성이 양방향이 되지 않도록 하는 것이 중요하다.   
+가장 중요한 pattern 은 **abstract factory method pattern**, **command pattern**이다.
+
 <!--more-->
 
-디자인 pattern 에서 가장 중요한 pattern 은 **abstract factory method pattern**, **command pattern** 이다.
 
 ## 합성과 의존성
 
