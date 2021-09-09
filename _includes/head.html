@@ -16,6 +16,10 @@
   <meta name="twitter:title" content="{{ page.title | escape }}">
   <meta name="twitter:description" content="{{ page.description }}">
 
+  {% if site.google_site_content %}
+    <meta name="google-site-verification" content="{{ site.google_site_content }}" />
+  {% endif %}
+
   {% if page.thumb_image %}
     {% if page.thumb_image contains '://' %}
       <meta property="og:image" content="{{ page.thumb_image }}">
