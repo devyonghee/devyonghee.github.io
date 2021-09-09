@@ -13,14 +13,27 @@ const toggle = () => {
   themer();
 };
 
-// Theme set
-const themer = () => {
-  const dark = document.getElementById("dark");
-  if (localStorage.getItem("theme") === "dark") {
-    dark.removeAttribute("disabled");
+const changeUtterancesTheme = (isDarkTheme, isRetry = false) => {
+  const utterances = document.querySelector("iframe.utterances-frame");
+  if (utterances) {
+    const utterancesTheme = isDarkTheme ? "github-dark" : "github-light";
+    utterances.contentWindow.postMessage({ type: "set-theme", theme: utterancesTheme }, "https://utteranc.es");
     return;
   }
-  dark.setAttribute("disabled", "true");
+
+  if (isRetry) return;
+  setTimeout(() => {
+    changeUtterancesTheme(isDarkTheme, true);
+  }, 1000);
+};
+
+// Theme set
+const themer = () => {
+  const isDarkTheme = localStorage.getItem("theme") === "dark";
+  changeUtterancesTheme(isDarkTheme);
+
+  const dark = document.getElementById("dark");
+  isDarkTheme ? dark.removeAttribute("disabled") : dark.setAttribute("disabled", "true");
 };
 
 themer();
