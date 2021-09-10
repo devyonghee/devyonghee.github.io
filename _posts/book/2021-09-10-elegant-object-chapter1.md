@@ -1,6 +1,6 @@
 ---
 title: 엘레강트 오브젝트 Chapter1. 출생
-tags: [book, object, OOP]
+tags: [book, elegant-object, OOP]
 categories: book
 ---
 
