@@ -79,4 +79,5 @@ exclude:
 plugins:
   - jekyll-paginate-v2
   - jekyll-sitemap
+  - jekyll-feed
   - jemoji
