@@ -119,7 +119,7 @@ class OutputPipe {
 - is 가 붙으면 올바르지 않은 문장이 만들어지기 쉽다.(isEquals, isExists) 
 
 
-> #### 2.4 summary
+> #### summary
 > 빌더(builder) -> 명사  
 > 조정자(manipulator) -> 동사  
 > Boolean 빌더 -> 형용사
