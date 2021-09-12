@@ -127,4 +127,7 @@ class OutputPipe {
 ### Review
 `item.getPrice()` 보다 `item.price()` 이 명사로 접근한다는 점에서 확실히 가독성이 좋은 것 같다.
 바로 도입하고 싶지만 아직 `setter`, `getter` 패턴을 이용한 java 라이브러리들이 많기 때문에 문제가 없는지 검토는 필요할 것 같다.  
-  
+
+
+## 2.5 퍼블릭 상수(Public Constant)를 사용하지 마세요.
+
