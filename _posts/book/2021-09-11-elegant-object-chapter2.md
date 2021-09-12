@@ -63,3 +63,68 @@ categories: book
 **느슨한 결합도**를 위해 반드시 필요한 설계라고 생각되지만 실제로 지키기 힘든 원칙같다.
 그래도 모든 퍼블릭 메소드에 인터페이스 정의를 고민해본다면 해당 객체 역할에 대해 다시 생각해보는 계기 될 것 같다.
 
+## 2.4 메서드 이름을 신중하게 선택하세요.
+
+빌더와 조정자 사이에 만들고 조작하거나, 조작 후 반환하는 등 어떤 메서드도 존재하면 안됨
+
+> ##### **빌더(builder)**
+> - 뭔가 만들고 새로운 객체를 반환하는 메서드
+> - 절대 void 가 될 수 없음.
+> - 형용사를 통해 명사를 풍부하게 설명하는 것은 허용 (ex. parsedCell)
+>
+> ##### **조정자(manipulator)**
+> - 엔티티를 수정하는 메서드
+> - 항상 void
+
+### **빌더(builder)**는 **명사**
+- `getter` 는 어떤 값을 반환하는 빌더로 동사 `get`으로 시작하는 작명에는 문제가 있다.
+- `cookBrownie`, `brewCupOfCoffee` 같은 메서드는 객체의 메서드가 아니라 객체에게 일일이 명령하는 **프로시저**이다.
+- 무엇을 만들어야 하는지 요청만하고 방법은 객체 스스로 결정해야 한다. 
+
+### **조정자(manipulator)**는 **동사**
+- 클라이언트 입장에서 값을 받을것을 기대하고 요청하지 않는다.
+- 빌더(Builder) 패턴을 사용할경우 with로 시작하는 메서드 이름은 무방
+
+> ##### 빌더 패턴 사용하지 말자.
+> 빌더 패턴은 유지보수성이 낮고 응집도가 떨어지도록 조장.  
+> 생성자 인자가 많으면 유용한 패턴이지만, 애초에 인자 수가 많은 것이 문제.
+
+### **빌더(builder)**와 **조정자(manipulator)** 혼합하기
+
+```java
+class Document {
+    int write(InputStream content);
+}
+```
+
+위 메서드는 데이터를 쓰고 값도 반환해주는 복잡한 일을 하고 있다. 메서드 목적이 명확하지 않아 다음처럼 리팩토링이 필요하다. 
+
+```java
+class Document {
+    OutputPipe output();
+}
+
+class OutputPipe {
+    void write(InputStream content);
+    int bytes();
+    long time();
+}
+```
+연산을 수행할 객체를 준비하여 빌더와 조정자를 구분하게 되었다.
+
+### Boolean 값을 반환하는 경우 **형용사**
+
+- 마찬가지로 Boolean 값을 반환하기 때문에 빌더에 속하지만, 형용사로 지어야 가독성이 좋다.  
+(ex. isEmpty -> empty, isReadable -> readable, isNegative -> negative)
+- is 가 붙으면 올바르지 않은 문장이 만들어지기 쉽다.(isEquals, isExists) 
+
+
+> #### 2.4 summary
+> 빌더(builder) -> 명사  
+> 조정자(manipulator) -> 동사  
+> Boolean 빌더 -> 형용사
+
+### Review
+`item.getPrice()` 보다 `item.price()` 이 명사로 접근한다는 점에서 확실히 가독성이 좋은 것 같다.
+바로 도입하고 싶지만 아직 `setter`, `getter` 패턴을 이용한 java 라이브러리들이 많기 때문에 문제가 없는지 검토는 필요할 것 같다.  
+  
