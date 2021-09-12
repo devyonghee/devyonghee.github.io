@@ -159,6 +159,9 @@
   blockquote {
     display: block;
     margin-bottom: 30px;
+    ul {
+      margin-bottom: 0;
+    }
   }
   h2,
   h3,
