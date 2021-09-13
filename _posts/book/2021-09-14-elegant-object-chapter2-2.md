@@ -41,3 +41,31 @@ System.out.printls(map); // {$10=>"five", $10=>"ten"}
 map.get(five); //"ten"과 "five" 중 하나가 반환
 ``` 
 
+### 실패 원자성(Failure Atomicity)
+
+불변 객체는 실패 원자성(Failure Atomicity) 장점이 있다.
+
+> #### 실패 원자성
+> 견고한 상태의 객체를 얻거나 실패하거나 둘 중 하나만 가능한 특성
+
+가변 객체인 아래 코드에서 `mul()` 메서드 도중 예외가 발생된다면 `dollars` 만 수정되고 `cents`는 유지된다.
+심각하고 찾기 어려운 버그이다.  
+코드를 수정할 순 있지만 **가변 객체**에서는 **코드가 복잡**해지고 처리가 어려워진다. 
+
+```java
+
+class Cach {
+    private int dollars;
+    private int cents;
+    public void mul(int factor) {
+        this.dollars *= factor;
+        if(/* 잘못됨 */){
+            throw new RuntimeExcption();
+        }
+        this.cents *= factor;
+    }
+}
+
+```
+
+
