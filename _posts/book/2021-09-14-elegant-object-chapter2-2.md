@@ -68,4 +68,26 @@ class Cach {
 
 ```
 
+### 시간적 결합 (Temporal Coupling)
 
+불변 객체는 시간적 결합(Temporal Coupling)을 제거할 수 있다.  
+
+다음 코드에서 각 줄은 특정한 순서로 정렬되어 있으며 시간적인 순서에 따라 서로 결합되어 있다.
+`println` 과 `setCents` 호출 순서가 바뀌어도 정상적으로 컴파일이 될 것이다.  
+
+수정하려면 코드의 시간적인 결합을 이해해야 하며, 유지보수가 어려워진다. 
+
+```java
+Cash price = new Cash();
+price.setDollars(29);
+price.setCents(95);
+System.out.println(price) //"$29.95"
+```
+
+불변 객체는 이러한 문제를 해결할 수 있으며, 
+아래 코드에서는 **인스턴스화(instantiation)**와 **초기화(initialization)**이 함께 이루어지기 때문에 시간적인 결합을 제거한다.  
+
+```java 
+Cash price = new Cash(29, 95);
+System.out.println(price); // "$29.95"
+```
