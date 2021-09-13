@@ -91,3 +91,43 @@ System.out.println(price) //"$29.95"
 Cash price = new Cash(29, 95);
 System.out.println(price); // "$29.95"
 ```
+
+### 부수효과 제거(Side effect-free)
+
+다음과 같은 메소드를 사용한다면 내부에서 값이 변하기 때문에 **side effect** 가 발생된다.
+이 문제를 해결하려면 오랜시간이 걸릴 수 있다.
+하지만 불변 객체에서는 수정할 수 없으므로 상태에 대해 확신을 가질 수 있다.
+
+```java 
+void print(Cash price){
+    System.out.println(price);
+    price.mul(2);
+    System.out.println(price);    
+}
+```
+
+### NULL 참조 없애기
+
+이번 섹션에서는 **unset** 의 경우에만 다룬다.  
+아래 코드에서 `name`은 언제 유효한 상태인지 아닌지 이해가 어렵다.
+`null` 체크를 하면 되지만 코드가 복잡해지며, 혹시라도 체크를 잊어버리면 `NullPointerException` 을 마주치게 된다.  
+
+**불변 객체**로 만든다면 **견고하고 응집도 높은 객체**를 생성하도록 강제되기 때문에 **유지보수**하기 더 수월하다.
+
+```java 
+
+class User {
+
+    private final int id;
+    private String name = null;
+
+    public User(int num) {
+        this.id = num;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+```
