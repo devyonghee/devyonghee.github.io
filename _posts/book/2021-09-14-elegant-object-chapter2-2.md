@@ -4,7 +4,7 @@ tags: [book, elegant-object, OOP]
 categories: book
 ---
 
-객체는 작게 유지해야 된다는 내용이 계속 이어지고 있다.  
+객체는 작아야 한다는 내용이 이어지고 있다.  
 그 이유와 방법에 대해서 계속 알아보도록 한다.  
 
 <!--more-->
@@ -131,3 +131,33 @@ class User {
 }
 
 ```
+
+### 스레드 안전성(Thread Safety)
+
+> #### 스레드 안정성
+> 여러 스레드에서 동시에 사용될 수 있고 그 결과를 예측가능하도록 유지하는 **객체의 품질**
+
+아래 코드에서 두 스레드에서 $30.20과 $60.40을 예상했지만 짧은 시간의 오류로 가끔 $60.20 이 발생됨. 
+이러한 버그는 재현도 안되고 해결하기 어렵다.  
+
+`synchronized` 키워드로 동기화를 할 수 있겠지만 다음과 같은 문제가 있다.
+1. 가변 클래스는 스레드 안정성을 추가하기 어렵다.(데드락을 제어해야 함)
+2. 성능상의 비용이 발생된다. (다른 스레드에서 해방될 때까지 기다려야 함)
+
+```java
+class Cash {
+    private int dollars;
+    private int cents;
+    public void mul(int factor) {
+        this.dollars *= factor;
+        this.cents *= factor;
+    }
+}
+
+Cash price = new new Cache("$15.10");
+// 두 스레드에서 실행
+price.mul(2);
+System.out.println(price);
+```
+
+
