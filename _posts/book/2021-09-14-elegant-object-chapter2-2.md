@@ -193,3 +193,39 @@ System.out.println(price);
 
 <br>
 
+## 2.8 모의 객체(Mock) 대신 페이크 객체(Fake)를 사용하세요
+
+### **모킹(mocking)**은 나쁜 프랙티스이며 **최후의 수단** 
+- **페이크(fake) 객체**를 이용하면 테스트 코드가 간결해지고 **유지보수성**이 좋아진다.(모킹의 경우 장황해지고 이해가 어려움)
+- **모킹**은 **불확실한 가정**을 세우고 테스트를 구축하게 됨 (클래스가 블랙박스이기 때문에 메소드를 실제 호출되는지 모름)
+- **모킹**은 내부에서 실제 호출되는 메소드만 바꿔도 **테스트는 실패**한다.
+- **페이크 클래스**는 **인터페이스의 설계**에 관해 고민하도록 도와준다.
+
+> 지금 만드는 인터페이스부터 '페이크' 클래스들을 함께 제공하자
+
+
+### Fake 객체를 이용한 테스트 구현 
+```java 
+interface Exchange {
+    float rate(String origin, String target);
+    final class Fake implements Exchange {
+        @Override
+        public float rate(String origin, String target) {
+            return 1.2345f;
+        }
+    }
+}
+Exchange exchange = new Exchange.Fake();
+Cash dollar = new Cash(exchange, 500);
+Cash euro = dollar.in("EUR");
+assert "6.17".equals(euro.toString());
+```
+
+### Review
+테스트 코드를 작성하면서 모킹에 대해서 장황하다고 생각은 했지만 사용하는 것에 대해 의구심은 가지지 않았다.
+이번 섹션을 통해 아주 유용한 방법을 알게되었다. 
+만약, 이 방식을 이용한다면 [2.3]({% post_url book/2021-09-11-elegant-object-chapter2-1 %}#23-항상-인터페이스를-사용하세요) 
+도 지키려고 고민할 것 같다.
+
+<br>
+
