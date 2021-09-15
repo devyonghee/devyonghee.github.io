@@ -234,3 +234,84 @@ assert "6.17".equals(euro.toString());
 
 <br>
 
+## 2.9 인터페이스를 짧게 유지하고 스마트(smart)를 사용하세요
+
+클래스도 작게 만들어야 하지만 인터페이스를 작게 만드는 것이 더 중요하다.
+
+
+```java
+interface Exchange {
+    float rate(String target);
+    float rate(String source, String target);
+}
+```
+
+이 인터페이스는 너무 많은 구현을 요구하므로 좋지 않다. (Single Responsibility Principle 위반)  
+
+하나의 인자를 받는 `rate` 메서드를 제거하고 다음과 같이 **스마트(smart)클래스**를 추가해주도록 한다.
+
+```java
+interface Exchange {
+
+    float rate(String source, String target);
+
+    final class Smart {
+
+        private final Exchange origin;
+
+        public float toUsd(String source) {
+            return this.origin.rate(source, "USD");
+        }
+
+        public float eurToUsd() {
+            return this.toUsd("EUR");
+        }
+    }
+}
+
+float rate = new Exchange.Smart(new NYSE()).toUsd("EUR"); 
+float rate = new Exchange.Smart(new NYSE()).eurToUsd(); 
+```
+
+### 스마트 클래스 장점
+1. **스마트 클래스**는 명확하고 공통적인 작업을 수행하는 **메서드들을 추가**할 수 있다.
+2. 서로 다른 클래스 안에 동일한 기능을 **반복해서 구현하지 않**는다.
+3. **스마트 클래스**는 커질 수 있지만 **인터페이스는 작고**, **높은 응집도**를 유지할 수 있다.
+
+> #### 조합 가능한 **데코레이터**(composable decorator)와 **스마트 클래스** 차이점
+> 데코레이터 : 이미 존재하는 메서드를 더 강력하게 만듦
+> 스마트 클래스 : 객체에 새로운 메소드들을 추가
+
+
+```java
+interface Exchange {
+
+    float rate(String source, String target);
+
+    final class Fast implements Exchange {
+
+        private final Exchange origin;
+
+        @Override
+        public float rate(String source, String target) {
+            if (source.equals(target)) {
+                return 1.0f;
+            }
+            return this.origin.rate(source, target);
+        }
+
+        public float toUsd(String source) {
+            return this.origin.rate(source, "USD");
+        }
+    }
+}
+```
+
+이 코드에서 `Fast` 는 **데코레이터**인 동시에 **스마트 클래스**이다.
+1. 오버라이드를 통해 메소드를 더 강력하게 해준다. (데코레이터)
+2. `toUsd()` 메소드가 추가되어 쉽게 호출할 수 있다. (스마트 클래스)
+
+### Review
+이번 섹션을 통해 스마트 클래스라는 새로운 개념을 알게되어 너무 흥미로웠다.
+아직 인터페이스가 습관화 되지 않았지만 고쳐나가면서 테스트를 위한 Fake 객체와, 스마트 클래스를 항상 생각해두어야겠다!
+
