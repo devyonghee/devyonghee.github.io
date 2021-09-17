@@ -212,3 +212,26 @@ float rate = new If(
 편리하게 사용하고 가독성을 위한다고 생각 했었지만 OOP 에 오히려 독이라니 반성해야겠다.  
 특히, 마지막에 if문까지 객체를 만들 수 있다는 점은 나에게 너무 새롭게 다가왔다.         
 
+
+## 3.3 인자의 값으로 NULL을 절대 허용하지 마세요
+
+코드에 null 이 존재한다면 잘못된 것이다.
+- null 은 객체가 자신의 행동을 온전히 책임진다는 객체 패러다임과 상반된다.
+- 인자의 값으로 null 을 허용하면 비교문이 계속 생겨나게 되고 점점 객체를 퇴화시키게 된다.
+- null 은 Java 언어가 안고 있는 설계상 커다란 실수이다.
+
+### null 대처 방법
+1. 방어적인(defensive) 방법으로 null 체크한 후 예외 던지기
+   ```java 
+   public Iterable<File> find(Mask mask) {
+       if(mask == null){
+           throw new IllegalArgumentException("Mask can`t be NULL;");
+       }
+   }
+   ```
+
+2. null 이 아니라고 가정하여 대응하지 말고 무시
+   - 필자가 선호하는 방식으로 NullPointerException 이 던져지도록 JVM 표준 방식으로 처리
+   
+
+## 3.4 충성스러우면서 불변이거나, 아니면 상수이거나
