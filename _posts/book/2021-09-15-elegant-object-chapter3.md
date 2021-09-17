@@ -64,8 +64,72 @@ Number a = new Max(5,9);
 객체 지향으로 작성하려면 코드는 위와 같이 변경되어야 한다.  
 실제 이 코드는 최댓값을 계산하지 않고 단순히 객체만 생성한다.
 
+### 3.2.2 선언형 스타일 대 명령형 스타일 (Declarative vs Imperative style)
+
+**명령형 프로그래밍**과 **선언형 프로그래밍**은 다른 클래스, 객체, 메서드가 **사용하는 방법**에 차이가 있다.
+
+> #### 명령형 프로그래밍
+> 프로그램의 상태를 변경하는 문장을 사용하여 계산 방식을 서술
+>
+> #### 선언형 프로그래밍
+> 제어 흐름을 서술하지 않고 계산 로직을 표현
 
 
+```java 
+public static int between(int l, int r, int x) {
+    return Math.min(Math.max(l, x), r);
+}
+```
 
+`between()` 메서드를 호출하면 즉시 CPU 가 계산하여 결과를 받는데 이것이 **명령형** 스타일이다.
+
+```java 
+class Between implements Number {
+
+    private final Number num;
+
+    Between(Number left, Number right, Number x) {
+        this.num = new Min(new Max(left, x), right);
+    }
+
+    @Override
+    public int intValue() {
+        return num.intValue();
+    }
+}
+
+Number y = new Between(4, 9, 10);
+``` 
  
+이 방식은 **무엇인지만** 정의하고 아직 CPU 에게 계산하라고 하지 않았기 때문에 **선언형** 스타일이다.
+
+
+#### 선언형 스타일의 장점
+1. 직접 성능 최적화를 할 수 있다.
+   - 계산 결과가 필요한 **시점과 위치**를 결정하도록 CPU에게 위임하고, 요청이 있을 때만 계산을 실행할 수 있어 더 빠르다.
+   
+2. 다형성
+   - 모두 클래스로 이루어져 있기 때문에 코드 블록사이의 의존성을 쉽게 끊을 수 있다. (정적 메서드는 분리할 수 없다)
+   - 객체를 다른 객체로 완전 분리하기 위해서는 메서드나 주 ctor 에 new 연산자를 사용하면 안된다.
+   
+3. 표현력 (expressiveness)
+   - 선언형 방식은 결과를 이야기하지만, 명령형 방식은 수행 가능한 한 가지 방법을 이야기한다. (명령형은 결과를 예상하고 머릿속에서 코드를 실행해봐야함)
+   
+4. 응집도(cohesion)
+   - 아래 코드를 보면 Filtered 통해 한줄에 선언했다. 모든 코드들이 한곳에 모여있어서 실수로라도 분리가 불가능.
+
+
+````java 
+Collection<Integer> evens = new Filtered(
+        numbers,
+        new Predicate<Integer>() {
+            @Override
+            public boolean suitable(Integer number) {
+                return number % 2 == 0;
+            }
+        });
+````
+
+이미 많은 라이브러리에서 정적 메소드를 사용하고 있다. 
+객체를 직접 직접 처리할 수 있도록 정적 메서드를 감싸는 클래스를 만들어 분리해야 한다.
 
