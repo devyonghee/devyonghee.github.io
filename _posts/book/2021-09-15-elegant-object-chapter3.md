@@ -27,3 +27,45 @@ categories: book
 과연 내가 올바르게 코드를 작성하고 있는 것인지 의문이 들었다.
 
 ## 3.2 정적 메서드를 사용하지 마세요.
+
+정적 메서드 대신 객체를 사용해야 한다. 더이상 정적 메서드의 사용을 중단하라.
+
+### 3.2.1 객체 대 컴퓨터 사고 (Object vs Computer thinking)
+
+정적 메서드는 절차적인 코드를 유도하게 되므로 객체로 만들어야 한다.
+
+- **컴퓨터**의 흐름은 항상 **순차적**이며 스크립트의 위에서 아래로 흐른다.
+- 우리는 CPU 에게 명령을 내리는 것이 아닌 정의하는 것이고 그 명령의 흐름을 **제어할 책임**이 있다.
+
+```java 
+int max(int a, int b) {
+    if (a > b) {
+        return a;
+    }
+    return b;
+}
+```
+
+모든 **컴퓨터**에서 실제 위 코드 처럼 제공된 명령어를 하나씩 **순차적**으로 실행한다. (절차지향)
+
+```java
+class Max implements Number {
+    private final Number a; 
+    private final Number b;
+    public Max(Number left, Number right) {
+        this.a = left;
+        this.b = right;
+    }
+}
+
+Number a = new Max(5,9);
+```
+
+객체 지향으로 작성하려면 코드는 위와 같이 변경되어야 한다.  
+실제 이 코드는 최댓값을 계산하지 않고 단순히 객체만 생성한다.
+
+
+
+
+ 
+
