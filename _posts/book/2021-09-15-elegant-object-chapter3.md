@@ -307,3 +307,36 @@ public void echo() {
 
 ## 3.6 부 ctor 밖에서는 new를 사용하지 마세요
 
+유일하게 **부 생성자**에서만 `new` 를 연산자를 사용할 수 있다.
+
+```java 
+class Cash { 
+    private final int dollars;
+    
+    public int euro() {
+        return new Exchange().rate("USD", "EUR") * this.dollars;
+    }
+}
+```
+
+- `euro` 메서드안에서 `new` 연상자를 사용해 인스턴스를 사용하는데 이는 **하드코딩된 의존성(hard-coded dependency)** 이다.
+- 의존성을 끊기 위해서는 `Cash`의 어쩔 수 없이 내부코드를 수정해야 한다.
+- 근본적인 원인은 `new` 를 사용한 것이다.
+
+```java 
+class Cash { 
+    private final Exchange exchange;
+    private final int dollars;
+    
+    public int euro() {
+        return this.exchange.rate("USD", "EUR") * this.dollars;
+    }
+}
+```
+
+- `new` 연산자 사용을 금지하면 객체를 프로퍼티안으로 **캡슐화** 하면 된다.
+- 부생성자를 제외한 주 생성자, 메서드 등 어떤 곳에서 `new`를 사용하지 마세요. (객체간 분리, 테스트 용이성, 유지보수성 향상)
+
+> 이 규칙이 **의존성 주입(dependency injection)**과 **제어 역전(inversion of control)** 관해 알아야하는 것이다.
+> 규칙만 잘 지키면 코드는 깔끔해지고 언제라도 의존성 주입이 가능하다.
+
