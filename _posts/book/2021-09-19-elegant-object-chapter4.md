@@ -146,3 +146,39 @@ public int length(File file) throws Exception {
 예외 후 복구는 **흐름 제어를 위한 예외 사용(using exceptions for flow control)**을 위한 **안티패턴**이다. 
 하지만 예외를 잡지 않으면 사용자에게 시스템 메세지가 보여질 수 있으므로 **진입점**이 가장 적합한 위치다. 
 
+### 4.2.4 관점-지향 프로그래밍을 사용하세요 (aspect-oriented programming, AOP)
+
+**AOP**는 **연산을 단순화**시키고 **OOP 코드의 장황함을 제거**할 수 있는 기법으로 OOP와 궁합이 잘맞는다.  
+일종의 **어댑터(adapter)**라고 볼 수 있다.
+
+```java  
+public String content() throws IOException {
+    int attempt = 0;
+    while (true) {
+        try {
+            return http();
+        } catch (IOException ex) {
+            if (attempt > = 2) {
+                throw ex;
+            }
+        }
+    }
+}
+```
+위 코드는 최상위 수준 이전에 복구하기 때문에 올바르지 않지만 별다른 방법이 없다.
+
+```java 
+@RetryOnFailure(attempts = 3)
+public String content() throws IOException {
+    return http();
+}
+```
+하지만 **AOP** 기법을 사용하면서 **핵심 클래스**로부터 덜 중요한 기술과 **메커니즘을 분리**하고 **코드 중복을 제거**한다.
+**AOP**를 통해 OOP 의 깔끔한 상태를 유지한다.
+
+ 
+### 4.2.5 하나의 예외 타입만으로도 충분합니다
+
+사실 단 한번만 복구한다면 **예외 객체**만 있으면 되지 타입이 중요하지 않다.  
+예외는 체이닝 한 후 다시 던질 때만 잡게 되므로 **타입정보는 필요 없다**.
+
