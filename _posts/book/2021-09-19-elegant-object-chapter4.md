@@ -119,4 +119,23 @@ public int length(File file) {
 - **안전하게 실패**하기 방법의 전형적인 예
 - 문제의 원인 파악이 어려워짐
 
+### 4.2.2 항상 예외를 체이닝 하세요
 
+원래 예외를 무시하지 말고 항상 **체이닝** 해야 한다
+
+#### 예외 되던지기(rethrowing)
+
+
+```java
+public int length(File file) throws Exception {
+    try {
+        return content(file).lenght();
+    } catch (IOException ex) {
+        // 근본 원인 ex 를 손실시키지 않고 상위로 이동
+        return new Exception("길이를 계산할 수 없다", ex);
+    }
+}
+```
+
+위 코드는 **예외 체이닝(exception chaining)**의 훌륭한 예시다.
+근본 원인을 무시하지 않고 **더 높은 수준으로 이동**시켜야 한다.
