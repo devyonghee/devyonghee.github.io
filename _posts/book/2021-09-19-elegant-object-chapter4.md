@@ -211,3 +211,17 @@ public String content() throws IOException {
 그래서 개인적으로 캡슐화로 가는 것을 선호하지만, 그게 불가능하다면 제한을 둔다는 것에 대해서는 적극 찬성한다.   
 java 17, kotlin 에서는 `sealed` 키워드를 이용해보는 것도 좋은 대안이 될 것 같다.
 
+<br>
+
+## 4.4 RAII(Resource Acquisition Is Initialization)를 사용하세요
+
+파일, 스트립, 데이터베이스 커넥션 등 실제 리소스를 사용하는 모든 곳에서 RAII 를 사용해야 한다.
+
+**리소스 획득이 초기화(RAII)**는 C++에서 강력한 기법이지만, 
+java에서는 백그라운드에서 객체를 제거하는 **가비지 컬렉션**이 있기 때문에 사라진 개념이다. 
+하지만 `try-with-resources` 비슷한 기법이 있기 때문에 `AutoCloseable` 을 사용하자.
+
+### Review
+
+실제 리소스를 객체로 다뤄본 적은 없다. 
+낯선 개념이긴 한데 리소스를 다룰 때 `AutoCloseable`은 염두해두고 있어야겠다.   
