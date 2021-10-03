@@ -20,3 +20,35 @@ jpa 환경에서도 동작이 가능하기 때문에 매우 편리하다.
 
 
 
+## 0. 프로젝트 세팅
+envers 를 본격적으로 추가하기전 프로젝트부터 세팅하도록 한다.  
+docker-compose 를 이용해서 mysql db 를 준비했다.
+
+```yaml
+version: "3"
+
+services:
+  database:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - ./database/:/var/lib/mysql/
+    environment:
+      MYSQL_DATABASE: library
+      MYSQL_ROOT_PASSWORD: password
+``` 
+
+spring boot 세팅은 다음과 같이 했다. ddl 은 작성하기 번거로우니 간단하게 create-drop 옵션을 이용했다.
+```yaml
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: password
+    username: root
+    url: jdbc:mysql://localhost:3306/library
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+```
