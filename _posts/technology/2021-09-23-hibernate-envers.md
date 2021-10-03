@@ -39,7 +39,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
 ``` 
 
-spring boot 세팅은 다음과 같이 했다. ddl 은 작성하기 번거로우니 간단하게 create-drop 옵션을 이용했다.
+spring boot 세팅은 다음과 같이 했다. ddl 은 작성하기 번거로우니 간단하게 `create-drop` 옵션을 이용했다.
 ```yaml
 spring:
   datasource:
@@ -52,3 +52,21 @@ spring:
     hibernate:
       ddl-auto: create-drop
 ```
+
+## 1. evners 의존성 추가
+
+### gradle
+```
+implementation 'org.hibernate:hibernate-envers'
+```
+### maven
+```
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-envers</artifactId>
+</dependency>
+```
+
+
+
+https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#envers-configuration
