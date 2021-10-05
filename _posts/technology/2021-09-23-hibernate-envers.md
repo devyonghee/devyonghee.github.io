@@ -67,6 +67,29 @@ implementation 'org.hibernate:hibernate-envers'
 </dependency>
 ```
 
+## 2. `@Audited` 애노테이션 추가
+
+데이터 기록이 필요한 Entity 에 `@Audited` 를 추가한다.
+
+```
+@Entity
+@Audited
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    private String title;
+
+    @Column
+    private int price;
+
+    @Column
+    private String content;
+}
+``` 
 
 
 https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#envers-configuration
