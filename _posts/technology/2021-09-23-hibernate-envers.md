@@ -114,3 +114,41 @@ public class Book {
 }
 ```
 
+## 3. application 실행, db 확인
+
+애플리케이션을 실행해보면 db 에 다음과 같은 테이블 2개가 생성이 된다.
+
+{% include image.html alt="hibernate-envers-tables" path="/images/technology/hibernate-envers/tables.png" %}
+
+book_aud 테이블은 book 에서 `rev`와 `revtype` 컬럼이 추가가 된 테이블이며, 나머지 컬럼은 모두 `nullable` 한 상태이다.  
+`revinfo` 는 언제 데이터가 생성 및 변경되었는지 시간을 저장하는 테이블이다.
+
+> rev(revision): 수정 번호   
+> revtype(revision type): 생성(0), 변경(1), 삭제(2)
+
+실제로 book entity 를 생성, 변경, 삭제하면 다음과 같이 데이터가 들어가게 된다.
+
+{% include image.html alt="hibernate-envers-tables" path="/images/technology/hibernate-envers/insert-update-delete.png" %}
+
+여기서 주목할 점은 delete 할 경우 데이터가 모두 null 로 들어간다는 점이다.
+마지막 삭제 전 데이터를 그대로 저장하고 싶다면 다음과 같은 옵션을 추가해주도록 한다.
+
+```yaml
+spring:
+  jpa:
+    properties:
+      org:
+        hibernate:
+          envers:
+            store_data_at_delete: true
+```
+
+위 옵션을 추가하면 삭제할 때 `null`로 들어가던 데이터가 마지막에 남아있던 데이터로 들어가게 된다. 
+
+{% include image.html alt="hibernate-envers-tables" path="/images/technology/hibernate-envers/store-delete.png" %}
+
+더 자세한 envers 옵션을 알고 싶다면 이곳 [envers 설정](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#envers-configuration){:target="\_blank"}
+을 참고하도록 한다.
+
+
+[테스트 코드](https://github.com/devyonghee/envers-practice){:target="\_blank"}
