@@ -91,5 +91,26 @@ public class Book {
 }
 ``` 
 
+만약 기록이 필요없는 데이터가 있다면 다음과 같이 해당 필드에 `@NotAudited`를 추가해주도록 한다.  
 
-https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#envers-configuration
+```java
+@Entity
+@Audited
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    private String title;
+
+    @Column
+    private int price;
+
+    @Column
+    @NotAudited
+    private String content;
+}
+```
+
