@@ -13,7 +13,7 @@ categories: book
 ## 아이템10. `equals`는 일반 규약을 지켜 재정의하라
 
 `equals`는 논리적 동치성 검사가 필요하지만 상위 클래스가 재정의하지 않았을 경우 재정의    
-구글의 `AutoValue` 또는 IDE 기능 활용
+구글의 `AutoValue` or IDE 기능 활용
 
 - `equals` 구현 방법
   1. `==` 연산자로 자기 자신인지 확인 (성능 최적화용)
