@@ -94,3 +94,19 @@ categories: book
   - 복사 생성자 -> 변환 생성자(conversion constructor)  
   - 복사 팩터리 -> 변환 팩터리(conversion factory)
   
+
+<br/>
+
+## 아이템 14. `Comparable`을 구현할지 고려하라
+
+순서가 명확한 값 클래스를 작성한다면 반드시 `Comparable` 구현
+
+- `compareTo` 규약
+  - 두 객체를 바꿔 비교해도 예상한 결과가 나와야 함
+  - 추이성 → `x.compareTo(y) > 0`, `y.compareTo(z) > 0` 라면 `x.compareTo(z) > 0`
+  - 크기가 같은 객체들끼리 비교하면 항상 같아야 함
+  
+- `compareTo` 권장
+  - `<`,`>` 연산자 대신 기본 타입 클래스의 정적 `compare` 메서드 사용
+  - `Comparator` 인터페이스가 제공하는 메서드 사용
+  
