@@ -89,7 +89,7 @@ categories: book
 
 ## 아이템 19. 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라
 
-내부적으로 어떻게 이용되고 있는지 문서화(Implementation Requirements)가 되어 있어야 함 
+내부적으로 어떻게 이용되고 있는지 문서화(Implementation Requirements)가 되어 있어야 함  
 Implementation Requirements 절은 `@implSpec` 태그를 붙이면 자바독 도구가 생성
 
 - 효율적인 하위 클래스를 만들려면 내부동작 과정 중 훅을 선별하여 `protected` 메서드 형태로 공개
@@ -100,5 +100,20 @@ Implementation Requirements 절은 `@implSpec` 태그를 붙이면 자바독 도
   - 클래스를 `final` 선언
   - 모든 생성자를 `private` or `package-private` 선언, 정적 팩토리 메서드 이용
 
+<br/>
 
-  
+## 아이템 20. 추상 클래스보다는 인터페이스를 우선하라
+
+> 믹스인: 주된 타입 이외에 특정 선택정 행위를 제공 (ex. Comparable)
+
+- 자바는 단일 상속만 지원되므로 추상 클래스 방식은 큰 제약    
+- 인터페이스는 기존 클래스에도 쉽게 구현 가능  
+- 인터페이스는 믹스인(mixin) 정의에 안성맞춤 
+- 인터페이스는 계층구조가 없는 타입 프레임워크(ex. SingerSongWriter) 만들 수 있음 (클래스로 만든다면 조합 폭발 발생)
+- 래퍼 클래스를 이용하면 안전하게 기능 향상 가능 (추상 클래스에서 기능 추가하려면 상속뿐)
+- 디폴트 메서드를 제공한다면 `@implSpec` 태그로 문서화
+- 인터페이스와 추상 골격 구현(skeletal implementation)으로 두 가지 장점을 모두 취할 수도 있음 (ex. `AbstractCollection`, `AbstractSet`...)
+  - 관례상 골격 구현 클래스의 이름은 `Abstract{인터페이스 명}`
+- 골격 구현 대신 단순 구현(simple implementation)도 가능 (골격 구현과 다르게 추상클래스가 아님 ex.`SimpleEntry`)
+
+
