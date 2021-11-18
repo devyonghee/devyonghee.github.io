@@ -24,3 +24,15 @@ categories: book
 - 로타입 사용 예외
   - `class` 리터럴에 로타입 사용 (ex. `List.class`, `String[].class`, `int.class`)
   - `instanceof` 연산자 사용할 때 와일드 카드는 아무 역할 없어 지저분해지므로 로타입 사용 (ex. `o instanceof Set`)
+
+<br/>
+
+## 아이템 27. 비검사 경고를 제거하라
+
+비검사 경고는 런타임중 `ClassCastException` 일으킬 수 있는 잠재적 가능성을 나타내므로 최대한 제거하라
+
+- 경고를 제거할 수 없지만 타입 안전하다고 확신한다면 `@SuppressWarnings("unchecked")` 달아 경고 숨기자
+  - 가능하면 `@SuppressWarnings("unchecked")` 범위는 좁은 범위
+  - `return` 문제 필요하다면 메소드에 추가하지말고 지역 변수 선언하여 반환
+  - `@SuppressWarnings("unchecked")` 사용한다면 경고를 무시해도 되는 이유를 주석으로 남기자
+  
