@@ -65,7 +65,7 @@ categories: book
   - 제네릭으로 만들어도 클라이언트에는 문제가 되지 않는다.
 
 - 제네릭 배열 생성 오류 해결 방법
-  - ￿`(E[]) new Object[CAPACITY]` 
+  - `(E[]) new Object[CAPACITY]` 
     - 코드가 더 짧음  코드가 더 짧음, 가독성이 더 좋음
     - 런타임이 컴파일타임 타입과 달라 힙 오염 발생 (아이템 32)
   - `E[]` → `Object[]`
@@ -74,4 +74,31 @@ categories: book
 
 두가지 방법 모두 일반적으로 타입 안전하지 않지만 확실하게 관리되고 있다면 `@SuppressWarnings` 선언
 
+
+<br/>
+
+## 아이템 30. 이왕이면 제네릭 메서드로 만들라
+
+제네릭을 이용하면 직접 형변환 하지 않아도 오류 없이 컴파일된다.
+메서드도 안전하게 사용할 수 있도록 형변환 없이 사용하는 편이 좋다.
+
+### 제네릭 싱글턴 팩터리
+불변 객체를 여러 타입으로 활용할 필요가 있다. (ex. `Collections.reverseOrder`, `Collections.emptySet`)  
+항등 함수의 경우 다음과 같이 제네릭 싱글턴 팩터리 패턴을 사용할 수 있다.
+```java 
+private static UnaryOperator<Object> IDENTITY_FN = (t) -> t;
+
+@SuppressWarnings("unchecked")
+public static <T> UnaryOperator<T> identityFunction(){
+  return UnaryOperator<T> IDENTITY_FN;
+}
+```
+
+### 재귀적 타입 한정
+
+자기 자신이 들어간 표현식을 사용하여 타입 매개변수 허용 범위 한정  
+주로 순서를 정하는 `Comparable` 인터페스와 함께 사용  
+```java
+public static <E extends Comparable<E>> E max(Collections<E> c);
+```
 
