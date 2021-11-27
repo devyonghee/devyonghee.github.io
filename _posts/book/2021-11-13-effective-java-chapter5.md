@@ -90,7 +90,7 @@ private static UnaryOperator<Object> IDENTITY_FN = (t) -> t;
 
 @SuppressWarnings("unchecked")
 public static <T> UnaryOperator<T> identityFunction(){
-  return UnaryOperator<T> IDENTITY_FN;
+    return UnaryOperator<T> IDENTITY_FN;
 }
 ```
 
@@ -101,4 +101,84 @@ public static <T> UnaryOperator<T> identityFunction(){
 ```java
 public static <E extends Comparable<E>> E max(Collections<E> c);
 ```
+
+<br/>
+
+## 아이템 31. 한정적 와일드카드를 사용해 API 유연성을 높이라
+
+매개 변수화 타입은 불공변(invariant) → `List<String>`은 `List<Object>` 하위 타입이 아님  
+불공변 방식보다 유연한 상황이 필요할 수 있음  
+
+유연성을 극대화하려면 원소의 생산자나 소비자용 입력 매개변수에 와일드 카드 타입 사용하라  
+하지만 생산자와 소비자 역할을 동시에 한다면 와일드 카드 타입 쓰지 말자
+
+> 펙스(PECS) : producer-extends, consumer-super
+
+### 생산자(producer)
+
+```java
+public void pushAll(Iterable<E> src) {
+    for (E e : src) {
+        push(e);
+    }
+}
+
+Statck<Number> numberStatck = new Stack<>();
+Iterable<Integer> integers = ...?
+numberStack.pushAll(integers);  // 오류 발생
+```
+
+와일드 카드를 이용해 `extends` 추가
+
+```java
+public void pushAll(Iterable<? extends E> src) {
+    for (E e : src) {
+        push(e);
+    }
+} 
+```
+
+### 소비자(consumer)
+
+```java
+public void popAll(Collection<E> dst) {
+    while (!isEmpty()) {
+        dst.add(pop());
+    }
+}
+
+Statck<Number> numberStatck = new Stack<>();
+Collection<Object> objects = ...?
+numberStack.popAll(objects);  // 오류 발생
+```
+
+와일드 카드 이용해 `super` 추가
+```java
+public void popAll(Collection<? super E> dst) {
+    while (!isEmpty()) {
+        dst.add(pop());
+    }
+}
+```
+
+### 메서드 선언
+
+메서드 선언에 타입 매개 변수가 한 번만 나오면 와일드 카드로 대체하라  
+신경 써야 할 타입 매개변수도 없어서 편리
+
+```java
+public static <E> void swap(List<E> list, int i, int j);
+public static void swap(List<?> list, int i, int j);  // 이 방식이 더 좋다
+
+
+public static void swap(List<?> list, int i, int j) {
+    swapHelper(list, i, j)
+}
+
+// 와일드 카드에서는 꺼낸 객체를 다시 넣어줄 수 없기 때문에 실제 타입을 알려주는 도우미 메서드가 필요 
+private static <E> void swapHelper(List<E> list, int i, int j) {
+    list.set(i, list.set(j, list.get(i)));
+}
+```
+
 
