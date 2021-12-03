@@ -181,7 +181,6 @@ private static <E> void swapHelper(List<E> list, int i, int j) {
 }
 ```
 
-
 <br/>
 
 ## 아이템 32. 제네릭과 가변인수를 함께 쓸 때는 신중하라
@@ -194,4 +193,28 @@ private static <E> void swapHelper(List<E> list, int i, int j) {
 - varargs 매개변수 배열에 아무것도 저장하지 않는다.
 - 배열을 신뢰할 수 없는 코드에 노출하지 않는다.
 
+<br/>
+
+## 아이템 33. 타입 안전 이종 컨테이너를 고려하라
+
+### 타입 안전 이동 컨테이너 패턴(type safe heterogeneous container pattern)  
+
+컨테이너 대신 키를 매개변수화한 다음, 컨테이너에 값을 넣거나 뺄때 매개변수화한 키를 함께 제공
+```java
+public class Favorites {
+    private Map<Class<?>, Object> favorites = new HashMap<>();    
+
+    public <T> void putFavorite(Class<T> type, T instance) {
+        favorites.put(Objects.requireNonNull(type), instance);
+    }
+    public <T> T getFavorite(Class<T> type) {
+        return type.cast(favorites.get(type));
+    }
+}
+```
+
+- `Favorites` 제약
+  - `Class`객체를 제네릭이 아닌 로타입으로 넘기면 안전성이 깨짐 (ex. `f.putFavorite((Class) Integer.class, "인스턴스")`)
+  - 실체화 불가 타입에는 사용할 수 없음 (ex. `List<String>`)
+    - **슈퍼 타입 토큰** 으로 해결하려는 시도가 있다. (ex. `new TypeRef<List<String>>(){}`)
 
