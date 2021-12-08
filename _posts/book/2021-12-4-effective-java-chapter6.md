@@ -85,3 +85,33 @@ enum PayrollDay {
 - 중간에 값을 비울 수 없음
 - 똑같은 값을 사용하는 상수 선언 불가
 
+
+<br/>
+
+## 아이템 36. 비트 필드 대신 EnumSet을 사용하라
+
+아래와 같은 집합을 비트 필드라고 한다.
+이와 같이 사용하면 합집합과 교집합 같은 집합 연산을 수행할 수 있지만 해석하기 어렵다.
+
+```java
+public class Text {
+    public static final int STYLE_BOLD  = 1 << 0;  //1
+    public static final int STYLE_ITALIC = 1 << 1; //2
+    
+    public void applyStyles(int styles) {...}
+}
+
+text.applyStyles(STYLE_BOLD | STYLE_ITALIC);
+```
+
+`EnumSet` 클래스는 열거 타입 상수의 값으로 된 집합을 효과적으로 표현한다.  
+타입 안전하고 어떤 `Set` 구현체와 함께 사용 가능  
+모든 클라이언트가 `EnumSet`으로 넘겨준다해도 이왕이면 인터페이스인 `Set` 으로 받는 것이 좋은 습관이다.
+
+```java
+public class Text {
+    public enum Style { BOLD, ITALIC }
+    
+    public void applyStyles(Set<Style> styles) {...}
+}
+```
