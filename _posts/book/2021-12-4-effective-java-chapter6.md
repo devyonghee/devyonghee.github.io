@@ -115,3 +115,22 @@ public class Text {
     public void applyStyles(Set<Style> styles) {...}
 }
 ```
+
+## 아이템 37. ordinal 인덱싱 대신 EnumMap을 사용하라
+
+아래와 같이 배열을 사용하면 비검사 형변환이 필요하고 정확한 정숫값을 사용하지 않으면 오류 발생하기 쉽다.
+
+```java
+plantsByLifeCycle[p.lifeCycle.ordinal()].add(p);
+```
+
+`ordinal` 보다는 짧고 명료하고 안전한 `EnumMap` 을 사용하자.
+
+```java  
+Map<PlantLifeCycle, Set<Plant>> plantsByLifeCycle = new EnumMap<>(Plant.LifeCycle.class);
+```
+
+`EnumMap` 성능이 `ordinal` 과 비슷한 이유가 결국 내부에서도 배열을 사용한다.  
+내부 구현 방식을 숨겨 타입 안전성과 성능을 모두 잡았다.  
+다차원 관계라면 `EnumMap<..., EnumMap<...>>`으로 표현하자
+
