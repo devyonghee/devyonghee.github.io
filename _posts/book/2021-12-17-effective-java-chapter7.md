@@ -24,5 +24,33 @@ categories: book
 - 람다는 직렬화 형태가 다를 수 있어 직렬화하는 일은 삼가야 한다. 필요하다면 `private` 정적 중첩 클래스 사용
 
 
+<br/>
 
+## 아이템 43. 람다보다는 메서드 참조를 사용하라
+
+메서드 참조가 짧고 명확하다면 메서드 참조 사용, 그렇지 않다면 람다 사용
+
+보통 메서드 참조가 람다보다 더 간결함  
+`(count, incr) -> count + incr` -> `Integer::sum`
+
+메서드와 람다가 같은 클래스 안에 있을 경우 람다가 더 짧고 명확
+`GoshThisClassNameIsHumongous::action` -> `() -> action()`
+
+
+### 메서드 참조 유형
+- 정적 
+  - 예 : `Integer::parseInt`
+  - 람다 : `str -> Integer.parseInt(str)`
+- 한정적(인스턴스)
+  - 예 : `Instant.now()::isAfter`
+  - 람다 : `Instant then = Instant.now();  t -> then.isAfter(t)`
+- 비한정적(인스턴스)
+  - 예 : `String::toLowerCase`
+  - 람다 : `str -> str.toLowerCase()`
+- 클래스 생성자
+  - 예 : `TreeMap<K,V>::new`
+  - 람다 : `() -> new TreeMap<K,V>()`
+- 배열 생성자
+  - 예 : `int[]::new`
+  - 람다 : `len -> new int[len]`
 
