@@ -54,3 +54,36 @@ categories: book
   - 예 : `int[]::new`
   - 람다 : `len -> new int[len]`
 
+<br/>
+
+## 아이템 44. 표준 함수형 인터페이스를 사용하라
+
+필요한 용도에 맞는게 있다면 직접 구현하지 말고 표준 함수형 인터페이스를 활용하라 
+- api가 다루는 개념이 줄어 익히기 쉬움
+- 디폴트 메서드를 많이 제공하여 좋아진 상호운용성
+
+
+`java.util.function` 패키지에 43개 인터페이스 존재한다.  
+표준 인터페이스에 박싱된 기본타입을 넣어 사용하지 말자  
+
+### 대표 기본인터페이스 6가지
+- UnaryOperator<T> 
+  - ex. `String::toLowerCase`
+- BinaryOperator<T>
+  - ex. `BigInteger::add`
+- Predicate 
+  - ex. `Collection::isEmpty`
+- Function<T,R>
+  - ex. `Arrays::asList`
+- Supplier<T>
+  - ex. `Instance::now`
+- Consumer<T>    
+  - ex. `System.out::println`
+
+
+### 전용 함수형 인터페이스를 구현을 고민해야 하는 경우
+- 자주 쓰이며, 이름 자체가 용도를 명확하게 설명
+- 반드시 따라야하는 규약 존재
+- 유용한 디폴트 메서드를 제공
+
+직접 만든 함수형 인터페이스에는 항상 `@FunctionalInterface` 사용
