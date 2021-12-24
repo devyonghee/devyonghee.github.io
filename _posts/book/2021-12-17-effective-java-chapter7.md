@@ -120,3 +120,30 @@ categories: book
 - 원소들의 시퀀스를 컬렉션에 모으기
 - 원소들의 시퀀스에서 특정 조건에 만족하는 원소 찾기
 
+
+<br/>
+
+## 아이템 45. 스트림에서는 부작용 없는 함수를 사용하라
+
+외부 상태를 수정하는 람다를 실행하면 문제가 생길 수 있다.  
+`forEach` 연산은 스트림 계산 결과를 보고할 때만 사용하고, 계산할 때는 사용하면 안된다.  
+
+### 스트림을 사용하려면 `Collector` 개념을 알고 있는 것이 좋다.  
+
+#### 주요 콜렉터
+- `toList` 
+- `toSet` 
+- `toMap` 
+- `groupingBy` 
+- `joining` 
+
+### toMap collector
+1. toMap(keyMapper, valueMapper)
+   - 키에 매핑하는 함수와 값에 매핑하는 함수를 인수로 받음
+   - ex. `toMap(Object::toString, e -> e)`
+2. toMap(keyMapper, valueMapper, mergeFunction)
+   - 키에 연관된 원소들 중 하나를 골라 연관 짓는 맵 만들기
+   - ex. `toMap(Album::artist, a -> a, maxBy(comparing(Album::sales)))`   
+    → 음악가와 베스트 앨범
+3. toMap(keyMapper, valueMapper, mergeFunction, mapFactory)
+   - `EnumMap` 이나 `TreeMap`처럼 원하는 특정 맵 구현체 지정
