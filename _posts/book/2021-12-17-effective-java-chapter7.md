@@ -123,7 +123,7 @@ categories: book
 
 <br/>
 
-## 아이템 45. 스트림에서는 부작용 없는 함수를 사용하라
+## 아이템 46. 스트림에서는 부작용 없는 함수를 사용하라
 
 외부 상태를 수정하는 람다를 실행하면 문제가 생길 수 있다.  
 `forEach` 연산은 스트림 계산 결과를 보고할 때만 사용하고, 계산할 때는 사용하면 안된다.  
@@ -147,3 +147,29 @@ categories: book
     → 음악가와 베스트 앨범
 3. toMap(keyMapper, valueMapper, mergeFunction, mapFactory)
    - `EnumMap` 이나 `TreeMap`처럼 원하는 특정 맵 구현체 지정
+
+<br/>
+
+## 아이템 47. 반환 타입으로는 스트림보다 컬렉션이 낫다
+
+`Stream`은 `Iterable` 인터페이스가 정의한 방식대로 동작은 하지만, 확장하지는 않아서 `for-each` 구문에 사용될 수 없다.  
+반복(`for-each`)을 사용하는게 자연스러워 보여도 `Stream`을 사용하거나 `Iterable`로 변환해주는 어댑터를 이용해야 한다.  
+
+만약, 나중에 자바가 `Stream` 인터페이스에서 `Iterable`을 지원한다면 안심하고 반환해도 될 듯하다.
+
+스트림을 우회하여 반복하기 위한 방법이 있지만 굉장히 난잡하고 직관성이 떨어진다.
+```java 
+for (ProcessHandle ph : (Iterable<ProcessHandle>)
+                         ProcessHandle.allProcesses()::iterator)  {
+}
+```
+
+`Collection` 인터페이스는 `Iterable` 하위 타입, `stream` 메서드를 제공  
+→ 원소 시퀀스를 반환하는 타입은 `Collection` 이나 그 하위 타입이 최선이다. 적절한 컬렉션이 없다면 직접 구현을 고려
+
+
+<br/>
+
+## 아이템 48. 스트림 병렬화는 주의해서 적용하라
+
+
