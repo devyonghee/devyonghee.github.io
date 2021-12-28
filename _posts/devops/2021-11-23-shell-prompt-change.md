@@ -1,5 +1,5 @@
 ---
-title: [Linux] shell prompt 변경하기 
+title: '[Linux] shell prompt 변경하기' 
 tags: [ubuntu,shell]
 categories: devops
 ---
