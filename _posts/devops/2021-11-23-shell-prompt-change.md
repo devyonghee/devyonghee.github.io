@@ -46,6 +46,7 @@ PS1 변수에서 사용되는 기호의 의미는 다음과 같다.
 
 ## 변경하기
 
+다음 명령어를 통해 쉘 변수를 변경하면 대체로 **prompt**의 모양을 깔끔하게 변경할 수 있다.
 
 ```shell
 sudo vi ~/.bashrc
@@ -55,5 +56,5 @@ sudo vi ~/.bashrc
 source ~/.bashrc
 ```
 
-
-[ezprompt](https://ezprompt.net/)
+그래도 커스텀 하게 변경을 하고 싶다면 [ezprompt](https://ezprompt.net/) 사이트를 이용해보자.  
+비교적 쉽게 변경할 수 있다. 
