@@ -127,3 +127,38 @@ end.setYear(78); // 수정되면 안됨
 - 매번 빈 컬렉션 할당으로 성능이 걱정된다면 똑같은 빈 불변 컬렉션을 반환하자 (배열도 마찬가지)  
   ex. `Collections.emptyList`, `Collections.emptySet`
   
+<br/>
+
+## 아이템 55. 옵셔널 반환은 신중히 하라
+
+- 결과가 없을 수 있고, 클라이언트가 없는 경우를 특별하게 처리해야한다면 `Optional<T>` 반환 
+- `Optional` 반환 하는 메서드에서 절대 `null` 반환 금지 
+- `Optional`은 검사 예외 취지와 비슷하여 사용자에게 명확히 값이 없음을 알려줌 
+  - 비검사 예외 또는 `null` 반환하면 사용자가 인지하기 어려움
+- 컨테이너 타입은 `Optional`으로 감싸면 안됨 (ex. 컬렉션, 배열, 스트림, 옵셔널)
+  - 빈 컨테이너를 그대로 반환
+- 박싱된 기본 타입 옵셔널은 반환하지 말자
+  - `OptionalInt`, `OptionalLong`, `OptionalDouble`
+  - `Boolean`, `Byte`, `Character`, `Short`, `Float` 은 예외
+- 컬렉션의 키, 값, 원소로 사용하지 말자
+  - 값이 없다는 사실이 두가지가 되어 복잡성만 높아짐
+  
+
+### 메서드에서 특정 조건의 값을 반환할 수 없는 경우
+- 예외를 던지기
+  - 진짜 예외적인 상황에서만 사용해야 함
+  - 스택 추적 전체를 캡처하게 되어 비용이 큼  
+- `null` 반환
+  - 별도의 `null` 처리 코드 필요
+  - 관련 없는 곳에서 `NullPointerException` 발생할 수 있음
+- `Optional` 반환 (java8 이후)
+  - 기본 값 설정 가능 `orElse`
+  - 기본 값 설정 비용이 부담되면 `orElseGet`
+  - 원하는 예외 던지기 가능 `orElseThrow`
+  - 바로 값 꺼내기기 가능 `get`
+  - `filter`, `map`, `flatMap`, `ifPresent` 등 적절하게 사용 가능
+ 
+
+<br/>
+
+## 아이템 56. 공개된 API 요소에는 항상 문서화 주석을 작성하라
