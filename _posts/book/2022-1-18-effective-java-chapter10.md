@@ -57,4 +57,37 @@ API 설계할 때에도 클라이언트가 정상적인 제어 흐름에 예외�
 - 검사 예외 던지는 메서드를 **2개**로 나눠 **비검사 예외** 변경
   - 예외가 던져질지 여부를 `boolean` 값으로 반환
   - 더 유연해질 수 있음 (반드시 성공이라 판단, 실패시 중단을 원한다면 한줄로 작성 가능)
-  
+
+<br/>
+
+## 아이템 72. 표준 예외를 사용하라
+
+- `Exception`, `RuntimeException`, `Throwable`, `Error` 직접 **재사용 금지**
+  - 다른 예외들의 상위 클래스이기 때문에 안정적인 테스트 불가
+- **예외**는 **직렬화**가 가능해야 함
+
+### 표준 예외를 재사용의 장점
+- API 가 다른 사람이 익히고 사용하기 쉬워짐
+- 낯선 예외를 사용하지 않아 읽기 쉬움
+- 클래스 수가 적어지므로 메모리 사용량과 클래스 적재 시간 감소
+
+### 주로 재사용되는 예외
+- `IllegalArgumentException`
+  - 허용되지 않는 값이 인수로 전달 (`null`일 경우에는 `NullPointerException` 로 처리)
+- `IllegalStateException`
+  - 객체가 메서드 수행하기에 적절하지 않은 상태
+- `NullPointerException`
+  - `null`을 허용하지 않는 메서드에 `null` 제공
+- `IndexOutOfBoundsException`
+  - 인덱스 범위를 넘었을 경우
+- `ConcurrentModificationException`
+  - 허용되지 않는 동시 수정 발견
+- `UnsupportedOperationException`
+  - 호출한 메서드가 지원하지 않을 때
+- `ArithmeticException` or `NumberFormatException`
+  - 복소수나 유리수를 다루는 객체를 작성하는 경우
+
+<br/>
+
+## 아이템 73. 추상화 수준에 맞는 예외를 던지라
+
