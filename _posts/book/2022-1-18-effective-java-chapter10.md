@@ -98,7 +98,7 @@ API 설계할 때에도 클라이언트가 정상적인 제어 흐름에 예외�
 - 아래 계층의 예외를 피할 수 없다면 상위 계층에서 조용히 처리 (예외를 전파하지 않음)
   - 이 경우 로킹 기능을 활용 추천
 
-```
+```java
 try {
     ...
 } catch (LowerLevelException cause) {
@@ -119,3 +119,22 @@ try {
 - 비검사예외는 메서드 선언의 `throws` 목록에 넣지 말자 (자바독 `@throws` 태그로만 작성)
   - 검사와 비검사 예외를 확실히 구분
 - 클래스의 많은 메서드들이 같은 이유로 같은 예외를 던진다면 클래스 설명에 추가 (ex. `NullPointerException`)
+
+<br/>
+
+## 아이템 75. 예외의 상세 메시지에 실패 관련 정보를 담으라
+
+- 모든 매개변수와 필드의 값을 **실패 메시지**에 담아야 함
+  - 현상을 보고 무엇을 고쳐야 할지 분석 가능 (ex. 최대, 최소, 인덱스 값 등)
+  - 장황할 필요는 없음 (스택 추적에는 파일 명, 줄번호까지 기록되어 있음)
+- 예외는 실패과 관련된 **정보**를 얻을 수 있는 **접근자 메서드**를 적절히 제공해야 함
+  - 포착한 실패 정보로 예외 상황을 **복구**
+
+```java
+public IndexOutOfBoundException(int lowerBound, int upperBound, int index) {
+    super(String.format("최소값: %d, 최댓값: %d, 인덱스: %d", lowerBound, upperBound, index));
+    this.lowerBound = lowerBound;
+    this.upperBound = upperBound;
+    this.index = index;
+}
+```
