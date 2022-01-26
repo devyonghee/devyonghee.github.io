@@ -139,6 +139,8 @@ public IndexOutOfBoundException(int lowerBound, int upperBound, int index) {
 }
 ```
 
+<br/>
+
 ## 아이템 76. 가능한 한 실패 원자적으로 만들라
 
 - 메서드가 실패해도 해당 객체는 메서드 호출 전 상태를 유지해야 함 (실패 원자적, failure-atomic)
@@ -155,3 +157,12 @@ public IndexOutOfBoundException(int lowerBound, int upperBound, int index) {
   - 내구성을 보장해야 하는 자료구조에 적당
   - 자주 쓰이는 방법은 아님
 
+<br/>
+
+## 아이템 77. 예외를 무시하지 말라
+
+- `catch` 블록을 비워두면 예외가 필요 없음
+  - 예외는 문제 상황에서 적절한 조치를 취해야 함 
+- 예외를 무시하기로 한 경우
+  - `catch` 블록안에 주석으로 이유 남기기
+  - 예외 변수명을 `ignored`로 변경
