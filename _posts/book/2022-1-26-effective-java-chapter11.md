@@ -99,3 +99,40 @@ exec.execute(runnable);
 ### 태스크
 - `Runnable`
 - `Callable`(값을 반환하고 임의의 예외를 던질 수 있음)
+
+<br/>
+
+## 아이템 81. `wait`와 `notify` 보다는 동시성 유틸리티를 애용하라
+새로운 코드에서 `wait`와 `notify`를 사용할 이유가 거의 없음  
+`wait`와 `notify`는 사용이 까다로우니 고수준 동시성 유틸리티 사용하라 (ex. `java.util.concurrent`)
+- 실행자 프레임워크 (아이템 80 참고)
+- 동시성 컬렉션(concurrent collection)
+- 동기화 장치 (synchronizer)
+
+### 동시성 컬렉션
+- `List`, `Queue`, `Map` 같은 표준 컬렉션 인터페이스에 동시성을 가미한 고성능 컬렉션  
+- 동시성 무력화는 불가능, 외부에 락을 추가하면 오히려 속도 저하  
+- `Collections.synchronizedMap` 보다 `ConcurrentHashMap` 사용이 성능상 훨씬 좋음
+
+### 동기화 장치
+- 스레드가 다른 스레드를 기다릴 수 있게하여 서로 작업을 조율할 수 있게 해줌
+- 보통 `CountDownLatch` 와 `Semaphore` 을 주요 사용 (`CyclicBarrier`와 `Exchanger`는 비교적 덜 사용)
+  - `CountDownLatch` 는 일회성 장벽으로, 하나 이상의 스레드가 다른 스레드들의 작업이 끝날때까지 기다리게 함
+  - 시간 간격을 잴 때는 항상 `System.currentTimeMillis` 보다 `System.nanoTime` 사용 (정확, 정밀, 시간 보정 영향 없음)
+
+### `wait`와 `notify` 사용해야 하는 경우
+- `wait` 메서드는 스레드가 어떤 조건이 충족되기를 기다리게 할 때 사용  
+- `wait` 는 반드시 **대기 반복문 (wait loop)** 관용구를 사용, 반복문 밖에서 호출 금지  
+- `notify` 메서드를 먼저 호출한 후 대기 상태로 빠지면, 스레드를 다시 깨울 수 있다고 보장되지 않음
+- 일반적으로 `notify` 보다는 `notifyAll` 사용 권장, `notify`를 사용한다면 응답 불가 상태에 빠지지 않는지 주의
+
+```java 
+synchronized (obj) {
+    while (<조건이 충족되지 않음>) {
+        obj.wait(); // (락을 놓고, 깨어나면 다시 잡기)
+    }
+    ... // 조건이 충족되면 동작 수행
+}
+```
+
+
