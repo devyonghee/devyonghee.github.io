@@ -135,4 +135,28 @@ synchronized (obj) {
 }
 ```
 
+<br/>
 
+## 아이템 82. 스레드 안정성 수준을 문서화하라
+
+- `synchronized` 선언은 구현일 뿐 API 에 속하지 않음, 이 한정자로 스레드 안전을 신뢰하기는 어려움
+- 클래스가 지원하는 스레드 안정성 수준을 명시해야 함
+- 반환 타입만으로 알 수 없는 정적 팩터리라면 스레드 안전성 문서화
+
+### 스레드 안정성이 높은 순
+- 불변 (immutable)
+  - 상수과 같아 외부 동기화 불필요. 
+  - ex. `String`, `Long`, `BigInteger`
+- 무조건적 스레드 안전 (unconditionally thread-safe)
+  - 인스턴스는 수정될 수 있으나, 내부에서 충분히 동기화되어 외부 동기화 없이 사용해도 안전
+  - ex. `AtomicLong`, `ConcurrentHashMap`
+- 조건부 스레드 안전 (conditionally thread-safe)
+  - 일부 메서드는 동시에 사용하려면 외부 동기화 필요
+  - ex. `Collections.synchronized`
+- 스레드 안전하지 않음 (not thread-safe)
+  - 인스턴스는 수정될 수 있음. 동시에 사용하려면 외부 동기화 메커니즘으로 감싸야 함
+  - ex. `ArrayList`, `HashMap`
+- 스레드 적대적 (thread-hostile)
+  - 외부 동기화로 감사도 멀티 스레드 환경에서 안전하지 않음
+  - 일반적으로 정적 데이터를 동기화 없이 수정
+  - `generateSerialNumber` 메서드에서 내부 동기화 생략한 경우 스레드 적대적
