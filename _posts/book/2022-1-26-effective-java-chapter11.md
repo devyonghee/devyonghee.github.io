@@ -160,3 +160,56 @@ synchronized (obj) {
   - 외부 동기화로 감사도 멀티 스레드 환경에서 안전하지 않음
   - 일반적으로 정적 데이터를 동기화 없이 수정
   - `generateSerialNumber` 메서드에서 내부 동기화 생략한 경우 스레드 적대적
+
+<br/>
+
+## 아이템 83. 지연 초기화는 신중히 사용하라
+
+> 지연 초기화(lazy initialization)  
+> 필드의 초기화 시점을 그 값이 처음 필요할 때까지 늦추는 기법  
+> 주로 최적화 용도로 사용
+
+- **지연 초기화하는 필드**를 멀티스레드 환경에서 공유하면 반드시 **동기화**가 필요
+- 대부분의 상황에서는 **일반적인 초기화**가 지연 초기화보다 좋음
+
+### 지연 초기화 3가지 방법
+
+- 지연 초기화가 초기 순환성을 깨뜨릴 것 같다면 `synchronized` 사용
+```java
+private FieldType field;
+
+private synchronized FieldType getField() {
+    if (field == null)
+        field = computeFieldValue();
+    return field; 
+}
+```
+
+- **인스턴스 필드**의 지연 초기화가 필요하면 **이중검사(double-check)** 관용구 사용
+  - 초기화된 이후 동기화하지 않으므로 `volatile` 선언
+  - 정적 필드에도 적용할 순 있지만 지연 초기화 홀더 클래스 방식이 더 좋음
+  - 반복해서 초기화 해도 상관 없다면 두번째 검사 생략 가능 (단일검사)
+```java
+private volatile FieldType field;
+
+private FieldType getField() {
+    FieldType result = field; // 필드를 딱 한번만 읽도록 보장하는 지역변수
+    if (result != null)  // 첫 번째 검사
+        return result;
+        
+    synchronized (this) {
+        if (field == null)  // 두 번째 검사
+            field = computeFieldValue();
+        return field;
+    }
+}
+```
+
+- **정적 필드** 지연 초기화가 필요하면 **지연 초기화 홀더 클래스(lazy initialization holder class)** 관용구 사용
+```java
+private static class FieldHolder {
+    static final FieldType field = computeFieldValue();
+}
+// 처음 호출되는 순간 FieldHolder 클래스 초기화
+private static FieldType getField() { return FieldHolder.field; }
+```
