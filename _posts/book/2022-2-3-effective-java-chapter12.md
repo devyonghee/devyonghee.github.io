@@ -59,3 +59,59 @@ categories: book
 **내부 클래스**는 직렬화 구현 금지
 - 내부 클래스에 대한 기본 직렬화 형태가 분명하지 않음
 - 정적 멤버 클래스는 `Serializable` 구현 가능
+
+<br/>
+
+## 아이템 87. 커스텀 직렬화 형태를 고려해보라
+
+**유연성**, **성능**, **정확성** 측면에서 괜찮다면 기본 직렬화 형태 사용
+
+**물리적 표현**과 **논리적 표현**이 같다면 기본 직렬화 형태 사용  
+- 기본 직렬화 형태가 적합해도 불변식 보장과 보안을 위해 `readObject` 메서드를 제공해야할 수도 있음
+```java
+// 기본 직렬화 형태에 적합
+public class Name implements Serializable {
+    private final String lastName;
+    private final String firstName;
+    private final String middleName; 
+}
+
+// 기본 직렬화 형태에 적합하지 않음
+public class StringList implements Serializable {
+    private int size = 0;
+    private Entry head = null;
+    private static class Entry implements Serializable {
+        String data;
+        Entry next;
+        Entry previous;
+    }
+}
+```
+
+물리적 표현과 논리적 표현이 다르다면 물리적인 상세 표현을 배제하고 논리적인 구성만 담기
+- `transient` 한정자를 이용하여 기본 직렬화 형태에 제외
+
+논리적 상태와 무관한 필드라고 확신할 때만 `transient` 한정자 생략
+- 기본 직렬화를 사용하면 `transient` 필드들은 역직렬화될 때 기본값
+
+객체의 전체 상태를 읽는 메서드에 적용해야 하는 동기화 메커니즘을 직렬화에도 적용
+- 자원 순서 교착상태에 빠지지 않도록 주의해야 함
+
+직렬화 가능 클래스 모두에 **직렬 버전 UID** 명시적 보유
+- 잠재적인 호환성 문제 해결
+- 성능이 조금 빨라짐 (명시하지 않으면 이 값을 생성하려고 복잡한 연산 수행)
+- 어떤 `long` 값을 선택해도 상관 없음
+- 반드시 고유할 필요는 없음
+- 구버전과 호환성을 끊는 경우를 제외하고는 수정 금지
+
+### 물리적 표현과 논리적 표현의 차이가 있지만 기본 직렬화 형태를 사용할 때 문제점
+- 공개 API 가 현재 내부 표현 방식에 영구히 묶임
+  - 관련 코드는 수정 불가능
+- 너무 많은 **공간 차지**될 수 있음
+  - 객체간 연결 정보가 포함된다면 형태가 너무 커져서 저장 또는 전송 속도가 느려짐 
+- **시간**이 너무 많이 걸림
+  - 객체 그래프의 위상에 대한 정보가 없어 그래프를 직접 순회 해야 함
+- **스택 오버플로** 발생 가능
+  - 객체 그래프를 재귀 순회하다가 스택 오버플로 발생
+
+  
