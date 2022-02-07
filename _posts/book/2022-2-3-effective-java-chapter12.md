@@ -134,3 +134,31 @@ public class StringList implements Serializable {
 - 역직렬화한 후 객체 그래프 전체의 유효성 검사해야 한다면 `ObjectInputValidation` 인터페이스 사용
 - 재정의할 수 있는 메서드 호출 금지
 
+
+<br/>
+
+## 아이템 89. 인스턴스 수를 통제해야 한다면 readResolve 보다는 열거 타입을 사용하라
+
+`Serializable` 구현하면 싱글턴이 아니게 됨 (`readResolve` 이용하면 만든 인스턴스를 대체 가능)  
+
+`readResolve`를 인스턴스 통제 목적으로 사용한다면 객체 참조 인스턴스 필드는 `transient` 선언 해야 함
+- 역직렬화된 객체의 참조 공격 방지
+
+`readResolve` 메서드의 접근성은 매우 중요
+- `final class`라면 `private`
+- `final` 아닌 경우
+  - `private` 하위 클래스에서 사용 불가
+  - `package-private` 같은 패키지에 속한 하위 클래스에서만 사용
+  - `protected` 또는 `public` 하위 클래스에서 재정의하지 않고 역직렬화 하면 상위 클래스의 인스턴스 생성 됨 (`ClassCastException` 발생) 
+
+```java 
+//열거타입 싱글턴
+public enum Person {
+    INSTANCE;
+    private String[] favoriteAnimals = { "Dog", "Cat" }
+    public void printFavorites() {
+        System.out.println(Arrays.toString(favoriteSongs));
+    }
+}
+```
+
