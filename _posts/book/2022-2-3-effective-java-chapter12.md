@@ -162,3 +162,43 @@ public enum Person {
 }
 ```
 
+<br/>
+
+## 아이템 90. 직렬화된 인스턴스 대신 직렬화 프록시 사용을 검토하라
+
+직렬화 프록시 패턴을 이용하여 직렬화의 버그와 보안은 방지
+- 논리적인 상태를 표현하는 중첩 클래스를 `private static` 선언
+- 바깥 클래스를 매개변수로 받아 인스턴스 데이터 복사
+- 바깥, 중첩 클래스 모두 `Serializable` 선언
+- 가짜 바이트 스트림 공격, 내부 필드 탈취 공격 차단
+- 필드를 `final` 로 선언 가능 (불변 아이템)
+
+
+```java
+private static class SerializationProxy implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private final Date start;
+    private final Date end;
+    
+    SerializationProxy(Period p) {
+        this.start = p.start;
+        this.end = p.end;
+    }
+    // 바깥 클래스와 논리적으로 동이한 인스턴스 반환
+    private Object readResolve() {
+        return new Period(start, end);
+    }
+}
+
+// 바깥 클래스에 메서드 추가
+private Object writeReplace() {
+    return new SerializationProxy(this);
+}
+private void readObject(ObjectInputStream stream) {
+    throw new InvalidObjectException("프록시 필요");
+}
+```
+
+### 직렬화 프록시 패턴의 한계
+- 클라이언트가 멋대로 확장할 수 있는 클래스에 적용 불가능
+- 객체 그래프에 순환이 있는 클래스에 적용 불가
