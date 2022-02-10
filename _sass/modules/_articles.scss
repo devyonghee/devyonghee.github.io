@@ -155,7 +155,6 @@
   p,
   ul,
   ol,
-  img,
   blockquote {
     display: block;
     margin-bottom: 30px;
@@ -174,11 +173,26 @@
   blockquote p {
     margin-bottom: 0;
   }
-  img.emoji {
-    display: inline-block;
-    margin-top: -4px;
-    margin-bottom: 0;
-    vertical-align: middle;
+  figure {
+    display: block;
+    margin-bottom: 30px;
+
+    figcaption {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #757575;
+      margin-top: 0.75rem;
+      display: block;
+    }
+  }
+
+  img {
+    .emoji {
+      display: inline-block;
+      margin-top: -4px;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
   }
 }
 

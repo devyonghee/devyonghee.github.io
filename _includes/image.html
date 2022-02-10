@@ -1,7 +1,10 @@
-<a href="{{ include.path | relative_url }}">
-  <img src="{{ include.path | relative_url }}"
-       data-rjs="{{ include.path | relative_url }}"
-       class="zooming"
-       alt="{{ include.alt }}"
-  />
-</a>
+<figure>
+    <a href="{{ include.path | relative_url }}">
+        <img src="{{ include.path | relative_url }}"
+             data-rjs="{{ include.path | relative_url }}"
+             class="zooming"
+             alt="{{ include.alt }}"
+        />
+    </a>
+    <figcaption>{{ include.caption }}</figcaption>
+</figure>
