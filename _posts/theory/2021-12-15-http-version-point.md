@@ -209,14 +209,55 @@ HTTP/2는 TCP 연결내에서 다중화 되기 때문에 흐름제어가 정교�
 - 비활성화 될 수 없습니다. 연결이 구성되면 `SETTINGS` 프레임을 교환합니다.
 - 흐름 제어는 종단간 방식이 아닌 홉 방식입니다. 중개자가 자체적인 기준과 추론에 따라 리소스를 제어하고 할당 메커니즘 구현이 가능합니다.
 
+### 서버 푸시
+
+{% include image.html alt="서버 푸시 (출처: 구글)" path="images/theory/http-version-point/server-push.png" %}
+
+HTTP/2 에서는 클라이언트가 요청하지 않아도 서버가 추가적인 리소스를 보낼 수 있습니다. 
+
+일반적인 웹 애플리케이션은 여러 개의 리소스로 구성됩니다. 
+리소스들은 클라이언트에 의해 검색되고 서버가 검사하게 되는데 
+서버 푸시를 사용하면 이 지연시간을 줄일 수 있습니다.
+
+데이터 URI를 통해 [리소스 인라인 처리](https://hpbn.co/http1x/#resource-inlining) 를 사용해봤다면 
+서버 푸시를 사용해본 것입니다.
+
+푸시 리소스의 경우 다음과 같습니다.
+- 클라이언트에 의해 캐시
+- 다른 페이지에서 재사용
+- 다른 리소스와 함께 다중화
+- 서버에서 우선 순위 지정
+- 클라리언트에 의한 거부
 
 
+### 헤더 압축 ([IETF HPACK - HTTP/2의 헤더 압축](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-header-compression))
 
-https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
-https://ko.wikipedia.org/wiki/HTTP
-https://www.whatap.io/ko/blog/38/
-https://blog.naver.com/qja9605/222269034552
-https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/
-https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84
+{% include image.html alt="헤더 압축 (출처: 구글)" path="images/theory/http-version-point/header-compression.png" %}
 
-https://hpbn.co/brief-history-of-http
+HTTP 전송에서는 리소스와 속성을 설명하는 헤더 세트를 전달하게 됩니다. 
+HTTP/1.x 에서는 일반 텍스트로 전송되고, 전송당 500~800바이트의 오버헤드가 추가됩니다. ([프로토콜 오버헤드](https://hpbn.co/http1x/#measuring-and-controlling-protocol-overhead)) 
+
+HTTP/2 에서는 이 오버헤드를 줄이고 성능을 개선하기 위해 HPACK 압축 형식을 사용하여 헤더 메타데이터를 압축합니다. 
+압축 형식에는 다음 두 기술을 사용합니다.
+- 전송되는 헤더 필드를 정적 Huffman 코드로 인코딩 합니다. 
+  - 개별 전송 크기를 줄여줍니다.
+- 이전에 표시된 헤더 필드의 색인 목록을 서버와 클라이언트가 유지하고 업데이트하도록 요구합니다.
+  - 이전에 전송된 값을 효육적으로 인코딩합니다.
+
+HPACK 압축 컨텍스트는 정적 및 동적 테이블로 구성됩니다.
+- 정적 테이블
+  - 사양에 정의됩니다. 
+  - 모든 연결에 사용될 가능성이 있는 공용 HTTP 헤더 필드를 제공합니다.
+- 동적 테이블
+  - 처음에는 비어있습니다.
+  - 특정 연결에서 교환되는 값에 따라 업데이트 됩니다.
+
+
+## 참조
+- https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
+- https://ko.wikipedia.org/wiki/HTTP
+- https://www.whatap.io/ko/blog/38/
+- https://blog.naver.com/qja9605/222269034552
+- https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/
+- https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84
+- https://hpbn.co/brief-history-of-http
