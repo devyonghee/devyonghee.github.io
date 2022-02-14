@@ -62,7 +62,7 @@ HTTP/1.0 발표된지 몇달 후, 1997년 1월에 HTTP/1.1 의 초기 버전 [RF
 그리고 2년 정도 뒤인 1999년 5월에 몇가지 개선과 업데이트가 되고 [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616) 이 발표되었습니다.
 
 - 커넥션을 재사용할 수 있게 되어, 사용된 커넥션을 다시 활용할 수 있습니다.
-- 파이프 라이닝이 추가되어, 첫번째 요청에 대해 응답을 받기 전에 다음 요청이 가능해졌습니다.
+- 파이프라이닝이 추가되어, 첫번째 요청에 대해 응답을 받기 전에 다음 요청이 가능해졌습니다.
 - 추가적인 캐시 제어 메커니즘 도입되었습니다.
 - content, encoding, language, character set, cookie 등 요청에 대해 협상 가능한 12가지 기능 추가되었습니다.
 - 청크된 응답 가능합니다.
@@ -112,6 +112,25 @@ Server: Apache
 (image content of 3077 bytes)
 
 ```
+
+### 파이프라이닝(pipelining)
+
+{% include image.html alt="파이프 라이닝 (출처: 위키피디아)" path="images/theory/http-version-point/http-pipe-lining.png" %}
+
+기본적으로 HTTP는 순차적으로 요청됩니다. 현재 요청에 대해 응답을 받아야 다음 요청을 할 수 있었습니다. 
+하지만 이러한 방식은 네트워크 지연이 발생되고 대역폭 제한에 걸려 딜레이가 생기게 됩니다.
+
+이러한 문제를 개선하기 위해 HTTP/1.1에서 파이프라이닝이 추가되었습니다. 
+파이프라이닝은 응답을 기다리지 않고 단일 TCP 연결을 통해 여러 요청을 보낼 수 있습니다. 
+이 요청 방식으로 커넥션 지연을 피할 수 있고 성능을 향상시킬 수 있습니다.
+
+모든 요청이 아닌 `GET`, `HEAD`, `PUT`, `DELETE` 메서드 같은 멱등성을 가진 메서드에서만 사용이 가능합니다. 
+
+
+### HOL(Head of Line) Blocking
+
+HTTP/1.1에서 파이프라이닝이 추가되면서 성능을 높일 수 있었지만 큰 문제가 있었습니다. 
+
 
 
 ## HTTP/2
@@ -261,3 +280,4 @@ HPACK 압축 컨텍스트는 정적 및 동적 테이블로 구성됩니다.
 - https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/
 - https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84
 - https://hpbn.co/brief-history-of-http
+- https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x
