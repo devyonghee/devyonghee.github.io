@@ -274,6 +274,37 @@ HPACK 압축 컨텍스트는 정적 및 동적 테이블로 구성됩니다.
   - 처음에는 비어있습니다.
   - 특정 연결에서 교환되는 값에 따라 업데이트 됩니다.
 
+## HTTP/3
+
+{% include image.html alt="http2 vs http3 (출처: 위키피디아)" path="images/theory/http-version-point/http2-vs-http3.svg" %}
+
+HTTP/3는 HTTP의 3번째 메이저 버전으로  2015년에 HTTP/2 가 발표된지 4년만에 나왔습니다. ([rfc9000](https://datatracker.ietf.org/doc/html/rfc9000))
+기존의 HTTP 와 가장 큰 차이점은 `TCP` 가 아닌 `UDP` 기반의 `QUIC`을 이용하여 통신을 합니다.
+
+`QUIC`은 Quick UDP Internet Connection 의 약자로 전송 프로토콜인 UDP 기반으로 동작합니다. 
+클라이언트와 서버의 연결 수를 줄이고 대역폭을 에상해서 패킷 혼잡을 피한다는 것이 주요 특징입니다.
+
+
+### 연결 지연
+
+{% include image.html alt="RTT 비교 (출처: [구글 클라우드 플랫폼 블로그](https://cloudplatform.googleblog.com/2018/06/Introducing-QUIC-support-for-HTTPS-load-balancing.html))" path="images/theory/http-version-point/rtt-comparison.gif" %}
+
+RTT(Round Trip Time)는 패킷이 목적지에 도달하고 응답이 돌아오기까지의 시간, 즉 패킷 왕복 시간을 의미합니다. 
+
+HTTP + TLS + TCP 에서 TCP는 서버와 클라이언트 연결을 설정하기 위해서 핸드쉐이크가 필요하고 
+TLS 사용한 보안 설정을 위해 자체 핸드쉐이크가 필요하기 때문에 총 3 RTT가 필요합니다.
+
+반면, `QUIC` 은 보안 세션 설정을하기 위해 단일 핸드쉐이크(1 RTT)만 필요합니다. 
+이것이 가능한 이유는 첫번째 핸드셰이크가 이뤄질 때, 연결 설정과 함께 데이터를 보내기 때문입니다. 
+TCP + TLS 에서는 연결과 암호화에 필요한 정보를 교환하고 유효성을 검사한 뒤에 데이터를 교환하지만 
+QUIC 에서는 세션 키를 교환하기도 전에 데이터를 교환하게 됩니다.
+
+한번 연결에 성공했다면 서버는 그 설정을 캐싱하고 있습니다. 
+다음 연결부터는 이 캐싱된 설정을 이용해서 연결이 되기 때문에 0 RTT 만으로도 통신을 할 수 있습니다. 
+`QUIC` 핸드쉐이크에 대해 더 자세히 알고 싶다면 [Rovert Lychv 발표](https://www.youtube.com/watch?v=vXgbPZ-1-us)를 참고해주세요.
+
+
+
 
 ## 참조
 - https://ko.wikipedia.org/wiki/HTTP
@@ -282,3 +313,10 @@ HPACK 압축 컨텍스트는 정적 및 동적 테이블로 구성됩니다.
 - https://hpbn.co/brief-history-of-http
 - https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
 - https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x
+- https://m.blog.naver.com/sehyunfa/221680799006
+- https://velog.io/@ziyoonee/HTTP1-%EB%B6%80%ED%84%B0-HTTP3-%EA%B9%8C%EC%A7%80-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0
+- https://evan-moon.github.io/2019/10/08/what-is-http3/
+- https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/
+- https://http3-explained.haxx.se/ko/the-protocol/feature-http
+- https://medium.com/codavel-blog/quic-vs-tcp-tls-and-why-quic-is-not-the-next-big-thing-d4ef59143efd
+- https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf
