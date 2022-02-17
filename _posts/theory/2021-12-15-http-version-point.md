@@ -285,7 +285,7 @@ HTTP/3는 HTTP의 3번째 메이저 버전으로  2015년에 HTTP/2 가 발표�
 클라이언트와 서버의 연결 수를 줄이고 대역폭을 에상해서 패킷 혼잡을 피한다는 것이 주요 특징입니다.
 
 
-### 연결 지연
+### 연결 지연 감소
 
 {% include image.html alt="RTT 비교 (출처: [구글 클라우드 플랫폼 블로그](https://cloudplatform.googleblog.com/2018/06/Introducing-QUIC-support-for-HTTPS-load-balancing.html))" path="images/theory/http-version-point/rtt-comparison.gif" %}
 
@@ -303,7 +303,35 @@ QUIC 에서는 세션 키를 교환하기도 전에 데이터를 교환하게 �
 다음 연결부터는 이 캐싱된 설정을 이용해서 연결이 되기 때문에 0 RTT 만으로도 통신을 할 수 있습니다. 
 `QUIC` 핸드쉐이크에 대해 더 자세히 알고 싶다면 [Rovert Lychv 발표](https://www.youtube.com/watch?v=vXgbPZ-1-us)를 참고해주세요.
 
+### 멀티 플렉싱 
 
+{% include image.html alt="head of line block (출처: [cloudflare 블로그](https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/)))" path="images/theory/http-version-point/http2-head-of-line-block.png" %}
+
+HTTP/2 에서 스트림의 개념이 도입되면서 TCP 연결을 더 효율적으로 사용할 수 있도록 개선되었습니다. 
+하지만 여기에서도 마찬가지로 문제가 있습니다.
+
+복수의 요청/응답을 단일 TCP 연결에서 사용하기 때문에 
+패킷 손실된 하나의 요청에만 관계되도 모든 응답/요청이 영향을 받게 된다는 것입니다. 
+TCP 패킷이 네트워크 경로상에서 손실되면 스트림에 누락 구간이 생기고, TCP는 손실이 탐지되면 영향받은 패킷만을 재전송하려고 합니다. 
+이 과정에서 다른 요청에 대해서도 전달받지 못하여 불필요한 지연이 발생됩니다. 
+그러므로 HoLB(head of line blocking) 문제가 남아있는 것입니다.
+
+
+{% include image.html alt="head of line block (출처: [ably](https://ably.com/topic/http3)))" path="images/theory/http-version-point/quic-stream-multiplexing.png" %}
+
+TCP에서의 HoLB 문제를 개선하고자 QUIC에서는 단일 연결에서 다중 스트림의 개념을 도입했습니다. 
+다중 스트림을 지원하여 손실된 UDP 패킷이 속한 스트림에만 영향을 미치도록 합니다. 
+다른 스트림에서 수신된 데이터는 계속해서 재조립되어 애플리케이션에 전달될 수 있습니다. 
+
+
+### 연결 ID
+
+TCP 의 경우, 서버와 클라이언트의 IP 주소와 포트로 연결을 식별합니다. 
+그러므로 IP가 변경된다면 연결이 끊어지게 되고 다시 연결하기 위해 3 way handshake 과정이 필요하게 되어 지연이 발생됩니다.
+
+반면, QUIC은 각 연결에 대해 Connection ID를 가지게 되는데 이를 통해 연결을 식별합니다. 
+이 Connection ID는 하위 프로토콜 계층(UDP, IP 혹은 그 하위 계층)에서 주소가 변경되더라도 정상적으로 전달받을 수 있습니다. 
+즉, 다운로드 진행 도중 셀룰러에서 와이파이 혹은 반대로 전환되어도 연결 마이그레이션이 되어 계속 진행할 수 있습니다.  
 
 
 ## 참조
