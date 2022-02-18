@@ -303,6 +303,30 @@ QUIC 에서는 세션 키를 교환하기도 전에 데이터를 교환하게 �
 다음 연결부터는 이 캐싱된 설정을 이용해서 연결이 되기 때문에 0 RTT 만으로도 통신을 할 수 있습니다. 
 `QUIC` 핸드쉐이크에 대해 더 자세히 알고 싶다면 [Rovert Lychv 발표](https://www.youtube.com/watch?v=vXgbPZ-1-us)를 참고해주세요.
 
+
+### 패킷 손실 감지 시간 감소
+
+에러를 복구하는 방식은 다양합니다. 
+그중에서 에러가 발생하면 수신 측이 에러 발생을 송신 측에 통보하여 송신 측에서 
+에러 프레임을 재전송하는 방식을 ARQ(Automatic Repeat reQuest)라고 합니다.
+QUIC, TCP 는 기본적으로 이러한 ARQ 방식을 사용하기 때문에 패킷에 대해 흐름 제어가 필요합니다. 
+  
+TCP 는 그중에서도 Stop and Wait ARQ 방식을 이용하고 있습니다.
+송신 측이 패킷을 보냈는데 일정 시간이 경과해도 수신 측 답변이 없으면 손실로 판단하고 해당 패킷을 다시 보내는 방식입니다.
+하지만, Stop and Wait ARQ 방식은 패킷 손실 감지를 하기 위해서 언제 타임 아웃낼지 동적 계산이 필요합니다. 
+이 시간을 RTO(Retransmission Time Out) 이라고 하며, 이 계산을 위해서는 RTT(Round Trip Time) 샘플이 필요합니다.
+
+하지만 타임아웃을 통해 패킷 손실이 발생하면 RTT 계산이 애매해지고, 
+ACK 이 어느 패킷에 대한 응답인지 알기 위해서 별도의 방법과 패킷 검사가 필요합니다.
+이른 재전송 모호성(Retransmission Ambiguity)라고 합니다.
+
+이 문제를 개선하기 위해 QUIC 에서는 전송 순서를 나타내는 패킷 번호 공간이 부여됐습니다. 
+재전송 시, 동일한 번호로 보내는 시퀀스 번호와 다르게 매전송마다 패킷 번호가 증가하기 때문에 쉽게 순서를 파악할 수 있습니다. 
+이 고유한 패킷 번호를 통해 패킷 손실 감지에 필요한 시간을 단축할 수 있습니다. 
+([참고 자료](http://www.watersprings.org/pub/id/draft-ietf-quic-recovery-02.html#monotonically-increasing-packet-numbers))
+
+
+
 ### 멀티 플렉싱 
 
 {% include image.html alt="head of line block (출처: [cloudflare 블로그](https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/)))" path="images/theory/http-version-point/http2-head-of-line-block.png" %}
@@ -346,5 +370,4 @@ TCP 의 경우, 서버와 클라이언트의 IP 주소와 포트로 연결을 �
 - https://evan-moon.github.io/2019/10/08/what-is-http3/
 - https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/
 - https://http3-explained.haxx.se/ko/the-protocol/feature-http
-- https://medium.com/codavel-blog/quic-vs-tcp-tls-and-why-quic-is-not-the-next-big-thing-d4ef59143efd
 - https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf
