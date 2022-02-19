@@ -284,6 +284,15 @@ HTTP/3는 HTTP의 3번째 메이저 버전으로  2015년에 HTTP/2 가 발표�
 `QUIC`은 Quick UDP Internet Connection 의 약자로 전송 프로토콜인 UDP 기반으로 동작합니다. 
 클라이언트와 서버의 연결 수를 줄이고 대역폭을 에상해서 패킷 혼잡을 피한다는 것이 주요 특징입니다.
 
+### QPACK
+
+HTTP/2 에서 헤더 메타데이터 압축을 위해 HPACK 압축 형식을 이용했습니다.   
+HTTP/3 에서는 이 HPACK의 핵심 개념을 이용하긴 했지만, 
+HPACK 알고리즘은 TCP 위에서 사용되기 때문에 스트림 전달 순서에 의존하고 있었습니다.
+
+QUIC은 UDP 위에서 통신하기 때문에 QPACK 압축 형식으로 개선되었습니다.
+압축 형식으로 순서에 의존하지 않고, head of line blocking 문제 개선, 최적의 압축비를 고려하여 재설계 되었습니다. 
+HPACK을 QUIC 맞게 사용할 수 있도록 수정된 것이 QPACK이라 볼 수 있습니다. ([QPACK: Header Compression for HTTP/3](https://datatracker.ietf.org/doc/html/draft-ietf-quic-qpack-09))
 
 ### 연결 지연 감소
 
@@ -324,7 +333,6 @@ ACK 이 어느 패킷에 대한 응답인지 알기 위해서 별도의 방법�
 재전송 시, 동일한 번호로 보내는 시퀀스 번호와 다르게 매전송마다 패킷 번호가 증가하기 때문에 쉽게 순서를 파악할 수 있습니다. 
 이 고유한 패킷 번호를 통해 패킷 손실 감지에 필요한 시간을 단축할 수 있습니다. 
 ([참고 자료](http://www.watersprings.org/pub/id/draft-ietf-quic-recovery-02.html#monotonically-increasing-packet-numbers))
-
 
 
 ### 멀티 플렉싱 
