@@ -1,5 +1,5 @@
 ---
-title: HTTP 버전별 특징
+title: HTTP/0.9 부터 HTTP/3 까지
 tags: [http, network]
 categories: theory
 ---
