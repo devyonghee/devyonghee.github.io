@@ -21,7 +21,7 @@ Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니
 
 ### 프로세스 상태
 
-{% include image.html alt="프로세스 상태 (출처: wikipedia)" path="images/theory/process-vs-thread/process-state.png" %}
+{% include image.html alt="프로세스 상태 (출처: [geeksforgeeks](https://www.geeksforgeeks.org/states-of-a-process-in-operating-systems/))" path="images/theory/process-vs-thread/process-state.png" %}
 
 #### Created or New
 
@@ -66,6 +66,41 @@ CPU 당 최대 하나의 프로세스만 실행될 수 있으며,
 - 시스템 호출을 통해 운영 체제에 서비스 요청하면 유저모드에서 커널 모드로 전환
 - CPU 유저 모드 특권 수준으로 코드 실행
 
+#### Blocked
+
+실행되다가 할당 받은 CPU를 반납한 상태
+
+입/출력 또는 특별한 이벤트가 발생될 때까지 수행될 수 없고 기다리는 상태입니다. 
+데이터가 오면 프로세스가 ready 상태로 되고 스케줄러에게 다시 실행될 수 있다고 알리게 됩니다.
+
+#### Terminated
+
+프로세스 실행이 완료되거나 종료된 상태
+
+프로세스는 더 이상 실행되지는 않지만, 
+부모 프로세스가 종료된 상태를 인지하고 시스템을 호출하기 전까지 좀비 프로세스로 남아있습니다. 
+만약, 여기서 부모 프로세스가 시스템 호출에 실패하게 된다면 메모리 누수가 발생됩니다.
+
+완전히 종료되고나면 프로세스는 메모리에서 제거되고 
+PCB (Process Control Block) 이 소멸됩니다.
+
+
+#### Suspended
+
+프로세스 수행이 중단된 상태입니다.  
+
+외부적인 이유로 정지되고 보조 메모리에 swap 이 발생됩니다. 
+Ready, Blocked 은 CPU에서의 상태로 실제 프로세스의 작업은 수행되고 있지만, 
+Suspended는 프로세스 수행이 완전 정지된 상태입니다.
+
+- Swapped out and ready or Suspended ready
+  - ready 상태에서 메모리 부족으로 중단되고 보조 메모리에 배치된 상태입니다.
+  - 프로세스는 다시 메인 메모리로 가져올 때 ready 상태로 전환될 수 있습니다.
+
+- Swapped out and blocked or Suspended blocked
+  - blocked 상태에서 메모리 부족으로 중단되고 보조 메모리에 배치된 상태입니다. 
+  - 프로세스는 다시 메인 메모리로 가져올 때 blocked 상태로 전환될 수 있습니다.
+  - 작업이 완료된 이벤트를 받으면 suspended blocked 상태에서 suspended waiting 상태로 전활될 수 있습니다. 
 
 
 ## 출처
