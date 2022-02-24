@@ -102,8 +102,62 @@ Suspended는 프로세스 수행이 완전 정지된 상태입니다.
   - 프로세스는 다시 메인 메모리로 가져올 때 blocked 상태로 전환될 수 있습니다.
   - 작업이 완료된 이벤트를 받으면 suspended blocked 상태에서 suspended waiting 상태로 전활될 수 있습니다. 
 
+### 프로세스 제어 블록 (PCB: Process Control Block)
+
+프로세스 제어 블록 (PCB, Process Control Block)은  운영체제가 프로세스를 제어하기 위해 정보를 저장하는 자료구조입니다. 
+프로세스가 생성될 때마다, 자신만의 고유한 PCB 가 함께 생성되고 프로세스가 종료되거나 완료되면 같이 제거됩니다.
+
+하나의 프로세스가 CPU를 점유하고 작업 도중 중간에 다른 프로세스가 실행되어야 할 수 있습니다. 
+그러면, 기존 프로세스는 작업하던 내용을 정리하고 CPU 를 반환해야 됩니다. 
+이때 작업하고 있던 내용들을 저장하고 있어야 다음에 어떤 작업을 해야하는지 알 수 있습니다. 
+
+여기서 관련 정보가 저장되는 공간이 PCB이고, 
+현재 진행중인 작업의 상태를 저장하고 다른 작업의 상태를 읽고 처리하는 과정을 Context Switching 이라고 합니다.
+
+운영체제 종류에 따라 PCB 에 저장되는 내용은 다를 수 있지만, 일반적으로 다음의 정보들을 포함하고 있습니다.
+
+{% include image.html alt="Process Control Block (출처: [geeksforgeeks](https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/))" path="images/theory/process-vs-thread/process-control-block.png" %}
+
+#### Pointer
+
+프로세스의 현재 위치를 유지하기 위한 정보를 저장합니다.  
+부모/자식 프로세스에 대한 포인터, 자원에 대한 포인터 등의 정보가 있습니다.  
+
+#### Process state
+
+ready, running, blocked 등 프로세스 상태에 대한 정보를 저장합니다.
+
+####Process number (PID)
+
+프로세스를 구별할 수 있는 식별자 정보를 저장합니다.  
+모든 프로세스는 프로세스를 구별할 수 있는 PID라는 고유 ID가 부여됩니다.
+
+#### Program counter
+
+다음에 실행할 명령어의 주소에 대한 포인터 정보를 저장합니다.
+
+#### Register
+
+프로세스가 실행되기 위해 필요한 
+Accumulator, CPU Register, General Register 등 레지스터 정보를 저장합니다.
+
+####Memory Management Information
+
+운영체제에서 사용하는 메모리 관리 시스템에 대한 정보를 저장합니다.  
+page table, memory limits, segment table 등이 포함될 수 있습니다. 
+
+#### Open files list or I/O Status Information
+
+프로세스가 현재 사용중인 파일 및 장치에 대한 포인터를 저장합니다.
+
+#### Accounting Information
+
+프로세스 실행에 사용된 CPU 크기, 시간 제한, 실행 ID 에 대한 정보를 저장합니다. 
+
+
 
 ## 출처
 - https://haedallog.tistory.com/138
+- https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/
 - https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
 - https://en.wikipedia.org/wiki/Process_state
