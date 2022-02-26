@@ -155,9 +155,44 @@ page table, memory limits, segment table 등이 포함될 수 있습니다.
 프로세스 실행에 사용된 CPU 크기, 시간 제한, 실행 ID 에 대한 정보를 저장합니다. 
 
 
+### 프로세스 메모리 구조
+
+프로세스는 프로그램이 메모리에 적재되고 실행된 인스턴스를 의미한다.  
+어떻게 메모리에 적재되는 것인지 그 구조에 대해 자세하게 알아본다. 
+
+{% include image.html alt="process memory structure" path="images/theory/process-vs-thread/process-memory-structure.png" %}
+
+프로세스의 주소 공간은 크게 코드(code), 데이터(data), 스택(stack), 힙(heap) 영역으로 나누어진다.
+
+#### 코드(code) 영역
+
+코드를 실행하기 위해 저장되어있는 영역  
+
+프로그램을 실행시키기 위한 명령문들이 저장되어 있다.  
+제어문, 함수, 상수 등의 코드가 CPU 에서 수행할 수 있는 기계어 명령 형태로 변환되어 저장된다.  
+컴파일 타임에 결정되고 중간에 코드가 변경될 수 없도록 Read Only 상태이다.
+
+#### 데이터(data) 영역
+
+전역변수(global), 정적변수(static), 배열(array), 구조체(structure) 등 프로그램이 사용하는 데이터가 저장된 영역
+
+프로그램이 실행될 때 생성되고, 프로그램이 종료되면 반환된다.  
+런타임 중에도 값이 변경될 수 있기 때문에 Read Write 상태로 되어 있다.
+
+데이터 영역은 다시 초기화된 변수 영역(initialized data segment), 초기화되지 않은 변수 영역(uninitialized data segment) 두가지로 나누어질 수 있다.  
+초기화된 변수 영역은 data 영역, 초기화되지 않은 변수 영역은 BSS(Block Started by Symbol) 영역에 저장된다.
+
+
+#### 스택(stack) 영역
+
+
+#### 힙(heap) 영역
+
+
 
 ## 출처
 - https://haedallog.tistory.com/138
 - https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/
 - https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
 - https://en.wikipedia.org/wiki/Process_state
+- https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
