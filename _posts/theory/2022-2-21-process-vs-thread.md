@@ -204,6 +204,39 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 
 ## 스레드(Thread)
 
+{% include image.html alt="스레드 (출처: wikipedia) " path="images/theory/process-vs-thread/thread.png" %}
+
+스레드란 프로세스 내에서 실행되는 작업 흐름의 단위다.  
+일반적으로 한 프로세스에는 메인 스레드 하나만 가지고 있지만, 
+프로그램 환경에 따라 멀티 스레드 방식을 지원할 수 있다.
+
+자바에서는 기본적으로 스레드 기반으로 동작하기 때문에, 자바 기준으로 스레드를 소개하겠다.
+
+### 스레드 상태(state) 및 생명주기(life cycle)
+
+자바에서 스레드의 생명주기는 JVM(Java Virtual Machine)에 의해 기록되고 관리된다.  
+스레드의 상태는 `java.lang.Thread` 내부에 `enum State` 으로 6가지가 선언되어 있다. 
+
+{% include image.html alt="스레드 (출처: wikipedia) " path="images/theory/process-vs-thread/thread.png" %}
+
+#### NEW
+
+스레드 객체가 생성된 상태  
+실행(`start()`)되지 않은 상태로 대기열 큐에도 올라가지 않는다.
+
+#### RUNNABLE
+
+실행 준비 또는 실행 중인 상태    
+`start()` 가 호출 되면 실행을 대기하고 있다가, 
+`run()` 이 호출되면 CPU를 점유하고 작업을 수행(running)하게 된다.  
+이 상태는 Runnable pool 에 모여있다.
+
+#### WAITING
+
+실행 대기중인 상태
+`wait()`, `join()` 등의 메소드를 통해 일시정지된 상태로,
+다른 스레드에서 `nofity()` 또는 `nofityAll()` 호출을 기다린다.
+
 
 ## 출처
 - https://haedallog.tistory.com/138
@@ -211,3 +244,4 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 - https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
 - https://en.wikipedia.org/wiki/Process_state
 - https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
+- https://d2.naver.com/helloworld/10963
