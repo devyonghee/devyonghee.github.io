@@ -158,11 +158,17 @@ page table, memory limits, segment table 등이 포함될 수 있습니다.
 ### 프로세스 메모리 구조
 
 프로세스는 프로그램이 메모리에 적재되고 실행된 인스턴스를 의미한다.  
-어떻게 메모리에 적재되는 것인지 그 구조에 대해 자세하게 알아본다. 
+어떻게 메모리에 적재되는 것인지 그 구조에 대해 자세하게 알아보겠다.
+
+{% include image.html alt="process memory" path="images/theory/process-vs-thread/process-memory.png" %}
+
+프로세스의 주소 공간은 크게 코드(code), 데이터(data), 스택(stack), 힙(heap) 영역으로 나누어진다.  
+여기에 데이터 영역에 BSS(Block Started by Symbol) 영역도 추가될 수 있다.  
 
 {% include image.html alt="process memory structure" path="images/theory/process-vs-thread/process-memory-structure.png" %}
 
-프로세스의 주소 공간은 크게 코드(code), 데이터(data), 스택(stack), 힙(heap) 영역으로 나누어진다.
+각 영역에는 위와 같은 정보들이 저장되고 있는데 
+아래에 영역별로 자세하게 살펴보도록 하겠다. 
 
 #### 코드(code) 영역
 
@@ -210,10 +216,11 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 일반적으로 한 프로세스에는 메인 스레드 하나만 가지고 있지만, 
 프로그램 환경에 따라 멀티 스레드 방식을 지원할 수 있다.
 
-자바에서는 기본적으로 스레드 기반으로 동작하기 때문에, 자바 기준으로 스레드를 소개하겠다.
+{% include image.html alt="스레드 메모리" path="images/theory/process-vs-thread/thread-memory.png" %}
 
 ### 스레드 상태(state) 및 생명주기(life cycle)
 
+자바에서 기본적으로 스레드 기반으로 동작하기 때문에, 자바 기준으로 스레드 상태에 대해 자세히 알아보겠다.  
 자바에서 스레드의 생명주기는 JVM(Java Virtual Machine)에 의해 기록되고 관리된다.  
 스레드의 상태는 `java.lang.Thread` 내부에 `enum State` 으로 6가지가 선언되어 있다. 
 
@@ -236,6 +243,25 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 실행 대기중인 상태
 `wait()`, `join()` 등의 메소드를 통해 일시정지된 상태로,
 다른 스레드에서 `nofity()` 또는 `nofityAll()` 호출을 기다린다.
+
+#### TIMED_WATING
+
+주어진 시간동안 일시 정지된 상태  
+`sleep(n)` 메서드로 최대 대기 시간을 명시한다.  
+외부적인 변화 뿐만 아니라 시간이 지나면 `RUNNABLE` 상태로 된다.
+
+#### BLOCK
+동기화를 위해 lock 이 걸려 일시정지된 상태   
+동기화 대상 인스턴스의 lock 을 획득하기 위해 대기한다.  
+이미 다른 스레드가 소유하고 있다면 해당 모니터의 EntrySet(lock-Pool) 에서 대기하게 된다.
+
+#### TERMINATED
+모든 처리가 완료됐거나, 강제 종료된 상태  
+종료된 스레드는 다시 `start()` 로 실행할 수 없다.  
+스레드를 종료할 때, `stop()` 메소드를 이용하여 강제 종료하면 자원들이 불안정해질 수 있기 때문에 
+`interrupt()` 메소드로 안전하게 종료해야 한다. 
+
+
 
 
 ## 출처
