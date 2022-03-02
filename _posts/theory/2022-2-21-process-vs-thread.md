@@ -218,6 +218,9 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 
 {% include image.html alt="스레드 메모리" path="images/theory/process-vs-thread/thread-memory.png" %}
 
+각 프로세스에서는 코드, 데이터, 스택, 힙 영역이 존재한다.  
+스레드는 독립적인 작업을 위해 각각 스택과 PC 레지스터 값을 갖고 코드, 데이터, 힙 영역은 공유하게 된다.
+
 ### 스레드 상태(state) 및 생명주기(life cycle)
 
 자바에서 기본적으로 스레드 기반으로 동작하기 때문에, 자바 기준으로 스레드 상태에 대해 자세히 알아보겠다.  
@@ -262,6 +265,24 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 `interrupt()` 메소드로 안전하게 종료해야 한다. 
 
 
+## 멀티 프로세스(Multi Process)와 멀티 스레드(Multi Thread)
+
+### 멀티 프로세스
+
+멀티 프로세스(Multi Process)는 하나의 프로그램을 여러 개의 프로세스로 실행하여 각자 작업을 수행하는 것을 말한다.  
+
+- 안정성이 좋음
+  - 자식 프로세스 중 하나에 문제가 있어도 다른 프로세스에 영향을 주지 않는다.
+- 구현이 비교적 간단 
+- 스케쥴링에 따른 Context Switching 이 많아짐 
+- Context Switching 오버헤드
+  - 캐시 메모리 초기화 같은 무거운 작업이 진행되고 많은 시간이 걸리기 때문에 오버헤드 발생
+  - Context Switching 이 발생되면 캐시에 있는 모든 데이터를 지우고 다른 캐시 정보를 불러옴
+- 프로세스들이 독립적으로 동작하며, 자원을 서로 다르게 할당 (데이터 공유 없음)
+  - 프로세스간 통신을 위해서는 IPC를 통해야 함
+  
+### 멀티 스레드
+
 
 
 ## 출처
@@ -271,3 +292,5 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 - https://en.wikipedia.org/wiki/Process_state
 - https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
 - https://d2.naver.com/helloworld/10963
+- https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html
+- https://charlezz.medium.com/process%EC%99%80-thread-%EC%9D%B4%EC%95%BC%EA%B8%B0-5b96d0d43e37
