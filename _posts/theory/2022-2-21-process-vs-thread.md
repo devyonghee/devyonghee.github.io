@@ -4,7 +4,7 @@ tags: [process, thread]
 categories: theory
 ---
 
-Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니다.
+Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니다.  
 두 개념의 차이에 대해서 자세하게 알아보도록 하겠습니다.
     
 <!--more-->
@@ -21,7 +21,7 @@ Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니
 
 ### 프로세스 상태
 
-{% include image.html alt="프로세스 상태 (출처: [geeksforgeeks](https://www.geeksforgeeks.org/states-of-a-process-in-operating-systems/))" path="images/theory/process-vs-thread/process-state.png" %}
+{% include image.html alt='프로세스 상태 출처: [geeksforgeeks](https://www.geeksforgeeks.org/states-of-a-process-in-operating-systems/) ' path="images/theory/process-vs-thread/process-state.png" %}
 
 #### Created or New
 
@@ -271,23 +271,64 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 
 멀티 프로세스(Multi Process)는 하나의 프로그램을 여러 개의 프로세스로 실행하여 각자 작업을 수행하는 것을 말한다.  
 
+#### 장점
 - 안정성이 좋음
   - 자식 프로세스 중 하나에 문제가 있어도 다른 프로세스에 영향을 주지 않는다.
 - 구현이 비교적 간단 
+
+#### 단점
 - 스케쥴링에 따른 Context Switching 이 많아짐 
 - Context Switching 오버헤드
   - 캐시 메모리 초기화 같은 무거운 작업이 진행되고 많은 시간이 걸리기 때문에 오버헤드 발생
   - Context Switching 이 발생되면 캐시에 있는 모든 데이터를 지우고 다른 캐시 정보를 불러옴
 - 프로세스들이 독립적으로 동작하며, 자원을 서로 다르게 할당 (데이터 공유 없음)
   - 프로세스간 통신을 위해서는 IPC를 통해야 함
+- 메모리 사용량이 많음
   
 ### 멀티 스레드
 
+멀티 스레드(Multi Thread)는 하나의 프로그램을 여러 개의 스레드로 구성하여, 
+각 스레드에서 작업을 처리하는 것을 말한다.
+
+#### 장점
+- 시스템의 처리율 향상
+- 효율적인 자원 관리
+  - 프로세스 할당보다 스레드를 할당하는 것이 비용이 적음
+  - 프로세스의 자원들을 공유
+- 스레드 간의 통신 방법이 간단
+  - stack을 제외한 모든 영역을 공유해서 통신이 쉬움
+- Context Switching 이 빠름
+- 일부 스레드에 오류가 있어도 프로그램이 계속 수행될 수 있음
+
+#### 단점 
+- 구현, 테스트, 디버깅이 어려움
+- 동기화를 고려해야 하며, 교착 상태가 발생되지 않도록 주의해야 함
+- 하나의 스레드에서 문제가 발생되면 전체 프로세스에 영향을 줄 수 있음
+- 프로세스 밖에서 스레드 제어 불가능 
+
+
+### 정리
+
+|         Process         |                   Thread                    |
+|:-----------------------:|:-------------------------------------------:|
+|     프로그램이 실행 중을 의미      |                 프로세스의 세그먼트                  |
+|     종료하는데 시간이 많이 걸림     |               종료하는데 시간이 적게 걸림               |
+|        생성에 비용이 큼        |                 생성에 비용이 적음                  |
+| context switching 비용이 큼 |          context switching 비용이 적음           |
+|  통신 비용이 큼 (IPC 통해야 함)   |                통신 방법이 비교적 간단                |
+|  다중 프로그램이 다중 프로세스를 의미   | 여러 프로그램 실행할 필요 없이,<br/> 단일 프로세스가 여러 스레드로 구성 |
+|       프로세스간 서로 격리       |                 스레드간 메모리 공유                 |
+|         중량 프로세스         |           코드, 데이터, 힙 영역을 공유하여 가벼움           |
+| 프로세스 전환은 운영체제의 인터페이스 사용 |           스레드 전환은 운영 체제 호출이 필요 없음           |
+|     다른 프로세스에 영향 없음      |         한 스레드가 차단하면 다른 스레드에서 작업 불가능         |
+|  PCB, Stack, 주소 공간 존재   |     부모의 PCB와 자체 TCB, stack, 공통 주소 공간 존재     |
+| 부모 프로세스는 자식 프로세스에 영향 없음 |        메인 스레드를 변경하면 다른 스레드 동작에 영향을 줌        |
 
 
 ## 출처
 - https://haedallog.tistory.com/138
 - https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/
+- https://www.geeksforgeeks.org/difference-between-process-and-thread/
 - https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
 - https://en.wikipedia.org/wiki/Process_state
 - https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
