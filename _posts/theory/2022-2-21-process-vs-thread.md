@@ -265,6 +265,45 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 `interrupt()` 메소드로 안전하게 종료해야 한다. 
 
 
+### 스레드 제어 블록 (TCB: Thread Control Block)
+
+{% include image.html alt="스레드" path="images/theory/process-vs-thread/tcb-pcb.png" %}
+
+Process 가 PCB(Process Control Block)를 가지는 것처럼 스레드도 TCB(Thread Control Block) 를 가진다.  
+TCB는 스레드 별로 존재하고 있으며 PCB 를 가리키는 정보를 함께 포함하고 있다.  
+
+프로세스에 있는 스레드 라이브러리에 의해 스케줄링이 되며,  
+이 스레드의 정보를 통해 Context Switching 이 일어난다. 
+
+{% include image.html alt="TCB (출처: https://www.geeksforgeeks.org/thread-control-block-in-operating-system/)" path="images/theory/process-vs-thread/thread-control-block.png" %}
+
+#### Thread ID
+
+스레드가 생성될 때 운영 체제에서 스레드에 할당하는 고유 식별자
+
+#### Thread states
+
+스레드가 작업을 진행하면서 변경된 스레드의 상태
+
+#### CPU information
+
+스레드가 얼마나 진행되었는지, 어떤 데이터가 사용되고 있는지 OS 에서 작업하기 위해 필요한 정보 
+
+- program counter
+  - 현재 프로그램 명령을 가리킴
+
+- register contents 
+  - 스레드의 레지스터 값
+
+#### Thread Priority
+
+스레드 스케줄러가 READY 큐에서 다음 스레드 작업을 선택하기 위한 스레드 우선 순위 정보
+
+#### Pointer
+
+프로세스를 가리키면, 이 스레드를 생성한 프로세스를 가리키는 포인터   
+스레드를 가리키면, 이 스레드에 의해 생성된 스레드를 가리키는 포인터
+
 ## 멀티 프로세스(Multi Process)와 멀티 스레드(Multi Thread)
 
 ### 멀티 프로세스
@@ -329,6 +368,7 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 - https://haedallog.tistory.com/138
 - https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/
 - https://www.geeksforgeeks.org/difference-between-process-and-thread/
+- https://www.geeksforgeeks.org/thread-control-block-in-operating-system/
 - https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
 - https://en.wikipedia.org/wiki/Process_state
 - https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
