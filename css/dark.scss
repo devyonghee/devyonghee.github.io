@@ -25,6 +25,15 @@ $base-font-color: $gray-lighter;
 $base-accent-color: $gray-lighter;
 $base-accent-highlighted-color: darken($base-accent-color, 15);
 
+// Table colors
+
+$base-table-header-background: $gray-darker;
+$base-table-header-color: $white;
+$base-table-even-line-color: lighten($black, 15);
+$base-table-hover-line-color: darken($base-table-even-line-color, 3);
+$base-table-border-color: lighten($base-table-header-background, 25);
+
+
 // Border color
 
 $base-border-color: $gray-darker;

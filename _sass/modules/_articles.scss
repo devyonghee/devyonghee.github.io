@@ -157,14 +157,14 @@
   ol,
   blockquote {
     display: block;
-    margin-bottom: 30px;
-    //ul {
-    //  margin-bottom: 0;
-    //}
+  }
+  p {
+    margin-bottom: 20px;
   }
   h2,
   h3,
   h4 {
+    margin-top: 30px;
     display: block;
     margin-bottom: 10px;
     font-family: $sans-serif;
@@ -181,7 +181,6 @@
       text-align: center;
       font-size: 0.8rem;
       color: #757575;
-      margin-top: 0.75rem;
       display: block;
     }
   }
@@ -192,6 +191,49 @@
       margin-top: -4px;
       margin-bottom: 0;
       vertical-align: middle;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+
+    caption {
+      font-size: 1.5em;
+      margin: .5em 0 .75em;
+    }
+
+    tr {
+      border: 1px solid $base-table-border-color;
+      padding: .35em;
+
+      &:nth-child(even) {
+        background: $base-table-even-line-color;
+      }
+      &:hover {
+        background-color: $base-table-hover-line-color;
+      }
+    }
+
+    th,
+    td {
+      padding: .625em;
+      text-align: left;
+    }
+
+    th {
+      background: $base-table-header-background;
+      color: $base-table-header-color;
+      font-size: .85em;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
