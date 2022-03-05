@@ -141,7 +141,7 @@ ready, running, blocked 등 프로세스 상태에 대한 정보를 저장합니
 프로세스가 실행되기 위해 필요한 
 Accumulator, CPU Register, General Register 등 레지스터 정보를 저장합니다.
 
-####Memory Management Information
+#### Memory Management Information
 
 운영체제에서 사용하는 메모리 관리 시스템에 대한 정보를 저장합니다.  
 page table, memory limits, segment table 등이 포함될 수 있습니다. 
@@ -365,13 +365,13 @@ TCB는 스레드 별로 존재하고 있으며 PCB 를 가리키는 정보를 �
 
 
 ## 출처
-- https://haedallog.tistory.com/138
-- https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/
-- https://www.geeksforgeeks.org/difference-between-process-and-thread/
-- https://www.geeksforgeeks.org/thread-control-block-in-operating-system/
-- https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4
-- https://en.wikipedia.org/wiki/Process_state
-- https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD
-- https://d2.naver.com/helloworld/10963
-- https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html
-- https://charlezz.medium.com/process%EC%99%80-thread-%EC%9D%B4%EC%95%BC%EA%B8%B0-5b96d0d43e37
+- [https://haedallog.tistory.com/138](https://haedallog.tistory.com/138)
+- [https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/](https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/)
+- [https://www.geeksforgeeks.org/difference-between-process-and-thread/](https://www.geeksforgeeks.org/difference-between-process-and-thread/)
+- [https://www.geeksforgeeks.org/thread-control-block-in-operating-system/](https://www.geeksforgeeks.org/thread-control-block-in-operating-system/)
+- [https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4](https://dingrr.com/blog/post/thread%EC%99%80-process%EC%9D%98-%EC%B0%A8%EC%9D%B4)
+- [https://en.wikipedia.org/wiki/Process_state](https://en.wikipedia.org/wiki/Process_state)
+- [https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD](https://selfish-developer.com/entry/%EC%8A%A4%ED%83%9D-%ED%9E%99-%EC%BD%94%EB%93%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%98%81%EC%97%AD)
+- [https://d2.naver.com/helloworld/10963](https://d2.naver.com/helloworld/10963)
+- [https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html](https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html)
+- [https://charlezz.medium.com/process%EC%99%80-thread-%EC%9D%B4%EC%95%BC%EA%B8%B0-5b96d0d43e37](https://charlezz.medium.com/process%EC%99%80-thread-%EC%9D%B4%EC%95%BC%EA%B8%B0-5b96d0d43e37)
