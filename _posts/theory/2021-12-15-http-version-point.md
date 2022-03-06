@@ -115,7 +115,7 @@ Server: Apache
 
 ### 파이프라이닝(pipelining)
 
-{% include image.html alt="파이프 라이닝 (출처: MDN Web Docs)" path="images/theory/http-version-point/http-pipe-lining.png" %}
+{% include image.html alt="파이프 라이닝" source_txt='MDN Web Docs' path="images/theory/http-version-point/http-pipe-lining.png" %}
 
 기본적으로 HTTP는 순차적으로 요청됩니다. 현재 요청에 대해 응답을 받아야 다음 요청을 할 수 있었습니다. 
 하지만 이러한 방식은 네트워크 지연이 발생되고 대역폭 제한에 걸려 딜레이가 생기게 됩니다.
@@ -145,7 +145,7 @@ SPDY가 점차 사용되는 곳이 많아지면서 HTTP-WG는 이를 발판으�
 
 ### 바이너리 프레이밍 계층
 
-{% include image.html alt="바이너리 프레이밍 계층(출처: 구글)" path="images/theory/http-version-point/binary-framing.png" %}
+{% include image.html alt="바이너리 프레이밍 계층" source_txt='구글' path="images/theory/http-version-point/binary-framing.png" %}
 
 HTTP/2 에서 성능 향상 중 가장 핵심은 새로운 바이너리 프레이밍 계층입니다. 
 메시지가 캡슐화되어 클라이언트와 서버 사이에 전송되는 방식을 규정합니다.  
@@ -155,7 +155,7 @@ HTTP/2 에서 성능 향상 중 가장 핵심은 새로운 바이너리 프레�
 
 ### 스트림, 메시지, 프레임
 
-{% include image.html alt="스트림 메시지 프레임 (출처: 구글)" path="images/theory/http-version-point/stream-message-frame.png" %}
+{% include image.html alt="스트림 메시지 프레임" source_txt='구글' path="images/theory/http-version-point/stream-message-frame.png" %}
 
 바이너리 프레이밍 메커니즘이 도입되어 데이터 교환 방식이 변경되었습니다. 
 
@@ -174,7 +174,7 @@ HTTP/2 에서 성능 향상 중 가장 핵심은 새로운 바이너리 프레�
 
 ### 요청 및 응답 다중화
 
-{% include image.html alt="HTTP 2.0 통신 (출처: 구글)" path="images/theory/http-version-point/http2-connection.png" %}
+{% include image.html alt="HTTP 2.0 통신" source_txt='구글' path="images/theory/http-version-point/http2-connection.png" %}
 
 HTTP/1.x의 경우 병렬 요청을 수행하려면 여러 TCP 연결이 필요합니다. 
 연결당 하나의 응답만 전달되고 Head-of-Line 차단이 발생됩니다. 
@@ -191,7 +191,7 @@ HTTP 메시지를 독립된 프레임으로 세분화하고, 인터리빙한 다
 
 ### 스트림 우선순위 지정
 
-{% include image.html alt="스트림 우선순위 (출처: 구글)" path="images/theory/http-version-point/stream-priority.png" %}
+{% include image.html alt="스트림 우선순위" source_txt='구글' path="images/theory/http-version-point/stream-priority.png" %}
 
 프레임이 인터리빙되면서 전달되는 순서도 중요해졌습니다. 
 그래서 HTTP/2 에서는 각 스트림이 연관된 가중치와 종속성이 갖도록 되었습니다.
@@ -233,7 +233,7 @@ HTTP/2는 TCP 연결내에서 다중화 되기 때문에 흐름제어가 정교�
 
 ### 서버 푸시
 
-{% include image.html alt="서버 푸시 (출처: 구글)" path="images/theory/http-version-point/server-push.png" %}
+{% include image.html alt="서버 푸시" source_txt='구글'  path="images/theory/http-version-point/server-push.png" %}
 
 HTTP/2 에서는 클라이언트가 요청하지 않아도 서버가 추가적인 리소스를 보낼 수 있습니다. 
 
@@ -254,7 +254,7 @@ HTTP/2 에서는 클라이언트가 요청하지 않아도 서버가 추가적�
 
 ### 헤더 압축 ([IETF HPACK - HTTP/2의 헤더 압축](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-header-compression))
 
-{% include image.html alt="헤더 압축 (출처: 구글)" path="images/theory/http-version-point/header-compression.png" %}
+{% include image.html alt="헤더 압축" source_txt='구글'  path="images/theory/http-version-point/header-compression.png" %}
 
 HTTP 전송에서는 리소스와 속성을 설명하는 헤더 세트를 전달하게 됩니다. 
 HTTP/1.x 에서는 일반 텍스트로 전송되고, 전송당 500~800바이트의 오버헤드가 추가됩니다. ([프로토콜 오버헤드](https://hpbn.co/http1x/#measuring-and-controlling-protocol-overhead)) 
@@ -276,7 +276,7 @@ HPACK 압축 컨텍스트는 정적 및 동적 테이블로 구성됩니다.
 
 ## HTTP/3
 
-{% include image.html alt="http2 vs http3 (출처: 위키피디아)" path="images/theory/http-version-point/http2-vs-http3.svg" %}
+{% include image.html alt="http2 vs http3" source_txt='위키피디아'  path="images/theory/http-version-point/http2-vs-http3.svg" %}
 
 HTTP/3는 HTTP의 3번째 메이저 버전으로  2015년에 HTTP/2 가 발표된지 4년만에 나왔습니다. ([rfc9000](https://datatracker.ietf.org/doc/html/rfc9000))
 기존의 HTTP 와 가장 큰 차이점은 `TCP` 가 아닌 `UDP` 기반의 `QUIC`을 이용하여 통신을 합니다.
@@ -296,7 +296,7 @@ HPACK을 QUIC 맞게 사용할 수 있도록 수정된 것이 QPACK이라 볼 �
 
 ### 연결 지연 감소
 
-{% include image.html alt="RTT 비교 (출처: [구글 클라우드 플랫폼 블로그](https://cloudplatform.googleblog.com/2018/06/Introducing-QUIC-support-for-HTTPS-load-balancing.html))" path="images/theory/http-version-point/rtt-comparison.gif" %}
+{% include image.html alt="RTT 비교" source_txt='구글 클라우드 플랫폼 블로그' source='https://cloudplatform.googleblog.com/2018/06/Introducing-QUIC-support-for-HTTPS-load-balancing.html' path="images/theory/http-version-point/rtt-comparison.gif" %}
 
 RTT(Round Trip Time)는 패킷이 목적지에 도달하고 응답이 돌아오기까지의 시간, 즉 패킷 왕복 시간을 의미합니다. 
 
@@ -337,7 +337,7 @@ ACK 이 어느 패킷에 대한 응답인지 알기 위해서 별도의 방법�
 
 ### 멀티 플렉싱 
 
-{% include image.html alt="head of line block (출처: [cloudflare 블로그](https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/)))" path="images/theory/http-version-point/http2-head-of-line-block.png" %}
+{% include image.html alt="head of line block" source_txt='cloudflare 블로그' source='https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/' path="images/theory/http-version-point/http2-head-of-line-block.png" %}
 
 HTTP/2 에서 스트림의 개념이 도입되면서 TCP 연결을 더 효율적으로 사용할 수 있도록 개선되었습니다. 
 하지만 여기에서도 마찬가지로 문제가 있습니다.
@@ -349,7 +349,7 @@ TCP 패킷이 네트워크 경로상에서 손실되면 스트림에 누락 구�
 그러므로 HoLB(head of line blocking) 문제가 남아있는 것입니다.
 
 
-{% include image.html alt="head of line block (출처: [ably](https://ably.com/topic/http3)))" path="images/theory/http-version-point/quic-stream-multiplexing.png" %}
+{% include image.html alt="head of line block" source_txt='ably' source='https://ably.com/topic/http3' path="images/theory/http-version-point/quic-stream-multiplexing.png" %}
 
 TCP에서의 HoLB 문제를 개선하고자 QUIC에서는 단일 연결에서 다중 스트림의 개념을 도입했습니다. 
 다중 스트림을 지원하여 손실된 UDP 패킷이 속한 스트림에만 영향을 미치도록 합니다. 
@@ -367,15 +367,15 @@ TCP 의 경우, 서버와 클라이언트의 IP 주소와 포트로 연결을 �
 
 
 ## 참조
-- https://ko.wikipedia.org/wiki/HTTP
-- https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/
-- https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84
-- https://hpbn.co/brief-history-of-http
-- https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
-- https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x
-- https://m.blog.naver.com/sehyunfa/221680799006
-- https://velog.io/@ziyoonee/HTTP1-%EB%B6%80%ED%84%B0-HTTP3-%EA%B9%8C%EC%A7%80-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0
-- https://evan-moon.github.io/2019/10/08/what-is-http3/
-- https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/
-- https://http3-explained.haxx.se/ko/the-protocol/feature-http
-- https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf
+- [https://ko.wikipedia.org/wiki/HTTP](https://ko.wikipedia.org/wiki/HTTP)
+- [https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/](https://kyun2da.dev/CS/http%EC%9D%98-%EC%97%AD%EC%82%AC%EC%99%80-http2%EC%9D%98-%EB%93%B1%EC%9E%A5/)
+- [https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84](https://developers.google.com/web/fundamentals/performance/http2?hl=ko#%EC%8A%A4%ED%8A%B8%EB%A6%BC_%EB%A9%94%EC%8B%9C%EC%A7%80_%EB%B0%8F_%ED%94%84%EB%A0%88%EC%9E%84)
+- [https://hpbn.co/brief-history-of-http](https://hpbn.co/brief-history-of-http)
+- [https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP](https://developer.mozilla.org/ko/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP)
+- [https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x](https://developer.mozilla.org/ko/docs/Web/HTTP/Connection_management_in_HTTP_1.x)
+- [https://m.blog.naver.com/sehyunfa/221680799006](https://m.blog.naver.com/sehyunfa/221680799006)
+- [https://velog.io/@ziyoonee/HTTP1-%EB%B6%80%ED%84%B0-HTTP3-%EA%B9%8C%EC%A7%80-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0](https://velog.io/@ziyoonee/HTTP1-%EB%B6%80%ED%84%B0-HTTP3-%EA%B9%8C%EC%A7%80-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0)
+- [https://evan-moon.github.io/2019/10/08/what-is-http3/](https://evan-moon.github.io/2019/10/08/what-is-http3/)
+- [https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/](https://blog.cloudflare.com/ko-kr/http3-the-past-present-and-future-ko-kr/)
+- [https://http3-explained.haxx.se/ko/the-protocol/feature-http](https://http3-explained.haxx.se/ko/the-protocol/feature-http)
+- [https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46403.pdf)

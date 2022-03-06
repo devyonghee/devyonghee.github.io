@@ -21,7 +21,7 @@ Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니
 
 ### 프로세스 상태
 
-{% include image.html alt='프로세스 상태 출처: [geeksforgeeks](https://www.geeksforgeeks.org/states-of-a-process-in-operating-systems/) ' path="images/theory/process-vs-thread/process-state.png" %}
+{% include image.html alt='프로세스 상태' source_txt='geeksforgeeks' source='https://www.geeksforgeeks.org/states-of-a-process-in-operating-systems' path="images/theory/process-vs-thread/process-state.png" %}
 
 #### Created or New
 
@@ -49,7 +49,7 @@ Proces와 Thread 의 차이는 기술 면접에서 자주 나오는 질문입니
 CPU 당 최대 하나의 프로세스만 실행될 수 있으며, 
 프로세스는 **커널 모드**와 **사용자 모드** 두가지 모드로 실행될 수 있습니다.
 
-{% include image.html alt="유저 모드 커널 모드 (출처: microsoft)" path="images/theory/process-vs-thread/user-mode-kernel-mode.png" %}
+{% include image.html alt="유저 모드 커널 모드" source_txt='microsoft' path="images/theory/process-vs-thread/user-mode-kernel-mode.png" %}
 
 커널 모드(kernel mode)
 - 시스템의 모든 메모리에 접근 가능
@@ -116,7 +116,7 @@ Suspended는 프로세스 수행이 완전 정지된 상태입니다.
 
 운영체제 종류에 따라 PCB 에 저장되는 내용은 다를 수 있지만, 일반적으로 다음의 정보들을 포함하고 있습니다.
 
-{% include image.html alt="Process Control Block (출처: [geeksforgeeks](https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/))" path="images/theory/process-vs-thread/process-control-block.png" %}
+{% include image.html source_txt='geeksforgeeks' source='https://www.geeksforgeeks.org/process-table-and-process-control-block-pcb/' alt="Process Control Block" path="images/theory/process-vs-thread/process-control-block.png" %}
 
 #### Pointer
 
@@ -210,7 +210,7 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 
 ## 스레드(Thread)
 
-{% include image.html alt="스레드 (출처: wikipedia) " path="images/theory/process-vs-thread/thread.png" %}
+{% include image.html alt="스레드" source_txt='wikipedia' path="images/theory/process-vs-thread/thread.png" %}
 
 스레드란 프로세스 내에서 실행되는 작업 흐름의 단위다.  
 일반적으로 한 프로세스에는 메인 스레드 하나만 가지고 있지만, 
@@ -227,7 +227,7 @@ LIFO(Last In First Out) 방식을 따르며, 컴파일 타임에 크기가 결�
 자바에서 스레드의 생명주기는 JVM(Java Virtual Machine)에 의해 기록되고 관리된다.  
 스레드의 상태는 `java.lang.Thread` 내부에 `enum State` 으로 6가지가 선언되어 있다. 
 
-{% include image.html alt="스레드 (출처: wikipedia) " path="images/theory/process-vs-thread/thread.png" %}
+{% include image.html alt="스레드" source_txt='wikipedia' path="images/theory/process-vs-thread/thread.png" %}
 
 #### NEW
 
@@ -275,7 +275,7 @@ TCB는 스레드 별로 존재하고 있으며 PCB 를 가리키는 정보를 �
 프로세스에 있는 스레드 라이브러리에 의해 스케줄링이 되며,  
 이 스레드의 정보를 통해 Context Switching 이 일어난다. 
 
-{% include image.html alt="TCB (출처: https://www.geeksforgeeks.org/thread-control-block-in-operating-system/)" path="images/theory/process-vs-thread/thread-control-block.png" %}
+{% include image.html alt="TCB" source_txt='geeksforgeeks' source='https://www.geeksforgeeks.org/thread-control-block-in-operating-system/' path="images/theory/process-vs-thread/thread-control-block.png" %}
 
 #### Thread ID
 

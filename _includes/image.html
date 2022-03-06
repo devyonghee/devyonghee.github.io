@@ -6,5 +6,16 @@
              alt="{{ include.alt }}"
         />
     </a>
-    <figcaption>{{ include.alt }}</figcaption>
+    {% if include.alt or include.source or include.source_txt %}
+    <figcaption>
+        {{ include.alt }}
+        {% if include.source and include.source_txt %}
+        (출처: <a href="{{include.source | absolute_url }}" target="_blank"> {{ include.source_txt }} </a>)
+        {% elsif include.source %}
+        (출처: <a href="{{include.source | absolute_url }}" target="_blank"> {{ include.source }} </a>)
+        {% elsif include.source_txt %}
+        (출처: {{ include.source_txt }})
+        {% endif %}
+    </figcaption>
+    {% endif %}
 </figure>
