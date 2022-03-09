@@ -43,6 +43,27 @@ GC 작업을 통해 자동으로 메모리 관리가 되면,
   - 프로그램이 예측 불가능하게 정지될 수 있다.
 - 메모리 해제 시점을 파악할 수 없다.
 
+## JVM 메모리
+
+가비지 컬렉션 동작에 대해 이해하기 위해 자바 메모리 구조에 대해 자세히 알아본다.  
+
+{% include image.html alt='jvm 구조'  path="images/theory/garbage-collection/jvm-structure.png" %}
+
+자바 가상 머신(Java Virtual Machine, JVM)은 자바 프로그램을 실행하기 위해 환경을 제공하는 엔진으로,  
+컴파일해서 받은 클래스 파일을 운영체제가 이해할 수 있는 기계어로 변경하여 실행시켜준다.  
+JVM 구조를 보면 크게 Class Loader, Execution Engine, Runtime Data Area 나눠진다. 
+각 영역에 대해서는 추후 JVM 구조에 대해 자세히 다루는 글에서 알아보겠다.  
+
+자세히 알아보아야 살펴봐야할 곳은 Runtime Data Area 이다.  
+Runtime Data Area 은 JVM 의 메모리 영역으로 애플리케이션을 실행할 때 데이터들을 저장하는 영역이다.  
+
+{% include image.html alt='java memory structure' source="https://www.yourkit.com/docs/kb/sizes.jsp" path="images/theory/garbage-collection/runtime-data-area-memory.png" %}
+
+이 영역은 Method Area, Heap Area, Stack Area, PC Register, Native Method Stack 구분되거나 
+위처럼 더 크게 Heap, None-Heap, Other 영역으로 구분될 수 있다. 
+소개하는 곳마다 조금씩 다르기 때문에 본인에게 편한 방식대로 이해하도록 하자.   
+
+
 
 
 ## 출처
