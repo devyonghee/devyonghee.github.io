@@ -54,14 +54,24 @@ GC 작업을 통해 자동으로 메모리 관리가 되면,
 JVM 구조를 보면 크게 Class Loader, Execution Engine, Runtime Data Area 나눠진다. 
 각 영역에 대해서는 추후 JVM 구조에 대해 자세히 다루는 글에서 알아보겠다.  
 
+### Runtime Data Area
+
 자세히 알아보아야 살펴봐야할 곳은 Runtime Data Area 이다.  
 Runtime Data Area 은 JVM 의 메모리 영역으로 애플리케이션을 실행할 때 데이터들을 저장하는 영역이다.  
 
 {% include image.html alt='java memory structure' source="https://www.yourkit.com/docs/kb/sizes.jsp" path="images/theory/garbage-collection/runtime-data-area-memory.png" %}
 
-이 영역은 Method Area, Heap Area, Stack Area, PC Register, Native Method Stack 구분되거나 
-위처럼 더 크게 Heap, None-Heap, Other 영역으로 구분될 수 있다. 
-소개하는 곳마다 조금씩 다르기 때문에 본인에게 편한 방식대로 이해하도록 하자.   
+이 영역은 Method Area, Heap Area, Stack Area, PC Register, Native Method Stack 구분되는데,  
+크게 위처럼 Heap 이외에는 None-Heap 영역으로 구분될 수 있다. 
+
+Heap 영역은 동적으로 할당하여 사용할 수 있는 메모리 영역으로 주로 실행중에 생성된 객체들이 저장된다.    
+JVM 이 실행될 때 생성되며, 실행되는 동안 크기가 증가하거나 감소될 수 있다.  
+
+Non-Heap 메모리는 Heap 이외의 영역으로 Method Area, Stack Area 등이 이 영역에 해당된다.  
+마찬가지로 JVM 이 실핼될 때 생성된다. 
+런타임 상수 풀, 정적 변수, 생성자, 메소드, 지역 변수 등이 저장된다. 
+
+Other 에는 JVM 자체의 코드, 내부 구조, 로드된 프로파일러 에이전트 코드와 데이터 등이 저장된다.
 
 
 
@@ -74,3 +84,5 @@ Runtime Data Area 은 JVM 의 메모리 영역으로 애플리케이션을 실�
 - https://d2.naver.com/helloworld/1329
 - https://mangkyu.tistory.com/118
 - https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5
+
+- https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
