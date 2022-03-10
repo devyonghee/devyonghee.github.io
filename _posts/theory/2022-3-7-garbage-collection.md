@@ -73,6 +73,19 @@ Non-Heap 메모리는 Heap 이외의 영역으로 Method Area, Stack Area 등이
 
 Other 에는 JVM 자체의 코드, 내부 구조, 로드된 프로파일러 에이전트 코드와 데이터 등이 저장된다.
 
+### Heap
+
+{% include image.html alt='heap memory' source_text='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/garbage-collection/heap-memory.png" %}
+
+Heap 영역이 Garbage Collection 의 대상이 되기 때문에 더 자세히 알아본다.  
+Heap은 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구분된다.  
+효율적으로 GC 를 발생시키기 위해 이렇게 나눠지게 되었다.   
+
+#### Young Generation
+
+새로 생성된 객체가 저장되는 영역이다.  
+대부분의 객체는 금방 접근 불가능한 상태(unreachable)가 되어 많은 객체가 이 영역에서 생성되었다가 지워진다.  
+이 영역안에서 객체가 지워지는 것을 Minor GC 가 발생된다고 말한다.  
 
 
 
