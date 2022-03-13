@@ -88,14 +88,7 @@ Heap은 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구
 이 영역안에서 객체가 지워지는 것을 Minor GC 가 발생된다고 한다.  
 
 이 영역은 Eden 영역과 2개의 Survivor 영역으로 이루어져 있다.  
-Young 영역에서 객체가 계속 참조 되어 사용되고 있다면 Old 영역으로 이동된다.  
-
-1. 최초에 객체가 생성되면 Eden 영역에 생성
-2. Eden 영역이 가득차게 되면 첫 번째 Minor GC 발생
-3. 참조된 객체는 survivor0 영역에 Eden 영역을 복사하고, 참조되지 않은 객체들은 모두 제거
-4. survivor0 영역이 가득차게 되면 다시 Minor GC 발생
-5. 계속 참조되는 객체는 survivor1 영역으로 이동 (객체의 크기가 survivor 영역보다 큰 경우 Old 로 이동됨)
-6. 이 과정을 반복하다가 계속 사용된다면 Old 영역으로 이동
+Young 영역에서 객체가 계속 참조 되어 사용되고 있다면 Old 영역으로 이동된다.
 
 #### Old Generation
 
@@ -131,7 +124,44 @@ GC 가 실행되면 더이상 사용되지 않는 인스턴스의 할당된 메�
 `null` 을 이용하는 것은 괜찮지만, 
 `System.gc()` 호출하면 stop the world 가 발생하여 성능에 크게 영향을 주기 때문에 사용하면 안된다. 
 
+## Garbage Collection 알고리즘
 
+### Reference Counting 
+
+Reference Counting 은 객체, 메모리 블록 등을 참조하는 Reference, Pointer, Handle 의 갯수를 저장하는 기술이다.  
+간단하지만 강력하면서 많이 쓰인다. 
+Perl, Php 등 같은 언어가 이 방식을 사용합니다.
+
+{% include image.html alt='reference counting' source_text='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting.png" %}
+
+초록색은 프로그래머가 아직 사용중인 개체다. 현재 실행중인 메소드의 정적 변수, 로컬 변수 등이 될 수 있다.  
+파란색 원은 메모리에 살아있는 객체로 내부의 숫자는 참조 횟수를 의미한다.    
+마지막으로, 회색원은 참조되지 않은 개체로 이 대상이 바로 가비지 컬렉션의 대상이 된다.
+
+이 방식의 장점은 바로 컴파일 시간에 적용하는 것이 용이하다는 점이다.  
+컴파일 시간에 변수들을 미리 찾아서 해제하는 로직이 가능하다.
+
+{% include image.html alt='reference counting disadvantage' source_text='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting-disadvantage.png" %}
+
+하지만 아주 큰 단점이 있다.
+순환참조된 개체들을 제거할 수 없다는 것이다. 
+빨간색 원을 보면 사용되고 있지 않지만, 참조 횟수가 0이 되지 않는다. 
+그렇기 때문에 메모리 누수가 발생될 수 있다. 
+
+### Mark and Sweep
+
+## Minor GC 
+
+Minor GC 가 이루어지는 과정은 다음과 같다.
+
+{% include image.html alt='CG before, after' source_text='naver d2' source="https://d2.naver.com/helloworld/1329" path="images/theory/garbage-collection/garbage-collectio-before-after.png" %}
+
+1. 최초에 객체가 생성되면 Eden 영역에 생성
+2. Eden 영역이 가득차게 되면 첫 번째 Minor GC 발생
+3. 참조된 객체는 survivor0 영역에 Eden 영역을 복사하고, 참조되지 않은 객체들은 모두 제거
+4. survivor0 영역이 가득차게 되면 다시 Minor GC 발생
+5. 계속 참조되는 객체는 survivor1 영역으로 이동 (객체의 크기가 survivor 영역보다 큰 경우 Old 로 이동됨)
+6. 이 과정을 반복하다가 계속 사용된다면 Old 영역으로 이동
 
 ## 출처
 - https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
@@ -141,5 +171,5 @@ GC 가 실행되면 더이상 사용되지 않는 인스턴스의 할당된 메�
 - https://d2.naver.com/helloworld/1329
 - https://mangkyu.tistory.com/118
 - https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5
-
 - https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
+- https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0
