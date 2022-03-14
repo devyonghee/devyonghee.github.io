@@ -126,6 +126,38 @@ GC 가 실행되면 더이상 사용되지 않는 인스턴스의 할당된 메�
 
 ## Garbage Collection 알고리즘
 
+### Mark and Sweep (추적 기반 쓰레기 수집)
+
+{% include image.html alt='mark and sweep' source_text='wikipedia' source="https://en.wikipedia.org/wiki/Tracing_garbage_collection#Na%C3%AFve_mark-and-sweep" path="images/theory/garbage-collection/mark-and-sweep.gif" %}
+
+가장 많이 사용되는 기법으로 특별한 내용없이 GC 라고 한다면 이 방식을 의미한다.  
+접근 가능한(reachable) 메모리에 마킹(mark)을 하고 마킹이 안된 메모리는 할당 해제(sweep)하는 방식이다.
+
+stack, method 등 참조가 가능한 영역을 root set 이라고 하는데  
+이 영역을 시작으로 참조된 객체들을 찾아다니면서 할당 받은 메모리 1비트에 표시하게 된다.
+
+#### 1. Marking
+
+{% include image.html alt='marking' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-marking.png" %}
+
+첫번째 단계는 마킹으로 여기에서 사용중인 메모리와 사용되지 않는 메모리를 식별한다.  
+참조된 대상은 파란색, 참조되지 않는 대상은 주황색이다.  
+시스템의 모든 대상을 스캔해야하는 경우, 이 프로세스에 많은 시간이 소요될 수 있다.
+
+#### 2. Deletion
+
+{% include image.html alt='deletion' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-deletion.png" %}
+
+참조되지 않는 대상을 삭제하여 빈 공간을 둔다.  
+메모리 할당자는 새 객체를 할당할 수 있는 여유 공간에 대해 참조를 가지고 있는다.
+
+#### 2a. Deletion with Compacting
+
+{% include image.html alt='compacting' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-compacting.png" %}
+
+참조되지 않는 대상을 삭제하면서 나머지 객체들을 압축하는 방식인 mark and compact 도 있다.  
+압축하면 새 메모리 할당이 쉽고 빨라지기 때문에 성능이 향상된다. 
+
 ### Reference Counting 
 
 Reference Counting 은 객체, 메모리 블록 등을 참조하는 Reference, Pointer, Handle 의 갯수를 저장하는 기술이다.  
