@@ -180,20 +180,62 @@ Perl, Php 등 같은 언어가 이 방식을 사용합니다.
 빨간색 원을 보면 사용되고 있지 않지만, 참조 횟수가 0이 되지 않는다. 
 그렇기 때문에 메모리 누수가 발생될 수 있다. 
 
-### Mark and Sweep
+## Garbage Collection Process
 
-## Minor GC 
+힙의 구조에 대해서 알아봤으니, 이제 Garbage Collection 이 이루어지는 과정에 대해서 알아보겠다.
 
-Minor GC 가 이루어지는 과정은 다음과 같다.
+#### 1. Object Allocation
 
-{% include image.html alt='CG before, after' source_text='naver d2' source="https://d2.naver.com/helloworld/1329" path="images/theory/garbage-collection/garbage-collectio-before-after.png" %}
+{% include image.html alt="Object Allocation" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process1.png" %}
 
-1. 최초에 객체가 생성되면 Eden 영역에 생성
-2. Eden 영역이 가득차게 되면 첫 번째 Minor GC 발생
-3. 참조된 객체는 survivor0 영역에 Eden 영역을 복사하고, 참조되지 않은 객체들은 모두 제거
-4. survivor0 영역이 가득차게 되면 다시 Minor GC 발생
-5. 계속 참조되는 객체는 survivor1 영역으로 이동 (객체의 크기가 survivor 영역보다 큰 경우 Old 로 이동됨)
-6. 이 과정을 반복하다가 계속 사용된다면 Old 영역으로 이동
+두 개의 Survivor 영역은 모두 비어있는 상태이고, 새로운 객체는 Eden 영역에 할당된다. 
+
+#### 2. Filling the Eden Space
+
+{% include image.html alt="Filling the Eden Space" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process2.png" %}
+
+Eden 영역이 가득 차면 Minor GC가 동작한다. 
+
+#### 3. Copying Referenced Objects
+
+{% include image.html alt="Copying Referenced Objects" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process3.png" %}
+
+참조된 객체는 S0 영역으로 이동된다.  
+여기서 참조되지 않는 객체들은 모두 eden 영역에서 제거된다.
+
+#### 4. Object Aging
+
+{% include image.html alt="Object Aging" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process4.png" %}
+
+다음 Minor GC 가 발생되면 참조되는 객체는 S1 영역으로 이동된다.  
+S0 영역에서 참조되는 객체는 S1으로 이동되면서 참조횟수가 증가된다.  
+이동하고나면 S0 과 eden 영역은 비워진다. 
+
+#### 5. Additional Aging
+
+{% include image.html alt="Additional Aging" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process5.png" %}
+
+다음 Minor GC 역시 동일한 과정으로 진행되지만, 이번에는 Survivor 영역이 변경된다.  
+다시 사용되고 있는 객체는 참조횟수가 증가되고 S1 과 eden 영역은 비워진다. 
+
+#### 6. Promotion
+
+{% include image.html alt="Promotion" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process6.png" %}
+
+반복되는 Minor GC 이후에도 계속 사용되어 제거되지 않는 객체들이 있을 것이다. 
+특정 참조횟수가 넘으면, 해당 객체는 Young generation 에서 Old generation 으로 이동된다.
+
+{% include image.html alt="Promotion" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process7.png" %}
+
+Minor GC 계속 발생되고 오래사용되는 객체는 계속해서 Old generation 으로 이동된다.
+
+#### GC Process Summary
+
+{% include image.html alt="GC Process Summary" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process-summary.png" %}
+
+Young generation 에서는 전체적인 Garbage Collection 과정을 다루고, 
+결국에는 Old generation 에서는 Major GC 가 이뤄지게 된다. 
+
 
 ## 출처
 - https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
