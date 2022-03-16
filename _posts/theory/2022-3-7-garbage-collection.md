@@ -237,6 +237,36 @@ Young generation 에서는 전체적인 Garbage Collection 과정을 다루고,
 결국에는 Old generation 에서는 Major GC 가 이뤄지게 된다. 
 
 
+## Garbage Collection 방식
+
+Garbage Collection 을 하는 방식은 JDK7 에서 다음 5가지가 존재한다.
+- Serial GC
+- Parallel GC
+- Parallel Old GC (Parallel Compacting GC)
+- Concurrent Mark & Sweep GC (CMS)
+- G1(Garbage First) GC
+
+GC 방식에 따라 처리하는 과정이 다르므로 한가지씩 살펴보도록 하겠다. 
+
+
+### Serial GC (-XX:+UseSerialGC)
+
+{% include image.html alt="Serial GC" path="images/theory/garbage-collection/serial-gc.png" %}
+
+- 가장 단순한 방식으로 싱글 스레드로 동작한다.
+- 싱글 스레드로 실행하기 때문에 Stop The World 시간이 다른 GC 에 비해 길다.
+- Mark & Sweep & Compact 알고리즘을 사용한다.
+  1. 참조되고 있는 객체를 식별(Mark)
+  2. 힙 영역의 앞에서부터 사용되지 않는 객체는 제거한다. (Sweep)
+  3. 남아있는 객체들이 연속되게 쌓이도록 힙의 앞 부분부터 정렬한다. (Compact)
+
+이 방식은 적은 메모리와 CPU 코어 갯수가 적을 때 적절하다.  
+멀티스레드 환경에서는 사용하지 않는 것이 좋으며, 보통 실무에서 잘 사용되지 않는다.
+
+
+
+
+
 ## 출처
 - https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
 - https://blog.metafor.kr/163
@@ -244,6 +274,7 @@ Young generation 에서는 전체적인 Garbage Collection 과정을 다루고,
 - https://beststar-1.tistory.com/15
 - https://d2.naver.com/helloworld/1329
 - https://mangkyu.tistory.com/118
+- https://memostack.tistory.com/229
 - https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5
 - https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
 - https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0
