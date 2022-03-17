@@ -264,6 +264,20 @@ GC 방식에 따라 처리하는 과정이 다르므로 한가지씩 살펴보�
 멀티스레드 환경에서는 사용하지 않는 것이 좋으며, 보통 실무에서 잘 사용되지 않는다.
 
 
+### Parallel GC (-XX:+UseParallelGC)
+
+{% include image.html alt="Parallel GC" path="images/theory/garbage-collection/parallel-gc.png" %}
+
+Parallel GC 는 기본적으로 Serial GC 와 알고리즘이 동일하다.  
+그러나 Serial GC 는 하나의 스레드에서 처리하는 것에 비해,
+Parallel GC 는 시스템의 CPU 코어 수만큼 여러개의 스레드에서 처리된다.   
+그래서 Serial GC 보다 빠르게 처리된다.  
+
+Parallel GC 는 메모리가 충분하고 코어의 갯수가 많을 수록 유리하고 Throughput GC 라고도 부른다.  
+Parallel GC 는 JDK 에서 기본으로 사용되는 GC 방식이다.
+
+### CMS GC (-XX:+UseConcMarkSweepGC)
+
 
 
 
