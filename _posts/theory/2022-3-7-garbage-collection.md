@@ -276,10 +276,24 @@ Parallel GC 는 시스템의 CPU 코어 수만큼 여러개의 스레드에서 �
 Parallel GC 는 메모리가 충분하고 코어의 갯수가 많을 수록 유리하고 Throughput GC 라고도 부른다.  
 Parallel GC 는 JDK 에서 기본으로 사용되는 GC 방식이다.
 
-### CMS GC (-XX:+UseConcMarkSweepGC)
+### Concurrent Mark Sweep (CMS) Collector (-XX:+UseConcMarkSweepGC)
 
+{% include image.html alt="CMS GC" path="images/theory/garbage-collection/cms-gc.png" %}
 
+CMS GC 는 Stop the Wold 의 시간을 최소화시키기 위해 고안된 방식으로 Low Latency GC 라고도 한다.  
+진행중인 스레드가 정지되지 않고 백그라운드에서 GC가 가능하기 때문에 Stop the Wold 시간이 짧다.  
+그래서 응답 속도가 중요한 경우에 사용한다.
 
+#### 과정
+1. Initial Mark: 클래스 로더에 가장 가까운 객체 중 사용되는 객체만 찾는다. 그래서 멈추는 시간이 짧다.
+2. Concurrent Mark: 사용되는 객체에서 참조하는 객체들을 따라가며 확인한다. 다른 스레드가 실행중인 상태에서 동시에 진행된다.
+3. Remark: Concurrent Mark 단계에서 추가되거나 참조가 끊긴 객체를 확인한다.
+4. Concurrent Sweep: 쓰레기를 정리한다. 다른 스레드가 실행중인 상태에서 동시에 진행된다. 
+
+#### 단점
+- 다른 GC 방식에 비해 CPU 를 많이 사용한다. 
+  - 만약 CPU 리소스가 부족해지거나, 메모리 파편화가 심헤 메모리 공간이 부족해지면 Serial GC 처럼 동작한다. 
+- Compaction 단계가 제공되지 않는다.
 
 ## 출처
 - https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
