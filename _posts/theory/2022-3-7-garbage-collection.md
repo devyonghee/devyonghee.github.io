@@ -274,7 +274,7 @@ Parallel GC 는 시스템의 CPU 코어 수만큼 여러개의 스레드에서 �
 그래서 Serial GC 보다 빠르게 처리된다.  
 
 Parallel GC 는 메모리가 충분하고 코어의 갯수가 많을 수록 유리하고 Throughput GC 라고도 부른다.  
-Parallel GC 는 JDK 에서 기본으로 사용되는 GC 방식이다.
+Parallel GC 는 JDK8 에서 기본으로 사용되는 GC 방식이다.
 
 ### Concurrent Mark Sweep (CMS) Collector (-XX:+UseConcMarkSweepGC)
 
@@ -295,6 +295,26 @@ CMS GC 는 Stop the Wold 의 시간을 최소화시키기 위해 고안된 방�
   - 만약 CPU 리소스가 부족해지거나, 메모리 파편화가 심헤 메모리 공간이 부족해지면 Serial GC 처럼 동작한다. 
 - Compaction 단계가 제공되지 않는다.
 
+### Garbage First(G1) GC (-XX:+UseG1GC)
+
+{% include image.html alt="G1 GC" path="images/theory/garbage-collection/garbage-first-gc.png" %}
+
+G1 GC는 CMS Collector 를 대체하기 위해 나온 방식이다.  
+JDK6 에서는 early access 라고 불리며 테스트로 사용할 수 있었지만, JDK7 에서 정식으로 포함해서 제공됐다.  
+JDK9 에서는 기본으로 사용되고 있는 방식이다.
+
+G1 GC는 병렬(parallel), 동시(concurrent) 에서 동작하면서 점진적으로 정렬(compact)하여, 
+Stop The World 시간이 짧으며 다른 GC 비해 빠르다.
+
+Young Generation 과 Old Generation 영역이 없는 방식으로 
+힙 공간을 위 이미지처럼 동일한 크기의 영역으로 나눠서 객체를 할당한 뒤 GC 를 실행한다.  
+GC 가 실행되면 남아있는 메모리가 적은 영역부터 먼저 수집하게 되므로 "Garbage First" 라고 부른다.
+
+G1 GC는 문자열 중복 제거라는 뛰어난 최적화 기능을 제공한다.  
+힙에서 여러 번 발생되는 문자열을 식별하고 힙에 복사본이 없도록 동일한 `char[]` 배열을 가리키도록 한다.  
+이 기능은 `XX:+UseStringDeduplication` JVM 인자를 통해 활성화 시킬 수 있다.
+
+
 ## 출처
 - https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
 - https://blog.metafor.kr/163
@@ -306,3 +326,4 @@ CMS GC 는 Stop the Wold 의 시간을 최소화시키기 위해 고안된 방�
 - https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5
 - https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
 - https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0
+- https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/#:~:text=The%20Java%20Virtual%20Machine%20has,as%20well%20as%20interned%20Strings.
