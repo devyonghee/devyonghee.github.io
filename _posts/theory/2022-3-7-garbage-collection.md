@@ -297,14 +297,14 @@ CMS GC 는 Stop the Wold 의 시간을 최소화시키기 위해 고안된 방�
 
 ### Garbage First(G1) GC (-XX:+UseG1GC)
 
-{% include image.html alt="G1 GC" path="images/theory/garbage-collection/garbage-first-gc.png" %}
-
 G1 GC는 CMS Collector 를 대체하기 위해 나온 방식이다.  
 JDK6 에서는 early access 라고 불리며 테스트로 사용할 수 있었지만, JDK7 에서 정식으로 포함해서 제공됐다.  
 JDK9 에서는 기본으로 사용되고 있는 방식이다.
 
 G1 GC는 병렬(parallel), 동시(concurrent) 에서 동작하면서 점진적으로 정렬(compact)하여, 
 Stop The World 시간이 짧으며 다른 GC 비해 빠르다.
+
+{% include image.html alt="G1 GC" path="images/theory/garbage-collection/garbage-first-gc.png" %}
 
 Young Generation 과 Old Generation 영역이 없는 방식으로 
 힙 공간을 위 이미지처럼 동일한 크기의 영역으로 나눠서 객체를 할당한 뒤 GC 를 실행한다.  
@@ -315,15 +315,65 @@ G1 GC는 문자열 중복 제거라는 뛰어난 최적화 기능을 제공한�
 이 기능은 `XX:+UseStringDeduplication` JVM 인자를 통해 활성화 시킬 수 있다.
 
 
+### The Z Garbage Collector (ZGC) (-XX:+UnlockExperimentalVMOptions -XX:+UseZGC)
+
+ZGC 는 확장 가능하고 Stop the world 시간이 적은 (low-pause) GC 이다.  
+기존의 GC 들은 모두 중단되는 시간이 있어서 성능에 영향이 있었다.  
+ZGC 는 이러한 성능을 개선하기 위해 나왔고 JDK 11에서 선보였다.
+
+{% include image.html alt="colored pointer" source_text="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/colored-pointer.png" %}
+
+ZGC 는 GC 메타데이터를 객체의 메모리 주소에 표시한다.  
+메모리의 주소 파트로 42비트를 사용하고 다른 4비트를 GC metadata (finalizable, remap, mark1, mark0)를 저장한다.
+
+- finalizable: finalizer 통해서만 참조되는 객체, 해당 pointer 가 mark 되어 있으면 none-live Object
+- remapped: 해당 객체의 재배치 여부를 판단하는 pointer, 1 이라면 최신 참조 상태 
+- Marked 0, Marked 1: 객체가 live 상태인지 확인 여부
+
+#### ZGC 목표
+
+- 정지 시간이 최대 10ms 초과하면 안됨
+- Heap 의 크기가 증가해도 정지 시간은 증가하지 않음
+- 8MB ~ 16TB 에 이르는 다양한 크기의 Heap 을 다룰 수 있어야 함
+- G1 보다 애플리케이션 처리량이 15% 이상 떨어지면 안됨
+
+#### ZGC 특징
+
+- GC 정지 시간이 10ms 초과하지 않음 (low latency)
+- Heap 이 증가해도 정지 시간이 증가하지 않음 (Scalable)
+- 8MB ~ 16TB 크기까지 다양한 크기의 Heap 처리 가능
+- GC 와 관련된 모든 작업을 애플리케이션과 동시에 작업 (concurrently)
+- GC Thread 를 여러개 동작 시킬 수 있음
+  - 스레드 수가 너무 적으면 Garbage가 누적 (메모리 누수), 너무 크게 설정하면 애플리케이션의 CPU 수행 시간을 소모하여 처리량이 감소
+- 64bit 메모리 공간을 필요로 하기 때문에 32bit 기반의 플랫폼에서 사용 불가능
+
+#### ZGC heap
+
+{% include image.html alt="ZGC" source_text="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/zgc-heap-regions.png" %}
+
+ZGC 는 메모리를 ZPages 라고 불리는 영역으로 나눈다.
+ZPages 는 동적으로 생성 및 삭제될 수 있으며, 
+G1 GC와 다르게 2MB의 배수로 크기를 동적으로 조정할 수 있다. 
+
+- Small (2 MB)
+- Medium (32 MB)
+- Large (N * 2 MB)
+
+여기서 Large 타입 페이지는 하나의 객체만 저장된다.  
+그러므로 Medium 타입보다 작은 사이즈가 될 수 있다.
+
+
+
 ## 출처
-- https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91
-- https://blog.metafor.kr/163
-- https://velog.io/@recordsbeat/Garbage-Collector-%EC%A0%9C%EB%8C%80%EB%A1%9C-%EC%95%8C%EA%B8%B0
-- https://beststar-1.tistory.com/15
-- https://d2.naver.com/helloworld/1329
-- https://mangkyu.tistory.com/118
-- https://memostack.tistory.com/229
-- https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5
-- https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
-- https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0
-- https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/#:~:text=The%20Java%20Virtual%20Machine%20has,as%20well%20as%20interned%20Strings.
+- [https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91](https://namu.wiki/w/%EC%93%B0%EB%A0%88%EA%B8%B0%20%EC%88%98%EC%A7%91)
+- [https://blog.metafor.kr/163](https://blog.metafor.kr/163)
+- [https://velog.io/@recordsbeat/Garbage-Collector-%EC%A0%9C%EB%8C%80%EB%A1%9C-%EC%95%8C%EA%B8%B0](https://velog.io/@recordsbeat/Garbage-Collector-%EC%A0%9C%EB%8C%80%EB%A1%9C-%EC%95%8C%EA%B8%B0)
+- [https://beststar-1.tistory.com/15](https://beststar-1.tistory.com/15)
+- [https://d2.naver.com/helloworld/1329](https://d2.naver.com/helloworld/1329)
+- [https://mangkyu.tistory.com/118](https://mangkyu.tistory.com/118)
+- [https://memostack.tistory.com/229](https://memostack.tistory.com/229)
+- [https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5](https://catsbi.oopy.io/56acd9f4-4331-4887-8bc3-e3e50b2f3ea5)
+- [https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html](https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html)
+- [https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0](https://kamang-it.tistory.com/entry/%EB%8B%A4-%EC%93%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%9E%90%EB%8F%99%EC%9C%BC%EB%A1%9C-%EC%88%98%EA%B1%B0%ED%95%B4%EC%A3%BC%EB%8A%94-%EA%B0%80%EB%B0%94%EC%A7%80%EC%BB%AC%EB%A0%89%ED%84%B0Garbage-CollectorGC-%EA%B8%B0%EB%B3%B8-%EC%9B%90%EB%A6%AC-%ED%8C%8C%ED%95%B4%EC%B9%98%EA%B8%B0)
+- [https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/#:~:text=The%20Java%20Virtual%20Machine%20has,as%20well%20as%20interned%20Strings.](https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/#:~:text=The%20Java%20Virtual%20Machine%20has,as%20well%20as%20interned%20Strings.)
+- [https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/](https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/)
