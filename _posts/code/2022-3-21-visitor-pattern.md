@@ -53,7 +53,160 @@ visitor 는 어떤 장소에 방문하는 사람이라는 의미로
 - 새로운 방문 대상이 추가되면 모든 작업 대상(Visitor)들의 메소드를 추가해야 함
 - `Element` 와 `Visitor`의 양방향 참조로 결합도가 매우 높음
 
- 
+## 구현
+
+### Visitor
+
+방문자 인터페이스는 다음과 같다.  
+`Element` 의 구현체만큼 메소드가 존재한다.
+
+```java 
+
+public interface CarElementVisitor {
+    String visit(Wheel wheel);
+    String visit(Engine engine);
+    String visit(Body body);
+    String visit(Car car);
+}
+```
+
+방문자의 구현체는 본인의 목적에 맞게 메소드를 구현하면 된다. 
+
+```java
+
+public class CarElementPrintVisitor implements CarElementVisitor {
+
+    @Override
+    public String visit(Wheel wheel) {
+        return wheel.name() + " 바퀴입니다.";
+    }
+    @Override
+    public String visit(Engine engine) {
+        return engine.name() + " 엔진입니다.";
+
+    }
+    @Override
+    public String visit(Body body) {
+        return body.name() + " 몸체입니다.";
+    }
+    @Override
+    public String visit(Car car) {
+        return car.name() + " 자동차입니다.";
+    }
+}
+```
+
+### Element
+
+방문 공간인 `Element` 의 인터페이스는 다음과 같다.  
+방문자를 받을 수 있는 한 개의 메소드가 존재한다.
+
+```java  
+
+public interface CarElement {
+    String accept(CarElementVisitor visitor);
+} 
+```
+
+방문 공간의 구현체들은 방문자를 수용하여   
+자기 자신의 정보를 가지고 `visit()` 메소드를 호출해주도록 한다.
+
+```java 
+
+public class Engine implements CarElement {
+
+    private final String name;
+
+    public Engine(String name) {
+        this.name = name;
+    }
+    public String name() {
+        return name;
+    }
+    @Override
+    public String accept(CarElementVisitor visitor) {
+        return visitor.visit(this);
+    }
+}
+```
+
+```java 
+
+public class Wheel implements CarElement {
+
+    private final String name;
+
+    public Wheel(String name) {
+        this.name = name;
+    }
+    public String name() {
+        return name;
+    }
+    @Override
+    public String accept(CarElementVisitor visitor) {
+        return visitor.visit(this);
+    }
+}
+```
+
+```java
+
+public class Body implements CarElement {
+
+    private final String name;
+
+    public Body(String name) {
+        this.name = name;
+    }
+    public String name() {
+        return name;
+    }
+    @Override
+    public String accept(CarElementVisitor visitor) {
+        return visitor.visit(this);
+    }
+}
+```
+
+## Object Structure
+
+Object Structure 는 `Element` 들을 가지고 있는 역할을 한다.  
+이 코드에서는 Car 이 자신의 부품들을 가지고 있는 설정이다.
+
+```java 
+
+public class Car implements CarElement {
+
+    private final String name;
+    private final List<CarElement> elements = new ArrayList<>();
+
+    public Car(String name) {
+        this.name = name;
+        elements.add(new Wheel("왼쪽"));
+        elements.add(new Wheel("오른쪽"));
+        elements.add(new Body("고철"));
+        elements.add(new Engine("전기"));
+    }
+    public String name() {
+        return name;
+    }
+    @Override
+    public String accept(CarElementVisitor visitor) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(visitor.visit(this));
+        for (CarElement element : elements) {
+            sb.append("\n");
+            sb.append(element.accept(visitor));
+        }
+        return sb.toString();
+    }
+}
+
+```
+
+전체 코드는 [깃허브 레포지토리를](https://github.com/devyonghee/design-pattern-java/tree/master/visitor) 참고하자.
+
+
 
 
 ## 출처
