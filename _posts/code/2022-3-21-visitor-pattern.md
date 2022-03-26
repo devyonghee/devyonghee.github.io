@@ -204,8 +204,14 @@ public class Car implements CarElement {
 
 ```
 
-전체 코드는 [깃허브 레포지토리를](https://github.com/devyonghee/design-pattern-java/tree/master/visitor) 참고하자.
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/visitor) 참고
 
+## Review
+
+비지터 패턴은 자료구조와 처리하는 로직을 분리하는 패턴이다.   
+하지만 양방향 의존성을 가지기 때문에 결합도가 매우 높고 
+`Element` 구현체의 갯수만큼 `Visitor` 메소드가 추가되기 때문에 수정도 어렵다.
+이렇게 단점들이 분명하기 때문에 어떤 상황에서 비지터 패턴을 사용해야할지 잘 모르겠다.
 
 
 
