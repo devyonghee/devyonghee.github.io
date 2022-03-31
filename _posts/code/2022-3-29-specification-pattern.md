@@ -26,7 +26,112 @@ Specification pattern 을 이용하면 논리 연산하는 복잡한 로직을 �
 구현체들은 본인의 역할에 맞는 `isSatisfiedBy` 만 구현하면 된다.
 
 
+## 구현
 
+나의 경우에는 인터페이스를 정의하면서 타입 안전하게 사용할 수 있도록 제너릭을 추가했다.  
+이렇게 제너릭을 이용하면 내부에서 캐스팅없이 원하는 객체의 타입을 다룰 수 있다. 
+
+또한, 더 유연하게 사용하기 위해 상위 타입의 `Specification` 도 수용할 수 있도록 `super` 키워드도 추가했다.
+
+### Specification
+
+인터페이스에서 `and`, `or`, `not` 이외에도 필요한 논리 연산이 있다면 메소드를 추가하도록 한다.
+
+```java  
+
+interface Specification<T> {
+
+    Specification<T> and(Specification<? super T> other);
+    Specification<T> andNot(Specification<? super T> other);
+    Specification<T> or(Specification<? super T> other);
+    Specification<T> orNot(Specification<? super T> other);
+    Specification<T> not();
+    boolean isSatisfiedBy(T candidate);
+}
+
+```
+
+
+### CompositeSpecification (Abstract Class)
+
+```java
+
+public abstract class CompositeSpecification<T> implements Specification<T> {
+    @Override
+    public Specification<T> and(Specification<? super T> other) {
+        return new AndSpecification<>(this, other);
+    }
+    @Override
+    public Specification<T> andNot(Specification<? super T> other) {
+        return new AndNotSpecification<>(this, other);
+    }
+    @Override
+    public Specification<T> or(Specification<? super T> other) {
+        return new OrSpecification<>(this, other);
+    }
+    @Override
+    public Specification<T> orNot(Specification<? super T> other) {
+        return new OrNotSpecification<>(this, other);
+    }
+    @Override
+    public Specification<T> not() {
+        return new NotSpecification<>(this);
+    }
+}
+```
+
+### implementation
+
+```java 
+
+public class AndSpecification<T> extends CompositeSpecification<T> {
+
+    private final Specification<? super T> leftCondition;
+    private final Specification<? super T> rightCondition;
+
+    public AndSpecification(Specification<? super T> leftCondition, Specification<? super T> rightCondition) {
+        this.leftCondition = leftCondition;
+        this.rightCondition = rightCondition;
+    }
+    @Override
+    public boolean isSatisfiedBy(T candidate) {
+        return leftCondition.isSatisfiedBy(candidate) && rightCondition.isSatisfiedBy(candidate);
+    }
+}
+```
+
+```java 
+
+public class OrNotSpecification<T> extends CompositeSpecification<T> {
+
+    private final Specification<? super T> leftCondition;
+    private final Specification<? super T> rightCondition;
+
+    public OrNotSpecification(Specification<? super T> leftCondition, Specification<? super T> rightCondition) {
+        this.leftCondition = leftCondition;
+        this.rightCondition = rightCondition;
+    }
+    @Override
+    public boolean isSatisfiedBy(T candidate) {
+        return leftCondition.isSatisfiedBy(candidate) || !rightCondition.isSatisfiedBy(candidate);
+    }
+}
+```
+
+```java 
+public class NotSpecification<T> extends CompositeSpecification<T> {
+
+    private final Specification<? super T> condition;
+
+    public NotSpecification(Specification<? super T> condition) {
+        this.condition = condition;
+    }
+    @Override
+    public boolean isSatisfiedBy(T candidate) {
+        return !condition.isSatisfiedBy(candidate);
+    }
+}
+```
 
 ## 출처
 - [https://en.wikipedia.org/wiki/Specification_pattern](https://en.wikipedia.org/wiki/Specification_pattern)
