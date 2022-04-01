@@ -133,5 +133,13 @@ public class NotSpecification<T> extends CompositeSpecification<T> {
 }
 ```
 
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/specification) 참고
+
+## Review
+
+Specification 패턴은 복잡한 논리연산을 쉽게 정리하고 재활용할 수 있는 유용한 패턴이다.  
+여기에서는 코드를 직접 구현했지만 `java` 에서는 `Predicate<T>`이 이 패턴을 이용했기 때문에 직접 구현할 필요는 없다.  
+그래서 `Predicate<T>`를 많이 이용하는 `Stream` API 에서도 이 패턴을 유용하게 사용할 수 있다.
+
 ## 출처
 - [https://en.wikipedia.org/wiki/Specification_pattern](https://en.wikipedia.org/wiki/Specification_pattern)
