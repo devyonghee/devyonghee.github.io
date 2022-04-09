@@ -31,3 +31,79 @@ Composite = Composite + Leaf 의 형식으로 재귀적인 특성을 띄고 있�
 - 하위 객체가 존재하지 않는 단일 객체
 - Component 에서 정의된 메소드들의 기본 작업을 구현
 
+## 구현
+
+Composite pattern 을 이용하여 메뉴 구성을 구현해본다.  
+메뉴 구성에는 메뉴라는 복합체(Composite) 객체가 있고 메뉴 아이템이라는 단일(Leaf) 객체가 있다. 
+
+### Component
+
+```java 
+
+public interface MenuComponent {
+
+    BigDecimal price();
+}
+```
+
+### Composite
+
+```java 
+
+public class Menu implements MenuComponent {
+
+    private final BigDecimal defaultPrice;
+    private final List<MenuComponent> components = new ArrayList<>();
+
+    public Menu(BigDecimal defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
+
+    public void add(MenuComponent component) {
+        if (component == null) {
+            throw new IllegalArgumentException("component to be added must not be null");
+        }
+        components.add(component);
+    }
+
+    public void remove(MenuComponent component) {
+        if (component == null) {
+            throw new IllegalArgumentException("component to be removed must not be null");
+        }
+        components.remove(component);
+    }
+
+    @Override
+    public BigDecimal price() {
+        return defaultPrice.add(componentsPrice());
+    }
+
+    private BigDecimal componentsPrice() {
+        return components.stream()
+                .map(MenuComponent::price)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+}
+```
+
+
+### Leaf
+
+```java 
+
+
+public class MenuItem implements MenuComponent {
+
+    private final BigDecimal price;
+
+    public MenuItem(BigDecimal price) {
+        this.price = price;
+    }
+
+    @Override
+    public BigDecimal price() {
+        return price;
+    }
+}
+
+```
