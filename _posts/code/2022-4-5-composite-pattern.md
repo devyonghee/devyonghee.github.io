@@ -30,6 +30,15 @@ Composite = Composite + Leaf 의 형식으로 재귀적인 특성을 띄고 있�
 
 - 하위 객체가 존재하지 않는 단일 객체
 - Component 에서 정의된 메소드들의 기본 작업을 구현
+- 
+
+## 장점
+- 트리 구조의 클래스 들을 하나의 타입으로 쉽게 관리할 수 있다.
+- 기존 코드의 수정 없이 새로운 클래스만으로 기능을 추가할 수 있어 확장에 용이하다.
+
+## 단점
+- 다양한 기능들을 인터페이스 하나에 포함되도록 설계하는 것이 어렵다.
+- 객체들의 개인 특성이 많아지면서 캐스팅해서 사용하지 않도록 주의해야 한다.
 
 ## 구현
 
@@ -91,7 +100,6 @@ public class Menu implements MenuComponent {
 
 ```java 
 
-
 public class MenuItem implements MenuComponent {
 
     private final BigDecimal price;
@@ -107,3 +115,15 @@ public class MenuItem implements MenuComponent {
 }
 
 ```
+
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/composite) 참고
+
+## Review
+
+복합체 패턴(Composite Pattern)은 하나의 타입으로 관리할 수 있어서 편리한 패턴이다.  
+하지만 `Composite` 는 본인의 역할과 자식들의 역할을 동시에 수행해야 하기 때문에 주의해서 사용해야겠다.
+
+
+## 출처
+- [https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%8F%AC%EC%A7%80%ED%8A%B8_%ED%8C%A8%ED%84%B4](https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%8F%AC%EC%A7%80%ED%8A%B8_%ED%8C%A8%ED%84%B4)
+- [https://icksw.tistory.com/243](https://icksw.tistory.com/243)
