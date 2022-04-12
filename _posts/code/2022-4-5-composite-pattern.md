@@ -30,7 +30,6 @@ Composite = Composite + Leaf 의 형식으로 재귀적인 특성을 띄고 있�
 
 - 하위 객체가 존재하지 않는 단일 객체
 - Component 에서 정의된 메소드들의 기본 작업을 구현
-- 
 
 ## 장점
 - 트리 구조의 클래스 들을 하나의 타입으로 쉽게 관리할 수 있다.
@@ -121,7 +120,7 @@ public class MenuItem implements MenuComponent {
 ## Review
 
 복합체 패턴(Composite Pattern)은 하나의 타입으로 관리할 수 있어서 편리한 패턴이다.  
-하지만 `Composite` 는 본인의 역할과 자식들의 역할을 동시에 수행해야 하기 때문에 주의해서 사용해야겠다.
+하지만 `Composite` 는 본인의 역할과 자식들의 역할을 동시에 수행해야 하기 때문에 주의해서 사용하도록 하자
 
 
 ## 출처
