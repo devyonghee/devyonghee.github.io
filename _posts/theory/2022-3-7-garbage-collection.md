@@ -56,7 +56,7 @@ JVM 구조를 보면 크게 Class Loader, Execution Engine, Runtime Data Area �
 
 ### Runtime Data Area
 
-자세히 알아보아야 살펴봐야할 곳은 Runtime Data Area 이다.  
+자세히 살펴봐야할 곳은 Runtime Data Area 이다.  
 Runtime Data Area 은 JVM 의 메모리 영역으로 애플리케이션을 실행할 때 데이터들을 저장하는 영역이다.  
 
 {% include image.html alt='java memory structure' source="https://www.yourkit.com/docs/kb/sizes.jsp" path="images/theory/garbage-collection/runtime-data-area-memory.png" %}
