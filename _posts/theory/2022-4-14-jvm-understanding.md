@@ -21,7 +21,7 @@ JVM 에 적재된 코드는 JIT 컴파일 방식으로 실행된다.
 
 ## JIT(just-in-time) compiler
 
-{% include image.html alt='jit compiler' source_txt='biomedcentral' source='https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04547-0' path="images/theory/jvm-architecture/jit-compiler.png" %}
+{% include image.html alt='jit compiler' source_txt='biomedcentral' source='https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04547-0' path="images/theory/jvm-understanding/jit-compiler.png" %}
 
 JIT 컴파일 방식은 동적 번역(dynamic translation)이라고도 하며, 
 기존의 인터프리터 방식의 문제점을 보완하기 위해 도입된 방식이다.
@@ -46,8 +46,30 @@ JIT 컴파일러는 즉석으로 번역하는 대신 자주 사용되는 코드�
 > 실행하기전에 소스 코드를 한번에 다른 코드(ex. native code)로 번역하는 방식  
 > 컴파일된 코드를 실행하기 때문에 속도는 빠르지만, 컴파일하는 과정에 시간과 메모리를 많이 사용
 
+## JVM 구성
+
+{% include image.html alt='jvm architecture' source_txt='Understanding JVM Architecture' source='https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722' path="images/theory/jvm-understanding/jvm-architecture.png" %}
+
+1. ClassLoader Subsystem
+2. Runtime Data Area
+3. Execution Engine
+
+### 1. Class Loader Subsystem
+
+JVM 은 기본적으로 RAM 위에서 동작하게 되는데  
+Class Loader Subsystem 을 통해 클래스 파일들을 RAM 으로 가져온다.  
+이 과정을 동적 클래스 로딩(dynamic class loading) 이라고 하며,  
+클래스 파일은 컴파일 타임이 아니라 처음 클래스를 참조할 때 로드 및 초기화 된다.
+
+#### 1.1 Loading
+
+
 
 
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
 - [https://asfirstalways.tistory.com/158](https://asfirstalways.tistory.com/158)
+- [https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722](https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722)
+- [https://www.geeksforgeeks.org/jvm-works-jvm-architecture]([https://www.geeksforgeeks.org/jvm-works-jvm-architecture])
+- [https://javatutorial.net/jvm-explained](https://javatutorial.net/jvm-explained)
+- [https://dzone.com/articles/jvm-architecture-explained](https://dzone.com/articles/jvm-architecture-explained)
