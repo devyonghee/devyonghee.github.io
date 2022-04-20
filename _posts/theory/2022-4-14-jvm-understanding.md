@@ -1,6 +1,6 @@
 ---
 title: 자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기
-tags: [process, thread]
+tags: [java jvm, java virtual machine, jit, just-in-time]
 categories: theory
 ---
 
@@ -63,6 +63,31 @@ Class Loader Subsystem 을 통해 클래스 파일들을 RAM 으로 가져온다
 
 #### 1.1 Loading
 
+Java ClassLoader 는 컴파일 된 파일(`.class`) 메모리에 로드한다.   
+실행중인 클래스에서 다른 클래스를 참조할 때 Loading 을 시도하게 되며, 보통 메인 클래스(`main()`) 부터 시작된다.  
+
+#### 1.1.1) Bootstrap Class Loader
+
+부트스트랩 경로(`$JAVA_HOME/jre/lib`)에 있는 
+핵심 자바 API 클래스 같은 `rt.jar` 에서 JDK 내부 클래스를 로드한다. (ex. `java.lang.*` 패키지 클래스)  
+C/C++와 같은 네이티브 언어로 구현되며, 이 로더에게 가장 높은 우선순위가 부여된다.
+
+#### 1.1.2) Extension Class Loader
+
+
+#### 1.1.3) System/Application Class Loader
+
+
+
+클래스 로더는 아래 4가지 주요 원칙을 따르고 있다.
+
+##### 원칙 1) Visibility Principle
+
+##### 원칙 2) Uniqueness Principle
+
+##### 원칙 3) Delegation Hierarchy Principle
+
+##### 원칙 4) No Unloading Principle
 
 
 
