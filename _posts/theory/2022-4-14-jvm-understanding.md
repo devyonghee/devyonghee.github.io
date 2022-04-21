@@ -74,6 +74,9 @@ C/C++와 같은 네이티브 언어로 구현되며, 이 로더에게 가장 높
 
 #### 1.1.2) Extension Class Loader
 
+Bootstrap Class Loader 의 자식이다.  
+JDK 확장 디렉토리(`JAVA_HOME/jre/lib/ext` 또는 `java.ext.dirs` 지정된 디렉토리) 에서 클래스를 로드한다. 
+
 
 #### 1.1.3) System/Application Class Loader
 
