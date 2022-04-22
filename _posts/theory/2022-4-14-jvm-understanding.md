@@ -74,12 +74,14 @@ C/C++와 같은 네이티브 언어로 구현되며, 이 로더에게 가장 높
 
 #### 1.1.2) Extension Class Loader
 
-Bootstrap Class Loader 의 자식이다.  
-JDK 확장 디렉토리(`JAVA_HOME/jre/lib/ext` 또는 `java.ext.dirs` 지정된 디렉토리) 에서 클래스를 로드한다. 
-
+JDK 확장 디렉토리(`JAVA_HOME/jre/lib/ext` 또는 `java.ext.dirs` 지정된 디렉토리) 에서 클래스를 로드한다.
+Bootstrap Class Loader 자식이기도 하다.
 
 #### 1.1.3) System/Application Class Loader
 
+모든 응용 프로그램 수준의 클래스를 JVM 으로 로드하는 역할이다. 
+`java.class.path` 에 매핑된 classpath 환경변수 , `-cp` 또는 `-classpath` 옵션으로 찾은 클래스를 로드한다.
+Extension Class Loader 자식이기도 하다.
 
 
 클래스 로더는 아래 4가지 주요 원칙을 따르고 있다.
@@ -97,6 +99,7 @@ JDK 확장 디렉토리(`JAVA_HOME/jre/lib/ext` 또는 `java.ext.dirs` 지정된
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
 - [https://asfirstalways.tistory.com/158](https://asfirstalways.tistory.com/158)
+- [https://www.baeldung.com/java-classloaders](https://www.baeldung.com/java-classloaders)
 - [https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722](https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722)
 - [https://www.geeksforgeeks.org/jvm-works-jvm-architecture]([https://www.geeksforgeeks.org/jvm-works-jvm-architecture])
 - [https://javatutorial.net/jvm-explained](https://javatutorial.net/jvm-explained)
