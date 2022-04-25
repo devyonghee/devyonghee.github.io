@@ -94,9 +94,19 @@ Extension Class Loader 자식이기도 하다.
 만약, 이 원칙이 없다면 클래스 로더는 위와 같은 계층 구조가 존재할 수 없다.  
 격리 수준이 존재하지 않으면 모든 클래스들을 로드해오는 플랫 클래스로더와 동일하다.
 
-##### 원칙 2) Uniqueness Principle
+##### 원칙 2) Uniqueness Principle (유일성 원칙)
 
-##### 원칙 3) Delegation Hierarchy Principle
+부모에 의해 로드된 클래스가 자식 클래스 로더에서 다시 로드되지 않도록 유일성을 보장하는 원칙이다.  
+이 원칙에 의해 클래스를 중복으로 로드하지 않는다.
+
+##### 원칙 3) Delegation Hierarchy Principle (위임 원칙)
+
+{% include image.html alt='delegation hierarchy principle' source_txt='stackoverflow' source='https://stackoverflow.com/questions/34650568/difference-between-appclassloader-and-systemclassloader' path="images/theory/jvm-understanding/delegation-hierarchy-principle.png" %}
+
+JVM 은 클래스 로딩 요청에 대해 계층 구조에 따라 적절한 클래스 로더를 선택 위임한다.  
+Application Class Loader 는 낮은 레벨의 클래스 로딩 요청을 Extension Class Loader 에 위임,  
+Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다. 
+
 
 ##### 원칙 4) No Unloading Principle
 
