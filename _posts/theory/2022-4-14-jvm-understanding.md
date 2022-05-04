@@ -110,6 +110,13 @@ Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다.
 
 ##### 원칙 4) No Unloading Principle
 
+클래스 로더는 클래스를 로드할 수 있지만 로드 된 클래스를 언로드할 수 없다.  
+하지만, 언로딩 대신 현재 클래스 로더를 삭제하고 새로운 클래스 로더로 생성할 수 있다.
+
+#### 1.2 Linking
+
+
+
 
 
 ## 출처
