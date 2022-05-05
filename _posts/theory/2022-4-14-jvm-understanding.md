@@ -115,8 +115,29 @@ Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다.
 
 #### 1.2 Linking
 
+링크는 로드된 클래스, 인터페이스 등 필요에 따라 요소의 타입에 따라 
+검증(verification) -> 준비(preparation) -> 해결(resolution) 3단계가 이루어진다.  
+이 단계가 진행되면서 아래의 특성들을 따르고 있다.
 
+- 링크가 되기전에 클래스 또는 인터페이스는 완전히 로드가 되어야 한다.
+- 클래스나 인터페이스는 초기화되기 전에 완전히 검증되고 준비가 되어 있어야 한다.
+- 링크되는 동안 오류가 발생되면, 관련된 클래스 또는 인터페이스가 필요한 프로그램 한 부분에서 오류가 발생된다.
 
+##### 1.2.1 Verification
+
+- `.class` 파일의 형식이 유효한지 확인 (Java, JVM 사양에 따라 유효한 코드 또는 컴파일러에 의해 생성됐는지 확인)
+  - 바이트 코드 수정했을 수 있으므로 검증
+  - 클래스 로드 프로세스 중 가장 복잡하고 오랜 시간이 소요
+  - 검증에 실패하면 런타임 오류(`java.lang.VerifyError`) 발생
+
+> ##### 예시 검증 요소
+> - consistent and correctly formatted symbol table
+> - final methods / classes not overridden
+> - methods respect access control keywords
+> - methods have correct number and type of parameters
+> - bytecode doesn’t manipulate stack incorrectly
+> - variables are initialized before being read
+> - variables are a value of the correct type
 
 
 ## 출처
