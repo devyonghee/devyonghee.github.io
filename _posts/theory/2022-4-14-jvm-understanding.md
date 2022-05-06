@@ -135,9 +135,24 @@ Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다.
 > - final methods / classes not overridden
 > - methods respect access control keywords
 > - methods have correct number and type of parameters
-> - bytecode doesn’t manipulate stack incorrectly
+> - bytecode doesn`t manipulate stack incorrectly
 > - variables are initialized before being read
 > - variables are a value of the correct type
+
+##### 1.2.1 Preparation
+
+- 클래스 변수(`static` 변수)와 기본 값에 메모리를 할당하고 초기화 하는 단계
+- initializer 나 코드가 실행되지 않음
+
+##### 1.2.2 Resolution (Optional)
+
+- 사용 환경에 따라 동작 여부가 달라진다.
+- 타입의 심볼릭 참조를(symbolic references) 직접 참조(direct reference)로 변경된다.
+- 참조된 엔티티를 찾기 위해 method area 에서 검색하고 실행된다.
+
+> `new User()` 이 실제 레퍼런스를 가리키지 않는 상태에서   
+> 실제 힙에 있는 인스턴스를 가리키는 작업을 이 단계에서 수행한다.
+
 
 
 ## 출처
