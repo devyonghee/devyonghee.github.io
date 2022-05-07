@@ -154,6 +154,20 @@ Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다.
 > 실제 힙에 있는 인스턴스를 가리키는 작업을 이 단계에서 수행한다.
 
 
+#### 1.3 Initialization
+
+클래스 로딩의 마지막 단계로, 
+모든 정적(`static`) 변수는 코드나 `static` 블록 안에서 정의된 값으로 할당되는 단계다. (ex. 클래스 생성자 호출)   
+클래스에서는 위에서 아래로, 클래스 계층에서 부모에서 자식으로 한줄씩 실행된다.  
+
+JVM 은 다중 스레드이기 때문에,  
+이 단계에서는 동기화를 통해 같은 클래스나 인터페이스를 초기화하지 않도록 방지해야 한다.(`thread safe`) 
+
+
+### 2. Runtime Data Area
+
+
+
 
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
