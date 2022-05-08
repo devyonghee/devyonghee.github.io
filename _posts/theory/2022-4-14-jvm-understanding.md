@@ -166,7 +166,26 @@ JVM 은 다중 스레드이기 때문에,
 
 ### 2. Runtime Data Area
 
+{% include image.html alt='run time data areas' source_txt='programcreek' source='https://www.programcreek.com/2013/04/jvm-run-time-data-areas/' path="images/theory/jvm-understanding/run-time-data-areas.png" %}
 
+Runtime Data Area은 JVM 메모리 영역으로 OS에서 애플리케이션이 실행되면서 할당되는 메모리 영역이다.  
+
+클래스 로더에서는 클래스 파일을 읽는 것 이외에도 데이터를 생성하고 아래와 같은 정보를 메소드 영역(method area)에 저장하게 된다.
+
+- 직계 상위 클래의 이름
+- `.class` 파일이 `Class`/`Interface`/`Enum` 과 관련 여부
+- 수정자, 정적 변수, 메소드 정보 등
+
+로드된 `.class` 파일은 `java.lang` 패키지에 정의된대로 heap memory에 `Class` 객체를 생성한다.
+이 `Class` 객체는 클래스에 대한 정보(이름, 상위 클래스, 메소드, 정적 변수 등)를 확인하기 위해 사용된다.  
+
+Runtime Data Area 영역은 주로 다음과 같이 구분된다. 
+
+- Method Area
+- Heap Area
+- Stack Area 
+- PC Register 
+- Native Method Stack
 
 
 ## 출처
@@ -177,3 +196,4 @@ JVM 은 다중 스레드이기 때문에,
 - [https://www.geeksforgeeks.org/jvm-works-jvm-architecture]([https://www.geeksforgeeks.org/jvm-works-jvm-architecture])
 - [https://javatutorial.net/jvm-explained](https://javatutorial.net/jvm-explained)
 - [https://dzone.com/articles/jvm-architecture-explained](https://dzone.com/articles/jvm-architecture-explained)
+- [https://www.programcreek.com/2013/04/jvm-run-time-data-areas](https://www.programcreek.com/2013/04/jvm-run-time-data-areas)
