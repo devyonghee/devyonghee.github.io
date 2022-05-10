@@ -66,18 +66,18 @@ Class Loader Subsystem 을 통해 클래스 파일들을 RAM 으로 가져온다
 Java ClassLoader 는 컴파일 된 파일(`.class`) 메모리에 로드한다.   
 실행중인 클래스에서 다른 클래스를 참조할 때 Loading 을 시도하게 되며, 보통 메인 클래스(`main()`) 부터 시작된다.  
 
-#### 1.1.1) Bootstrap Class Loader
+#### 1.1.1 Bootstrap Class Loader
 
 부트스트랩 경로(`$JAVA_HOME/jre/lib`)에 있는 
 핵심 자바 API 클래스 같은 `rt.jar` 에서 JDK 내부 클래스를 로드한다. (ex. `java.lang.*` 패키지 클래스)  
 C/C++와 같은 네이티브 언어로 구현되며, 이 로더에게 가장 높은 우선순위가 부여된다.
 
-#### 1.1.2) Extension Class Loader
+#### 1.1.2 Extension Class Loader
 
 JDK 확장 디렉토리(`JAVA_HOME/jre/lib/ext` 또는 `java.ext.dirs` 지정된 디렉토리) 에서 클래스를 로드한다.
 Bootstrap Class Loader 자식이기도 하다.
 
-#### 1.1.3) System/Application Class Loader
+#### 1.1.3 System/Application Class Loader
 
 모든 응용 프로그램 수준의 클래스를 JVM 으로 로드하는 역할이다. 
 `java.class.path` 에 매핑된 classpath 환경변수 , `-cp` 또는 `-classpath` 옵션으로 찾은 클래스를 로드한다.
@@ -186,6 +186,37 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 - Stack Area 
 - PC Register 
 - Native Method Stack
+
+#### 2.1 Method Area (class area, code area, static area)
+
+메소드 영역은 클래스 수준의 데이터와 정적 변수가 저장되는 영역으로, JVM 당 하나만 존재하는 공유 자원이다.  
+그러므로 스레드로부터 안전하게 다뤄야 한다.  
+이 영역은 JVM 이 구동 시작하면서 생성되고, 종료될 때까지 유지된다. 
+
+메소드 영역에 저장되는 클래스 수준의 정보는 다음과 같다.
+
+- Classloader reference
+- runtime constant pool
+  - 클래스 및 인터페이스의 숫자 상수, 필드 참조, 메소드 참조
+  - JVM 은 이  runtime constant pool 을 이용하여 메소드나 필드의 실제 주소를 검색
+- field data
+  - name
+  - type
+  - modifier(`private`, `protected`, `public`,`static`, `final`, `volatile`, `transient`)
+  - attributes
+- method data
+  - name
+  - return type
+  - parameter types(in order)
+  - modifier(`private`, `protected`, `public`,`static`, `final`, `syncronized`, `native`, `abstract`)
+  - attributes
+- method code
+  - byte code 
+  - operand stack 및 local variable 크기
+  - local variable 및 exception table
+  - exception table 의 예외 처리기 정보
+    - start and end point, PC offset for handler code, 예외 클래스의 constant pool index
+
 
 
 ## 출처
