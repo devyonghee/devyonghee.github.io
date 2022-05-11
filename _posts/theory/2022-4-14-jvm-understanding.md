@@ -217,6 +217,22 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
   - exception table 의 예외 처리기 정보
     - start and end point, PC offset for handler code, 예외 클래스의 constant pool index
 
+#### 2.2 Heap Area
+
+힙 영역은 모든 객체의 정보를 저장하는 영역으로, JVM 에 하나만 존재하는 공유 자원이다.  
+각 스레드에서 메모리를 공유하고 있기 때문에 multiple threads 환경에서 안전하지 않다.
+
+인스턴스가 동적으로 생성되면 힙 영역의 메모리에 할당되어 사용되는데,  
+레퍼런스 변수의 경우에는 인스턴스가 아니라 포인터가 저장된다.
+
+힙 영역이 정리하지 되지 않고 가득차게 되면 `OutOfMemoryError` 가 발생된다.  
+이 문제가를 방지하기 위해 JVM 에서 주기적으로 Garbage Collection 을 실행한다.  
+참조되지 않은 인스턴스, 배열에 대한 정보가 힙 영역에 존재하기 때문에 Garbage Collection 의 대상이 된다.  
+
+{% include image.html alt='heap memory' source_text='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/jvm-understanding/heap-memory.png" %}
+
+힙 영역은 효율적으로 GC 를 실행하기 위해 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구분하게 되는데, 
+그 이유는 [Garbage Collection](https://devyonghee.github.io/theory/2022/03/07/garbage-collection/) 을 참고한다.
 
 
 ## 출처
