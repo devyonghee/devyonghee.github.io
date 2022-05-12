@@ -239,8 +239,6 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 스택 영역은 공유되는 자원이 아닌, 스레드가 시작되면 메서드 호출을 저장하기 위해 각 스레드별로 따로 할당되는 영역이다.  
 그렇기 때문에 멀티 스레드 환경에서도 동시성 문제가 발생되지 않는다.
 
-{% include image.html alt='run time data areas' source_txt='programcreek' source='https://www.programcreek.com/2013/04/jvm-run-time-data-areas/' path="images/theory/jvm-understanding/run-time-data-areas.png" %}
-
 {% include image.html alt='stack frame' source_txt='medium' source='https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722' path="images/theory/jvm-understanding/stack-frame.png" %}
 
 스레드에서 메서드 호출이 되면 스택 프레임(stack frame)이 생성되어 스택의 가장 위에 추가(push) 된다.
