@@ -232,7 +232,21 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 {% include image.html alt='heap memory' source_text='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/jvm-understanding/heap-memory.png" %}
 
 힙 영역은 효율적으로 GC 를 실행하기 위해 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구분하게 되는데, 
-그 이유는 [Garbage Collection](https://devyonghee.github.io/theory/2022/03/07/garbage-collection/) 을 참고한다.
+자세한 내용은 [Garbage Collection](https://devyonghee.github.io/theory/2022/03/07/garbage-collection/) 을 참고하도록 한다.
+
+#### 2.3 Stack Area
+
+스택 영역은 공유되는 자원이 아닌, 스레드가 시작되면 메서드 호출을 저장하기 위해 각 스레드별로 따로 할당되는 영역이다.  
+그렇기 때문에 멀티 스레드 환경에서도 동시성 문제가 발생되지 않는다.
+
+{% include image.html alt='run time data areas' source_txt='programcreek' source='https://www.programcreek.com/2013/04/jvm-run-time-data-areas/' path="images/theory/jvm-understanding/run-time-data-areas.png" %}
+
+{% include image.html alt='stack frame' source_txt='medium' source='https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722' path="images/theory/jvm-understanding/stack-frame.png" %}
+
+스레드에서 메서드 호출이 되면 스택 프레임(stack frame)이 생성되어 스택의 가장 위에 추가(push) 된다.
+스택 프레임에는 local variable, operand stack, 실행중인 메소드의 클래스 runtime constant pool 정보들이 존재한다.
+메서드가 종료되거나 예외가 발생되면 스택 프레임은 제거(pop)가 되는데, 예외의 경우 stack trace 의 각 라인이 stack frame 을 의미한다.
+
 
 
 ## 출처
