@@ -246,6 +246,46 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 메서드가 종료되거나 예외가 발생되면 스택 프레임은 제거(pop)가 되는데, 예외의 경우 stack trace 의 각 라인이 stack frame 을 의미한다.
 
 
+스택 영역과 힙 영역에 대해 자세히 알아보기 위해 예시 코드를 통해 알아본다.
+
+```java 
+class Person {
+    int id;
+    String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+
+public class PersonBuilder {
+    private static Person buildPerson(int id, String name) {
+        return new Person(id, name);
+    }
+
+    public static void main(String[] args) {
+        int id = 23;
+        String name = "John";
+        Person person = null;
+        person = buildPerson(id, name);
+    }
+}
+```
+
+{% include image.html alt='java stack heap' source_txt='baeldung' source='https://www.baeldung.com/java-stack-heap' path="images/theory/jvm-understanding/java-stack-heap.png" %}
+
+1) `main()` 메소드를 호출하면 스택 메모리에 메소드의 기본 요소와 참조를 저장하기 위한 공간이 생성된다.
+  - `integer id` 의 원시 값을 스택 메모리에 직접 저장
+  - `Person` 타입의 참조 변수 `person`도 스택 메모리에 생성되어 힙의 실제 객체를 가리킴
+2) `main()` 에서 `Person` 생성자를 호출하면 이전 스택위에 메모리에 추가되어 할당
+  - 스택 메모리에 있는 `this` 객체 참조 저장
+  - 스택 메모리의 원시 `id` 값 저장
+  - 힙 메모리에 있는 string pool 에서 실제 인자 문자열 참조 변수 저장
+3) `buildPerson()` 정적 메소드를 호출하고 있어서 위와 같은 방식으로 변수를 다시 저장하고 이전 스택 위에 스택 메모리 추가 할당
+4) 힙 메모리에는 새로 생성된 `person` 인스턴스 변수를 저장
+
+
 
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
@@ -256,3 +296,4 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 - [https://javatutorial.net/jvm-explained](https://javatutorial.net/jvm-explained)
 - [https://dzone.com/articles/jvm-architecture-explained](https://dzone.com/articles/jvm-architecture-explained)
 - [https://www.programcreek.com/2013/04/jvm-run-time-data-areas](https://www.programcreek.com/2013/04/jvm-run-time-data-areas)
+- [https://www.baeldung.com/java-stack-heap](https://www.baeldung.com/java-stack-heap)
