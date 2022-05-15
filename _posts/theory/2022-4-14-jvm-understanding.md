@@ -239,12 +239,28 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 스택 영역은 공유되는 자원이 아닌, 스레드가 시작되면 메서드 호출을 저장하기 위해 각 스레드별로 따로 할당되는 영역이다.  
 그렇기 때문에 멀티 스레드 환경에서도 동시성 문제가 발생되지 않는다.
 
+스택 영역의 크기는 동적 또는 고정일 수 있으나, 크기가 넘치게 되면 `stackOverflowError` 가 발생된다.  
+하지만, 스레드에 새 프레임을 할당한 메모리가 부족하게 되면 `OutOfMemoryError` 가 발생된다.
+
 {% include image.html alt='stack frame' source_txt='medium' source='https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722' path="images/theory/jvm-understanding/stack-frame.png" %}
 
 스레드에서 메서드 호출이 되면 스택 프레임(stack frame)이 생성되어 스택의 가장 위에 추가(push) 된다.
 스택 프레임에는 local variable, operand stack, 실행중인 메소드의 클래스 runtime constant pool 정보들이 존재한다.
 메서드가 종료되거나 예외가 발생되면 스택 프레임은 제거(pop)가 되는데, 예외의 경우 stack trace 의 각 라인이 stack frame 을 의미한다.
 
+- local variable array
+  - 0부터 시작하는 인덱스를 가짐
+  - 지역 변수의 수와 값이 저장
+  - 0은 메소드가 속한 클래스 인스턴스의 참조
+  - 1부터 메소드로 전송된 `parameter` 저장
+  - `parameter` 이후에 메소드 로컬 변수 저장
+- operand stack
+  - 작업을 수행하기 위한 런타임 작업 공간 역할
+  - 각 메소드에서 스택과 지역 변수 데이터를 교환, 메소드 호출 결과를 push or pop
+  - operand stack 공간의 필요한 크기는 컴파일 중에 결정할 수 있음
+- frame data
+  - 메소드와 관련된 모든 정보 저장
+  - 예외의 경우 `catch` 블록 정보도 저장
 
 스택 영역과 힙 영역에 대해 자세히 알아보기 위해 예시 코드를 통해 알아본다.
 
@@ -285,6 +301,8 @@ public class PersonBuilder {
 3) `buildPerson()` 정적 메소드를 호출하고 있어서 위와 같은 방식으로 변수를 다시 저장하고 이전 스택 위에 스택 메모리 추가 할당
 4) 힙 메모리에는 새로 생성된 `person` 인스턴스 변수를 저장
 
+
+#### 2.4 PC Register
 
 
 ## 출처
