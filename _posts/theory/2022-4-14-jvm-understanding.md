@@ -302,8 +302,18 @@ public class PersonBuilder {
 4) 힙 메모리에는 새로 생성된 `person` 인스턴스 변수를 저장
 
 
-#### 2.4 PC Register
+#### 2.4 PC(Program Counter) Register
 
+{% include image.html alt='pc register' source_txt='naver blog' source='https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=2000yujin&logNo=130156226754' path="images/theory/jvm-understanding/pc-register.png" %}
+
+PC(Program Counter) Register 는 현재 실행 중인 명령어의 주소를 저장하는 메모리 공간이다.  
+Java 는 멀티 스레드 환경을 지원하므로 새 스레드가 생성될 때마다 PC Register 가 생성된다. (각 스레드마다 PC Register 존재)   
+
+스레드에서 메소드를 호출할 때 PC Register 에는 현재 수행중인 instruction 주소가 저장된다.  
+이 주소는 native pointer 또는 method bytecode 시작 지점이 될 수 있다.
+하지만, 호출된 메소드가 native method 라면 PC Register 에는 기록되지 않는다.(undefined)
+
+실행이 완료되면 PC Register 는 다음 명령어(instruction)의 주소로 변경(update)된다.  
 
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
