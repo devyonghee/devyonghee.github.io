@@ -315,6 +315,25 @@ Java 는 멀티 스레드 환경을 지원하므로 새 스레드가 생성될 �
 
 실행이 완료되면 PC Register 는 다음 명령어(instruction)의 주소로 변경(update)된다.  
 
+#### 2.5 Native Method Stack
+
+{% include image.html alt='stack that invokes native method' source_txt='artima' source='https://www.artima.com/insidejvm/ed2/jvm9.html' path="images/theory/jvm-understanding/native-method-stack.png" %}
+
+Java 는 네이티브 응용 프로그램 또는 다른 언어로 작성된 라이브러리를 호출하기 위한 프레임워크, JNI(Java Native Interface)을 제공한다.  
+Java 스레드와 OS 스레드 간에 직접 매핑을 해주는데 호출 되는 native method 는 주로 C/C++ 언어로 작성된다.
+
+Native Method Stack 은 이러한 JNI 를 통해 호출 되는 정보를 저장하기 위한 생성되는 native stack 이다.  
+스레드가 생성되면 Native Method Stack 도 동시에 생성되며, 스레드가 종료되면 native, java 스레드에 대한 리소스가 해제된다.
+
+프로그램에서 Native Method 을 호출하면 이를 호출한 Method 의 Stack Frame 은 남겨두고 Native Function 을 수행한다.  
+Native Function 이 끝나면 다시 Java Stacks 으로 돌아오는데, 
+여기서 호출한 Stack Frame으로 돌아오는 것이 아니라 새로운 Stack Frame을 생성하여 이전 작업을 계속 수행한다. 
+
+- 스레드에서 허용된 것보다 더 큰 native method stack 이 필요하면 JVM 은 `StackOverflowError`을 발생시킨다.
+- native method stack 은 동적으로 확장할 수 있다. 하지만 확장을 시도했는데 메모리가 충분하지 않거나 부족한 경우 JVM 은 `OutOfMemoryError`을 발생시킨다.
+
+
+
 ## 출처
 - [https://d2.naver.com/helloworld/1230](https://d2.naver.com/helloworld/1230)
 - [https://asfirstalways.tistory.com/158](https://asfirstalways.tistory.com/158)
@@ -325,3 +344,5 @@ Java 는 멀티 스레드 환경을 지원하므로 새 스레드가 생성될 �
 - [https://dzone.com/articles/jvm-architecture-explained](https://dzone.com/articles/jvm-architecture-explained)
 - [https://www.programcreek.com/2013/04/jvm-run-time-data-areas](https://www.programcreek.com/2013/04/jvm-run-time-data-areas)
 - [https://www.baeldung.com/java-stack-heap](https://www.baeldung.com/java-stack-heap)
+- [https://javapapers.com/core-java/java-jvm-run-time-data-areas](https://javapapers.com/core-java/java-jvm-run-time-data-areas)
+- [https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=2000yujin&logNo=130156226754](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=2000yujin&logNo=130156226754)
