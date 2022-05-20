@@ -1,6 +1,6 @@
 ---
 title: 자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Runtime Data Area
-tags: [java, jvm, java virtual machine, class loader]
+tags: [java, jvm, java virtual machine, runtime data area]
 categories: theory
 ---
 
