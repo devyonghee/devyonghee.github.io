@@ -63,6 +63,8 @@ Class Loader Subsystem 을 통해 클래스 파일들을 RAM 으로 가져온다
 
 ### 1 Loading
 
+{% include image.html alt='class loader' path="images/theory/jvm-understanding/class-loader.png" %}
+
 Java ClassLoader 는 컴파일 된 파일(`.class`) 메모리에 로드한다.   
 실행중인 클래스에서 다른 클래스를 참조할 때 Loading 을 시도하게 되며, 보통 메인 클래스(`main()`) 부터 시작된다.  
 
