@@ -73,9 +73,57 @@ native 코드는 캐시에 저장되므로 한줄씩 해석하는 인터프리�
 - `XX:CompileThreshold=N` 
 - `XX:OnStackReplacePercentage=N`
 
+## AOT(ahead-of-time) Compiler
+
+AOT(ahead-of-time) Compiler 는 JVM 의 실행 시간을 개선한 방법으로,
+실행 전에 바이트코드를 native 코드로 컴파일하는 방식이다.
+Java9 에서 실험 기능으로 추가되었으며, [JRE-295](https://openjdk.java.net/jeps/295) 에 자세히 설명되어 있다.  
+
+JIT compiler 는 Java 바이트 코드를 실행하고 자주 실행되는 코드를 런타임에 컴파일 하기 때문에 성능 이슈가 있다.  
+AOT compiler 는 모두 native 코드로 변경하기 때문에 성능 저하 없이 native 한 성능을 낼 수 있다.  
+
+하지만 AOT compiler 를 사용하면 native 코드로 변경하는 작업도 포함되어야 하기 때문에 빌드 속도가 느리다.  
+또한, JIT compiler 에서 사용되는 Hot Reload 기능도 사용할 수 없다.   
+
+### AOT Compile 예시 
+
+```java
+public class JaotCompilation {
+
+    public static void main(String[] argv) {
+        System.out.println(message());
+    }
+
+    public static String message() {
+        return "The JAOT compiler says 'Hello'";
+    }
+}
+```
+
+AOT compiler 를 사용하기 전에, Java compiler(`javac`)로 컴파일한다.
+
+```shell
+javac JaotCompilation.java
+```
+
+자바 컴파일러와 동일한 디렉터리에 존재하고 있는 AOT compiler(`jaotc`) 로 컴파일된 파일(`JaotCompilation.class`)을 다시 컴파일한다.  
+다음과 같이 컴파일하게 되면 현재 디렉토리에 `jaotCompilation.so` 이 생성된다. 
+
+```shell
+jaotc --output jaotCompilation.so JaotCompilation.class
+```
+
+프로그램을 실행하려면 `-XX:AOTLibrary` 인자를 추가하면 된다.
+다음과 같이 파일을 직접 지정하거나, `lib` 디렉토리에 추가하여 라이브러리 이름으로 지정할 수 있다.
+
+```shell
+java -XX:AOTLibrary=./jaotCompilation.so JaotCompilation
+```
+
 
 
 
 ## 출처
 - [https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722](https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722)
 - [https://junhyunny.github.io/information/java/jvm-execution-engine/](https://junhyunny.github.io/information/java/jvm-execution-engine/)
+- [https://www.baeldung.com/ahead-of-time-compilation](https://www.baeldung.com/ahead-of-time-compilation)
