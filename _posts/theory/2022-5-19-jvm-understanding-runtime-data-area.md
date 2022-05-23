@@ -83,7 +83,7 @@ Runtime Data Area 영역은 주로 다음과 같이 구분된다.
 이 문제가를 방지하기 위해 JVM 에서 주기적으로 Garbage Collection 을 실행한다.  
 참조되지 않은 인스턴스, 배열에 대한 정보가 힙 영역에 존재하기 때문에 Garbage Collection 의 대상이 된다.  
 
-{% include image.html alt='heap memory' source_text='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/jvm-understanding/heap-memory.png" %}
+{% include image.html alt='heap memory' source_txt='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/jvm-understanding/heap-memory.png" %}
 
 힙 영역은 효율적으로 GC 를 실행하기 위해 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구분하게 되는데, 
 자세한 내용은 [Garbage Collection](https://devyonghee.github.io/theory/2022/03/07/garbage-collection/) 을 참고하도록 한다.

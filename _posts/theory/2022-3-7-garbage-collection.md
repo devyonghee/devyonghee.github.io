@@ -75,7 +75,7 @@ Other 에는 JVM 자체의 코드, 내부 구조, 로드된 프로파일러 에�
 
 ### Heap
 
-{% include image.html alt='heap memory' source_text='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/garbage-collection/heap-memory.png" %}
+{% include image.html alt='heap memory' source_txt='journaldev' source="https://www.journaldev.com/2856/java-jvm-memory-model-memory-management-in-java" path="images/theory/garbage-collection/heap-memory.png" %}
 
 Heap 영역이 Garbage Collection 의 대상이 되기 때문에 더 자세히 알아본다.  
 Heap은 다시 Young Generation, Old Generation, Perm 세가지 영역으로 구분된다.  
@@ -128,7 +128,7 @@ GC 가 실행되면 더이상 사용되지 않는 인스턴스의 할당된 메�
 
 ### Mark and Sweep (추적 기반 쓰레기 수집)
 
-{% include image.html alt='mark and sweep' source_text='wikipedia' source="https://en.wikipedia.org/wiki/Tracing_garbage_collection#Na%C3%AFve_mark-and-sweep" path="images/theory/garbage-collection/mark-and-sweep.gif" %}
+{% include image.html alt='mark and sweep' source_txt='wikipedia' source="https://en.wikipedia.org/wiki/Tracing_garbage_collection#Na%C3%AFve_mark-and-sweep" path="images/theory/garbage-collection/mark-and-sweep.gif" %}
 
 가장 많이 사용되는 기법으로 특별한 내용없이 GC 라고 한다면 이 방식을 의미한다.  
 접근 가능한(reachable) 메모리에 마킹(mark)을 하고 마킹이 안된 메모리는 할당 해제(sweep)하는 방식이다.
@@ -138,7 +138,7 @@ stack, method 등 참조가 가능한 영역을 root set 이라고 하는데
 
 #### 1. Marking
 
-{% include image.html alt='marking' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-marking.png" %}
+{% include image.html alt='marking' source_txt='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-marking.png" %}
 
 첫번째 단계는 마킹으로 여기에서 사용중인 메모리와 사용되지 않는 메모리를 식별한다.  
 참조된 대상은 파란색, 참조되지 않는 대상은 주황색이다.  
@@ -146,14 +146,14 @@ stack, method 등 참조가 가능한 영역을 root set 이라고 하는데
 
 #### 2. Deletion
 
-{% include image.html alt='deletion' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-deletion.png" %}
+{% include image.html alt='deletion' source_txt='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-deletion.png" %}
 
 참조되지 않는 대상을 삭제하여 빈 공간을 둔다.  
 메모리 할당자는 새 객체를 할당할 수 있는 여유 공간에 대해 참조를 가지고 있는다.
 
 #### 2a. Deletion with Compacting
 
-{% include image.html alt='compacting' source_text='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-compacting.png" %}
+{% include image.html alt='compacting' source_txt='oracle' source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/mark-and-sweep-compacting.png" %}
 
 참조되지 않는 대상을 삭제하면서 나머지 객체들을 압축하는 방식인 mark and compact 도 있다.  
 압축하면 새 메모리 할당이 쉽고 빨라지기 때문에 성능이 향상된다. 
@@ -164,7 +164,7 @@ Reference Counting 은 객체, 메모리 블록 등을 참조하는 Reference, P
 간단하지만 강력하면서 많이 쓰인다. 
 Perl, Php 등 같은 언어가 이 방식을 사용합니다.
 
-{% include image.html alt='reference counting' source_text='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting.png" %}
+{% include image.html alt='reference counting' source_txt='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting.png" %}
 
 초록색은 프로그래머가 아직 사용중인 개체다. 현재 실행중인 메소드의 정적 변수, 로컬 변수 등이 될 수 있다.  
 파란색 원은 메모리에 살아있는 객체로 내부의 숫자는 참조 횟수를 의미한다.    
@@ -173,7 +173,7 @@ Perl, Php 등 같은 언어가 이 방식을 사용합니다.
 이 방식의 장점은 바로 컴파일 시간에 적용하는 것이 용이하다는 점이다.  
 컴파일 시간에 변수들을 미리 찾아서 해제하는 로직이 가능하다.
 
-{% include image.html alt='reference counting disadvantage' source_text='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting-disadvantage.png" %}
+{% include image.html alt='reference counting disadvantage' source_txt='plumbr' source="https://plumbr.io/handbook/what-is-garbage-collection/automated-memory-management/reference-counting" path="images/theory/garbage-collection/reference-counting-disadvantage.png" %}
 
 하지만 아주 큰 단점이 있다.
 순환참조된 개체들을 제거할 수 없다는 것이다. 
@@ -186,26 +186,26 @@ Perl, Php 등 같은 언어가 이 방식을 사용합니다.
 
 #### 1. Object Allocation
 
-{% include image.html alt="Object Allocation" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process1.png" %}
+{% include image.html alt="Object Allocation" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process1.png" %}
 
 두 개의 Survivor 영역은 모두 비어있는 상태이고, 새로운 객체는 Eden 영역에 할당된다. 
 
 #### 2. Filling the Eden Space
 
-{% include image.html alt="Filling the Eden Space" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process2.png" %}
+{% include image.html alt="Filling the Eden Space" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process2.png" %}
 
 Eden 영역이 가득 차면 Minor GC가 동작한다. 
 
 #### 3. Copying Referenced Objects
 
-{% include image.html alt="Copying Referenced Objects" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process3.png" %}
+{% include image.html alt="Copying Referenced Objects" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process3.png" %}
 
 참조된 객체는 S0 영역으로 이동된다.  
 여기서 참조되지 않는 객체들은 모두 eden 영역에서 제거된다.
 
 #### 4. Object Aging
 
-{% include image.html alt="Object Aging" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process4.png" %}
+{% include image.html alt="Object Aging" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process4.png" %}
 
 다음 Minor GC 가 발생되면 참조되는 객체는 S1 영역으로 이동된다.  
 S0 영역에서 참조되는 객체는 S1으로 이동되면서 참조횟수가 증가된다.  
@@ -213,25 +213,25 @@ S0 영역에서 참조되는 객체는 S1으로 이동되면서 참조횟수가 
 
 #### 5. Additional Aging
 
-{% include image.html alt="Additional Aging" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process5.png" %}
+{% include image.html alt="Additional Aging" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process5.png" %}
 
 다음 Minor GC 역시 동일한 과정으로 진행되지만, 이번에는 Survivor 영역이 변경된다.  
 다시 사용되고 있는 객체는 참조횟수가 증가되고 S1 과 eden 영역은 비워진다. 
 
 #### 6. Promotion
 
-{% include image.html alt="Promotion" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process6.png" %}
+{% include image.html alt="Promotion" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process6.png" %}
 
 반복되는 Minor GC 이후에도 계속 사용되어 제거되지 않는 객체들이 있을 것이다. 
 특정 참조횟수가 넘으면, 해당 객체는 Young generation 에서 Old generation 으로 이동된다.
 
-{% include image.html alt="Promotion" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process7.png" %}
+{% include image.html alt="Promotion" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process7.png" %}
 
 Minor GC 계속 발생되고 오래사용되는 객체는 계속해서 Old generation 으로 이동된다.
 
 #### GC Process Summary
 
-{% include image.html alt="GC Process Summary" source_text="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process-summary.png" %}
+{% include image.html alt="GC Process Summary" source_txt="oracle" source="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html" path="images/theory/garbage-collection/process-summary.png" %}
 
 Young generation 에서는 전체적인 Garbage Collection 과정을 다루고, 
 결국에는 Old generation 에서는 Major GC 가 이뤄지게 된다. 
@@ -321,7 +321,7 @@ ZGC 는 확장 가능하고 Stop the world 시간이 적은 (low-pause) GC 이�
 기존의 GC 들은 모두 중단되는 시간이 있어서 성능에 영향이 있었다.  
 ZGC 는 이러한 성능을 개선하기 위해 나왔고 JDK 11에서 선보였다.
 
-{% include image.html alt="colored pointer" source_text="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/colored-pointer.png" %}
+{% include image.html alt="colored pointer" source_txt="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/colored-pointer.png" %}
 
 ZGC 는 GC 메타데이터를 객체의 메모리 주소에 표시한다.  
 메모리의 주소 파트로 42비트를 사용하고 다른 4비트를 GC metadata (finalizable, remap, mark1, mark0)를 저장한다.
@@ -349,7 +349,7 @@ ZGC 는 GC 메타데이터를 객체의 메모리 주소에 표시한다.
 
 #### ZGC heap
 
-{% include image.html alt="ZGC" source_text="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/zgc-heap-regions.png" %}
+{% include image.html alt="ZGC" source_txt="packtpub" source="https://hub.packtpub.com/getting-started-with-z-garbage-collectorzgc-in-java-11-tutorial/" path="images/theory/garbage-collection/zgc-heap-regions.png" %}
 
 ZGC 는 메모리를 ZPages 라고 불리는 영역으로 나눈다.
 ZPages 는 동적으로 생성 및 삭제될 수 있으며, 
