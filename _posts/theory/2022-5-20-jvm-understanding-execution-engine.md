@@ -131,8 +131,6 @@ Garbage Collector 에 대한 자세한 설명은 다음 글을 참고한다.
 [가비지 컬렉션 (Garbage Collection) 자세히 알아보기](/theory/2022/03/07/garbage-collection/)
 
 
-
-
 ## 출처
 - [https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722](https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722)
 - [https://junhyunny.github.io/information/java/jvm-execution-engine/](https://junhyunny.github.io/information/java/jvm-execution-engine/)
