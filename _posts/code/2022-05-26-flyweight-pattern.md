@@ -23,25 +23,30 @@ GoF(Gang of Four) Design Pattern 중 하나이며, 구조(structural) 패턴에 
 > 외적 속성 : 클라이언트의 코드로부터 설정되어 다른 동작을 수행하도록 사용되는 속성
 
 
-
 ## 구조
 
-{% include image.html alt="composite pattern structure" path="images/code/composite-pattern/structure.png" %}
+{% include image.html alt="flyweight pattern structure" source_txt='wikipedia' source='https://en.wikipedia.org/wiki/Flyweight_pattern' path="images/code/flyweight-pattern/structure.png" %}
 
-### Component
+### FlyweightFactory
 
-- 복합 객체(Composite) 와 단일 객체(Leaf)를 동시에 접근하고 관리하기 위한 인터페이스
-- 공통적으로 가져야 할 기능들 정의
+- Flyweight 객체를 생성하고 재활용(캐싱)하는 역할
+- 생성한 객체들을 관리
 
-### Composite
+### Flyweight
 
-- Component를 통해 자기 자신(Composite) 과 단일 객체(Leaf)들을 관리
-- 하위 객체들에 접근하고 요청에 대한 작업을 구현
+- 공통된 메소드를 정의한 인터페이스
 
-### Leaf
+### ConcreteFlyweight
 
-- 하위 객체가 존재하지 않는 단일 객체
-- Component 에서 정의된 메소드들의 기본 작업을 구현
+- Flyweight 인터페이스를 구현한 구현 클래스
+- Factory 에 의해 생성되고 메모리를 확보한 상태에서 공유
+- intrinsic state(고유한 상태)들을 저장하는 클래스
+
+## 동작
+
+{% include image.html alt="flyweight pattern sequence" source_txt='wikipedia' source='https://en.wikipedia.org/wiki/Flyweight_pattern' path="images/code/flyweight-pattern/sequence.png" %}
+
+
 
 ## 장점
 - 트리 구조의 클래스 들을 하나의 타입으로 쉽게 관리할 수 있다.
