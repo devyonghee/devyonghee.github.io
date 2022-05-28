@@ -46,6 +46,11 @@ GoF(Gang of Four) Design Pattern 중 하나이며, 구조(structural) 패턴에 
 
 {% include image.html alt="flyweight pattern sequence" source_txt='wikipedia' source='https://en.wikipedia.org/wiki/Flyweight_pattern' path="images/code/flyweight-pattern/sequence.png" %}
 
+1. Client 에서 `FlyweightFacotry`에 있는 `getFlyweight(key)` 메소드를 호출한다.
+2. `FlyweightFacotry` 에서는 주어진 `key` 에 해당되는 `Flyweight` 객체를 찾는다. 객체가 존재하지 않으면 새로운 객체를 생성하고 키와 함께 메모리에 저장한다. 
+3. Client 에서는 반환된 `Flyweight` 객체의 `operation()` 메소드를 호출한다.
+4. 다시 Client 에서 `FlyweightFacotry`에 있는 `getFlyweight(key)` 메소드를 호출한다.
+5. `FlyweightFacotry` 는 키를 통해 저장해둔 객체를 찾아서 반환한다.
 
 
 ## 장점
