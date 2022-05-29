@@ -64,81 +64,148 @@ GoF(Gang of Four) Design Pattern 중 하나이며, 구조(structural) 패턴에 
 
 ## 구현
 
-Composite pattern 을 이용하여 메뉴 구성을 구현해본다.  
-메뉴 구성에는 메뉴라는 복합체(Composite) 객체가 있고 메뉴 아이템이라는 단일(Leaf) 객체가 있다. 
-
-### Component
+### Flyweight
 
 ```java 
 
-public interface MenuComponent {
+interface Vehicle {
 
-    BigDecimal price();
+    String name();
 }
+
 ```
 
-### Composite
+### ConcreteFlyweight
 
 ```java 
 
-public class Menu implements MenuComponent {
+public final class Car implements Vehicle {
 
-    private final BigDecimal defaultPrice;
-    private final List<MenuComponent> components = new ArrayList<>();
+    private static final String NAME_SUFFIX = " 자동차";
+    private final String name;
 
-    public Menu(BigDecimal defaultPrice) {
-        this.defaultPrice = defaultPrice;
-    }
-
-    public void add(MenuComponent component) {
-        if (component == null) {
-            throw new IllegalArgumentException("component to be added must not be null");
-        }
-        components.add(component);
-    }
-
-    public void remove(MenuComponent component) {
-        if (component == null) {
-            throw new IllegalArgumentException("component to be removed must not be null");
-        }
-        components.remove(component);
+    public Car(String name) {
+        this.name = name;
     }
 
     @Override
-    public BigDecimal price() {
-        return defaultPrice.add(componentsPrice());
-    }
-
-    private BigDecimal componentsPrice() {
-        return components.stream()
-                .map(MenuComponent::price)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public String name() {
+        return name + NAME_SUFFIX;
     }
 }
 ```
 
 
-### Leaf
+### FlyweightFactory
 
 ```java 
 
-public class MenuItem implements MenuComponent {
+public final class CarFactory {
 
-    private final BigDecimal price;
+    private static final Map<String, Car> FLYWEIGHT = new HashMap<>();
 
-    public MenuItem(BigDecimal price) {
-        this.price = price;
+    private CarFactory() {
+        throw new AssertionError();
     }
 
-    @Override
-    public BigDecimal price() {
-        return price;
+    public static Vehicle getCar(String name) {
+        return FLYWEIGHT.computeIfAbsent(name, Car::new);
     }
 }
 
 ```
 
-전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/composite) 참고
+### Client
+
+``` java 
+
+@DisplayName("플라이 웨이트 패턴")
+class ClientTest {
+
+    @Test
+    @DisplayName("팩토리에서 같은 이름으로 자동차를 가져오면 같은 객체")
+    void car() {
+        //given
+        String carName = "car";
+        //when
+        Vehicle car1 = CarFactory.getCar(carName);
+        Vehicle car2 = CarFactory.getCar(carName);
+        //then
+        assertThat(car1).isSameAs(car2);
+    }
+
+    @Test
+    @DisplayName("같은 이름으로 자전거를 생성하면 다른 객체")
+    void bike() {
+        //given
+        String bikeName = "bike";
+        //when
+        Vehicle bike1 = new Bike(bikeName);
+        Vehicle bike2 = new Bike(bikeName);
+        //then
+        assertAll(
+                () -> assertThat(bike1).isNotSameAs(bike2),
+                () -> assertThat(bike1.name()).isEqualTo(bike2.name())
+        );
+    }
+}
+
+```
+
+### Flyweight (static factory method)
+
+위의 코드에서는 이미 생성된 `Flyweight`의 객체를 `FlywieghtFactory` 라는 별도의 클래스로 분리해서 관리하고 있다.  
+하지만 이렇게 클래스로 분리된 코드가 복잡하고 관리가 어렵다면 정적 팩토리 메소드를 이용하는 방법도 고려해볼 수 있다.
+
+```java 
+
+public final class Car {
+
+    private static final Map<String, Car> FLYWEIGHT = new HashMap<>();
+
+    private static final String NAME_SUFFIX = " 자동차";
+    private final String name;
+
+    private Car(String name) {
+        this.name = name;
+    }
+
+    public static Car from(String name) {
+        return FLYWEIGHT.computeIfAbsent(name, Car::new);
+    }
+
+    public String name() {
+        return name + NAME_SUFFIX;
+    }
+}
+
+```
+
+### Client (static factory method)
+
+정적 팩토리 메소드로 구현한 플라이웨이트 패턴의 클라이언트 코드는 정적 메소드로만 생성하면 되기 때문에 더욱 간단해진다.
+
+```java 
+
+@DisplayName("자동차")
+class CarTest {
+
+    @Test
+    @DisplayName("정적 팩토리 메소드로 같은 이름의 자동차를 생성하면 같은 객체")
+    void from() {
+        //given
+        String carName = "car";
+        //when
+        Car car1 = Car.from(carName);
+        Car car2 = Car.from(carName);
+        //then
+        assertThat(car1).isSameAs(car2);
+    }
+}
+
+```
+
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/flyweight) 참고
 
 ## Review
 
