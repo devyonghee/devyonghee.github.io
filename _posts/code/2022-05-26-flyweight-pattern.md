@@ -207,11 +207,47 @@ class CarTest {
 
 전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/flyweight) 참고
 
-## Review
+## Result
+ 
+플라이웨이트 패턴은 생성되는 데이터를 공유하기 때문에 메모리를 절약할 수 있다. 
+하지만 생성된 객체는 사용된 이후에도 참조가 남아있기 때문에 GC 의 대상이 되지 않고,  
+상태가 변경되면 예기치 못한 문제가 발생될 수 있기 때문에 적절한 상황에서 사용하도록 하자.  
 
-복합체 패턴(Composite Pattern)은 하나의 타입으로 관리할 수 있어서 편리한 패턴이다.  
-하지만 `Composite` 는 본인의 역할과 자식들의 역할을 동시에 수행해야 하기 때문에 주의해서 사용하도록 하자
+플라이웨이트 패턴은 사실 Java String Pool, 래퍼 클래스(Wrapper class) 의 `valueOf` 정적 메소드 등 많은 곳에서 활용되고 있다.
 
+```java 
+
+@DisplayName("flyweight 활용 예시")
+class FlyweightTest {
+
+    @Test
+    @DisplayName("같은 문자열은 같은 객체")
+    void string() {
+        String abc1 = "abc";
+        String abc2 = "abc";
+        assertThat(abc1).isSameAs(abc2);
+    }
+
+    @Test
+    @DisplayName("생성자를 이용한 문자열은 다른 객체")
+    void string_constructor() {
+        String abc1 = new String("abc");
+        String abc2 = new String("abc");
+        assertThat(abc1).isNotSameAs(abc2);
+    }
+
+    @Test
+    @DisplayName("래퍼 클래스의 정적 팩토리 메소드로 생성하면 같은 객체")
+    void integer_valueOf() {
+        Integer one1 = Integer.valueOf("1");
+        Integer one2 = Integer.valueOf("1");
+        assertThat(one1).isSameAs(one2);
+    }
+}
+```
+
+플라이웨이트 패턴을 통해 생성된 객체를 공유하기 때문에 위 테스트 코드는 통과한다.
+그러므로 `new` 키워드 대신 String literal(`""`), `valueOf` 를 이용하는 것이 메모리를 더 효율적으로 사용할 수 있다.
 
 ## 출처
 - [https://en.wikipedia.org/wiki/Flyweight_pattern](https://en.wikipedia.org/wiki/Flyweight_pattern)
