@@ -76,6 +76,24 @@ categories: book
 
 ## 1.3 자바 함수
 
+프로그래밍에서 함수(function)는 정적 메서드(static method)을 의미한다.
+자바 8에서는 함수를 새로운 값의 형식으로 추가되었고 프로그래밍에 유용하게 활용된다. 
+
+- 메서드 참조 (`::`) 추가
+  - `new File(".").listFiles(File::isHidden);`
+- 람다 : 익명함수
+  - `(int x) -> x + 1`
+  - 더 간결하게 코드 구현 가능
+  - 메서드 대신 한 두번만 정의하는 경우에는 편리하게 사용
+- 코드 넘겨주기 
+  - `Predicate`, `Function` ...
+  - `filterApples(List<Apple> inventory, Predicate<Apple> p)`
+
+## 1.4 스트림
+
+이전에 컬렉션에서는 반복 과정을 for-each 루프를 이용한 **외부 반복**(external iteration) 방식을 이용했다. 
+자바 8에서 스트림 API 이 추가되면서 라이브러리 내부에서 데이터를 처리하는 **내부 반복**(internal iteration) 방식으로 이전과 다르게 데이터를 처리한다. 
+
 
 
 <br/>
