@@ -94,6 +94,23 @@ categories: book
 이전에 컬렉션에서는 반복 과정을 for-each 루프를 이용한 **외부 반복**(external iteration) 방식을 이용했다. 
 자바 8에서 스트림 API 이 추가되면서 라이브러리 내부에서 데이터를 처리하는 **내부 반복**(internal iteration) 방식으로 이전과 다르게 데이터를 처리한다. 
 
+### 멀티스레딩
+
+{% include image.html alt="forking step" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/stream-forking-step.png" %}
+
+자바 8에서 스트림 API 의 데이터 필터링(filtering), 추출(extraction), 그룹화(grouping) 기능으로 자주 반복되는 코드 문제가 해결되었고, 
+또한 이러한 기능들을 쉽게 병렬화해서 사용할 수 있게 되었다.
+스트림으로 하나의 CPU 에서 리스트 앞부분을 처리하고, 다른 CPU 에서 리스트의 뒷부분을 처리하도록 요청할 수 있는데 이를 포킹 단계(forking step)라고 한다.  
+
+- 순차 처리 방식
+  - `inventory.stream().filter(...).collect(toList())`
+- 병렬 처리 방식
+  - `inventory.parallelStream().filter(...).collect(toList())`
+
+
+## 1.5 디폴트 메소드와 자바 모듈
+
+
 
 
 <br/>
