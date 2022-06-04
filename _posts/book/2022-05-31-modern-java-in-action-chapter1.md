@@ -30,6 +30,8 @@ categories: book
 - 메서드에 코드 전달 (메서드 참조 or 람다)
 - 인터페이스의 디폴트 메소드
 
+<br/>
+
 ## 1.2 왜 아직도 자바는 변화하는가?
 
 자바가 대중적인 언어로 성장한 이유에는 두가지 이유가 있다.
@@ -89,6 +91,8 @@ categories: book
   - `Predicate`, `Function` ...
   - `filterApples(List<Apple> inventory, Predicate<Apple> p)`
 
+<br/>
+
 ## 1.4 스트림
 
 이전에 컬렉션에서는 반복 과정을 for-each 루프를 이용한 **외부 반복**(external iteration) 방식을 이용했다. 
@@ -107,6 +111,7 @@ categories: book
 - 병렬 처리 방식
   - `inventory.parallelStream().filter(...).collect(toList())`
 
+<br/>
 
 ## 1.5 디폴트 메소드와 자바 모듈
 
@@ -127,6 +132,8 @@ default void sort(Comparator<? super E> c) {
 }
 ```
 
+<br/>
+
 ## 1.6 함수형 프로그래밍에서 가져온 다은 유용한 아이디어
 
 - 함수형 언어(SML, 오캐멀, 하스켈)의 서술형 데이터 형식을 이용해 `null`을 회피하는 기법
@@ -134,6 +141,3 @@ default void sort(Comparator<? super E> c) {
 - 구조적(structural) 패턴 매칭
   - ~~자바 개선안으로 제안된 상태~~ 자바 14 에 도입된 상태 ([https://openjdk.java.net/jeps/305](https://openjdk.java.net/jeps/305))
   
-
-<br/>
-
