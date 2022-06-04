@@ -110,8 +110,30 @@ categories: book
 
 ## 1.5 디폴트 메소드와 자바 모듈
 
+요즘 외부에서 만들어진 컴포넌트를 이용하여 시스템을 구축하고 있다. 
+하지만 인터페이스 변경이 필요한 상황이 오면 이를 구현하는 클래스를 모두 수정이 필요했다. 
+이 문제를 해결하기 위해 자바에서는 다음과 같은 기능들이 정의되었다.
 
+- 자바 9 : 패키지 모음을 포함하는 모듈 정의
+- 자바 8 : 인터페이스를 쉽게 변경할 수 있도록 디폴트 메소드(default method) 지원
+  - 구현하지 않아도 되는 메서드를 인터페이스에 추가 가능
+  - 기존 코드를 건드리지 않고 인터페이스 설계를 자유롭게 확장 가능
+  - 한 클래스에서 여러 인터페이스를 구현할 수 있기 때문에 다이아몬드 상속 문제(diamond inheritance problems) 
 
+#### example default method  
+```java 
+default void sort(Comparator<? super E> c) {
+    Collections.sort(this, c);
+}
+```
+
+## 1.6 함수형 프로그래밍에서 가져온 다은 유용한 아이디어
+
+- 함수형 언어(SML, 오캐멀, 하스켈)의 서술형 데이터 형식을 이용해 `null`을 회피하는 기법
+  - `NullPointerException` 을 피할 수 있는 java 8 의 `Optional<T>`
+- 구조적(structural) 패턴 매칭
+  - ~~자바 개선안으로 제안된 상태~~ 자바 14 에 도입된 상태 ([https://openjdk.java.net/jeps/305](https://openjdk.java.net/jeps/305))
+  
 
 <br/>
 
