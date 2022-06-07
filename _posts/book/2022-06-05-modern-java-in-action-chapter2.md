@@ -1,5 +1,5 @@
 ---
-title: '[Modern Java in Action] Chapter2. 동작 파라미너톼 코드 전달하기'
+title: '[Modern Java in Action] Chapter2. 동작 파라미터화 코드 전달하기'
 tags: [book, moder java in action]
 categories: book
 ---
