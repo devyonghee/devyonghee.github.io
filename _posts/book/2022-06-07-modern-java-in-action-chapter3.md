@@ -77,3 +77,55 @@ public interface Predicate<T> {
 - `(Apple, Apple) -> int`
   - 두 개의 Apple 을 인수로 받아 int 반환하는 함수를 의미
 
+
+## 3.3 람다 활용 : 실행 어라운드 패턴 (execute around pattern)
+
+{% include image.html alt="execute around pattern" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/execute-around-pattern.png" %}
+
+실용적인 예제를 통해 람다를 활용하여 유연하고 간결한 코드를 구현하는 방법에 대해 알아본다.  
+대부분 자원을 처리하는 곳에서 설정과 정리하는 과정은 비슷하다.  
+이렇게 실제 작업하는 코드가 설정과 정리 사이에 위치된 코드를 **실행 어라운드 패턴**(execute around pattern)이라고 한다.  
+
+```
+public String processFile() throws IOException {
+    try (BufferedReader br = 
+            new BuffueredReader(new FileReader("data.txt"))) {
+        return br.readLine(); // 실제 작업하는 코드
+    }
+}
+```
+
+위 코드를 람다와 동작 파라미터로 유연하고 간결한 코드가 되도록 수정한다.  
+위에서 한 행을 읽던 부분이 두 행도 읽어야 한다는 상황을 가정한다.
+동작을 파라미터화하여 전달하기 위해 함수형 인터페이스를 정의하고 `processFile` 메서드 인수를 변경한다. 
+
+```java 
+@FunctionalInterface
+public interface BufferedReaderProcessor {
+    String process(BufferedReader b) throws IOException;
+}
+
+public String processFile(BufferedReaderProcessor p) throws IOException {
+    ....
+}
+```
+
+람다 표현식으로 추상 메서드 구현이 전달되었으니, 
+`processFile` 메서드 바디 내에서 `BufferedReaderProcessor` 의 `prcess` 를 호출하도록 한다.
+
+```java 
+public String processFile() throws IOException {
+    try (BufferedReader br = 
+            new BuffueredReader(new FileReader("data.txt"))) {
+        return p.process(br); // 객체 처리
+    }
+}
+```
+
+이제 람다를 이용해서 `processFile` 메서드에서 다양한 동작을 수행할 수 있다. 
+
+```java
+processFile((BufferedReader br) -> br.readLine());
+processFile((BufferedReader br) -> br.readLine() + br.readLine());
+```
+
