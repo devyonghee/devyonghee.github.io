@@ -129,3 +129,39 @@ processFile((BufferedReader br) -> br.readLine());
 processFile((BufferedReader br) -> br.readLine() + br.readLine());
 ```
 
+## 3.4 함수형 인터페이스 사용
+
+함수형 인터페이스의 추상 메서드 시그니처를 함수 디스크립터라고 한다.  
+람다 표현식을 다양하게 사용하려면 공통 함수 디스크립터를 기술하는 함수형 인터페이스 집합이 필요하다.  
+자바 8 에서는 이를 위해 `jaava.util.function` 패키지로 다양한 함수형 인터페이스를 제공하고 있다. 
+
+### Predicate
+
+`java.util.function.Predicate<T>` 는 제네릭 형식의 `T` 객체를 인수로 받아 불리언을 반환하는 `test` 메소드를 정의한다.  
+자바독 명세를 보면 `and`, `or` 같은 메서드도 존재한다.
+
+```java 
+@FunctionalInterface
+public interface Predicate<T> {
+    boolean test(T t);
+}
+
+Predicate<String> nonEmptyStringPredicate = (String s) -> !s.isEmpty();
+```
+
+### Consumer
+
+`java.util.function.Consumer<T>` 인터페이스는 `T` 객체를 받아서 `void` 를 반환하는 `accept` 메소드를 정의한다.  
+
+
+```
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+}
+
+Consumer<Integer> c = (Integer i) -> System.out.println(i);
+```
+
+### Function
+
