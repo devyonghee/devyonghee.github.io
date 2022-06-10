@@ -195,3 +195,23 @@ Function<String, Integer> f = (String s) -> s.length();
 | BiConsumer<T, U>    | (T, U) -> void    | ObjInConsumer<T><br/>ObjLongConsumer<T><br/>ObjDoubleConsumer<T>                                     |
 | BiFunction<T, U, R> | (T, U) -> R       | ToIntBiFunction<T, U><br/>ToLongBiFunction<T, U><br/>ToDoubleBiFunction<T, U>                          |
 
+
+## 3.5 형식 검사, 형식 추론, 제약
+
+### 형식 검사
+
+람다가 사용되는 콘텍스트(context, 전달 될 메서드 파라미터나 변수 등)를 이용해서 람다의 형식을 추론한다.  
+콘텍스트에서 기대하고 있는 람다 표현식을 **대상 형식**(target type)이라고 한다.  
+
+#### 형식 검사 과정
+
+```java 
+filter(inventory, (Apple a) -> a.getWeight() > 150);
+```
+
+1. `filter` 메서드의 선언 확인
+2. 메서드에서 두번째 파라미터로 `Predicate<Apple>` 대상 형식을 기대
+3. `Predicate<Apple>`은 한 개의 추상 메서드를 정의한 함수형 인터페이스인지 확인
+4. `test` 메서드가 `Apple` 인수로 받아 `boolean`을 반환하는 함수 디스크립터 확인
+5. 함수 디스크립터와 람다(메서드로 전달된 인수)의 시그니처가 같은지 확인
+
