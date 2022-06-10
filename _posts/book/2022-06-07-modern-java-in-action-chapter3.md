@@ -165,3 +165,33 @@ Consumer<Integer> c = (Integer i) -> System.out.println(i);
 
 ### Function
 
+`java.util.function.Function<T, R>` 인터페이스는 제네릭 형식 `T` 객체를 받아 `R` 객체를 반환하는 `apply` 메서드를 정의한다.  
+
+```java  
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+
+Function<String, Integer> f = (String s) -> s.length();
+```
+
+### 기본형 특화
+
+자바의 모든 형식은 참조형(reference type) 또는 기본형(primitive type)으로 이루어져 있다.  
+제네릭 파라미터에는 참조형만 사용 가능하기 때문에 기본형은 박싱(boxing) 기능을 이용하여 참조형으로 변환해서 사용해야 한다.  
+하지만 박싱된 값은 힙에 저장하여 메모리를 더 사용하게 되며, 가져올 때도 메모리를 탐색하게 되기 때문에 비용이 추가된다.  
+이러한 과정을 피할 수 있도록 자바에서는 특화된 함수형 인터페이스를 제공한다.
+
+| 함수형 인터페이스           | 함수 디스크립터          | 기본형 특화                                                                                         | 
+|---------------------|-------------------|------------------------------------------------------------------------------------------------|
+| Predicate<T>        | T -> boolean      | IntPredicate<br/>LongPredicate<br/>DoublePredicate                                             |
+| Consumer<T>         | T -> void         | IntConsumer<br/>LongConsumer<br/>DoubleConsumer                                                |
+| Function<T, R>      | T -> R            | IntFunction<R><br/>IntToDoubleFunction<br/>IntToLongFunction<br/>LongFunction<R><br/>...       |
+| Supplier<T>         | () -> R           | BooleanSupplier<br/>IntSupplier<br/>LongSupplier<br/>DoubleSupplier                            |
+| UnaryOperator<T>    | T -> T            | IntUnaryOperator<br/>LongUnaryOperator                                                         |
+| BinaryOperator<T>   | (T, T) -> T       | IntBinaryOperator<br/>LongBinaryOperator<br/>DoubleBinaryOperator                                 |
+| BiPredicate<L, R>   | (T, U) -> boolean |                                                                                                |
+| BiConsumer<T, U>    | (T, U) -> void    | ObjInConsumer<T><br/>ObjLongConsumer<T><br/>ObjDoubleConsumer<T>                                     |
+| BiFunction<T, U, R> | (T, U) -> R       | ToIntBiFunction<T, U><br/>ToLongBiFunction<T, U><br/>ToDoubleBiFunction<T, U>                          |
+
