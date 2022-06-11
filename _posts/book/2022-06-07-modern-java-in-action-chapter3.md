@@ -215,3 +215,42 @@ filter(inventory, (Apple a) -> a.getWeight() > 150);
 4. `test` 메서드가 `Apple` 인수로 받아 `boolean`을 반환하는 함수 디스크립터 확인
 5. 함수 디스크립터와 람다(메서드로 전달된 인수)의 시그니처가 같은지 확인
 
+
+### 같은 람다, 다른 함수형 인터페이스
+
+대상 형식(target type)이라는 특성 때문에 같은 람다 표현식이어도 다른 함수형 인터페이스로 사용될 수 있다.  
+아래 할당문들은 모두 유효한 코드이다.
+
+```java
+Callable<Integer> c = () -> 42;
+PrivilegeAction<Integer> p = () -> 42;
+
+Comparator<Apple> c1 =                (Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight());
+ToIntBiFunction<Apple, Apple> c2 =    (Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight());
+BiFunction<Apple, Apple, Intger> c3 = (Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight());
+```
+
+### 형식 추론
+
+컴파일러는 대상 형식(target type)을 통해 함수 디스크립터를 파악하고 람다의 시그디처를 추론할 수 있다.  
+그러므로 파라미터 형식을 추론할 수 있기 때문에 람다 문법에서 이를 생략할 수 있다.
+
+```java 
+List<Apple> greenApples = filter(inventory, apple -> GREEN.equals(apple.getColor()));
+Comparator<Apple> c = (a1, a2) -> a1.getWeight().compareTo(a2.getWeight());
+```
+
+### 지역 변수 사용
+
+람다 표현식에서는 인수 뿐만 아니라 람다 캡처링(capturing lambda)을 통해 외부에서 정의된 변수인 **자유 변수**(free variable)도 활용할 수 있다.  
+
+```java 
+int portNumber = 123;
+Runnable r = () -> System.out.println(portNumber);
+```
+
+하지만 자유 변수를 사용하기 위해서는 지역 변수는 `final` 선언이 되어 있거나 `final` 변수와 비슷하게 사용되어야 한다.   
+한번만 활당할 수 있는 지역 변수여야 한다는 것이다.  
+지역 변수는 스택에 저장되는데 스레드가 종료되면 변수 할당이 사라질 수 있기 때문에 람다에는 복사본의 값이 전달된다.  
+복사된 값은 변경되지 않아야 하기 때문에 한번만 할당되어야 한다는 제약이 필요한 것이다.
+
