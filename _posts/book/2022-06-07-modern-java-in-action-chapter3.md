@@ -254,3 +254,37 @@ Runnable r = () -> System.out.println(portNumber);
 지역 변수는 스택에 저장되는데 스레드가 종료되면 변수 할당이 사라질 수 있기 때문에 람다에는 복사본의 값이 전달된다.  
 복사된 값은 변경되지 않아야 하기 때문에 한번만 할당되어야 한다는 제약이 필요한 것이다.
 
+
+## 3.6 메서드 참조
+
+메서드 참조를 이용하면 기존의 메서드를 람다처럼 가독성이 좋고 자연스럽게 전달할 수 있다.  
+메서드 참조는 메서드명 앞에 구분자(`::`)를 붙여서 활용할 수 있다. 
+
+```java 
+(Apple apple) -> apple.getWeight();  Apple::getWeight;
+```
+
+| 람다                                                       | 메서드 참조 단축 표현        |
+|----------------------------------------------------------|---------------------|
+| `(Apple apple) -> apple.getWeight();  Apple::getWeight;` | `Apple::getWeight`  |
+| `(str, i) -> str.substring(i)`                           | `String::substring` |
+| `this.isValidName(s)`                                    | `this::isValidName` |
+
+### 메서드 참조 유형
+
+- 정적 메서드 참조
+  - `Integer.parseInt()` 메서드는 `Integer::parseInt` 로 표현
+- 다양한 형식의 인스턴스 메서드 참조
+  - `String`의 `length` 메서드는 `String::lenght` 로 표현
+- 기존 객체의 인스턴스 메서드 참조
+  - `expensiveTransaction` 지역 변수의 `getValue` 메서드는 `expensiveTransaction::getValue` 로 표현
+
+### 생성자 참조
+
+정적 메서드의 참조를 만드는 방법과 비슷하게 `ClassName::new` 처럼 `new` 키워드로 생성자의 참조를 만들 수 있다.  
+아래 두 코드는 동일한 동작을 하는 코드이다.
+
+``` java
+Supplier<Apple> c1 = () -> new Apple();
+Supplier<Apple> c2 = Apple::new;
+```
