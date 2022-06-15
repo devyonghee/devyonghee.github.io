@@ -60,3 +60,23 @@ categories: book
   - 대부분의 연산이 자신을 반환하여 파이프라인 구성 가능
   - laziness, short-circuiting 같은 최적화 가능
 - 내부 반복
+
+### 4.3 스트림과 컬렉션
+
+- 계산 시점
+  - 컬렉션 : 자료구조가 포함하는 모든 값을 메모리에 저장 (컬렉션의 모든 요소는 컬렉션에 추가하기 전에 계산)
+  - 스트림 : 요청할 때만 요소를 계산하는 고정된 자료구조 (요소를 추가하거나 제거 불가, 게으른 생성) 
+- 탐색
+  - 컬렉션 : 데이터 소스 반복 사용 가능 
+  - 스트림 : 한번만 탐색 가능, 탐색된 요소는 소비 (다시 사용하려면 새로운 스트림 생성 필요)
+- 반복 처리
+  - 컬렉션 : 사용자가 직접 요소를 반복(외부 반복, external iteration)
+    - 병렬성을 스스로 관리해야 함
+  - 스트림 : 어떤 작업을 수행할지만 지정하면 알아서 처리 (내부 반복, internal iteration)
+    - 병렬성 구현을 자동으로 선택 가능
+    - 반복 과정을 신경쓰지 않아도 됨
+
+
+{% include image.html alt="internal and external iteration" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/internal-external-iteration.png" %}
+
+
