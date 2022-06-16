@@ -61,7 +61,7 @@ categories: book
   - laziness, short-circuiting 같은 최적화 가능
 - 내부 반복
 
-### 4.3 스트림과 컬렉션
+## 4.3 스트림과 컬렉션
 
 - 계산 시점
   - 컬렉션 : 자료구조가 포함하는 모든 값을 메모리에 저장 (컬렉션의 모든 요소는 컬렉션에 추가하기 전에 계산)
@@ -78,5 +78,30 @@ categories: book
 
 
 {% include image.html alt="internal and external iteration" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/internal-external-iteration.png" %}
+
+
+## 4.4 스트림 연산
+
+- 중간 연산(intermediate operation): 연결할 수 있는 스트림 연산
+  - 중간 연산을 연결해서 질의 생성
+  - 단말 연산을 스트림 파이프라인에 실행하기 전까지 연산을 수행하지 않음(최종 연산으로 한번에 처리)
+- 최종 연산(terminal operation): 스트림을 닫는 연산
+  - 파이프라인에서 결과 도출
+
+### 스트림 이용 과정 (builder pattern 과 비슷)
+- 질의를 수행할 데이터 소스
+- 스트림 파이프라인을 구성할 중간 연산 연결
+- 스트림 파이프라인을 실행하고 결과를 만들 최종 연산
+
+| 연산       | 형식    | 반환 형식         | 
+|----------|-------|---------------|
+| `filter`  | 중간 연산 | `Stream<T>`     |
+| `map`     | 중간 연산 | `Stream<T>`     |
+| `limit`   | 중간 연산 | `Stream<T>`     |
+| `sorted`  | 중간 연산 | `Stream<T>`     |
+| `distinct` | 중간 연산 | `Stream<T>`     |
+| `forEach` | 최종 연산 | `void`          |
+| `count`   | 최종 연산      | `long(generic)` |
+| `collect` |  최종 연산     |               |
 
 
