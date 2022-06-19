@@ -129,3 +129,37 @@ categories: book
 | count     | 최종 연산 | long     |            |
 
 
+<br/>
+
+## 5.7 숫자형 스트림
+
+스트림 API 에는 박싱 비용을 피하고 효율적으로 처리할 수 있도록 3가지 기본형 특화 스트림(primitive stream specialization)을 제공한다.  
+
+- `IntStream`
+- `DoubleStream`
+- `LongSteam`
+
+### 기본형 특화 스트림
+
+- 숫자 스트림으로 매핑
+  - `mapToInt`
+  - `mapToDouble`
+  - `mapToLong`
+- 객체 스트림으로 복원
+  - `boxed`
+    - 특화 스트림을 일반스트림으로 변환
+- 기본값: Optional 기본형 특화 스트림 버전
+  - `OptionalInt`
+  - `OptionalDouble`
+  - `OptionalLong`
+
+### 숫자 범위
+
+`IntStream`, `LongStream` 에서의 `range`, `rangeClosed` 정적 메서드로 특정 범위의 숫자를 이용할 수 있다.  
+두 메서드 모두 첫번째 인수로 시작값, 두번째 인수로 종료값을 받는다.
+
+- `range`
+  - 종료값이 포함되지 않음
+- `rangeClosed`
+  - 종료값이 결과에 포함
+
