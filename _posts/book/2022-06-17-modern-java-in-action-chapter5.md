@@ -87,3 +87,45 @@ categories: book
   - `T get()` : 값이 존재하면 값 반환, 없으면 `NoSuchElementException` 발생
   - `T orElse(T other)`: 값이 존재하면 값 반환, 없으면 기본값(`other`) 반환
 
+<br/>
+
+## 5.5 리듀싱
+
+스트림의 모든 요소를 반복적으로 처리하여 값으로 도출하는 연산 (종이를 작은 조각이 될 때까지 접는 것과 비슷해서 폴드라고도 부름)
+
+리듀스 인수
+- 초깃값
+  - 스트림에 요소가 없는 경우가 있기 때문에 초깃값이 없으면 `Optional<T>` 반환
+- 스트림의 두 요소를 합쳐서 하나의 값으로 만드는 데 사용할 람다
+
+- 예시
+  - 요소의 합
+    - `numbers.stream().reduce(0, (a, b) -> a + b);`
+      - 초깃값 0
+      - 람다 표현식으로 두 요소를 합함
+  - 최댓값 최솟값
+    - `numbers.stream().reduce(Integer::max);`
+    - `numbers.stream().reduce(Integer::min);`
+
+| 연산        | 형식    | 반환 형식       | 함수형 인터페이스 형식           |
+|-----------|-------|-------------|------------------------|
+| filter    | 중간 연산 | Stream<T>   | Predicate<T>           |
+| distinct  | 중간 연산 | Stream<T>   |                        |
+| takeWhile | 중간 연산 | Stream<T>   | Predicate<T>           |
+| dropWhile | 중간 연산 | Stream<T>   | Predicate<T>           |
+| skip      | 중간 연산 | Stream<T>   | long                   |
+| limit     | 중간 연산 | Stream<T>   | long                   |
+| map       | 중간 연산 | Stream<R>   | Function<T, R>         |
+| flatMap   | 중간 연산 | Stream<R>   | Function<T, Stream<R>> |
+| sorted    | 중간 연산 | Stream<T>   | Comparator<T>          |
+| anyMatch  | 최종 연산 | boolean     | Predicate<T>           |
+| noneMatch | 최종 연산 | boolean     | Predicate<T>           |
+| allMatch  | 최종 연산 | boolean     | Predicate<T>           |
+| findAny   | 최종 연산 | Optional<T> |                        |
+| findFirst | 최종 연산 | Optional<T> |                        |
+| forEach   | 최종 연산 | void        | Consumer<T>            |
+| collect   | 최종 연산 | R           | Collector<T, A, R>     |
+| reduce    | 최종 연산 | Optional<T> | BinaryOperator<T>      |
+| count     | 최종 연산 | long     |            |
+
+
