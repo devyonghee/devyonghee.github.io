@@ -163,3 +163,26 @@ categories: book
 - `rangeClosed`
   - 종료값이 결과에 포함
 
+<br/>
+
+## 5.8 스트림 만들기 
+
+- 값으로 스트림 만들기
+  - `Stream.of(T... values)`
+  - `Stream.empty()` (빈 스트림)
+- `null` 이 될 수 있는 스트림 (자바 9 추가)
+  - `Stream.ofNullable(T t)` (`null` 이라면 빈 스트림)
+- 배열로 스트림 만들기
+  - `Arrays.stream(array)` (기본형도 가능)
+- 파일로 스트림 만들기
+  - `Files.lines`
+    - `Stream` 은 `AutoCloseable` 인터페이스를 구현하고 있으므로 `try` 블록 내 자원은 자동으로 관리
+- 함수로 무한 스트림 만들기
+  - 요청할 때마다 값을 생성
+  - 끝이 없으므로 **무한 스트림**(infinite stream) 또는 **언바운드 스트림**(unbounded stream) 이라고 표현
+  - 무한한 값이 출력되지 않도록 보통 `limit(n)` 메서드를 사용
+  - `Stream.iterate`
+    - 초깃값과 람다(`UnaryOperator<T>`)를 인수로 받아 연속적으로 값을 생성
+    - 자바 9 에서는 `Predicate` 도 추가로 받아 언제까지 수행할 것인지 지정 가능 
+  - `Stream.generate` 
+    - 연속적이지 않은 새로운 값을 계속 생성 가능 (`Supplier<T>`을 인수로 받음)
