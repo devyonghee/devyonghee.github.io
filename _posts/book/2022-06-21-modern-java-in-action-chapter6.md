@@ -59,3 +59,112 @@ categories: book
 - `reduce`
   - 두 값을 하나로 도출하는 불변형 연산
   - 여러 스레드가 동시에 데이터 구조체를 변경하면 문제가 발생되므로 병렬 수행 불가능 (매번 새로운 리스트를 할당한다면 성능저하)
+
+## 6.3 그룹화
+
+그룹화는 데이터 집합을 하나 이상의 특성으로 분류하는 작업이다.  
+자바 8의 함수형과 팩토리 메서드 `Collectors.groupingBy` 를 이용하면 가독성있는 그룹화를 구현할 수 있다.
+
+```java 
+Map<Dish.Type, List<Dish>> dishesByType = 
+    menu.stream()
+        .collect(groupingBy(Dish::getType));
+
+{ FISH=[prawns, salmon], OTHER=[french fries, rice, season, fruit, pizza], MEAT=[pork, beef, chicken] }        
+```
+
+`groupingBy` 에 두 번째 인수를 이용하면 다양한 문제를 해결할 수 있다.
+
+- `filtering`  
+  프레디케이트로 키를 유지하면서 필터링이 가능
+  ```java 
+  Map<Dish.Type, List<Dish>> dishesByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                   filtering(dish -> dish.getCalories() > 500, toList())));
+  
+  { OTHER=[french fries, pizza], MEAT=[pork, beef], FISH=[] }
+  ```
+
+- `mapping`  
+  각 항목에 함수를 적용한 리스트를 모음
+  ```java 
+  Map<Dish.Type, List<String>> dishNamesByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, mapping(Dish::getName, toList())));
+  ```
+
+- `flatMapping`  
+  리스트를 한수준으로 평면화
+  ```java 
+  Map<Dish.Type, Set<String>> dishTagsByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                   flatMapping(dish -> dishTags.get( dish.getName() ).stream(), toSet())));
+  ```
+
+- 다수준그룹화  
+  `groupingBy` 를 이용하여 두 수준으로 그룹화 가능
+  ```java 
+  Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                   groupingBy(dish -> 
+                       if (dish.getCalories() <= 400) {
+                           return CaloricLevel.DIET;
+                       } else if (dish.getCalories() <= 700) {
+                           return CaloricLevel.NORMAL; 
+                       } else {
+                           return CaloricLevel.FAT;
+                       }
+                    )));
+  
+  { MEAT={ DIET=[chicken], NORMAL=[beef], FAT=[pork] }, 
+    FISH={ DIET=[prawns], NORMAL=[salmon] },
+    OTHER={ DIET=[rice, seasonal fruit], NORMAL=[french fries, pizza] } }
+  ```
+
+- `counting`  
+  종류별로 갯수를 계산
+  ```java 
+  Map<Dish.Type, Long> typesCount = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, counting()));
+  
+  { MEAT=3, FISH=2, OTHER=4 }
+  ```
+  
+- `maxBy`  
+  최대 값의 종류
+  ```java 
+  Map<Dish.Type, Optional<Dish>> mostCaloricByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                              maxBy(comparingInt(Dish::getCalories))));
+  
+  { FISH=Optional[slamon], OTHER=Optional[pizza], MEAT=Optional[pork] }
+  ```
+
+- `collectingAndThen`  
+  컬렉터가 반환한 결과를 다른 형식으로 활용  
+  리듀싱 컬렉터는 `Optional.empty()`를 반환하지 않으므로 안전한 코드
+  ```java 
+  Map<Dish.Type, Dish> mostCaloricByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                              collectingAndThen(
+                                  maxBy(comparingInt(Dish::getCalories)),
+                              Optional::get)));
+  
+  { FISH=slamon, OTHER=pizza, MEAT=pork }
+  ```
+  
+- `summingInt`  
+  모든 요소의 합계
+  ```java 
+  Map<Dish.Type, Integer> mostCaloricByType = 
+      menu.stream()
+          .collect(groupingBy(Dish::getType, 
+                              summingInt(Dish::getCalories)));
+  ```
+  
