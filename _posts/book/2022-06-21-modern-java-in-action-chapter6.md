@@ -168,3 +168,39 @@ Map<Dish.Type, List<Dish>> dishesByType =
                               summingInt(Dish::getCalories)));
   ```
   
+## 6.4 분할
+
+분할은 분할 함수(partitioning function) 이라는 프레디케이트를 사용하는 그룹화 기능이다.  
+분할 함수는 불리언을 반환하므로 키 형식은 `Boolean`으로 두 개의 그룹으로 분류된다.
+
+```java 
+Map<Boolean, List<Dish>> partitionedMenu = 
+    menu.stream().collect(partitioningBy(Dish::isVegetarian));
+    
+{ false = [pork, beef, chicken, prawns, salmon], 
+  true = [french fries, rice, season fruit, pizza] }
+```
+
+`groupingBy`와 마찬가지로 `partitioningBy` 에 두 번째 인수를 이용하면 다양하게 활용 가능하다. 
+
+- `groupingBy`  
+  ```java 
+  Map<Boolean, Map<Dish.Type, List<Dish>> vegetarianDishesByType = 
+      menu.stream().collect(
+          partitioningBy(Dish::isVegetarian, groupingBy(Dish::getType)));
+  
+  { false = {FISH=[prawns, salmon], MEAT=[pork, beef, chicken]}
+    true = {OTHER=[french fries, rice, season fruit, pizza]}}
+  ```
+
+- `collectingAndThen`  
+  ```java 
+  Map<Boolean, Dish> mostCaloricPartitionedByVegetarian = 
+      menu.stream().collect(
+          partitioningBy(Dish::isVegetarian, 
+              collectingAndThen(maxBy(comparingInt(Dish::getCalories)), Optional::get)));
+  
+  { false = pork, true = pizza}
+  ```  
+
+
