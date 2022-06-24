@@ -204,3 +204,87 @@ Map<Boolean, List<Dish>> partitionedMenu =
   ```  
 
 
+## 6.5 Collector 인터페이스
+
+Collector 인터페이스를 직접 구현하여 효율적으로 문제를 해결해본다.
+
+```java 
+public interface Collector<T, A, R> {
+    Supplier<A> supplier();
+    BiConsumer<A, T> accumulator();
+    Function<A, R> finisher();
+    BinaryOperator<A> combiner();
+    Set<Characteristics> characteristics();
+}
+```
+
+- `T` 는 수집될 스트림 항목의 제네릭 형식
+- `A` 는 누적자, 수집 과정에서 중간 결과를 누적하는 객체의 형식
+- `R` 은 수집 연산 결과 객체의 형식 
+
+### Collector 메서드 살펴보기
+
+- `supplier` 메서드: 새로운 결과 컨테이너 생성
+  - 수집 과정에서 빈 누적자 인스턴스를 만드는 함수  
+  ```java
+  public Supplier<List<T>> supplier() {
+      return ArrayList::new;
+  }
+  ```
+  
+- `accumulator` 메서드: 결과 컨테이너에 요소 추가
+  - 리듀싱 연산을 수행하는 함수
+  - 누적자(n-1개 항목을 수집한 상태)와 n번째 요소를 함수에 적용  
+  ```java
+  public BiConsumer<List<T>, T> accumulator() {
+      return List::add;
+  }
+  ```
+  
+- `finisher` 메서드: 최종 변환값을 결과 컨테이너로 적용하기
+  - 누적과정을 끝낼 때 호출할 함수
+  - 스트림 탐색을 끝내고 누적자 객체를 최종 결과로 변환  
+  ```java
+  // 변환 과정이 필요없는 경우
+  public Function<List<T>, List<T>> finisher() {
+      return Function.identity();
+  }
+  ```
+
+- `combiner` 메서드: 두 결과 컨테이너 병합
+  - 리듀싱 연산에서 사용할 함수
+  - 스트림의 서로 다른 서브파트를 병렬로 처리할 때 결과를 어떻게 처리할지 정의
+  - 스트림의 리듀싱을 병렬로 수행 가능
+  ```java
+  public BinaryOperator<List<T>> combiner() {
+      return (list1, list2) -> {
+          list1.addAll(list2);
+          return list1; 
+      };
+  }
+  ```
+
+- `characteristics` 메서드
+  - 컬렉터의 연산을 정의하는 `characteristics` 형식의 불변 집합
+  - 스트림을 병렬로 리듀스할 것인지, 리듀스한다면 어떤 최적화를 선택하는지 힌트 제공
+    - `UNORDERED`: 리듀싱 결과는 스트림 요소의 방문 순서나 누적 순서에 영향 없음
+    - `CONCURRENT`: 다중 스레드에서 `accumulator` 동시 호출 가능, `UNORDERED`을 함께 설정하지 않았다면 정렬안된 상태에서만 병렬 리듀싱 수행 가능
+    - `IDENTITY_FINISH`: `finisher` 메서드가 반환되는 함수는 `identity` 를 적용하므로 생략 가능
+
+
+### Collector 구현 없이 커스텀 수집
+
+세 함수를 인수로 받는 `collector` 메서드를 통해 `Collector` 와 비슷한 기능 수행  
+하지만 다음과 같은 단점들이 존재한다.
+
+- 코드는 간결하지만 가독성이 떨어짐
+- 커스텀 컬렉터를 구현하는 것이 중복도 피하고 재사용성이 높음
+- `Characteristics` 전달 불가능 (`IDENTITY_FINISH` 와 `CONCURRENT` 지만 `UNORDERED` 아닌 컬렉터로만 동작)
+
+```java 
+List<Dish> dishes = menuStream.collect(
+    ArrayList::new,   // 발행
+    List::add,        // 누적
+    List::addAll);    // 합침
+```
+
