@@ -288,3 +288,52 @@ List<Dish> dishes = menuStream.collect(
     List::addAll);    // 합침
 ```
 
+## 6.6 커스텀 컬렉터를 구현해서 성능 개선하기 
+
+n 까지의 자연수를 소수와 비소수로 분할하는 컬렉터를 직접 구현한다. 
+
+```java 
+
+public class PrimeNumbersCollector implements 
+    Collector<Integer, Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> {
+    
+    @Override
+    public Supplier<Map<Boolean, List<Integer>>> supplier() {
+        return () -> new HashMap<Boolean, List<Integer>>() {{
+            put(true, new ArrayList<Integer>());
+            put(false, new ArrayList<Integer>());
+        }}
+    }
+    
+    @Override
+    public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator() {
+        return (Map<Boolean, List<Integer>> acc, Integer candidate) -> {
+            acc.get( isPirme( acc.get(true), candidate)).add(candidate);
+        };
+    }
+    
+    @Override
+    publid BinaryOperator<Map<Boolean, List<Integer>>> combiner() {
+        return (Map<Boolean, List<Integer>> map1, Map<Boolean, List<Integer>> map2) -> {
+            map1.get(true).addAll(map2.get(true));
+            map1.get(false).addAll(map2.get(false));
+        }
+    }
+    
+    @Override
+    public Function<Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> finisher() {
+        // 최종 수집 과정에 변환이 필요 없음
+        return Function.identity();
+    }    
+    
+    @Override
+    public Set<Characteristics> characteristics() {
+        // 소수의 순서에 의미가 있으므로 UNORDERED, CONCURRENT 가 아님
+        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH));
+    } 
+}
+
+IntStream.rangeClosed(2, n).boxed()
+    .collect(new PrimeNumbersCollector()); 
+```
+
