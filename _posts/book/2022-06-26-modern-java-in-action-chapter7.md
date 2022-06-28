@@ -132,3 +132,84 @@ new ForkJoinPool().invoke(task);
 
 - 이 기법으로 `ForkJoinPool` 모든 스레드를 공정하게 분할한다.
 - 작업이 끝나도 유휴 상태로 바뀌지 않고 큐의 헤드에서 다른 태스크를 가져와 처리
+
+## 7.3 Spliterator 인터페이스
+
+`Spliterator` 는 자바 8에서 제공하는 새로운 인터페이스로 병렬 작업에 특화되어 있다. 
+
+```java 
+publid interface Spliterator<T> { 
+    // 탐색해야 할 요소가 남아있으면 참
+    boolean tryAdvance(Consumer<? super T> action);
+    // 일부 요소를 분할해서 두번째 Spliterator 를 생성하는 메서드
+    // null 이 반활 될 때까지 새로운 Spliterator 생성
+    Spliterator<T> trySplit();
+    // 메서드로 탐색해야 할 요소 수
+    long estimateSize();
+    // Spliterator 특성 집합을 포함하는 int 반환
+    int characteristics();
+}
+```
+
+### Spliterator 특성
+
+- ORDERED
+  - 리스트 처럼 정해진 순서가 있음
+- DISTINCT
+  - x, y 두 요소를 방문했을 때 `x.equals(y) == false`
+- SORTED
+  - 탐색된 요소는 정렬 순서를 따름
+- SIZED
+  - 크기가 알려진 소스를 생성하여 `estimateSize` 은 정확한 값을 반환
+- NON-NULL
+  - 탐색하는 모든 요소는 null 이 아님
+- IMMUTABLE
+  - `Spliterator` 의 소스는 불변 (추가, 삭제, 수정 불가)
+- CONCURRENT
+  - 동기화 없이 여러 스레드에서 동시에 수정 가능
+- SUBSIZED
+  - 분할되는 모든 `Spliterator`은 SIZED 특성을 가짐
+
+### 단어 수 계산 예시
+
+```java 
+class WordCounterSpliterator implements Spliterator<Character> {
+    private final String string;
+    private int currentChar = 0;
+    public WordCounterSpliterator(String string) {
+        this.string = string;
+    }
+    @Override
+    public boolean tryAdvance(Consumer<? super Character> action) { 
+        action.accept(string.charAt(currentChar++));   // 현재 문자 소비
+        return currentChar < string.length();    // 소비할 문자 남아있는지 확인
+    }
+    // 반복될 자료구조를 분할하는 메서드
+    @Override
+    public Spliterator<Character> trySplit() {
+        int currentSize = string.length() - currentChar;
+        if (currentSize < 10) {
+            return null;  // 순차 처리 가능할 정도로 작아졌으므로 null 반환
+        }
+        for (int splitPos = currentSize / 2 + currentChar; splitPos < string.length(); splitPos++) { 
+            if(Character.isWhitespace(string.charAt(splitPos))) {
+                Spliterator<Character> spliterator = new WordCounterSpliterator(string.substring(currentChar, splitPos));
+                currentChar = splitPos;
+                return spliterator;
+            }
+        }
+        return null;
+    }
+    @Override
+    public long estimateSize() {
+        return string.length() - currentChar;
+    }
+    @Override
+    public int characteristics() {
+        return ORDERED + SIZED + SUBSIZED + NON_NULL + IMMUTABLE;
+    }
+}
+
+Spliterator<Character> spliterator = new WordCounterSpliterator(SENTENCE);
+Stream<Character> stream = StreamSupport.stream(spliterator, true);  // 두 번째 불리언 인수는 병렬 스트림 생성 여부
+```
