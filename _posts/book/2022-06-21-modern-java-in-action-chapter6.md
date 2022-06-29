@@ -299,10 +299,10 @@ public class PrimeNumbersCollector implements
     
     @Override
     public Supplier<Map<Boolean, List<Integer>>> supplier() {
-        return () -> new HashMap<Boolean, List<Integer>>() {{
+        return () -> new HashMap<Boolean, List<Integer>>() { {
             put(true, new ArrayList<Integer>());
             put(false, new ArrayList<Integer>());
-        }}
+        } };
     }
     
     @Override
