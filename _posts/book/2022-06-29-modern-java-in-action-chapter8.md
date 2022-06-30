@@ -49,3 +49,14 @@ List<String> friends = Arrays.asList("Raphael", "Olivia", "Thibaut");
                                                       entry("Thibaut", 26));
   ```
 
+## 8.2 리스트와 집합 처리
+
+- `removeIf`
+  - 프레디케이트를 만족하는 요소를 제거
+  - 기존 컬렉션을 변경
+  - 코드가 단순해지고 `ConcurrentMOdificationException` 버그 방지
+- `replaceAll`
+  - `List`에서 이용할 수 있으며 `UnaryOperator` 함수로 각 요소를 변경
+  - 새로운 컬렉션을 생성하지 않고 간단하게 변경 가능
+
+  
