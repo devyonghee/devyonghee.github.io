@@ -112,3 +112,25 @@ List<String> friends = Arrays.asList("Raphael", "Olivia", "Thibaut");
   moviesToCount.merge(movieName, 1L, (key, count) -> count + 1L) 
   ```  
   
+## 8.4 개선된 ConcurrentHashMap
+
+`ConcurrentHashMap` 은 자료구조의 특정 부분만 잠궈서 동시 추가, 갱신 작업을 허용하여, 
+`Hashtable` 버전에 비해 읽기 쓰기 연산 성능이 뛰어나다.
+
+- 리듀스와 검색 
+  - 키와 값으로 연산
+    - `forEach`: 각 키와 값에 주어진 액션을 실행 
+    - `reduce`: 모든 키와 값을 제공된 리듀스 함수를 이용해 합침
+    - `search`: 널이 아닌  값을 반환할 때까지 각 키와 값에 함수 적용
+  - 키로 연산(`forEachKey`, `reduceKey`, `searchKey`) 
+  - 값으로 연산(`forEachValue`, `reduceValues`, `searchValues`)
+  - Map.Entry 객체로 연산(`forEachEntry`, `reduceEntries`, `searchEntries`)
+  - 함수를 실행할 때는 병렬성 기준값(threshold) 지정 필요
+    - 맵의 크기가 기준 값보다 작으면 순차적으로 연산 실행
+    - 기준값을 1로 지정하면 공통 스레드 풀을 이용해 병렬성 극대화
+- 계수(`mappingCount`)
+  - `int` 범위를 넘어설 수 있어서 `size` 메서드 대신 `mappingCount` 메서드 사용
+- 집합뷰(`newkeySet`)
+  - `keySet` 으로 생성한 집합은 맵과 서로 변경에 대해 영향을 받음
+  - 서로 영향 없이 유지할 수 있도록 `newKeySet` 메서드 사용  
+
