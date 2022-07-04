@@ -107,3 +107,207 @@ menu.parallelStream()
   }
   ```
 
+<br/>
+
+## 9.2 람다로 객체지향 디자인 패턴 리팩터링
+
+### 전략 패턴 (strategy pattern)
+
+전략 패턴은 한 유형의 알고리즘을 보유하여 런타임에 적절한 알고리즘을 선택하는 기법이다.
+
+{% include image.html alt="strategy pattern" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/strategy-pattern.png" %}
+
+- 알고리즘을 나타내는 인터페이스 (Strategy 인터페이스)
+- 다양한 알고리즘을 나타내는 한 개 이상의 인터페이스 구현(ConcreteStrategyA, ConcreteStrategyB)
+- 전략 객체를 사용한 한 개 이상의 클라이언트
+
+```java
+// strategy
+public interface ValidationStrategy {
+    boolean execute(String s);
+}
+// concrete
+public class IsAllLowerCase implements ValidationStrategy {
+    public boolean execute(String s) {
+        return s.matches("[a-z]+");
+    }
+}
+// client
+public class Validator {
+    private final ValidationStrategy strategy;
+    public Validator(ValidationStrategy v) {
+        this.strategy = v;
+    }
+    public boolean validate(String s) {
+        return strategy.execute(s);
+    }
+}
+Validator nemericValidator = new Validator(new IsNumeric());
+```
+
+
+`ValidationStrategy` 은 함수형 인터페이스로 `Predicate<String>` 함수 디스크립터를 가지고 있어서 람다 표현식으로 변경 가능
+
+```java
+Validator numericValidator = new Validator((String s) -> s.matches("[a-z]+"));
+numericValidator.validate("aaaaa");
+```
+
+### 템플릿 메서드 (template method)
+
+템플릿 메서드 패턴을 사용하면 알고리즘의 일부를 고칠 수 있는 유연함을 제공할 수 있다. 
+
+```java 
+abstract class OnlineBanking {
+    public void processCustomer(int id) {
+        Customer c = Database.getCustomerWithId(id);
+        makeCustomerHappy(c);
+    }
+    abstract void makeCustomerHappy(Customer c);
+}
+```
+
+람다 표현식을 이용해서 유연하게 변경이 가능
+
+```java 
+public void processCustomer(int id, Consumer<Customer> makeCustomerHappy) {
+    Customer c = Database.getCustomerWithId(id);
+    makeCustomerHappy.accept(c);
+}
+new OnlineBankingLambda()
+    .processCustomer(1337, (Customer c) -> System.out.println("Hello " + c.getName());
+```
+
+### 옵저버 패턴 (Observer pattern)
+
+옵저버 패턴은 특정 이벤트가 발생했을 때, 한 객체(주제 subject)가 다른 객체 리스트(옵저버 observer)에 자동으로 알림을 보내는 패턴이다.
+
+{% include image.html alt="observer pattern" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/observer-pattern.png" %}
+
+```java  
+// observer
+interface Observer {
+    void notify(String tweet);
+}
+class NYTimes implements Observer {
+    public void notify (String tweet) { 
+        if (tweet.contains("money")) {
+            System.out.println("Breaking news in NY! " + tweet);
+        }    
+    }
+}
+// subject
+interface Subject {
+    void registerObserver(Observer o);
+    void notifyObservers(String tweet);
+}
+class Feed implements Subject {
+    private final List<Observer> observers = new ArrayList<>();
+    public void registerObserver (Observer o) {
+        this.observers.add(o);
+    }
+    public void notifyObservers(String tweet) {
+        observers.forEach(o -> o.notify(tweet));
+    }
+}
+// client
+Feed f = new Feed();
+f.registerObserver(new NYTimes());
+f.notifyObservers("The queen said her favourite book is Modern Java in Action!");
+```
+
+`Observer` 인터페이스를 구현하는 모든 클래스를 인스턴스화하지 않고 람다 표현식을 직접 전달하여 동작을 지정한다.
+
+```java 
+f.registerObserver((String tweet) -> {
+    if (tweet.contains("money")) {
+        System.out.println("Breaking news in NY! " + tweet);
+    }
+});
+f.notifyObservers("The queen said her favourite book is Modern Java in Action!");
+```
+
+### 의무 체인(chain of responsibility)
+
+의무 체인 패턴을 이용하면 작업 처리 객체의 체인을 만들 수 있다. 
+
+{% include image.html alt="chain of responsibility pattern" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/chain-of-responsibility-pattern.png" %}
+
+```java 
+public abstract class ProcessingObject<T> {
+    protected ProcessingObject<T> successor;
+    public void setSuccessor(ProcessingObject<T> successor) {
+        this.successor = successor;
+    }
+    public T handle(T input) {
+        T r = handleWork(input);
+        if (successor != null) {
+            return successor.handle(r);
+        }
+        return r;
+    }
+    abstract protected T handleWork(T input);
+}
+
+public class HeaderTextProcessing extends ProcessingObject<String> {
+    public String handleWork(String text) {
+        return "From Raoul, Mario and Alan: " + text;
+    }
+}
+public class SpellChckerProcessing extends ProcessingObject<String> {
+    public String handleWork(String text) {
+        return text.replaceAll("labda", "lambda");
+    }
+}
+// client
+ProcessingObject<String> p1 = new HeaderTextProcessing();
+ProcessingObject<String> p2 = new SpellCheckerProcessing();
+p1.setSuccessor(p2);
+p1.handle("Aren`t labdas really sexy?!!");  // From Raoul, Mario and Alan: Aren`t lambdas really sexy?!! 
+```
+
+`andThen`으로 함수를 조합해서 체인 생성이 가능하다.
+
+```java 
+UnaryOperator<String> headerProcessing = (String text) -> "From Raoul, Mario and Alan: " + text;
+UnaryOperator<String> spellChckerProcessing = (String text) -> text.replaceAll("labda", "lambda");
+Function<String, String> pipeline = headerProcessing.andThen(spellChckerProcessing);
+pipeline.apply(...);
+```
+
+### 팩토리 (factory)
+
+팩토리 패턴은 인스턴스화 로직을 클라이언트에 노출하지 않고 객체를 만들 수 있다. 
+
+```java  
+public class ProductFactory { 
+    public static Product createProduct(String name) {
+        switch(name) {
+            case "loan" : return new Loan();
+            case "stock" : return new Stock();
+            case "bond" : return new Bond();
+            default : throw new RuntimeException("No such product " + name);
+        }
+    }
+}
+// client
+Product p = ProductFactory.createProduct("loan");
+```
+
+생성자도 메서드 참조처럼 접근할 수 있으므로 `Map`을 만들어서 코드를 재구현 가능
+
+```java 
+final static Map<String, Supplier<Product>> map = new HashMap<>();
+static {
+    map.put("loan", Loan::new);
+    map.put("stock", Stock::new);
+    map.put("bond", Bond::new);
+}
+// client
+public static Product createProduct(String name) {
+    Supplier<Product> p = map.get(name);
+    if (p != null) return p.get();
+    throw new IllegalArgumentException("No such product " + name);
+}
+```
+
