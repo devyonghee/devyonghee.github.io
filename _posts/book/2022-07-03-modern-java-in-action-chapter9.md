@@ -311,3 +311,92 @@ public static Product createProduct(String name) {
 }
 ```
 
+<br/>
+
+## 9.3 람다 테스팅
+
+프로그램이 의도한대로 동작하는 것을 확인하기 위해서는 단위 테스팅(unit testing) 이 필요하다.  
+예시를 통해 람다를 이용하여 테스트 코드를 작성해보도록 한다.
+
+```java 
+public class Point {
+    private final int x;
+    private final int y;
+    private Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public Point moveRightBy(int x) {
+        return new Point(this.x + x, this.y);
+    }
+}
+
+@Test
+public void testMoveRightBy() throws Exception {
+    Point p1 = new Point(5, 5);
+    Point p2 = p1.moveRightBy(10);
+    assertEquals(15, p2.getX());
+    assertEquals(5, p2.getY());
+}
+```
+
+### 람다 표현식의 동작 테스팅
+
+람다를 필드에 저장해서 재사용할 수 있고 로직을 테스트할 수 있다.
+
+```java 
+public class Point {
+    public final static Comparator<Point> compareByXAndThenY = 
+        comparing(Point::getX).thenComparing(Point::getY);
+}
+@Test
+public void testComparingTwoPoints() throws Exception {
+    Point p1 = new Point(10, 15);
+    Point p2 = new Point(10, 20);
+    int result = Point.compareByXAndThenY.compare(p1, p2);
+    assertTrue(result < 0);
+}
+```
+
+### 람다를 사용하는 메서드의 동작에 집중하라
+
+람다는 정해진 동작을 다른 메서드에서 사용할 수 있으나 캡슐화하는 것이 목표이므로 세부 구현을 공개하지 않아야 한다. 
+
+```java
+public static List<Point> moveAllPointsRightBy(List<Point> points, int x) {
+    return points.stream()
+                 .map(p -> new Point(p.getX() + x, p.getY()))
+                 .collect(toList());
+}
+@Test
+public void testMoveAllPointsRightBy() throws Exception {
+    List<Point> points = Arrays.asList(new Point(5, 5), new Point(10, 5));
+    List<Point> expectedPoints = Arrays.asList(new Point(15, 5), new Point(20, 5));
+    List<Point> newPoints = Point.moveAllPointsRightBy(points, 10);
+    assertEquals(expectedPoints, newPoints);
+}
+```
+
+### 복잡한 람다를 개별 메서드로 분할하기
+
+복잡한 람다 표현식은 테스트를 작성하는 것도 어렵다.   
+그러나 람다 표현식을 메서드 참조로 바꿔서 일반 메서드처럼 분할한다면 테스트가 수월해진다.
+
+### 고차원 함수 테스팅
+
+함수를 인수로 받거나 다른 함수를 반환하는 메서드는 사용하기 어렵다.  
+메서드가 람다를 인수로 받는다면 다른 람다로 메서드의 동작을 테스트가 가능하다.  
+테스트할 메서드가 다른 함수를 반환한다면 함수형 인터페이스의 인스턴스로 간주하고 함수의 동작을 테스트할 수 있다.
+
+```java 
+@Test
+public void testFilter() throw Exception { 
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
+    List<Integer> even = filter(numbers, i -> i % 2 == 0);
+    List<Integer> smallerThanThree = filter(numbers, i -> i < 3);
+    assertEquals(Arrays.asList(2, 4), even);
+    assertEquals(Arrays.asList(1, 2), smallerThanThree);
+}
+```
