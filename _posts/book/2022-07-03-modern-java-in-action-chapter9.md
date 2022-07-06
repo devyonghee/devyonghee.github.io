@@ -400,3 +400,68 @@ public void testFilter() throw Exception {
     assertEquals(Arrays.asList(1, 2), smallerThanThree);
 }
 ```
+
+<br/>
+
+## 9.4 디버깅
+
+코드를 디버깅할 때 개발자는 스택 트레이스와, 로깅을 확인한다.  
+하지만 람다 표현식과 스트림은 기존의 디버깅 기법을 무력화하기 때문에 다른 디버깅 방법을 살펴보도록 한다.
+
+### 스택 트레이스 확인
+
+프로그램이 중단되면 호출 위치, 인수값, 지역 변수 등을 스택 프레임(stack frame)에서 확인이 가능하다.    
+하지만 람다 표현식은 이름이 없기 때문에 조금 복잡한 스택 트레이스가 생성된다.  
+
+```java 
+public class Debugging {
+    public static void main(String[] args) {
+        List<Point> points = Arrays.asList(new Point(12, 2), null);
+        points.stream().map(p -> p.getX()).forEach(System.out::println);
+    }
+}
+```
+
+```text
+Exception in thread "main" java.lang.NullPointerException
+    at Debugging.lambda$main$0(Debugging.java:6)
+    at Debugging$$Lambda$5/284720968.apply(Unknown Source)
+    at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+    at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)  
+```
+
+람다 표현식은 이름이 없으므로 컴파일러가 람다를 참조하는 `lambda$main$0` 같은 이름을 만들어낸다.   
+메서드 참조를 사용하는 클래스와 같은 곳에 있는 메서드를 참조하면 메서드 참조 이름이 스택 트레이스에 나타난다.
+
+```java 
+public class Debugging {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3);
+        numbers.stream().map(Debugging::divideByZero).forEach(System.out::println);
+    }
+    public static int divideByZero(int n) {
+        return n / 0;
+    }
+}
+```
+
+```text
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at com.sodacrew.admin.auth.Debugging.divideByZero(Debugging.java:10)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	...
+```
+
+### 정보 로깅
+
+스트림의 파이프라인 연산을 디버깅한다면 `peek` 이라는 스트림 연산을 활용할 수 있다.  
+`peek` 연산은 각 요소를 소비하지 않고 다음 연산으로 그대로 전달한다.
+
+```java 
+List<Integer> result = numbers.stream()
+        .peek(x -> System.out.println("from stream: " + x))
+        .map(x -> x + 17)
+        .peek(x -> System.out.println("after map: " + x))
+        .collect(Collectors.toList());
+```
+
