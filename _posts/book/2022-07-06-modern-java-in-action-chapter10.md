@@ -96,3 +96,43 @@ DSL 친화적이지만 다음과 같은 단점들이 존재한다.
   - DSL과 호스트 언어 사이에 인공 계층이 생김
   
 
+<br/>
+
+## 10.2 최신 자바 API의 작은 DSL
+
+네이티브 자바 API 에는 자바 새로운 기능의 장점들이 적용되었다.  
+스트림 API 를 통해 DSL 이 사용된 예를 확인한다.
+
+### 스트림 API는 컬렉션을 조작하는 DSL
+
+`Stream` 인터페이스는 네이티브 자바 API 에 작은 내부 DSL을 적용한 좋은 예다.  
+컬렉션의 항목을 필터, 정렬, 변환, 그룹화, 조작하는 작지만 강력한 DSL 이다.  
+`Stream` 인터페이스를 이용하여 함수형으로 구현하면 쉽고 간결하다.  
+스트림 API의 플루언트 형식 또한 설계된 DSL의 특징 중 하나이다.(중간 연산 게으름, 다른 연산으로 파이프라인 가능)
+
+```java 
+Files.lines(Paths.get(fileName))
+    .filter(line -> line.startWith("ERROR"))
+    .limit(40)
+    .collect(toList());
+```
+
+
+### 데이터를 수집하는 DSL인 Collectors
+
+`Collector` 인터페이스는 데이터 수집(수집, 그룹화, 파이션)을 수행하는 DSL로 간주할 수 있다.  
+특히 다중 필드 정렬을 지원하도록 합쳐질 수 있으며, `Collectors` 는 다중 수준 그룹화를 달성할 수 있도록 합쳐질 수 있다.
+
+```java 
+Map<String, Map<Color, List<Car>>> carsByBrandAndColor = 
+    cars.stream().collect(grouping(Car::getBrand, groupingBy(Car::getColor)));
+    
+// 두 Comparators 연결    
+Comparator<Person> comparator = 
+    comparing(Person::getAge).thenComparing(Person::getName);
+// 중첩
+Collector<? super Car, ?, Map<Brand, Map<Color, List<Car>>>> carGroupingCollector = 
+    groupingBy(Car::getBrand, groupingBy(Car::getColor));    
+```
+
+
