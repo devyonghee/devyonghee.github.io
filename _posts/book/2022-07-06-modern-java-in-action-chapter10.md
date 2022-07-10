@@ -203,8 +203,10 @@ trade.setStock(stock1);
 - 장점
   - 사용자가 지정된 절차에 따라 플루언트 API의 메서드 호출을 강제
   - 파라미터가 빌더 내부로 국한 됨
-  - 정적 메서드 사용을 최소화 하고 메서드 이름이 인수의 이름을 대신하여 가독성 개선
-  - 분법적 잡음이 최소화
+  - 메서드 이름이 인수의 이름을 대신하여 가독성 개선
+  - 문법적 잡음이 최소화
+  - 선택형 파라미터와 잘 동작
+  - 정적 메서드 사용을 최소화하거나 없앨 수 있음
 - 단점
   - 빌더를 구현해야 함
   - 상위 수준의 빌더를 하위 수준의 빌더와 연결할 많은 접착 코드가 필요
@@ -296,12 +298,14 @@ public class TradeBuilderWithStock {
 중첩된 함수 DSL 패턴은 다른 함수 안에 함수를 이용해 도메인 모델을 만든다.
 
 - 장점
-  - 중첩 방식이 도메인 객체 계층 구조에 그대로 반영  
+  - 중첩 방식이 도메인 객체 계층 구조에 그대로 반영
+  - 구현의 장황함을 줄일 수 있음
 - 단점
   - 결과 DSL 에 더 많은 괄호를 사용
+  - 정적 메서드 사용이 빈번
   - 인수 목록을 정적 메서드에 넘겨줘야 함
   - 인수의 의미가 이름이 아니라 위치에 의해 정의 됨
-  - 도메인에 선택 사항 필드가 있으면 인수를 생략할 수 있으므로 메서드 오버로드 구현
+  - 도메인에 선택 사항 필드가 있으면 인수를 생략할 수 있으므로 메서드 오버로딩 필요
 
 
 ```java 
@@ -352,6 +356,9 @@ public class NestedFunctionOrderBuilder {
 - 장점
   - 플루언트 방식으로 도메인 객체 정의 가능
   - 중첩 방식이 도메인 객체 계층 구조에 그대로 반영
+  - 선택형 파라미터와 잘 동작
+  - 정적 메서드를 최소화하거나 없앨 수 있음
+  - 빌더의 접착 코드가 없음
 - 단점
   - 설정 코드가 필요
   - 람다 표현식 문법에 의한 잡음의 영향을 받음
@@ -533,5 +540,151 @@ public class TaxCalculator {
 double value = new TaxCalculator().with(Tax::regional)
                                   .with(Tax::surcharge)
                                   .calculate(order);
+```
+
+<br/>
+
+## 10.4 실생활의 자바 8 DSL
+
+DSL을 개발하는데 사용하는 유용한 패턴에 대해 알아봤으니  
+이 패턴들이 얼마나 사용되고 있는지 살펴본다.
+
+### jOOQ
+
+jOOQ는 SQL을 구현하는 내부적 DSL로 자바에 직접 내장된 형식 안전 언어다.   
+jOOQ DSL 구현하는 데에는 메서드 체인 패턴을 사용했다.  
+SQL 문법을 흉내내려면 선택적 파라미터를 허용하고 정해진 순서대로 특정 메서드가 호출되어야 하기 때문에 메서드 체인 패턴의 특성이 필요하다.
+
+```sql 
+SELECT * FROM BOOK 
+WHERE BOOK.PUBLISHED_IN = 2016 
+ORDER BY BOOK.TITLE
+```
+
+위 SQL 질의를 jOOQ DSL 을 이용하면 다음처럼 구현할 수 있다. 
+
+```java 
+create.selectFrom(BOOK)
+      .where(BOOK.PUBLISHED_IN.eq(2016))
+      .orderBy(BOOK.TITLE)
+```
+
+jOOQ DSL은 스트림 API 와 조합해서 사용할 수 있다.
+
+```java 
+Class.forName("org.h2.Driver");
+try(Connection c = 
+        getConnection("jdbc:h2:~/sql-goodies-with-mapping", "sa", "")) {
+    DSL.using(c)
+       .select(BOOK.AUTHOR, BOOK.TITLE)
+       .where(BOOK.PUBLISHED_IN.eq(2016))
+       .orderBy(BOOK.TITLE)
+    .fetch()
+    .stream()
+    .collect(groupingBy(
+        r -> r.getValue(BOOK.AUTHOR),
+        LinkedHashMap::new,
+        mapping(r -> r.getValue(BOOK.TITLE), toList())))
+        .forEach((author, titles) -> System.out.println(author + " is author of " + title));
+}        
+```
+
+### 큐컴버
+
+동작 주도 개발(BDD)은 테스트 주도 개발의 확장으로 다양한 비즈니스 시나리오를 구조적으로 서술하는 도메인 전용 스크립팅 언어를 사용한다.   
+
+큐컴버(cucumber)는 BDD 프레임워크로 명령문을 실행할 수 있는 테스트 케이스로 변환하며, 
+비즈니스 시나리오를 평문으로 구현할 수 있도록 도와준다.
+
+큐컴버는 세가지 구분되는 개념을 사용한다. 
+- Given: 전제 조건 정의
+- When: 시험하려는 도메인 객체의 실질 호출
+- Then: 테스트 케이스의 결과를 확인
+
+```yaml
+Feature: Buy stock
+  Scenario: Buy 10 IBM stocks
+    Given the price of a "IBM" stock is 125$
+    When I buy 10 "IBM"
+    Then the order value should be 1250$
+```
+
+테스트 시나리오를 정의하는 스크립트는 제한된 키워드를 제공하며 자유로운 문장을 구현할 수 있는 외부 DSL을 활용한다.  
+테스트 케이스의 변수를 정규 표현식으로 캡쳐할 수 있으며, 테스트를 구현하는 메서드로 전달한다. 
+
+```java 
+public class BuyStocksSteps {
+    private Map<String, Integer> stockUnitPrices = new HashMap<>();
+    private Order order = new Order();
+    
+    @Given("^the price of a \"(.*?)\" stock is (\\d+)\\$$")
+    public void setUnitPrice(String stockName, int unitPrice) {
+        stockUnitValues.put(stockName, unitPrice);
+    }
+    @When("^I buy (\\d+) \"(.*?)\"$")
+    public void buyStocks(int quantity, String stockName) {
+        Trade trade = new Trade();
+        trade.setType(Trade.Type.BUY);
+        ...
+    }
+    @Then("^the order value should be (\\d+)\\$$")
+    public void checkOrderValue(int expectedValue) {
+        assertEquals(expectedValue, order.getValue());
+    }
+}
+```
+
+어노테이션을 제거하고 다른 문법으로도 개발이 가능하다.  
+이 방식을 이용하면 코드가 단순해지고 메서드가 무명 람다로 바뀌면서 메서드 이름을 찾는 부담이 없어진다.
+
+```java 
+public class BuyStocksSteps implements cucumber.api.java8.En {
+    private Map<String, Integer> stockUnitPrices = new HashMap<>();
+    private Order order = new Order();
+    public BuyStocksSteps() {
+        Given("^the price of a \"(.*?)\" stock is (\\d+)\\$$"), 
+              (String stockName, int unitPrice) -> {
+                  stockUnitValues.put(stockName, unitPrice);
+              });
+        ...
+    }
+}
+```
+
+
+### 스트링 통합 
+
+스프링 통합은 유명한 엔터프라이즈 통합 패턴을 지원할 수 있도록 의존성 주입에 기반한 스프링 프로그래밍 모델을 확장한다.  
+복잡한 통합 솔루션 모델을 제공하고 비동기, 메시지 주도 아키텍처를 쉽게 적용할 수 있도록 돕는 것이 스프링 통합의 핵심 목표다.  
+스프링 통합 DSL 에서도 메서드 체인 패턴이 가장 널리 사용되고 있다. 
+
+```java 
+@Configuratoin 
+@EnableIntegration
+public class MyConfiguration {
+   
+   @Bean
+   public MessageSource<?> integerMessageSource() {
+       MethodInvokingMessageSource source = new MethodInvokingMessageSource();
+       source.setObject(new AtomicInteger());
+       source.setMethodName("getAndIncrement");
+       return source; 
+   } 
+   @Bean
+   public DirectChannel inputChannel() {
+       return new DirectChannel();
+   }
+   @Bean
+   public IntegrationFlow myFlow() {
+       return IntegrationFlows
+                  .from(this.integerMessageSource(), 
+                        c -> c.poller(Pollers.fixedRate(10)))
+                  .channel(this.inputChannel())
+                  .filter((Integer p) -> p % 2 == 0)
+                  .transform(Object::toString)
+                  .channel(MessageChannels.queue("queueChannel"))
+                  .get();
+   }
+}
 ```
 
