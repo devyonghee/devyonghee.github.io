@@ -101,3 +101,30 @@ def carInsuranceName = person?.car?.insurance?.name
 자바8 에서는 선택형값 개념의 영향을 받아 `java.util.Optional<T>` 이라는 클래스를 제공한다.    
 이제 `java.util.Optional<T>` 을 이용해서 값이 없는 상황을 모델링하는 방법에 대해 알아본다.
 
+<br/>
+
+## 11.2 Optional 클래스 소개
+
+자바 8에서 제공하는 `java.util.Optional<T>` 이라는 새로운 클래스는 선택형값을 캡슐화하는 클래스다.  
+값이 있으면 Optional 클래스는 값을 감싸고 값이 없으면 `Optional.empty` 정적 팩토리 메서드로 반환한다.  
+`null` 와 비슷하지만 `NullPointerException`이 발생되지 않고 `Optional` 객체로 다양한 방식으로 활용 가능하다.  
+
+```java 
+public class Person {
+    private Optional<Car> car;
+    public Optional<Car> getCar() { return car; }
+}
+
+public class Car {
+    private Optional<Insurance> insurance;
+    public Optional<Insurance> getInsurance() { return insurance; }
+}
+
+public class Insurance {
+    private String name;
+    public String getName() { return name; }
+}
+```
+
+`Optional` 클래스를 사용하면서 모델의 의미가 더 명확해졌다.   
+하지만 모든 `null` 참조를 `Optional`로 대치하는 것보다는 이해하기 쉬운 API 설계를 위한 용도로 사용하는 것이 바람직하다.  
