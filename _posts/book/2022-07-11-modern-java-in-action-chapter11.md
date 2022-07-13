@@ -128,3 +128,135 @@ public class Insurance {
 
 `Optional` 클래스를 사용하면서 모델의 의미가 더 명확해졌다.   
 하지만 모든 `null` 참조를 `Optional`로 대치하는 것보다는 이해하기 쉬운 API 설계를 위한 용도로 사용하는 것이 바람직하다.  
+
+<br/>
+
+## 11.3 Optional 적용 패턴
+
+### Optional 객체 만들기
+
+- 빈 Optional
+  - `Optional.empty();`
+- null 이 아닌 값으로 Optional 만들기
+  - `Optional.of(car);`
+- null 값으로 Optional 만들기
+  - `Optional.ofNullable(car);`
+- 값 가져오기
+  - `get` 메서드 사용
+
+### 맵으로 Optional 의 값을 추출하고 반환하기 
+
+`Optional`은 객체의 정보를 추출하기 위한 용도로 `map` 메서드를 지원한다.
+
+```java 
+String name = null;
+if (insurance != null) {
+    name = insurance.getName();
+}
+// 동일한 동작의 코드
+Optional<String> name = Optional.ofNullable(insurance)
+                                .map(Insurance::getName);
+```
+
+### flatMap 으로 Optional 객체 연결
+
+`flatMap` 메서드는 이차원 `Optional`을 일차원 `Optional`로 평준화한다.
+
+```java 
+String carInsuranceName = person.flatMap(Person::getCar)
+                                .flatMap(Car::getInsurance)
+                                .map(Insurance::getName)
+                                .orElse("Unknown");
+```
+
+
+### Optional 스트림 조작
+
+자바 9 에서는 `Optional` 포함하는 스트림을 쉽게 처리하도록 `stream()` 메서드가 추가되었다.  
+
+```java 
+public Set<String> getCarInsuranceNames(List<Person> persons) {
+    return persons.stream()
+            .map(Person::getCar)
+            .map(optCar -> optCar.flatMap(Car::getInsurance))
+            .map(optIns -> optIns.map(Insurance::getName))
+            .flatMap(Optional::stream)   // Stream<Optional<String>> 을 Stream<String>으로 변환
+            .filter(Optional::isPresent)  // 빈 값을 제거해서 값만 가져올 수 있음
+            .map(Optional::get)
+            .collect(Collectors.toSet());
+}
+```
+
+
+### 디폴트 액션과 Optional 언랩
+
+`Optional` 인스턴스에 포함된 값을 읽는 다양한 방법 
+
+- `get()`
+  - 가장 간단하지만 안전하지 않음
+  - 래핑된 값이 있으면 반환하고 없으면 `NoSuchElementException` 발생
+  - 반드시 있다고 가정하지 않으면 사용하지 안흔 것이 바람직
+- `orElse(T other)`
+  - 값을 포함하지 않을때 기본값 제공 가능
+- `orElseGet(Supplier<? extends T> other)`
+  - `orElse` 의 게으른 버전의 메서드 (값이 없을 때만 실행)
+  - 디폴드 메서드를 만드는 데 시간이 걸리거나, 비어있을 때만 생성해야 한다면 사용
+- `orElseThrow(Supplier<? extends X> exceptionSupplier)`
+  - 값이 비어있을 때만 예외 발생
+  - `get()` 과 비슷하지만 발생할 예외 선택 가능
+- `ifPresent(Consumer<? super T> consumer)`
+  - 값이 존재할 때 인수로 넘겨준 동작을 실행
+  - 값이 없으면 아무일도 일어나지 않음
+- `ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`
+  - 자바 9에서 추가된 메서드
+  - 비어있을 때 실행할 수 있는 `Runnable` 인수를 받음
+
+### 두 Optional 합치기
+
+두 `Optional`을 인수로 받아서 `Optional<Insurance>`를 반환하는 `null` 안전 버전 메서드를 구현해본다.
+
+```java 
+public Optional<Insurance> nullSafeFindCheapestInsurance(
+        Optional<Person> person, Optional<Car> car) {
+    if (person.isPresent() && car.isPresent()) {
+        return Optional.of(findCheapestInsurance(person.get(), car.get()));
+    }
+    return Optional.empty();
+}
+// 언랩하지 않고 합치기
+public Optional<Insurance> nullSafeFindCheapestInsurance(
+        Optional<Person> person, Optional<Car> car) {
+    return person.flatMap(p -> car.map(c -> findCheapestInsurance(p, c));
+}
+```
+
+### 필터로 특정값 거르기
+
+`filter` 메서드는 프레디케이트를 인수로 받아서 일치하면 그 값을 반환하고 그렇지 않으면 빈 `Optional` 객체를 반환한다.  
+`Optional` 이 비어있는 상태라면 `filter` 연산은 아무 동작하지 않는다.
+
+```java 
+optInsurance.filter(insurance ->
+        "CambridgeInsurance".equals(insurance.getName()))
+        .ifPresent(System.out::println);
+```
+
+### Optional 메서드
+
+| 메서드              | 설명                                            |
+|------------------|-----------------------------------------------|
+| `empty`          | 빈 `Optional` 인스턴스 반환                          |  
+| `filter`         | 값이 존재하며 프레디케이트와 일치하면 값을 포함,<br/> 없거나 일치하지 않으면 빈 `Optional` 반환 |  
+| `flatMap`        | 값이 존재하면 인수로 제공된 함수를 적용한 결과 `Optional` 반환      |  
+| `get`            | 값이 존재하면 감싸고 있는 값 반환<br/>없으면 `NoSuchElementException` |  
+| `ifPresent`      | 값이 존재하면 지정된 `Consumer` 실행                     |  
+| `ifPresentOrElse` | 값이 존재하면 지정된 `Consumer` 실행<br/>없으면 `Runnable` 실행    |  
+| `isPresent`      | 값이 존재하면 `true`, 없으면 `false`                   |  
+| `map`            | 값이 존재하면 제공된 매핑 함수 적용                          |  
+| `of`             | 값이 존재하면 값을 감싼 `Optional`<br/>`null`이면 `NullPointerException` |  
+| `ofNullable`     | 값이 존재하면 값을 감싼 `Optional`<br/>`null`이면 빈 `Optional` 반환 |  
+| `or`             | 값이 존재하면 같은 `Optional` 반환<br/>없으면 `Supplier` 에서 만든 `Optional` 반환 |  
+| `orElse`         | 값이 존재하면 값 반환<br/>없으면 기본값 반환                        |  
+| `orElseGet`      | 값이 존재하면 값 반환<br/>없으면 `Supplier` 제공 값 반환            |  
+| `orElseThrow`    | 값이 존재하면 값 반환<br/>없으면 `Supplier` 에서 생성한 예외 발생       |  
+| `stream`         | 값이 존재하면 존재하는 값만 포함하는 스트림 반환<br/>없으면 빈 스트림 반환       |  
