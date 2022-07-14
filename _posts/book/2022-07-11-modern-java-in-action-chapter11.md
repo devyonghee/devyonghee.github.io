@@ -260,3 +260,70 @@ optInsurance.filter(insurance ->
 | `orElseGet`      | 값이 존재하면 값 반환<br/>없으면 `Supplier` 제공 값 반환            |  
 | `orElseThrow`    | 값이 존재하면 값 반환<br/>없으면 `Supplier` 에서 생성한 예외 발생       |  
 | `stream`         | 값이 존재하면 존재하는 값만 포함하는 스트림 반환<br/>없으면 빈 스트림 반환       |  
+
+
+<br/>
+
+## 11.4 Optional 을 사용한 실용 예제
+
+기존 자바 API 에 Optional 기능을 활용할 수 있는 방법에 대해 알아본다.
+
+### 잠재적으로 null 이 될 수 있는 대상을 Optional 로 감싸기
+
+`null`을 반환하는 것보다는 `Optional`을 반환하는 것이 더 바람직하다.  
+`Optional.ofNullable` 을 이용하여 `null` 일 수 있는 값을 `Optional` 로 안전한게 변환한다.
+
+```java 
+Optional<Object> value = Optional.ofNullable(map.get("key"));
+```
+
+### 예외와 Optional 클래스
+
+자바 API는 값을 제공할 수 없을 때 `null` 대신 예외를 발생시킬 때도 있다.  
+예외가 발생되면 번거로운 `try`/`catch` 블록을 사용하는 것 대신 유틸리티 메서드로 빈 `Optional` 을 반환할 수 있다.
+
+```java 
+public static Optional<Integer> stringToInt(String s) {
+    try {
+        return Optional.of(Integer.parseInt(s));
+    } catch (NumberFormatException e) {
+        return Optional.empty();
+    }
+}
+```
+
+### 기본형 Optional 을 사용하지 말아야 하는 이유
+
+`Optional`도 기본형으로 특화된 `OptionalInt`, `OptionalLong`, `OptionalDouble` 등 클래스가 존재한다.  
+하지만 다음과 같은 이유로 사용하는 것을 권장하지 않는다.
+
+- `Optional`의 요소 수는 최대 한 개이므로 성능이 개선되지 않음
+- `map`, `flatMap`, `filter` 등 메서드를 지원하지 않음
+- 기본형 특화 `Optional`은 다른 일반 `Optional` 과 혼용 불가
+
+
+### 응용
+
+```java 
+public int readDuration(Properties props, String name) {
+    String value = props.getProperty(name);
+    if (value != null) {
+        try {
+            int i = Integer.parseInt(value);
+            if (i > 0) {
+                return i;
+            }
+        } catch (NumberFormatException nfe) { }
+    }
+    return 0;
+}
+
+// Optional 과 유틸리티 메서드를 통해 가독성 개선
+public int readDuration(Properties props, String name) {
+    return Optional.ofNullable(props.getProperty(name))
+                   .flatMap(OptionalUtility::stringToInt)
+                   .filter(i -> i > 0)
+                   .orElse(0);
+}
+```
+
