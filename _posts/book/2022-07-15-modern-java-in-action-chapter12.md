@@ -141,3 +141,111 @@ Period tenDays = Period.between(
 | `plus` | 아니오 | 현재값에 주어진 시간을 더한 복사본 생성            |
 | `subtractFrom` | 아니오 | 지정된 Temporal 객체에서 간격을 뺌           |
 
+
+<br/>
+
+## 12.2 날짜 조정, 파싱, 포매팅
+
+`withAttribute` 메서드를 이용하면 절대적으로, `plus` 또는 `minus` 메서드를 이용하면 상대적으로 기존 객체를 변경하지 않고 변경된 속성을 포함한 객체를 생성할 수 있다.    
+첫번째 인수에 `TemporalField` 메서드를 추가하면 더 범용적으로 메서드를 활용할 수 있다.
+만약 해당 필드를 지원하지 않으면 `UnsupportedTemporalTypeException` 이 발생된다. 
+
+```java 
+// 절대적인 방식
+LocalDate date1 = LocalDate.of(2022, 7, 16);                 // 2022-07-16
+LocalDate date2 = date1.withYear(2021);                      // 2021-07-16
+LocalDate date3 = date2.withDayOfMonth(25);                  // 2021-07-25
+LocalDate date4 = date3.with(ChronoField.MONTH_OF_YEAR, 2);  // 2021-02-25
+
+// 상대적인 방식
+LocalDate date1 = LocalDate.of(2022, 7, 16);                 // 2022-07-16
+LocalDate date2 = date1.plusWeeks(1);                        // 2022-07-23
+LocalDate date3 = date2.minusYears(1);                       // 2021-07-23
+LocalDate date4 = date3.plus(3, ChronoUnit.MONTHS);          // 2021-10-23
+```
+
+#### 특정 시점을 표현하는 날짜 시간 클래스의 공통 메서드
+
+| 메서드            | 정적  | 설명                                                     | 
+|----------------|-----|--------------------------------------------------------|
+| `from`         | 네   | 주어진 Temporal 객체로 인스턴스 생성                               |
+| `now`          | 네   | 시스템 시계로 Temporal 객체 생성                                 |
+| `of`           | 네   | 주어진 구성요소에서 Temporal 객체 생성                              |
+| `parse`        | 네   | 문자열을 파싱해서 Temporal 객체 생성                               |
+| `atOffset`     | 아니오 | 시간대 오프셋과 Temporal 객체 합침                                |
+| `atZone`       | 아니오 | 시간대 오프셋과 Temporal 객체 합침                                |
+| `format`       | 아니오 | 지정된 포매터를 이용해서 <br/> Temporal 객체를 문자열로 변환 (Instant 지원 x) |
+| `get`          | 아니오 | Temporal 객체의 상태를 읽음                                    |
+| `minus`        | 아니오 | 특정 시간을 뺀 Temporal 객체의 복사본 생성                           |
+| `plus`         | 아니오 | 특정 시간을 더한 Temporal 객체의 복사본 생성                          |
+| `with`         | 아니오 | 일부 상태를 바꾼 Temporal 객체의 복사본 생성                          |
+
+### TemporalAdjusters 사용하기
+
+`TemporalAdjusters` 을 전달하여 `with` 메서드에 다양한 동작을 수행할 수 있다.
+
+```java
+import static java.time.temporal.TemporalAdjusters.*;
+LocalDate date1 = LocalDate.of(2022, 7, 16);                // 2022-07-16
+LocalDate date2 = date1.with(nextOrSame(DayOfWeek.SUNDAY)); // 2022-07-17
+LocalDate date3 = date2.with(lastDayOfMonth());             // 2022-07-31
+```
+
+#### 팩토리 메서드
+
+| 메서드                   | 설명                                                               | 
+|-----------------------|------------------------------------------------------------------|
+| `dayOfWeekInMonth`    | 서수 요일에 해당하는 날짜를 반환하는 <br/> TemporalAdjuster 반환(음수면 월의 끝에서 거꾸로 계산) |
+| `firstDayOfMonth`     | 현재 달의 첫 번째 날짜를 반환하는 TemporalAdjuster 반환                          |
+| `firstDayOfNextMonth` | 다음 달의 첫 번째 날짜를 반환하는 TemporalAdjuster 반환                          |
+| `firstDayOfNextYear`  | 내년의 첫 번째 날짜를 반환하는 TemporalAdjuster 반환                            |
+| `firstDayOfYear`      | 올해의 첫 번째 날짜를 반환하는 TemporalAdjuster 반환                            |
+| `firstInMonth`        | 현재 달의 첫 번째 요일에 해당하는 날짜를 반환하는 TemporalAdjuster 반환                 |
+| `lastDayOfMonth`      | 현재 달의 마지막 날짜를 반환하는 TemporalAdjuster 반환                           |
+| `lastDayOfNextMonth`  | 다음 달의 마지막 날짜를 반환하는 TemporalAdjuster 반환                           |
+| `lastDayOfNextYear`   | 내년의 마지막 날짜를 반환하는 TemporalAdjuster 반환                             |
+| `lastDayOfYear`       | 올해의 마지막 날짜를 반환하는 TemporalAdjuster 반환                             |
+| `lastInMonth`         | 현재 달의 마지막 요일에 해당하는 날짜를 반환하는 TemporalAdjuster 반환                  |
+| `next`, `previous`    | 지정한 요일이 처음/이전으로 나타나는 날짜를 반환하는 TemporalAdjuster 반환                |
+| `nextOrSame`          | 지정한 요일이 같거나 처음으로 나타나는 날짜를 반환하는 TemporalAdjuster 반환               |
+| `previousOrSame`      | 지정한 요일이 같거나 이전으로 나타나는 날짜를 반환하는 TemporalAdjuster 반환               |
+
+
+### 날짜와 시간 객체 출력과 파싱
+
+날짜와 시간 관련 포매팅과 파싱 전용 패키지 `java.time.format`이 추가되었다.  
+그 중 `DateTimeFormatter` 클래스는 정적 팩토리 메서드와 상수(`BASIC_ISO_DATE`, `ISO_LOCAL_DATE`)를 이용해 쉽게 포매터를 만들 수 있는 가장 중요한 클래스다.
+
+```java
+// 포매팅 
+LocalDate date = LocalDate.of(2022, 7, 16)
+date.format(DateTimeFormatter.BASIC_ISO_DATE);  // 20220716
+date.format(DateTimeFormatter.ISO_LOCAL_DATE);  // 2022-07-16
+
+// 파싱
+LocalDate.parse("20220716", DateTimeFormatter.BASIC_ISO_DATE);
+LocalDate.parse("2022-07-16", DateTimeFormatter.ISO_LOCAL_DATE);
+
+// 특정 패턴 생성
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+LocalDate date1 = LocalDate.of(2022, 7, 16);
+String formattedDate = date1.format(formatter);        // 16/07/2022
+LocalDate date2 = LocalDate.parse(formattedDate, formatter);
+
+// 지역화된 DateTimeFormmater
+DateTimeFormatter italianFormatter = DateTimeFormatter.ofPattern("d. MMMM yyyy", Locale.ITALIAN);
+LocalDate date1 = LocalDate.of(2022, 7, 16);
+String formattedDate = date1.format(italianFormatter);        // 16. luglio 2022
+LocalDate date2 = LocalDate.parse(formattedDate, italianFormatter);
+
+// DateTimeFormatterBuilder 로 포매터 생성하기
+DateTimeFormatter italianFormatter = new DateTimeFormatterBuilder()
+        .appendText(ChronoField.DAY_OF_MONTH)
+        .appendLiteral(". ")
+        .appendText(ChronoField.MONTH_OF_YEAR)
+        .appendLiteral(" ")
+        .appendText(ChronoField.YEAR)
+        .parseCaseInsensitive()
+        .toFormatter(Locale.ITALIAN);
+```
+
