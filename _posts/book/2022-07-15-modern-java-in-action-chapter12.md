@@ -249,3 +249,54 @@ DateTimeFormatter italianFormatter = new DateTimeFormatterBuilder()
         .toFormatter(Locale.ITALIAN);
 ```
 
+<br/>
+
+## 12.3 다양한 시간대와 캘린더 활용 방법
+
+시간대를 간단하게 처리하기 위해 `java.time.ZoneId` 불변 클래스가 추가되었다.  
+이 클래스를 이용하면 서머타임(Daylight Saving Time, DST) 같은 사항이 자동으로 처리된다.
+
+### 시간대 사용하기
+
+표준 시간이 같은 지역을 묶어서 시간대(time zone) 규칙 집합을 정의한다. 
+`ZoneRules` 클래스에는 약 40개 정도의 시간대가 존재하며, `getRules` 로 시간대의 규정을 가져올 수 있다. 
+지역 ID 는 '{지역}/{도시}' 형태로 이루어지며 IANA Time Zone Database 에서 제공하는 지역 집합 정보를 이용한다. 
+
+```java 
+ZoneId romeZone = ZoneId.of("Europe/Rome");
+
+LocalDate date = LocaDate.of(2022, Month.JULY, 17);
+ZonedDateTime zdt1 = date.atStartOfDay(romeZone);
+LocalDateTime dateTime = LocalDateTime.of(2022, Month.JULY, 17, 13, 45);
+ZonedDateTime zdt2 = dateTime.atZone(romeZone);
+Instant instant = Instant.now();
+ZonedDateTime zdt3 = instant.atZone(romeZone);
+// LocalDateTime 으로 변경
+LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, romeZone);
+```
+
+### UTC/Greenwich 기준의 고정 오프셋
+
+가끔 UTC(Universal Time Coordinated, 협정 세계시) / GMT(Greenwich Mean Time, 그리니치 표준시) 기준으로 시간대를 표현하기도 한다.  
+
+```java 
+// 서머 타임을 제대로 처리할 수 없어서 권장하지 않는 방식
+ZoneOffset newYorkOffset = ZoneOffset.of("-05:00");
+
+// OffsetDateTime으로 ISO-8601 캘린더 시스템에서 정의하는 UTC/GMT와 오프셋으로 표현 가능
+LocalDateTime dateTime = LocalDateTime.of(2022, Month.JULY, 17, 13, 45);
+OffsetDateTime dateTimeInNewYork = OffsetDateTime.of(date, newYorkOffset);
+```
+
+### 대안 캘린더 시스템 사용하기
+
+자바 8에서는 ISO-8601 표준 시스템을 준수하지 않는 4개의 캘린더 시스템을 추가로 제공한다.  
+`LocalDate` 와 함께 이 클래스들은 `ChronoLocalDate` 인터페이스를 구현한다. 
+
+- ThaiBuddhistDate
+- MinguoDate
+- JapaneseDate
+- HijrahDate
+
+
+
