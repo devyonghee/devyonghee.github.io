@@ -4,7 +4,7 @@ tags: [book, moder java in action]
 categories: book
 ---
 
-모던 자바 인 액션 13장에서는 디폴트 메서드에 대해 소개하고 있다.  
+모던 자바 인 액션 13장에서는 디폴트 메서드에 대해 소개하고 있다.   
 디폴트 메서드가 무엇인지, 기존의 문제를 어떻게 디폴트 메서드를 이용하여 어떻게 해결하는지 알아본다.
 
 
@@ -63,4 +63,37 @@ public interface Resizable {
 
 - 라이브러리 관리 복잡
 - 사용자는 같은 코드에 두가지 라이브러리를 모두 사용해야 함
+
+
+<br/>
+
+## 13.2 디폴트 메서드란 무엇인가?
+
+디폴트 메서드는 호환성을 유지하하면서 API를 변경할 수 있는 자바 8의 새로운 기능이다.  
+`default` 키워드로 시작하며, 인터페이스를 구현한 클래스에서 구현하지 않은 메서드가 존재하면 인터페이스 자체에서 제공하게 된다.
+
+```java 
+public interface Size {
+    int size();
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+}
+
+// Fix Resizable
+default void setRelativeSize(int wFactor, int hFactor) {
+    setAbsoluteSize(getWidth() / wFactor, getHeight() / hFactor);
+} 
+```
+
+
+### 추상 클래스와 인터페이스 차이
+
+- 추상 클래스
+  - 클래스가 하나의 추상 클래스만 상속 가능
+  - 인스턴스 변수로 공통 상태를 가짐
+- 인터페이스
+  - 클래스가 여러 개 인터페이스 구현 가능
+  - 인스턴스 변수를 가질 수 없음
+
 
