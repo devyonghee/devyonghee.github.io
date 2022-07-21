@@ -97,3 +97,35 @@ default void setRelativeSize(int wFactor, int hFactor) {
   - 인스턴스 변수를 가질 수 없음
 
 
+<br/>
+
+## 13.3 디폴트 메서드 활용 패턴
+
+디폴트 메서드를 활용하는 방식 선택형 메서드, 동작 다중 상속을 소개한다.
+
+### 선택형 메서드(optional method)
+
+클래스에서 메서드의 기능이 필요없는 경우, 디폴트 메서드를 이용하면 기본 구현을 제공할 수 있으므로 클래스에서 빈 구현을 제공할 필요가 없다.  
+자바 8의 `Iterator` 인터페이스는 `remove` 메서드를 다음과 같이 정의한다.
+
+```java 
+interface Iterator<T> {
+    boolean hasNext();
+    T next();
+    default void remove() {
+        throw new UnsupportedOperationException();
+    }
+}
+```
+
+
+### 동작 다중 상속(multiple inheritance of behavior)
+
+디폴트 메서드를 이용하면 동작 다중 상속 기능 구현이 가능해서 기존 코드를 재사용할 수 있다.   
+
+```java 
+public class ArrayList<E> extends AbstractList<E>
+    implements List<E>, RandomAccess, Cloneable, Serializable {
+}
+```
+
