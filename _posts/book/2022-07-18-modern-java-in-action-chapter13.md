@@ -122,10 +122,12 @@ interface Iterator<T> {
 ### 동작 다중 상속(multiple inheritance of behavior)
 
 디폴트 메서드를 이용하면 동작 다중 상속 기능 구현이 가능해서 기존 코드를 재사용할 수 있다.   
+또 다른 장점으로 디폴트 메서드 덕분에 인터페이스를 직접 수정할 수 있게 되었고 구현하는 모든 클래스도 자동으로 변경한 코드를 상속 받을 수 있다.
 
 ```java 
 public class ArrayList<E> extends AbstractList<E>
     implements List<E>, RandomAccess, Cloneable, Serializable {
 }
 ```
+
 
