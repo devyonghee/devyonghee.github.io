@@ -122,7 +122,7 @@ interface Iterator<T> {
 ### 동작 다중 상속(multiple inheritance of behavior)
 
 디폴트 메서드를 이용하면 동작 다중 상속 기능 구현이 가능해서 기존 코드를 재사용할 수 있다.   
-또 다른 장점으로 디폴트 메서드 덕분에 인터페이스를 직접 수정할 수 있게 되었고 구현하는 모든 클래스도 자동으로 변경한 코드를 상속 받을 수 있다.
+또한 디폴트 메서드 덕분에 인터페이스를 직접 수정할 수 있게 되었고 구현하는 모든 클래스도 자동으로 변경한 코드를 상속받는다.
 
 ```java 
 public class ArrayList<E> extends AbstractList<E>
@@ -130,4 +130,89 @@ public class ArrayList<E> extends AbstractList<E>
 }
 ```
 
+
+<br/>
+
+## 13.4 해석 규칙
+
+인터페이스는 다중 상속이 가능하다.   
+만약 같은 시그니처를 갖는 디폴트 메서드를 상속받는 경우 자바 컴파일러가 충돌을 어떻게 해결하는지 알아본다. 
+
+```java 
+public interface A {
+    default void hello() {
+        System.out.println("Hello from A");
+    }
+}
+
+public interface B extends A {
+    default void hello() {
+        System.out.println("Hello from B");
+    }
+}
+
+public class C implements B, A {
+    public static void main(String... args) {
+        new C().hello();
+    }
+}
+```
+
+### 세가지 규칙
+
+1. 클래스가 항상 이긴다. 
+  - 클래스나 슈퍼클래스에서 정의한 메서드가 디폴트 메서드보다 우선권을 가진다. 
+2. 1번 규칙 이외의 상황에서는 서브 인터페이스가 이긴다. 
+  - 상속관계를 갖는 인터페이스에서 같은 시그니처를 갖는 메서드를 정의할 때는 서브 인터페이스가 이긴다. (B 가 A 를 상속받으며 B 우선)
+3. 여러 인터페이스를 상속받는 클래스가 명시적으로 호출
+   - 디폴트 메서드의 우선순위가 정해지지 않았으면 클래스가 명시적으로 디폴트 메서드를 오버라이드하고 호출해야 한다.
+
+### 디폴트 메서드를 제공하는 서브 인터페이스가 이긴다
+
+{% include image.html alt="default method" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/default-method-subinterface.png" %}
+
+위에서 작성한 코드 예제의 UML 다이어그램을 살펴보면 위와 같다.  
+2번 규칙에 의해 서브 인터페이스가 이긴다고 했으므로 "Hello from B" 가 출력된다.
+
+
+### 충돌 그리고 명시적인 문제 해결
+
+{% include image.html alt="default method" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/multi-interface.png" %}
+
+위와 같이 B가 A 를 상속 받는 상황이 아니라면 2번 규칙이 적용될 수 없다.  
+이런 경우에는 자바 컴파일러는 "Error: class C inherits unrelated defaults for hello() from types B and A" 에러가 발생된다.  
+메서드를 구별할 방법이 없으므로 명시적으로 호출을 해줘야 한다. 
+자바 8에서는 `X.super.m(...)` 형태의 문법을 제공한다.
+
+```java 
+public class C implements B, A {
+    void hello() {
+        B.super.hello();
+    }
+}
+```
+
+
+### 다이아몬드 문제 
+
+```java 
+public interface A {
+    default void hello() {
+        System.out.println("Hello from A");
+    }
+}
+
+public interface B extends A { }
+public interface C extends A {
+    void hello();
+}
+public class D implements B, C {
+    public static void main(String... args) {
+        new D().hello();
+    }
+}
+```
+
+위와 같은 상황에서는 C 는 A를 상속받으므로 A의 디폴트 메소드보다 우선권을 가진다.  
+그러므로 컴파일 에러가 발생되며, 클래스 D 는 어떤 hello 메서드를 사용할지 명시적으로 해결해야 한다.
 
