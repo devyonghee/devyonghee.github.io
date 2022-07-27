@@ -97,4 +97,17 @@ OSGi 프레임워크 내에서 애플리케이션을 실행할 때 원격으로 
 | UNINSTALLED | 번들의 설치가 제거됨. 다른 상태로 이동할 수 없음                                           |
 
 
+<br/>
+
+## 14.3 자바 모듈 : 큰 그림
+
+자바 8은 모듈이라는 프로그램 구조 단위를 제공하는데 모듈은 `module` 키워드에 이름과 바디를 추가해서 정의한다.  
+모듈 디스크립터(module descriptor)는 module-info.java 라는 파일을 보통 패키지와 같은 위치에 저장한다.
+여러 패키지를 서술하고 캡슐화할 수 있긴 하지만 일반적으로 한 개 패키지만 노출시킨다.
+
+{% include image.html alt="module-info.java structure" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/module-info-structure.png" %}
+
+`exports` 에는 노출하고자 하는 패키지, `requires` 에는 필요로 하는 모듈을 정의한다.  
+하지만 메이븐 같은 도구를 사용하면 IDE가 처리해주기 때문에 사용자에게는 잘 드러나지 않는다.  
+
 
