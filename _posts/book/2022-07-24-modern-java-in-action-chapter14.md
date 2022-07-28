@@ -111,3 +111,89 @@ OSGi 프레임워크 내에서 애플리케이션을 실행할 때 원격으로 
 하지만 메이븐 같은 도구를 사용하면 IDE가 처리해주기 때문에 사용자에게는 잘 드러나지 않는다.  
 
 
+<br/>
+
+## 14.4 자바 모듈 시스템으로 애플리케이션 개발하기 
+
+작음 모듈화ㅏ 애플리케이션을 구조화, 패키지, 실행하는 방법에 대해 알아본다.
+
+### 애플리케이션 셋업 
+
+모듈 시스템을 이해하기 위해 비용을 관리해주는 예제 애플리케이션을 구현해본다.  
+
+- 프로젝트에서 처리해야 할 작업
+  - 파일이나 URL 에서 비용 목록 읽기
+  - 비용의 문자열 표현을 파싱
+  - 통계 계산
+  - 요약 정보 표시
+  - 각 태스크의 시작, 마무리 지점 제공
+- 프로젝트에 필요한 기능
+  - 다양한 소스에서 데이터를 읽음 (Reader, HttpReader, FileReader)
+  - 다양한 포맷으로 구성된 데이터를 파싱 (Parser, JSONParser, ExpenseJSON-Parser)
+  - 도메인 객체 구체화 (Expense)
+  - 통계를 계산하고 반환 (SummaryCalculator, SummaryStatistics)
+  - 다양한 기능 분리 조정 (ExpensesApplication)
+- 그룹화
+  - expenses.readers
+  - expenses.readers.http
+  - expenses.readers.file
+  - expenses.parsers
+  - expenses.parsers.json
+  - expenses.model
+  - expenses.statistics
+  - expenses.application
+
+### 세부적인 모듈화와 거친 모듈화
+
+시스템을 실용적으로 분해하면서 프로젝트가 이해하고 쉬운 수준으로 모듈화되어 있어야 한다.
+
+- 세부적인 모듈화 기법
+  - 모든 패키지가 자신의 모듈을 가짐
+  - 이득에 비해 설계 비용 증가
+- 거친 모듈화 기법
+  - 한 모듈이 시스템의 모든 패키지를 포함
+  - 모듈화의 모든 장점을 잃음
+
+### 자바 모듈 시스템의 기초
+
+메인 애플리케이션을 지원하는 한 개의 모듈만 갖는 애플리케이션 알아본다.  
+
+```text
+프로젝트 디렉터리 구조
+
+|-- expenses.application
+  |-- module-info.java
+  |-- com
+    |-- example
+      |-- expenses
+        |-- application
+          |-- ExpensesApplication.java
+```
+
+```java 
+// module-info.java
+module expenses.application {
+}
+```
+
+보통 IDE와 빌드 시스템에서 명령을 자동으로 처리해주긴 하지만 모듈 소스 디렉터리에서는 다음 명령을 실행하게 된다.  
+컴파일 과정에 module-info.java 가 새롭게 추가되었다. 
+
+```shell
+javac module-info.java
+    com/example/expenses/application/ExpensesApplication.java -d target
+        
+jar cvfe expenses-application.jar
+    com.example expenses.application.ExpensesApplication -C target
+    
+java --module-path expenses-application.jar
+     --module expenses/com.example.expenses.application.ExpensesApplication
+```
+
+`.class` 파일을 실행할 때에도 다음 두가지 옵션도 추가되었다.
+- `--module-path` : 어떤 모듈을 로드할 수 있는지 지정 (클래스 파일을 지정하는 `--classpath` 인수와 다름) 
+- `--module` : 이 옵션을 실행할 메인 모듈과 클래스를 지정
+
+
+
+
