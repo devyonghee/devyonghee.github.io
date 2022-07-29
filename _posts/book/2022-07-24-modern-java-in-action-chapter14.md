@@ -194,6 +194,69 @@ java --module-path expenses-application.jar
 - `--module-path` : 어떤 모듈을 로드할 수 있는지 지정 (클래스 파일을 지정하는 `--classpath` 인수와 다름) 
 - `--module` : 이 옵션을 실행할 메인 모듈과 클래스를 지정
 
+<br/>
 
+## 14.5 여러 모듈 활용하기
+
+이제 비용을 읽을 수 있는 기능을 캡슐화한 `expense.reader` 새 모듈을 생성하여,  
+기본 모듈인 `expenses.application` 과 상호작용하는 예제를 살펴본다.  
+상호작용에는 자바 9에서 지정한 `export`, `requires` 를 이용한다. 
+
+### exports 구문
+
+모듈 시스템은 화이트 리스트 기법으로 캡슐화를 제공하므로,  
+다른 모듈에서 사용할 수 있는 기능을 명확하게 명시해야 한다. 
+
+```java 
+module expenses.readers {
+    exports com.example.expenses.readers;      // 패키지명
+    exports com.example.expenses.readers.file;
+    exports com.example.expenses.readers.http;  
+}
+```
+
+```text
+프로젝트 디렉터리 구조
+
+|-- expenses.application
+  |-- module-info.java
+  |-- com
+    |-- example
+      |-- expenses
+        |-- application
+          |-- ExpensesApplication.java
+|-- expenses.readers
+  |-- module-info.java
+  |-- com
+    |-- example
+      |-- expenses
+        |-- readers
+          |-- Reader.java
+        |-- file
+          |-- FileReader.java
+        |-- http
+          |-- HttpReader.java                    
+```
+
+### requires 구문
+
+requires 은 의존하고 있는 모듈을 지정한다.  
+기본적으로 모든 모듈은 `java.base` 플랫폼 모듈을 의존하기 때문에 명시적으로 정의할 필요는 없다. (다른 모듈의 경우에는 필요)
+
+
+```java 
+module expenses.readers {
+    requires java.base;  // 모듈명
+    
+    exports com.example.expenses.readers;      // 패키지명
+    exports com.example.expenses.readers.file;
+    exports com.example.expenses.readers.http;  
+}
+```
+
+### 이름 정하기
+
+모듈의 이름은 오라클에서 패키지명처럼 인터넷 도메인명을 역순으로 지정하도록 권고한다. (ex. `com.iteratrlearning.training`)  
+더욱이 노출된 주요 API 패키지와 이름이 같아야 한다는 규칙도 따라야 한다.  
 
 
