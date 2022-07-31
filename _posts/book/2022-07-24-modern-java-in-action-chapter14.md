@@ -260,3 +260,135 @@ module expenses.readers {
 더욱이 노출된 주요 API 패키지와 이름이 같아야 한다는 규칙도 따라야 한다.  
 
 
+<br/>
+
+## 14.6 컴파일과 패키징
+
+메이븐 등의 빌드 도구를 이용해 프로젝트를 컴파일 하는 방법을 알아본다.  
+각 모듈은 독립적으로 컴파일 되므로 부모 모듈과 함께 각 모듈에 pom.xml 을 추가한다.  
+모듈 디스크립터(module-info.java)는 `src/main/java` 디렉터리에 위치해야 하며, 
+올바른 모듈 소스 경로를 이용하도록 메이븐이 javac 설정을 한다. 
+
+```text
+|-- pom.xml
+|-- expenses.application
+  |-- pom.xml
+  |-- src
+    |-- main
+      |-- java
+        |-- module-info.java
+        |-- com
+          |-- example
+            |-- expenses
+              |-- application
+                |-- ExpensesApplication.java
+|-- expenses.readers
+  |-- pom.xml
+  |-- src
+    |-- main
+      |-- java
+        |-- module-info.java
+        |-- com
+          |-- example
+            |-- expenses
+              |-- readers
+                |-- Reader.java
+              |-- file
+                |-- FileReader.java
+              |-- http
+                |-- HttpReader.java                    
+```
+
+원활한 빌드를 위해 자식 모듈에서는 부모 모듈을 지정하고, 부모 모듈에서는 자식 모듈을 참조한다.
+
+```xml 
+<!-- expenses 전역 pom.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+  
+    <groupId>com.example</groupId>
+    <artifactId>expenses</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>expenses.application</module>
+        <module>expenses.readers</module>
+    </modules>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <source>9</source>
+                        <target>9</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
+<!-- expenses 전역 pom.xml -->
+
+<!-- expenses.readers pom.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+  
+    <groupId>com.example</groupId>
+    <artifactId>expenses.readers</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>expenses</artifactId>
+        <version>1.0</version>
+    </parent>
+</project>
+<!-- expenses.readers pom.xml -->
+
+<!-- expenses.application pom.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+  
+    <groupId>com.example</groupId>
+    <artifactId>expenses.application</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>expenses</artifactId>
+        <version>1.0</version>
+    </parent>
+    
+    <dependencies>
+        <!-- ExpenseApplication 에서 필요한 클래스와 인터페이스가 있으므로 의존성 추가 -->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>expenses.readers</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>
+<!-- expenses.application pom.xml -->
+```
+
+`mvn clean package` 명령으로 모듈을 jar 로 생성할 수 있다.   
+두 jar 을 모듈 경로에 포함해서 다음 명령어로 애플리케이션을 실행한다.
+
+```shell
+java --module-path \
+./expenses.application/target/expenses.application-1.0.jar:\
+./expenses.readers/target/expenses.readers-1.0.jar \
+  --module expenses.application/com.example.expenses.application.ExpensesApplication
+```
