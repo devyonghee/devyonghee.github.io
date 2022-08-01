@@ -127,7 +127,7 @@ Suspended는 프로세스 수행이 완전 정지된 상태입니다.
 
 ready, running, blocked 등 프로세스 상태에 대한 정보를 저장합니다.
 
-####Process number (PID)
+#### Process number (PID)
 
 프로세스를 구별할 수 있는 식별자 정보를 저장합니다.  
 모든 프로세스는 프로세스를 구별할 수 있는 PID라는 고유 ID가 부여됩니다.

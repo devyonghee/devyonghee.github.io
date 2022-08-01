@@ -392,3 +392,99 @@ java --module-path \
 ./expenses.readers/target/expenses.readers-1.0.jar \
   --module expenses.application/com.example.expenses.application.ExpensesApplication
 ```
+
+<br/>
+
+## 14.7 자동 모듈
+
+자바는 JAR 를 자동 모듈이라는 형태로 적절하게 변환한다.  
+모듈 경로상에 있으나 module-info 파일을 가지지 않은 모든 JAR는 자동 모듈이 된다.
+
+<br/>
+
+## 14.8 모듈 정의와 구문들
+
+모듈은 다음과 같이 `module` 키워드로 정의할 수 있다. 
+
+```java
+module com.iteratrlearning.application {
+}
+```
+
+
+### requires
+
+컴파일 타임과 런타임에 한 모듈이 다른 모듈에 의존함을 정의
+
+```java
+module com.iteratrlearning.application {
+    requires com.iteratrlearning.ui;
+}
+```
+
+### exports
+
+지정한 패키지를 다른 모듈에서 이용할 수 있도록 공개 형식으로 생성  
+패키지를 공개하지 않는 것이 기본 설정
+```java
+module com.iteratrlearning.application {
+    requires com.iteratrlearning.ui;
+    exports com.iteratrlearning.ui.panels;
+    exports com.iteratrlearning.ui.widgets;
+}
+```
+
+### require transitive
+
+다른 모듈이 제공하는 공개 형식을 한 모듈에서 사용할 수 있다고 지정 (전이성 선언, transitivity)
+
+```java 
+module com.iteratrlearning.ui {
+    requires transitive com.iteratrlearning.core;
+    
+    exports com.iteratrlearning.ui.panels;
+    exports com.iteratrlearning.ui.widgets;
+}
+
+module com.iteratrlearning.application {
+    // com.iteratrlearning.core 에도 접근 가능
+    requires com.iteratrlearning.ui;
+}
+```
+
+### exports to
+
+사용자에게 공개할 기능을 제한 (정교한 제어 가능)
+
+```java 
+module com.iteratrlearning.ui {
+    requires transitive com.iteratrlearning.core;
+    
+    exports com.iteratrlearning.ui.panels;
+    // widgets 접근 권한을 가진 사용자의 권한을 widgetuser 로 제한 
+    exports com.iteratrlearning.ui.widgets to
+      com.iteratrlearning.ui.widgetuser;
+}
+```
+
+### open 과 opens
+
+- open: 모든 패키지를 다른 모듈에 반사적으로 접근 허용
+- opens: 필요한 개별 패키지만 개방 (`to` 키워드로 특정 모듈만 지정 가능)
+
+```java 
+open module com.iteratrlearning.ui {
+}
+
+module com.iteratrlearning.ui {
+    opens com.iteratrlearning.ui.panels
+}
+```
+
+### uses 와 provides
+
+서비스와 `ServiceLoader` 관련 기능
+
+- provides: 서비스 제공자 지정
+- uses: 서비스 소비자 지정
+
