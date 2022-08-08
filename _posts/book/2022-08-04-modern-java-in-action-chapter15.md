@@ -107,3 +107,138 @@ ExecutorService newFixedThreadPool(int nThreads)
   - `main()` 메서드가 모든 비데몬 스레드가 종료될 때까지 기다림
 
 
+<br/>
+
+## 15.2 동기 API 와 비동기 API
+
+[7장(병렬 스트림 처리와 포크/조인 프레임)](https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/)에서는 
+자바 8 스트림의 `parallel()` 메서드로 복잡한 스레드 작업없이 병렬 처리가 가능했다.
+하지만 루프 기반 이외에 별도의 스레드로 병렬성을 사용한다면 다음과 같이 코드가 복잡해진다.
+
+```java 
+int x = 1337;
+Result result = new Result();
+
+Thread t1 = new Thread(() -> {result.left = f(x);});
+Thread t2 = new Thread(() -> {result.right = g(x);});
+
+t1.start();
+t2.start();
+t1.join();
+t2.join();
+System.out.println(result.left + result.right);
+```
+
+`ExecutorService` 로 스레드 풀을 설정한다면 코드는 다음처럼 변경된다.  
+하지만 이 코드 역시 `submit` 메서드 호출같이 불필요한 코드가 발생된다.  
+
+```java 
+int x = 1337;
+ExecutorService executorService = Executors.newFixedThreadPool(2);
+Future<Integer> y = executorService.submit(() -> f(x));
+Future<Integer> z = executorService.submit(() -> g(x));
+System.out.println(y.get() + z.get());
+executorService.shutdown();
+```
+
+위와 같은 문제는 다음 두가지 비동기 API 로 해결이 가능하다.
+
+- `CompletableFuture`(자바 8)
+- `java.util.concurrent.Flow`(자바 9)
+
+### Future 형식 API
+
+`Future` 을 사용하면 코드는 다음과 같이 변경된다.
+
+```java 
+Future<Integer> f(int x);
+Future<Integer> g(int x);
+
+Future<Integer> y = f(x);
+Future<Integer> z = g(x);
+System.out.println(y.get() + z.get());
+```
+
+### 리액티브 형식 API
+
+인수로 람다를 전달해서 결과를 반환하는 것이 아니라 결과가 준비되면 이를 람다로 호출하는 태스크를 만든다.  
+
+```java 
+int x = 1337;
+Result result = new Result();
+
+f(x, (int y) -> {
+    result.left = y;
+    System.out.println(result.left + result.right);
+});
+
+g(x, (int z) -> {
+    result.right = z;
+    System.out.println(result.left + result.right);
+});
+```
+
+하지만 이러한 방식은 락을 사용하지 않아 값을 두번 출력할 수 있고 두 피연산자가 `println` 이 호출 되기전에 업데이트 될 수도 있다.   
+이러한 문제는 다음 두 가지 방법으로 보완할 수 있다.
+
+- if-then-else 를 이용해 적절한 락을 이용해 두 콜백이 호출되었는지 확인하고 `println` 호출
+- 리액티브 형식의 API 는 일련의 이벤트에 반응하도록 설계되었으므로, 한 결과가 필요하면 `Future` 이용하는 것이 적절
+
+
+### 잠자기(그리고 기타 블로킹 동작)는 해로운 것으로 간주
+
+어떤 일이 일정 속도로 제한되어 일어나는 상황을 만들 때 `sleep()` 메서드를 사용할 수 있다.  
+하지만 이렇게 잠자는 스레드는 시스템 자원을 점유하게 되기 때문에 문제가 심각해진다.  
+잠자는 스레드뿐만 아니라 블록 동작도 동일하다.
+
+블록 동작은 다음 두가지로 구분될 수 있다.
+- 다른 태스크가 동작 완료하기를 기다리는 동작
+  - ex) `Future`에 `get()` 호출
+- 외부 상호작용을 기다리는 동작
+  - ex) 데이터베이스 읽기, 키보드 입력
+
+다음 두 코드를 비교해본다. 
+```java 
+// 코드 A
+work1();
+Thread.sleep(10000);
+work2();
+
+// 코드 B
+ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1); 
+work(1);
+// work1() 이 끝난 다음 10초 뒤에 work2() 를 개별 태스크로 스케줄함
+scheduledExecutorService.schedule(Example::work2, 10, TimeUnit.SECONDS);
+scheduledExecutorService.shutdown();
+```
+
+코드 A와 B 는 같은 동작을 수행하지만 A는 자는 동안 스레드 자원을 점유하는 반면 B 는 다른 작업이 실행될 수 있도록 허용한다.  
+그렇기 때문에 코드 B 가 더 좋다. 
+
+
+### 현실성 확인
+
+동시 실행되는 태스크로 설계해서 블록할 수 있는 모든 동작을 비동기 호출로 구현한다면 하드웨어를 최대한 활용할 수 있다.  
+하지만 현실적으로 `모든 것은 비동기`라는 설계 원칙을 어겨야 한다.  
+유익을 얻을 수 있는 상황을 찾아보고 개선된 API 를 사용해는 것을 권장한다.  
+
+### 비동기 API 에서 예외는 어떻게 처리하는가?
+
+
+- `CompleteFuture`
+  - 예외에서 회복할 수 있도록 `exceptionally()` 같은 메서드 제공
+- 리액티브 형식의 비동기 API
+  - 예외가 발생했을 때 실행할 콜백을 만들어 인터페이스 변경
+  ```java 
+  void f(int x, Consumer<Integer> dealWithResult, Consumer<Throwable> dealWithException);
+  ```
+- 자바 9 플로 API
+  - 여러 콜백을 한 객체로 감싼다.
+  ```java 
+  void onComplete()  // 값을 다 소진하거나 에러가 발생해서 더 이상 처리할 데이터가 없을 때
+  void onError(Throwable throwable)  // 도중에 에러가 발생했을 때
+  void onNext(T item) // 값이 있을 때
+  // 코드는 다음과 같이 변경
+  void f(int x, Subscriber<Integer> s);
+  s.onError(t);
+  ```  

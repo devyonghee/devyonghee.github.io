@@ -4,7 +4,7 @@ tags: [book, moder java in action]
 categories: book
 ---
 
-모던 자바 인 액션 4장에서는 스트림에 대해 소개하고 있다.
+모던 자바 인 액션 4장에서는 스트림에 대해 소개하고 있다.  
 스트림에 대해 자세히 알아본다.  
 
 <!--more-->
