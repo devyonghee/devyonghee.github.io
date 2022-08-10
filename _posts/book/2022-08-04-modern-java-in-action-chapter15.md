@@ -242,3 +242,26 @@ scheduledExecutorService.shutdown();
   void f(int x, Subscriber<Integer> s);
   s.onError(t);
   ```  
+
+<br/>
+
+## 15.3 박스와 채널 모델
+
+{% include image.html alt="간단한 박스와 채널 다이어그램" source_txt='모던 자바 인 액션' path="images/book/modern-java-in-action/simple-box-channel-model.png" %}
+
+```java 
+int t = p(x);
+Future<Integer> a1 = executorService.submit(() -> q1(t));
+Future<Integer> a2 = executorService.submit(() -> q2(t));
+System.out.println(r(a1.get(), a2.get()));
+```
+
+박스와 채널 모델은 동시성 모델을 잘설계하고 개념화한 그림이다.  
+박스와 채널 모델을 이용하면 생각과 코드를 구조화하여 대규모 시스템 구현의 추상화 수준을 높일 수 있다.  
+박스로 원하는 연산을 표현하면 손으로 코딩한 결과보다 더 효율적일 것이다.  
+
+위 모든 함수를 `Future` 로 감싸면 병렬성을 극대화할 수 있다.  
+하지만 시스템이 커지고 많은 박스와 채널 다이어그램이 등장하게 된다면 태스크가 `get()` 메서드를 호출하여 기다리는 상태가 될 수 있다.  
+결국 병렬성을 제대로 활용하지 못하거나 데드락에 걸릴 수 있는데, 
+이러한 문제는 자바 8 의 `CompletableFure` 와 콤비네이터(combinators)를 이용하여 해결한다.
+
