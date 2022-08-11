@@ -265,3 +265,36 @@ System.out.println(r(a1.get(), a2.get()));
 결국 병렬성을 제대로 활용하지 못하거나 데드락에 걸릴 수 있는데, 
 이러한 문제는 자바 8 의 `CompletableFure` 와 콤비네이터(combinators)를 이용하여 해결한다.
 
+<br/>
+
+## 15.4 CompletableFuture 와 콤비네이터를 이용한 동시성
+
+자바 8에서는 `Future` 인터페이스의 구현체인 `CompletableFuture`를 이용해 `Future` 를 조합할 수 있게 되었다.    
+`CompletableFuture` 는 다음과 같은 이유로 `Completable` 단어가 사용되었다.    
+
+- 실행 코드 없이 `Future` 생성 허용
+- `complete()` 메서드로 다른 스레드가 이를 완료 가능
+- `get()`으로 값을 얻을 수 있음   
+
+`CompletableFuture<T>` 의 `thenCombine` 메서드를 사용하면 동작 조합이 가능하다.   
+이 동작 조합을 이용하면 다른 프로레싱을 기다리는 자원 낭비 문제를 해결할 수 있다.  
+
+```java 
+CompletableFuture<V> thenCombine(CompletableFuture<U> other, BiFunction<T, U, V> fn)
+// 예시 사용 코드
+ExecutorService executorService = Executors.newFixedThreadPool(10);
+int x = 1337;
+
+CompletableFuture<Integer> a = new CompletableFuture<>();
+CompletableFuture<Integer> b = new CompletableFuture<>();
+CompletableFuture<Integer> c = a.thenCombine(b, (y, z) -> y + z);
+executorService.submit(() -> a.complete(f(x)));
+executorService.submit(() -> b.complete(g(x)));
+
+System.out.println(c.get());
+executorService.shutdown();
+```
+
+이처럼 `thenCombine` 을 이용하면 `f(x)`, `g(x)` 이 끝나야 덧셈 계산이 실행된다. 
+
+
