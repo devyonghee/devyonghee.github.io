@@ -298,3 +298,143 @@ executorService.shutdown();
 이처럼 `thenCombine` 을 이용하면 `f(x)`, `g(x)` 이 끝나야 덧셈 계산이 실행된다. 
 
 
+<br/>
+
+## 15.5 발행-구독 그리고 리액티브 프로그래밍
+
+`Future` 는 한 번만 실행하여 결과를 제공한다.    
+하지만 리액티브 프로그래밍은 시간이 흐르면서 여러 결과를 제공한다. (ex. HTTP 요청을 기다리는 리스너 객체)  
+자바 9에서는 `java.util.concurrent.Flow` 의 인터페이스에 발행-구독 모델을 적용해 리액티브 프로그래밍을 제공한다.  
+Flow API 는 다음 세가지로 정리할 수 있다. 
+
+- 구독자가 구독할 수 있는 발행자
+- 이 연결을 구독(subscription)이라 한다. 
+- 이 연결을 이용해 메시지(또는 이벤트)를 전송
+
+### 두 플로를 합치는 예제
+
+이벤트가 발생했을 때 다른 곳에서 구독할 수 있도록 `Publisher<T>` 인터페이스를 정의한다.  
+이 인터페이스의 인수에는 통신할 구독자를 받는다. 
+
+```java 
+interface Publisher<T> {
+    void subscribe(Subscriber<? super T> subscriber);
+}
+```
+
+이제 정보를 전달할 수 있도록 `Subscriber<T>` 인터페이스를 정의한다.  
+구현자가 필요한대로 이 메서드를 구현할 수 있다. 
+
+```java 
+interface Subscriber<T> {
+    void onNext(T t);
+}
+```
+
+이 두 개념을 합쳐서 이벤트를 구독하면서 반응할 수 있는 `Cell` 을 구현한다.
+
+```java 
+private class SimpleCell implements Publisher<Integer>, Subscriber<Integer> {
+    private int value = 0;
+    private String name; 
+    private List<Subscriber> subsribers = new ArrayList<>();
+    
+    public SimpleCell(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void subscribe(Subscriber<? super Integer> subscriber) {
+        subscribers.add(subscriber);
+    }
+    @Override
+    public void onNext(Integer newValue) {
+        // 구독한 셀에 새 값이 생겼을 때 값을 갱신
+        this.value = newValue;
+        System.out.println(this.name + ":" + this.value);
+        notifyAllSubscribers();  // 값 갱신을 알림
+    }
+    private void notifyAllSubscribers() {
+        // 새 값이 있다고 구독자들에게 알림
+        subscribers.forEach(subscriber -> subsriber.onNext(this.value));
+    }        
+}
+// 사용예시
+SimpleCell c3 = new SimpleCell("C3");
+SimpleCell c2 = new SimpleCell("C2");
+SimplcCell c1 = new SimpleCell("C1");
+
+c1.subsribe(c3);
+
+c1.onNext(10); // C1:10, C3:10
+c2.onNext(20); // C2:20
+```
+
+`C3=C1+C2` 연산을 할 수 있는 클래스를 구현해본다. 
+
+```java 
+public class ArithmeticCell extends SimpleCell {
+    private int left;
+    private int right;
+    
+    public ArithmeticCell(String name) {
+        super(name);
+    }
+    
+    public void setLeft(int left) {
+        this.left = left;
+        onNext(left + this.right);
+    }
+    
+    public void setRight(int right) {
+        this.right = right;
+        onNext(right + this.left);
+    }
+}
+// 사용예시
+ArithmeticCell c3 = new ArithmeticCell("C3");
+SimpleCell c2 = new SimpleCell("C2");
+SimpleCell c1 = new SimpleCell("C1");
+
+c1.subscribe(c3::setLeft);
+c2.subscribe(c3::setRight);
+
+c1.onNext(10);  // C1:10, C3:10
+c2.onNext(20);  // C2:20, C3:30
+c1.onNext(15);  // C1:15, C3:25
+```
+
+자바 9 `Flow` Api의 `Subscriber` 에서는 `onNext` 이벤트 외에도    
+데이터 흐름에서 예외가 발생하거나 종료되었을 때를 위해 `onError` 와 `onComplete` 를 지원한다.
+
+간단하지만 `Flow` 인터페이스를 복잡하게 만든 두가지 기능은 압력과 역압력이다.  
+스레드 활용하기 위해서는 이 기능들은 필수다.
+
+매우 빠른 속도로 이벤트가 발생하여 매초마다 수천 개의 메시지가 `onNext` 로 전달되는 상황을 압력이라고 한다.  
+이런 상황에서는 출구로 추가될 이벤트를 제한하는 역압력 기능이 필요하다.  
+
+### 역압력
+
+정보의 흐름 속도를 역압력으로 제어(`Subscriber` -> `Publisher` 정보 요청)할 필요가 있을 수 있다.  
+그래서 자바 9 Flow API 의 `Subcrier` 인터페이스는 다음 메서드를 포함한다.
+
+```java 
+void onSubscribe(Subscription subscription);
+
+interface Subscription {
+    void cancel();
+    void request(long n);
+}
+```
+
+`Publisher` 는 `Subscription` 객체를 만들어 `Subscriber` 에 전달하면,  
+`Subscriber` 는 이를 이용해 `Publisher` 에 정보를 보낼 수 있다.  
+
+### 실제 역압력의 간단한 형태
+
+한 번에 한 개의 이벤트를 처리하도록 발행-구독 연결을 구성하려면 다음과 같은 작업이 필요하다.
+
+- `Subscriber` 가 `onSubscribe`로 전달된 `Subscription` 객체를 `subscription` 같은 필드에 저장
+- `Subscriber` 가 수많은 이벤트를 받지 않도록 `onSubscribe`, `onNext`, `onError` 의 마지막 동작에 `channel.request(1)` 을 추가해 한 이벤트만 요청
+- 요청을 보낸 채널에만 `onNext`, `onError` 이벤트를 보내도록 `Publisher` 의 `notifyAllSubscribers` 코드 변경
+
