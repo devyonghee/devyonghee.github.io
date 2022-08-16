@@ -438,3 +438,17 @@ interface Subscription {
 - `Subscriber` 가 수많은 이벤트를 받지 않도록 `onSubscribe`, `onNext`, `onError` 의 마지막 동작에 `channel.request(1)` 을 추가해 한 이벤트만 요청
 - 요청을 보낸 채널에만 `onNext`, `onError` 이벤트를 보내도록 `Publisher` 의 `notifyAllSubscribers` 코드 변경
 
+
+<br/>
+
+## 15.6 리액티브 시스템 vs 리액티브 프로그래밍
+
+리액티브 시스템은 런타임 환경이 변화에 대응하도록 아키텍처가 설계된 프로그램이다.  
+리액티브 시스템에는 다음과 같이 3가지 속성이 존재한다.
+
+- 반응성(responsive): 응답을 지연하지 않고 실시간으로 입력에 반응 
+- 회복성(resilient): 한 컴포넌트의 실패로 전체 시스템이 실패하지 않음
+- 탄력성(elastic): 작업 부하에 맞게 적응하며 작업을 효율적으로 처리함
+
+여러가지 방법이 있지만 `Flow` 인터페이스에서 제공하는 리액티브 프로그래밍 형식을 이용하면 이 속성을 구현할 수 있다.
+
