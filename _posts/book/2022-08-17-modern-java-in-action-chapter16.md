@@ -163,3 +163,118 @@ public Future<Double> getPriceAsync(String product) {
 }
 ```
 
+<br/>
+
+## 16.3 비블록 코드 만들기
+
+예제로 상점 리스트에서 제품명을 입력하면 상점 이름과 제품 가격 정보를 가져오는 메서드를 구현한다.  
+그런데 가격을 검색하는 동안 각각 1초의 대기시간이 있어서 4초 이상의 시간이 걸린다고 가정한다.  
+성능을 개선하는 방법을 알아보자
+
+```java 
+List<Shop> shops = Arrays.asList(new Shop("BestPrice"), 
+                                 new Shop("LetsSaveBig"),
+                                 new Shop("MyFavoriteShop"),
+                                 new Shop("BuyItAll"));
+
+public List<String> findPrices(String product) {
+    return shops.stream()
+        .map(shop -> String.format("%s price is %.2f", shop.name(), shop.price(product)))
+        .collect(toList());
+}
+```
+
+
+### 병렬 스트림으로 요청 병렬화하기 
+
+병렬 스트림을 이용하여 순차 계산을 병렬로 처리해서 성능을 개선해본다.  
+아래와 같이 변경하면 병렬로 검색되므로 1초 남짓의 시간에 완료된다. 
+
+```java 
+public List<String> findPrices(String product) {
+    return shops.parallelStream()
+        .map(shop -> String.format("%s price is %.2f", shop.name(), shop.price(product)))
+        .collect(toList());
+}
+```
+
+
+### CompletableFuture 로 비동기 호출 구현하기
+
+팩토리 메서드 `supplyAsync` 로 `CompletableFuture`을 생성하여 구현해본다.  
+스트림 연산은 게으른 특성이 있기 때문에 하나의 스트림 처리 파이프라인으로 처리하면 연산이 동기적, 순차적으로 이루어진다.  
+그러므로 두 개의 스트림 파이프라인으로 처리가 필요하다. 
+
+```java 
+public List<String> findPrices(String product) {
+    List<CompltableFuture<String>> priceFutures = 
+        shops.stream()
+        .map(shop -> CompletableFuture.supplyAsync(
+            () -> String.format("%s price is %.2f", shop.name(), shop.price(product))
+        )).collect(toList());
+        
+    return priceFutures.stream()
+            .map(CompletableFuture::join)
+            .collect(toList());
+}    
+```
+
+
+### 더 확장성이 좋은 해결방법
+
+모든 스레드(일반적으로 스레드풀에서 제공하는 스레드 수는 4개)가 사용된 상황에서 다섯번 째 상점을 추가하면 추가로 1초 이상의 시간이 소요된다.  
+병렬 스트림과 `CompletableFuture` 버전은 소요되는 시간은 비슷하다.  
+두 가지 모두 내부적으로 `Runtime.getRuntime().availableProcessors()` 가 반환하는 스레드 수를 사용하기 때문이다.  
+
+하지만 `CompletableFuture`는 작업에 이용할 수 있는 다양한 `Executor`를 지정할 수 있다는 장점이 있다.  
+`Executor`로 스레드 풀의 크기를 조절하는 등 애플리케이션에 맞는 최적화된 설정을 만들 수 있다. 
+
+
+### 커스텀 Executor 사용하기
+
+상점의 응답은 대략 99퍼센트의 시간만큼 기다리므로 W/C 비율을 100으로 간주한다.  
+CPU 활용률이 100퍼센트라면 400스레드를 갖는 풀을 만들어야 한다.
+하지만 상점 수보다 많은 스레드를 갖는 것은 낭비이므로 상점에 하나의 스레드가 할당될 수 있도록, 상점 수 만큼 `Executor`을 설정한다.  
+하나의 스레드의 최대 개수는 100 이하로 설정하는 것이 바람직하다.  
+
+자바에서 일반 스레드가 실행중이면 자바 프로그램이 종료되지 않는다.  
+그래서 자바 프로그램이 종료될 때 강제로 실행이 종료될 수 있도록 데몬 스레드를 포함한다.
+
+```java 
+private final Executor executor = 
+    Executors.newFixedThreadPool(Math.min(shops.size(), 100), 
+                                 new ThreadFactory() {
+                                     public Thread newThread(Runnable r) {
+                                         Thread t = new Thread(r);
+                                         // 프로그램 종료를 방해하지 않는 데몬 스레드 사용
+                                         t.setDaemon(true);
+                                         return t;
+                                     }
+                                 });
+                                 
+CompletableFuture.supplyAsync(
+    () -> String.format("%s price is %.2f", shop.name(), shop.price(product),
+    executor
+);                                
+```
+
+> ### 스레드 풀 크기 조절  
+> '자바 병렬 프로그래밍' 에서 스레드 풀의 최적값을 찾는 방법을 제안한다. 
+> 스레드 풀이 너무 크면 CPU 와 메모리 자원이 서로 경쟁하느라 시간을 낭비할 수 있고  
+> 너무 작으면 CPU의 일부 코어는 활용되지 않을 수 있다.   
+> N(threads) = N(CPU) * U(CPU) * (1 + W/C)   
+> N(CPU): Runtime.getRunTime().availableProcessors() 가 반환하는 코어 수  
+> U(CPU): 0 과 1 사이의 값을 갖는 CPU 활용 비율
+> W/C : 대기 시간과 계산 시간의 비율
+
+
+### 스트림 병렬화와 CompletableFuture 병렬화
+
+다음을 참고하여 두 가지 기법 중 어떤 병렬화 기법을 사용할 것인지 선택한다.  
+
+- I/O 가 포함되지 않은 계산 중심의 동작을 실행할 때는 스트림 인터페이스가 구현하기 간단하며 효율적일 수 있다. 
+  - 모든 스레드가 계산 작업을 수행하는 상황에서는 프로세서 코어 수 이상의 스레드를 가질 필요가 없다.
+- I/O를 기다리는 작업을 병렬로 실행할 때는 `CompletableFuture`이 더 많은 유연성을 제공하며 W/C 비율에 적합한 스레드 수를 설정할 수 있다.
+  - 스트림의 게으른 특성 때문에 스트림에서 I/O 를 실제 언제 처리할지 예측하기 어렵다. 
+
+
