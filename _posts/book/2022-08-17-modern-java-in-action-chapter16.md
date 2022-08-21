@@ -278,3 +278,201 @@ CompletableFuture.supplyAsync(
   - 스트림의 게으른 특성 때문에 스트림에서 I/O 를 실제 언제 처리할지 예측하기 어렵다. 
 
 
+<br/>
+
+## 16.4 비동기 작업 파이프라인 만들기
+
+모든 상점이 하나의 할인 서비스를 사용하기로 했다고 가정한다. 
+
+```java 
+public class Discount {
+    public enum Code {
+        NONE(0), SILVER(5), GOLD(10), PLATINUM(15), DIAMOND(20);
+        
+        private final int percentage;
+        
+        Code(int percentage) {
+            this.percentage = percentage;
+        }
+    }
+}
+
+publid String getPrice(String product) {
+    double price = calcaulatePrice(product);
+    Discount.Code code = Discount.Code.values()[
+                           random.nextInt(Discount.Code.values().lenth)];
+    return String.format("%s:%.2f:%s", name, price, code);
+}
+
+private double calculatePrice(String product) {
+    delay();
+    return random.nextDouble() * product.charAt(0) + product.charAt(1);
+}
+```
+
+### 할인 서비스 구현
+
+최저가격 검색 애플리케이션은 여러 상점에서 가격 정보 조회, 결과 문자열 파싱, 할인 서버에 질의를 요청한다.  
+문자열 파싱은 다음처럼 `Quote` 클래스로 캡슐화할 수 있고, 
+이를 이용하여 할인된 가격 문자열을 반환하는 `Discount` 를 제공할 수 있다. 
+
+```java 
+public class Quote {
+    private final String shopName;
+    private final double price;
+    private final Discount.Code discountCode;
+    
+    public Quote(String shopName, double price, Discount.Code code) {
+        this.shopName = shopName;
+        this.price = price;
+        this.discountCode = code;
+    }
+    
+    public static Quote parse(String s) {
+        String[] split = s.split(":");
+        String shopName = split[0];
+        double price = Double.parseDouble(split[1]);
+        Discount.Code discountCode = Discount.Code.valueOf(split[2]);
+        return new Quote(shopName, price, discountCode);
+    }
+    
+    public String shopName() {
+        return shopName; 
+    }
+    public double price() {
+        return price; 
+    }
+    public Discount.Code discountCode() {
+        return discountCode; 
+    }
+}
+
+public class Discount {
+    public enum Code {
+        // ...
+    }
+    
+    public static String applyDiscount(Quote quote) {
+        return quote.shopName() + " price is " + 
+            Discount.apply(quote.price(), quote.discountCode());
+    }
+    
+    private static double apply(double price, Code code) {
+        delay();
+        return format(price * (100 - code.percentage) / 100);
+    }
+}
+```
+
+### 할인 서비스 사용
+
+순차적과 동기 방식으로 `findPrices` 메서드를 구현한다.   
+아래와 같이 사용하면 가격 정보 조회 5초, 할인 서비스 5초가 소요되어 총 10초 정도 소요된다.  
+`CompletableFuture` 에 커스텀 `Executor` 를 정의하여 수행하는 태스크를 설정하도록 한다.  
+
+```java 
+public List<String> findPrices(String product) {
+    return shops.stream()
+             .map(shop -> shop.price(product))
+             .map(Quote::parse)
+             .map(Discount::appplyDiscount)
+             .collect(toList());
+}
+```
+
+### 동기 작업과 비동기 작업 조합하기 
+
+위의 코드를 비동기로 재구현한다. 
+
+```java 
+public List<String> findPrices(String product) {
+    List<CompletableFuture<String>> priceFutures = 
+        shops.stream()
+             .map(shop -> CompletableFuture.supplyAsync(
+                              () -> shop.price(product), executor))
+             .map(future -> future.thenApply(Quote::parse))
+             .map(future -> future.thenCompose(quote -> 
+                            CompletableFuture.supplyAsync(
+                                () -> Discount.applyDiscount(quetoe), executor)))
+             .collect(toList());
+    
+    return priceFutures.stream()
+             .map(CompletableFuture::join)
+             .collect(toList());
+}
+```
+
+- 가격 정보 얻기
+  - `supplyAsync` 에 람다 표현식을 전달하여 비동기적으로 가격 정보 조회
+- `Quote` 파싱하기 
+  - 파싱동작에는 원격서비스나 I/O 가 없으므로 지연 없이 즉시 동작 수행
+  - `thenApply` 메서드는 `CompletableFuture` 가 끝날 때까지 블록하지 않음
+- `CompletableFuture`를 조합해서 할인된 가격 계산
+  - 가격 정보 조회하여 파싱, 할인된 최종가격 확인 두 비동기 연산을 파이프라인으로 만들 수 있도록 `thenCompose` 메서드 사용
+
+### 독립 CompletableFuture 와 비독립 CompletableFuture 합치기
+
+첫 번째 `CompletableFuture` 의 동작 완료와 관계 없이 두 번째 `CompletableFuture`을 실행하려면 `thenCombine` 메서드를 사용한다.   
+`thenCombine` 메서드는 `BiFunction` 을 두 번째 인수로 받는다. 
+
+```java 
+Future<Double> futurePriceInUSD = 
+        CompletableFuture.supplyAsync(() -> shop.price(product))
+        .thenCombine(
+            CompletableFuture.supplyAsync(
+                () -> exchangeService.getRate(Money.EUR, Money.USD)),
+            (price, rate) -> price * rate
+        ));
+```
+
+
+### Future 의 리플렉션과 CompletableFuture 의 리플렉션
+
+`CompletableFuture` 은 람다 표현식을 이용하기 때문에 복잡한 연산 수행을 효과적으로 정의할 수 있다.  
+`Future` 로 구현한 코드를 보면서 가독성을 비교해본다.  
+
+```java 
+ExecutorService executor = Exeutors.newCachedThreadPool();
+fina Future<Double> futureRate = executor.submit(new Callable<Double>() {
+    public Double call() {
+        return exchangeService.getRate(Money.EUR, Money.USD);
+    }
+});
+Future<Double> futurePriceInUSD = executor.submit(new Callable<Double>() {
+    public Double call() {
+        double priceInEUR = shop.price(product);
+        return priceInEUR * futureRate.get();
+    }
+});
+```
+
+### 타임아웃 효과적으로 사용하기
+
+`Future` 의 계산 결과를 읽을 때 무한정 기다리는 상황이 발생될 수 있으므로 블록하지 않는 것이 좋다.  
+자바 9의 `CompletableFuture` 에서 제공하는 `orTimeout` 메서드로 이 문제를 해결할 수 있다.  
+이 메서드는 지정된 시간이 지난 후에 `TimeoutException` 으로 완료하면서,
+또 다른 `CompletableFuture` 를 반환할 수 있도록 `ScheduledThreadExector` 를 활용한다. 
+
+```java 
+Future<Double> futurePriceInUSD = 
+    CompletableFuture.supplyAsync(() -> shop.price(product))
+    .thenCombine(
+        CompletableFuture.supplyAsync(
+            () -> exchangeService.getRate(Money.EUR, Money.USD)),
+        (price, rate) -> price * rate
+    )).orTimeout(3, TimeUnit.SECONDS);
+```
+
+또한, 자바 9에 추가된 `completeOnTimeout` 메서드를 이용하면 시간이 지난 경우에 미리 정의한 기본 값을 활용할 수 있다.
+
+```java 
+Future<Double> futurePriceInUSD = 
+    CompletableFuture.supplyAsync(() -> shop.price(product))
+    .thenCombine(
+        CompletableFuture.supplyAsync(
+            () -> exchangeService.getRate(Money.EUR, Money.USD))
+            .completeOnTimeout(DEFAULT_RATE, 1, TimeUnit.SECONDS),
+        (price, rate) -> price * rate
+    )).orTimeout(3, TimeUnit.SECONDS);
+   
+```
