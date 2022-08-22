@@ -207,7 +207,7 @@ public List<String> findPrices(String product) {
 
 ```java 
 public List<String> findPrices(String product) {
-    List<CompltableFuture<String>> priceFutures = 
+    List<CompletableFuture<String>> priceFutures = 
         shops.stream()
         .map(shop -> CompletableFuture.supplyAsync(
             () -> String.format("%s price is %.2f", shop.name(), shop.price(product))
@@ -476,3 +476,59 @@ Future<Double> futurePriceInUSD =
     )).orTimeout(3, TimeUnit.SECONDS);
    
 ```
+
+<br/>
+
+## 16.5 CompletableFuture 의 종료에 대응하는 방법
+
+상점마다 결과를 제공하는 시간이 각각 다를 수 있으므로 랜덤하게 시간이 지연되는 상황을 가정한다.  
+
+```java 
+private static final Random random = new Random();
+public static void randomDelay() {
+    int delay = 500 + random.nextInt(2000);
+    try {
+        Thread.sleep(delay);
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+
+### 최저가격 검색 애플리케이션 리팩터링 
+
+이제 모든 상점에서 가격 정보를 제공할 때까지 기다리지 않고 제공할 때마다 즉시 보여지도록 변경한다.  
+연산 실행 정보를 추가하기 위해 스트림을 직접 제어해야 하므로 스트림을 반환한다.  
+
+```java 
+public Stream<CompletableFuture<String>> findPircesStream(String product) {
+    return shops.stream()
+             .map(shop -> CompletableFuture.supplyAsync(
+                              () -> shop.price(product), executor))
+             .map(future -> future.thenApply(Quote::parse))
+             .map(future -> future.thenCompose(quote -> 
+                    CompletableFuture.supplyAsync(() -> Discount.applyDiscount(quote), executor)));
+}
+
+// 사용 코드
+findPricesStream("myPhone").map(f -> f.thenAccept(System.out::println));
+```
+
+계산이 끝나면 값을 소비하도록 `thenAccept` 메서드를 추가한다.  
+`thenAcceptAsync` 도 있는데 이 메서드는 `CompletableFuture` 가 완료된 스레드가 아니라 새로운 스레드에서 실행한다.  
+이 경우에는 즉시 응답해야 하므로 `thenAccept` 을 사용한다.
+
+가장 느린 상점까지 응답을 받아 출력하고 싶다면 다음과 같이 배열로 추가하고 실행 결과를 기다려야 한다.
+
+```java 
+CompletableFuture[] futures = findPricesStream("myPhone")
+    .map(f -> f.thenAccept(System.out::println))
+    .toArray(size -> new CompletalbeFuture[size]);
+     
+CompletableFuture.allOf(futures).join();
+```
+
+만약, 하나의 작업이 끝나길 기다리는 상황이라면 `anyOf`를 사용한다.  
+처음으로 완료된 값으로 동작을 완료한다. 
+
