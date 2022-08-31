@@ -264,7 +264,7 @@ CompletableFuture.supplyAsync(
 > 너무 작으면 CPU의 일부 코어는 활용되지 않을 수 있다.   
 > N(threads) = N(CPU) * U(CPU) * (1 + W/C)   
 > N(CPU): Runtime.getRunTime().availableProcessors() 가 반환하는 코어 수  
-> U(CPU): 0 과 1 사이의 값을 갖는 CPU 활용 비율
+> U(CPU): 0 과 1 사이의 값을 갖는 CPU 활용 비율  
 > W/C : 대기 시간과 계산 시간의 비율
 
 
