@@ -259,3 +259,131 @@ public class TempProcessor implements Flow.Processor<TempInfo, TempInfo> {
 }
 ```
 
+### 17.3 리액티브 라이브러리 RxJava 사용하기
+
+RxJava 는 넷플릭스의 Reactive Extensions(Rx) 프로젝트의 일부로 시작됐다.
+RxJava 에는 이벤트 스트림을 두 가지 구현 클래스로 제공한다. 
+
+- io.reactivex.Flowable
+  - 리액티브 당김 기반 역압력 기능(request 메서드) 포함
+- io.reactivex.Observable
+  - 역압력을 지원하지 않음
+  - 단순한 프로그램, 마우스 움직임 같은 사용자 인터페이스 이벤트에 적합
+
+RxJava 의 리액티브 스트림의 구현을 이용하여 온도 보고 시스템을 정의한다.
+
+
+### Observable 만들고 사용하기 
+
+팩토리 메서드를 통해 간단하게 `Observable` 을 만들 수 있다.
+
+```java 
+Observable<String> strings = Observable.just("first", "second");
+```
+
+`Observable` 구독자는 `onNext("first")`, `onNext("second")`, `onComplete()` 순서대로 메시지를 받는다.   
+
+실시간으로 상호작용하면서 지정된 속도로 이벤트를 방출하기 위해서는 다음과 같이 사용한다.  
+0에서 시작해 1초간격으로 long 형식의 값을 무한으로 증가시키며 값을 방출한다. 
+
+```java 
+Observable<Long> onePerSec = Observable.interval(1, TimeUnit.SECONDS);
+```
+
+RxJava에서 `Observable` 은 `Publisher` 역할을 하며, `Observer`는 `Subscriber` 인터페이스 역할을 한다.  
+
+```java 
+public interface Observer<T> {
+    void onSubscribe(Disposable d);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+// 데몬 스레드에서 실행되기 때문에 실행 코드가 없으면 바로 종료됨
+onePerSec.subscribe(i -> System.out.println(TempInfo.fetch("New York")));
+// 현재 스레드에서 콜백을 호출
+onePerSec.blockingSubscribe(i -> System.out.println(TempInfo.fetch("New York")));
+```
+
+`Observable` 는 `onError` 같은 에러 관리 기능이 없으므로 예외 처리를 따로 추가한다. 
+
+```java 
+public class Main {
+    public static void main(String[] args) {
+        Observable<TempInfo> observable = getTemperature("New York");
+        observable.blockingSubscribe(new TempObserver());
+    }
+}
+
+public static Observable<TempInfo> getTemperature(String town) {
+    return Observable.create(emitter ->
+            Observable.interval(1, TimeUnit.SECONDS)
+                      .subscribe(i -> {
+                          // 옵저버가 폐기되지 않았으면 작업 수행
+                          if(!emitter.isDisposed()) {
+                              // 온도 5번 보고 했으면 완료하고 스트림 종료
+                              if (i >= 5) {
+                                  emitter.onComplete();
+                              } else {
+                                  try {
+                                      emitter.onNext(TempInfo.fetch(town));
+                                  } catch(Exception e) {
+                                      // 에러가 발생하면 Observer에 알림
+                                      emitter.onError(e);
+                                  }
+                              }
+                          }
+                      });
+    );
+}
+
+public class TempObserver implements Observer<TempInfo> {
+    @Override
+    public void onComplete() {
+        System.out.println("Done!");
+    }
+    @Override
+    public void onError(Throwable throwable) {
+        System.out.println("Got problem: " + throwable.getMessage());
+    }
+    @Override
+    public void onSubscribe(Disposable disposable) {
+    }
+    @Override
+    public void onNext(TempInfo tempInfo) {
+        System.out.println(tempInfo);
+    }
+}
+
+// RxJava 의 기본 Emitter 
+public interface Emitter<T> {
+    void onNext(T t);
+    void onError(Throwble t);
+    void onComplete();
+}
+```
+
+### Observable 을 변환하고 합치기
+
+위에서 `Processor` 를 이용하여 화씨를 섭씨로 변경했다.  
+RxJava 라이브러리의 함수 `map`(요소 변환), `merge`(두 개 이상의 방출한 이벤트를 합침), `filter`(조건) 을 이용하여 기능을 추가한다. 
+
+```java 
+public static Observable<TempInfo> getCelsiusTemperature(String town) {
+    return getTemperature(town)
+               .map(temp -> new TempInfo(temp.town(), (temp.temp() - 32) * 5 / 9));
+}
+
+public static Observable<TempInfo> getNegativeTemperature(String town) {
+    return getCelsiusTemperature(town)
+               .filter(temp -> temp.temp() < 0);
+}
+
+public static Observable<TempInfo> getCelsiusTemperatures(String... towns) {
+    return Observable.merge(Arrays.stream(towns)
+                                  .map(TempObservable::getCelsiusTemperature)
+                                  .collect(toList()));
+}
+```
+
