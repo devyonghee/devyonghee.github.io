@@ -68,3 +68,84 @@ categories: book
 
 
 <br/>
+
+## 18.2 함수형 프로그래밍이란 무엇인가?
+
+함수형 프로그래밍의 함수는 수학적인 함수와 같다.  
+함수는 0개 이상의 인수를 가지며, 한 개 이상의 결과를 반환하고 부작용이 없어야 한다.  
+특히, 인수가 같다면 항상 같은 결과가 반환된다.
+
+함수 그리고 if-then-else 등의 수학적 표현만 사용하는 방식을 순수 함수형 프로그래밍  
+시스템의 다른 부분에 영향을 미치지 않는다면 내부적으로 함수형이 아닌 기능을 사용해도 함수형 프로그래밍
+
+### 함수형 자바
+
+자바에서는 실제 부작용이 있지만 아무도 보지 못하게 함으로써 함수형을 달성할 수 있다.  
+만약 진입할 때 필드의 값을 변경했다가 나올 때 돌려놓는다면 단일 스레드에서 이 메서드는 함수형이라 간주할 수 있다.  
+하지만 다른 스레드에서 필드의 값을 읽거나 동시에 메서드를 호출하면 함수형이 아니다.
+
+#### 함수형 조건
+- 함수나 메서드는 지역 변수만을 변경
+  - 참조하는 객체가 있다면 그 객체는 불변 객체여야 한다.
+- 함수나 메서드가 어떤 예외도 일으키지 않아야 함
+  - 치명적인 에러가 있을 때 처리되는 않는 예외를 발생시키는 것은 괜찮음
+  - 예외를 사용하지 않고 함수형을 표현하려면 `Optional<T>` 사용
+  - 다른 컴포넌트에 영향을 미치지 않도록 지역적으로만 예외를 사용하는 방법도 고려 가능
+- 비함수형 동작을 감출 수 있는 상황에서만 부작용을 포함하는 라이브러리 함수 사용
+  - 자료 구조의 변경을 호출자가 알 수 없도록 감추기
+  - 부작용을 감추는 설명을 주석이나 마커 어노테이션(marker annotation)으로 메서드 정의 가능
+
+### 참조 투명성
+
+'부작용을 감춰야 한다'라는 제약은 참조 투명성(referential transparency) 개념으로 귀결된다. (같은 인수로 호출하면 같은 결과)   
+참조 투명성은 같은 결과를 반환하기 때문에 기억화(memorization) 또는 캐싱(caching)이 가능하여 최적화 기능도 제공한다.
+
+### 객체지향 프로그래밍과 함수형 프로그래밍
+
+- 익스트림 객체지향 방식: 모든 것을 객체로 간주하고 객체의 필드를 갱신, 메서드 호출, 관련 객체를 갱신하는 방식
+- 함수형 프로그래밍 형식: 참조적 투명성을 중시, 변화를 허용하지 않음
+
+자바 프로그래머는 두가지 프로그래밍 형식을 혼한다.
+
+### 함수형 실전 연습
+
+함수형을 이해하기 위해 예제를 살펴본다.  
+`List<Integer>` 가 주어졌을 때 서브집합의 멤버로 구성된 `List<List<Integer>>` 을 만드는 함수를 구현한다.
+
+```java 
+static List<List<Integer>> subsets(List<Integer> list) {
+    if (list.isEmpty()) {
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(Collections.emptyList());
+        return ans;
+    }
+    Integer first = list.get(0);
+    List<Integer> rest = list.subList(1, list.size());
+    
+    // 하나의 요소를 꺼내고 나머지 요소의 모든 서브집합을 찾아 전달
+    List<List<Integer>> subans = subsets(rest);
+    // subans 의 모든 리스트에 처음 꺼낸 요소를 앞에 추가해 생성 
+    List<List<Integer>> subans2 = insertAll(first, subans);
+    return concat(subans, subans2);
+}
+
+static List<List<Integer>> insertAll(Integer first, List<List<Integer>> lists) {
+    List<List<Integer>> result = new ArrayList<>();
+    for (List<Integer> list: lists) {
+        // 리스트를 복사한 다음 복사한 리스트에 요소를 추가
+        List<Integer> copyList = new ArrayList<>();
+        copyList.add(first);
+        copyList.addAll(list);
+        result.add(copyList);
+    }
+    return result;
+}
+
+static List<List<Integer>> concat(List<List<Integer>> a,
+                                  List<List<Integer>> b) {
+    List<List<Integer>> r = new ArrayList<>(a);
+    r.addAll(b);
+    return r;
+}
+```
+
