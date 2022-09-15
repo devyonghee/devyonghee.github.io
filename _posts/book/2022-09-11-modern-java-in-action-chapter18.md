@@ -149,3 +149,38 @@ static List<List<Integer>> concat(List<List<Integer>> a,
 }
 ```
 
+<br/>
+
+## 18.3 재귀와 반복
+
+for-each 문을 이용하면 함수형과 상충하는 부작용이 발생될 수 있다.  
+그러나 반복을 이용하는 모든 프로그램은 재귀로 구현 가능하다.  
+재귀를 이용하면 변화가 일어나지 않고 루프 단계마다 갱신되는 반복 변수를 제거할 수 있다.  
+
+```java 
+// for 문 사용
+static int factorialIterative(int n) {
+    int r = 1;
+    for (int i = 1; i <= n; i++) {
+        r *= i;
+    }
+    return r; 
+}
+// 재귀함수 사용 (StackOverflowError 발생 가능)
+static long factorialRecursive(long n) {
+    return n == 1 ? 1 : n * factorialRecursive(n-1);
+}
+// 꼬리 호출 죄척화(tail-call optimization)
+static long factorialRecursive(long n) {
+    return factorialHelper(1, n);
+}
+static long factorialHelper(long acc, long n) {
+    // 컴파일러나 하나의 스택 프레임을 재활용할 수 있음
+    return n == 1 ? acc : factorialHelper(acc * n, n-1);
+}
+// 스트림 사용
+static long factorialStreams(long n) {
+    return LongStream.rangeClosed(1, n)
+                     .reduce(1, (long a, long b) -> a * b);
+}
+```
