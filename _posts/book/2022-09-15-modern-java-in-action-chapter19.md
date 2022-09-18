@@ -51,4 +51,105 @@ DoubleOperator convertUSDtoGBP = curriedConverter(0.6, 0);
 DoubleOperator convertKmtoMi = curriedConverter(0.6214, 0);
 ```
 
+<br/>
+
+## 19.2 영속 자료구조 
+
+함수형 메서드에서는 전역 자료구조나 인수로 전달된 구조를 갱신할 수 없다.  
+구조를 변경하면 결과가 달라지면서 참조 투명성 위배되고 인수를 결과로 매핑할 수 없어지기 때문이다. 
+
+### 파괴적인 갱신과 함수형
+
+예제를 통해 자료구조를 갱신할 때 발생할 수 있는 문제를 확인하자
+
+```java 
+class TrainJourney {
+    public int price;
+    public TrainJourney onward;
+    public TrainJourney(int p, TranJourney t) {
+        price = p;
+        onward = t;
+    }
+}
+
+static TrainJourney link(TrainJourney a, TrainJourney b) {
+    if (a = null) return b;
+    TrainJourney t = a;
+    while (t.onward != null) {
+        t = t.onward;
+    }
+    t.onward = b;
+    return a;
+}
+```
+
+위 코드를 통해 `link(firstJourney, secondJourney)` 를 호출하면 `firstJourney` 가 변경되면서 파괴적인 갱신이 일어난다.  
+그렇게 되면 기존에 `firstJourney` 을 의존하고 있던 코드는 동작하지 않게 된다.  
+
+함수형에서는 이러한 부작용을 수반하는 메서드를 제한하는 방식으로 문제를 해결한다.  
+결과를 표현할 자료구조가 필요하면 갱신하지 않고 새로 생성해야 한다.  
+
+```java 
+static TrainJourney append(TrainJourney a, TrainJourney b) {
+    return a == null ? b : new TrainJourney(a.price, append(a.onward, b));
+}
+```
+
+### 트리를 사용한 다른 예제 
+
+`HashMap` 같은 인터페이스를 구현할 때는 이진 탐색 트리가 사용된다.  
+주어진 키와 연관된 값 갱신하는 방법에 대해 알아본다.
+
+```java 
+class Tree {
+    private String key;
+    private int val;
+    private Tree left, right;
+    public Tree (String k, int v, Tree l, Tree r) {
+        key = k; val = v; left = l; right = r;
+    }
+}
+
+class TreeProcessor {
+    public static int lookup(String k, int defaultval, Tree t) {
+        if (t == null) return defaultval;
+        if (k.equals(t.key)) return t.val;
+        return lookup(k, defulatval, k.compareTo(t.key) < 0 ? t.left : t.right);
+    }
+}
+
+public static void update(String k, int newval, Tree t) {
+    if (t == null) { /* 새로운 노드 추가*/ }
+    else if (k.equals(t.key)) t.val = newval;
+    else update(k, newval, k.compareTo(t.key) < 0 ? t.left : t.right);
+}
+
+public static void Tree update(String k, int newval, Tree t) {
+    if (t == null) t = new Tree(k, newval, null, null);
+    else if (k.equals(t.key)) t.val = newval;
+    else if (k.compareTo(t.key) < 0) t.left = update(k, newval, t.left);
+    else t.right = update(k, newval, t.right);
+    return t; 
+}
+```
+
+두 가지 `update` 모두 기존 트리를 변경한다.  
+그러므로 트리에 저장된 맵은 변경에 대해 모든 곳에 영향을 주게 된다.
+
+함수형으로 이 문제를 처리하는 방법을 알아보자.  
+새로운 노드를 생성하고 트리의 루트에서 경로에 있는 노드들도 새로 생성해야 한다. 
+
+```java 
+public static Tree fupdate(String k, int newval, Tree t) {
+    return (t == null) ?
+        new Tree(k, newval, null, null) :
+            k.equals(t.key) ? new Tree(k, newval, t.left, t.right) :
+                k.compareTo(t.key) < 0 ? 
+                    new Tree(t.key, t.val, fupdate(k, newval, t.left), t.right) :
+                    new Tree(t.key, t.val, t.left, fupdate(k, newval, t.right)));                
+}
+```
+
+인수를 이용해서 가능한 한 많은 정보를 공유하고 새로운 노드를 만들었다.  
+기존 구조를 변화시키지 않기 때문에 공통 부분을 공유할 수 있다는 점에서 다른 구조체와 조금 다르다.  
 
