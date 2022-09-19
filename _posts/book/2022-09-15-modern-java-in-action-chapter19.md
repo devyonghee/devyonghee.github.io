@@ -153,3 +153,161 @@ public static Tree fupdate(String k, int newval, Tree t) {
 인수를 이용해서 가능한 한 많은 정보를 공유하고 새로운 노드를 만들었다.  
 기존 구조를 변화시키지 않기 때문에 공통 부분을 공유할 수 있다는 점에서 다른 구조체와 조금 다르다.  
 
+
+<br/>
+
+## 19.3 스트림과 게으른 평가
+
+스트림은 한 번만 소비할 수 있는 재약이 있어서 재귀적으로 정의해야 한다.  
+이러한 제약 때문에 발생되는 문제에 대해 알아본다. 
+
+### 자기 정의 스트림 
+
+소수를 생성하는 재귀 스트림을 살펴본다.  
+소수로 나눌 수 있는 수를 제외하는 과정을 다음 알고리즘으로 구현해본다.  
+
+1. 소수를 선택할 숫자 스트림 필요
+2. 스트림에서 첫번째 소수를 가져온다. (처음은 2)
+3. 스트림의 꼬리에서 가져온 수로 나누어 떨어지는 모든 수를 제외
+4. 남은 숫자만 포함하는 새로운 스트림에서 소수를 찾기 (반복)
+
+#### 1단계 스트림 숫자 얻기
+
+```java 
+static Intstream numbers() {
+    return IntStream.iterate(2, n -> n + 1);
+}
+```
+
+#### 2단계 머리 획득
+
+```java 
+static int head(IntStream numbers) {
+    return numbers.findFirst().getAsInt();
+}
+```
+
+#### 3단계 꼬리 필터링
+
+```java 
+static IntStream tail(IntStream numbers) {
+    return numbers.skip(1);
+}
+```
+
+#### 4단계 재귀적으로 소수 스트림 생성
+
+```java 
+static IntStream primes(IntStream numbers) {
+    int head = head(numbers);
+    return IntStream.concat(
+        IntStream.of(head),
+        primes(tail(numbers).filter(n -> n % head != 0))
+    );
+}
+```
+
+하지만 위 코드는 최종연산 `findFirst`, `skip` 을 사용했기 때문에 
+`stream has already been operated upon or closed.` 라는 에러가 발생된다.  
+
+또한, 두번째 인수가 `primes`를 재귀적으로 호출하기 때문에 무한 재귀에 빠진다.  
+이러한 문제는 두 번째 인수에서 `primes`를 게으른 평가를 통해 해결할 수 있다.  
+
+
+### 게으른 리스트 만들기 
+
+스트림은 최종연산(`filter`, `map`, `reduce` 등)을 적용해서 계산을 해야 하는 상황에서만 연산이 이루어진다.  
+게으른 특성 때문에 연산별로 스트림을 탐색할 필요 없이 한 번에 처리할 수 있다.  
+
+#### 기본적인 연결 리스트
+
+기본적인 리스트는 메모리에 존재한다. 
+
+```java 
+interface MyList<T> {
+    T head();
+    MyList<T> tail();
+    default boolean isEmpty() {
+        return true;
+    }
+}
+
+class MyLinkedList<T> implements MyList<T> {
+    private final T head;
+    private final MyList<T> tail;
+    public MyLinkedList(T head, MyList<T> tail) {
+        this.head = head;
+        this.tail = tail;
+    }
+    public T head() {
+        return head;
+    }
+    public MyList<T> tail() {
+        return tail;
+    }
+    public boolean isEmpty() {
+        return false;
+    }
+}
+class Empty<T> implements MyList<T> {
+    public T head() {
+        throw new UnsupportedOperationException();
+    }
+    public MyList<T> tail() {
+        throw new UnsupportedOperationException();
+    }
+}
+
+MyList<Integer> l = new MyLinkedList<>(5, new MyLinkedList<>(10, new Empty()));
+```
+
+#### 기본적인 게으른 리스트 
+
+`Supplier<T>` 를 이용하여 게으른 리스트를 만들면 메모리에 존재하지 않게 할 수 있다.  
+
+```java 
+class LazyList<T> implements MyList<T> {
+    final T head;
+    final Supplier<MyList<T>> tail;
+    public LazyList(T head, Supplier<MyList<T>> tail) {
+        this.head = head;
+        this.tail = tail;
+    }
+    public T head() {
+        return head;
+    }
+    public MyList<T> tail() {
+        return tail.get();
+    }
+    public boolean isEmpty() {
+        return false;
+    }
+    public MyList<T> filter(Predicate<T> p) {
+        return isEmpty() ? 
+            this :
+            p.test(head()) ?
+                new LazyList<>(head(), () -> tail().filter(p)) :
+                tail().filter(p); 
+    }
+}
+
+public static LazyList<Integer> from(int n) {
+    return new LazyList<Integer>(n, () -> from(n+1));
+}
+```
+
+
+#### 게으른 소수 리스트 생성
+
+```java 
+public static MyList<Integer> primes(MyList<Integer> numbers) {
+    return new LazyList<> (
+        numbers.head(),
+        () -> primes(
+            numbers.tail()
+                   .filter(n -> n % numbers.head() != 0)
+        )
+    );
+}
+```
+
