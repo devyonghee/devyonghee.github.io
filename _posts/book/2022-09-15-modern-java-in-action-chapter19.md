@@ -311,3 +311,126 @@ public static MyList<Integer> primes(MyList<Integer> numbers) {
 }
 ```
 
+
+<br/>
+
+## 19.4 패턴 매칭
+
+패턴 매칭은 함수형 프로그래밍을 구분하는 중요한 특징 중 하나이다.  
+자바에서는 if-then-else 나 switch 문을 이용해야 하는데 자료형이 복잡해지면 필요한 코드의 양도 증가한다.  
+
+```java 
+Expr simplifyExpression(Expr expr) {
+    if (expr instanceof Binof
+        && ((BinOp) expr).opname.equals("+"))
+        && ((BinOp) expr).right instanceof Number
+        && ...  // 코드가 지저분해짐
+        && ...) {
+        return (Binop) expr.left;       
+    }
+}
+```
+
+### 방문자 디자인 패턴
+
+자바에서는 방문자 디자인 패턴(visitor design pattern) 으로 자료형을 언랩할 수 있다.  
+
+```java 
+class BinOp extends Expr {
+    ...
+    public Expr accept(SimplifyExprVisitor v) {
+        return v.visit(this);
+    }
+}
+
+public class SimplifyExprVisitor {
+    ...
+    public Expr visit(BinOp e) {
+        if ("+".equals(e.opname) && e.right instanceof Number && ...) {
+            return e.left;
+        }
+        return e;
+    }
+}
+```
+
+### 패턴 매칭의 힘
+
+자바는 패턴 매칭을 지원하지 않으므로 스칼라로 예시를 살펴본다.  
+
+```scala 
+def simplifyExpression(expr: Expr): Expr = expr match {
+    case BinOp("+", e, Number(0)) => e
+    case BinOp("*", e, Number(1)) => e
+    case BinOp("/", e, Number(1)) => e
+    case _ => expr
+}
+
+Expression match { case Pattern => Expression ... }
+```
+
+#### 자바로 패턴 매칭 흉내내기 
+
+```java 
+
+myIf(condition, () -> e1, () -> e2);
+
+static <T> T myIf(boolean b, Supplier<T> truecase, Supplier<T> falsecase) {
+    return b ? truecase.get() : falsecase.get();
+}
+```
+
+`BinOp` 와 `Number` 를 포함하는 `Expr` 클래스 패턴 매칭하는 메서드를 정의해본다.
+
+```java 
+interface TriFunction<S, T, U, R> {
+    R apply(S s, T t, U u);
+}
+
+static <T> T patternMatchExpr(
+                        Expr e,
+                        TriFunction<String, Expr, Expr, T> binopcase,
+                        Function<Integer, T> numcase,
+                        Supplier<T> defaultcase) {
+    return (e instanceof BinOp) ? binopcase.apply(((BinOp) e).opname, ((BinOp) e).left, ((BinOp) e).right) :
+                                  (e instanceof Number) ? numcase.apply((Number) e).val) : defaultcase.get();
+}
+
+patternMatchExpr(e, (op, l, r) -> { return binopcode; }),
+                    (n) -> { return numcode; },
+                    () -> { return defaultcode; });
+```
+
+`patternMatchExpr` 을 이용해서 덧셈과 곱셈 표현식을 단순화하는 방법을 알아본다.
+
+```java 
+public static Expr simplify(Expr e) {
+    TriFunction<String, Expr, Expr, Expr> binopcase = 
+        (opname, left, right) -> {
+            if ("+".equals(opname)) {
+                if (left instanceof Number && ((Number) left).val == 0) {
+                    return right;
+                }
+                if (right instanceof Number && ((Number) right).val == 0) {
+                    return left;
+                }
+            }
+            if ("*".equals(opname)) {
+                if (left instanceof Number && ((Number) left).val == 1) {
+                    return right;
+                }
+                if (right instanceof Number && ((Number) right).val == 1) {
+                    return left;
+                }
+            }
+            return new BinOp(opname, left, right);
+        };
+    Function<Integer, Expr> numcase = val -> new Number(val);
+    Supplier<Expr> defaultcase = () -> new Number(0);
+    
+    return patternMatchExpr(e, binpcase, numcase, defaultcase);  // 패턴 매칭 적용
+}
+
+```
+
+
