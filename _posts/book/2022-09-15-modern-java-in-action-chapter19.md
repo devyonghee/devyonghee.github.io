@@ -434,3 +434,54 @@ public static Expr simplify(Expr e) {
 ```
 
 
+<br/>
+
+## 19.5 기타 정보
+
+참조 투명성과 관련된 효율성과 염려사항에 대해 알아본다. 
+
+### 캐싱 또는 기억화 
+
+트리 형식의 토포로지(topology)를 갖는 노드의 수를 계산하는 메서드가 있다고 가정한다.  
+이 메서드를 호출하면 재귀적으로 탐색해야하므로 노드 계산 비용은 비싸다.  
+이러한 문제는 기억화(memorization) 기법으로 해결할 수 있다. (메서드에 래퍼로 캐시)
+
+```java 
+final Map<Range, Integer> numberOfNodes = new HashMap<>();
+Integer computeNumberOfNodesUsingCache(Range range) {
+    Integer result = numberOfNodes.get(range);
+    if (result != null) {
+        return result;
+    }
+    result = computeNumberOfNodes(range);
+    numberOfNodes.put(range, result);
+    return result;
+}
+```
+
+### '같은 객체를 반환함'은 무엇을 의미하는가?
+
+참조 투명성이란 '인수가 같다면 결과도 같아야 한다' 라는 규칙을 만족함을 의미한다.  
+
+```java 
+t2 = fupdate("Will", 26, t);
+t3 = fupdate("Will", 26, t);
+```
+여기서 t2 와 t3 는 서로 다른 참조이기 때문에 `t2 == t3` 를 만족하지 않는다.  
+그러므로 참조 투명성을 갖지 않는다고 결론내릴 수 있으나 논리적으로 같다고 판단할 수 있다.  
+따라서 함수형 프로그래밍 관점에서 `fupdate` 는 참조 투명성을 갖는다고 할 수 있다.  
+
+### 콤비네이터(combinator)
+
+두 함수를 인수로 받아 다른 함수를 반환하는 등 함수를 조합하는 고차원 함수를 콤비네이터라고 한다.(ex. `Completable::thenCombine`)  
+
+```java 
+static <A, B, C> Function<A, C> compose(Function<B, C> g, Function<A, B> f) {
+    return x -> g.apply(f.apply(x));
+}
+
+static <A> Function<A, A> repeat(int n, Function<A, A> f) {
+    return n == 0 ? x -> x : compose(f, repeat(n-1, f));
+}
+```
+
