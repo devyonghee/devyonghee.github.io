@@ -12,7 +12,6 @@ categories: book
 
 <br/>
 
-
 ## 20.1 스칼라 소개
 
 스칼라의 특성에 대해 살펴볼 수 있도록 다음 사항들을 소개한다. 
@@ -163,3 +162,95 @@ def getCarInsuranceName(person: Option[Person], minAge: Int) =
           .map(_.getName)
           .getOrElse("Unknown")
 ```
+
+
+<br/>
+
+## 20.2 함수
+
+스칼라에서는 자바에 비해 많은 함수 기능을 제공한다.  
+
+- 함수 형식
+  - 자바 함수 디스크립터의 개념을 표현하는 편의 문법 (추상 메서드의 시그니처를 표현하는 개념)
+- 익명 함수
+  - 자바의 람다 표현식과 달리 비지역 변수 기록에 제한을 받지 않음
+- 커링 지원
+  - 여러 인수를 받는 함수를 일부 인수를 받는 여러 함수로 분리하는 기법
+
+### 스칼라의 일급 함수
+
+스칼라의 함수는 일급값(first-class value)이다. (인수 전달, 결과 반환, 변수 저장 가능)  
+
+```scala
+def isJavaMentioned(tweet: String) : Boolean = tweet.contains("Java")
+def isShortTweet(tweet: String) : Boolean = tweet.length() < 20
+
+val tweets = List(
+    "I love the new features in Java 8",
+    "How`s it going?"
+)
+tweets.filter(isJavaMentioned).foreach(println)
+tweets.filter(isShortTweet).foreach(println)
+```
+
+### 익명 함수와 클로저
+
+스칼라도 익명 함수(anonymous function)의 개념을 지원한다.  
+
+```scala 
+// apply 메서드의 구현을 제공하는 scala.Function1
+val isLongTweet : String => Boolean = 
+    new Function1[String, Boolean] {
+        def apply(tweet : String): Boolean = tweet.length() > 60
+}
+
+// 익명 클래스 축약
+val isLongTweet : String => Boolean = 
+    (tweet : String) => tweet.length() > 60 // 익명 함수
+    
+isLongTeet.apply("A very short tweet") // false    
+```
+
+자바에서 람다 표현식을 사용할 수 있도록 `Predicate`, `Function`, `Consumer` 등의 내장 함수형 인터페이스를 제공한다.    
+마찬가지로 스칼라는 트레이트를 지원한다. `Function0`(인수 없음) 에서 `Function22`(인수 22개) 를 제공한다. 
+
+
+#### 클로저 
+
+클로저란 함수의 비지역 변수를 자유롭게 참조할 수 있는 함수의 인스턴스다.  
+스칼라의 익명 함수는 값이 아니라 변수를 캡처할 수 있다.
+
+```scala
+def main(args: Array[String]) {
+    var count = 0
+    val inc = () => count += 1
+    inc()
+    println(count)  // 1
+    inc()
+    println(count)  // 2
+}
+```
+
+하지만 자바에서 위와 같은 코드를 작성하면 `count`가 `final` 이 되므로 컴파일 에러가 발생한다. 
+
+### 커링
+
+여러 인수를 가진 함수를 인수의 일부를 받는 여러 함수로 분할할 수 있다.
+
+```java 
+static Function<Integer, Integer> multiplyCurry(int x) {
+    return (Integer y) -> x * y;
+}
+
+Stream.of(1, 3, 5, 7)
+      .map(multiplyCurry(2))
+      .forEach(System.out::println);
+```
+
+스칼라에서는 자동으로 처리하는 특수 문법이 존재한다. 
+
+```scala
+def multiplyCurry(x : Int)(y : Int) = x * y
+var r = multiplyCurry(2)(10)
+```
+
