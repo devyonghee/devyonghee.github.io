@@ -254,3 +254,59 @@ def multiplyCurry(x : Int)(y : Int) = x * y
 var r = multiplyCurry(2)(10)
 ```
 
+<br/>
+
+## 20.3 클래스와 트레이트
+
+### 간결성을 제공하는 스칼라의 클래스
+
+```scala 
+class Hello {
+    def sayThankYou() {
+        println("Thanks for reading out book")
+    }
+}
+val h = new Hello()
+h.sayThankYou()
+```
+
+#### 게터와 세터 
+
+스칼라에서는 생성자, 게터, 세터가 암시적으로 생성되어 코드가 단순하다.
+
+```scala 
+class Student(var name: String, var id: Int) 
+val s = new Student("Raoul", 1)  //객체 초기화
+println(s.name)  // 이름 출력
+s.id = 1337      // id 설정
+println(s.id)    // 변경된 id 출력
+```
+
+### 스칼라 트레이트와 자바 인터페이스
+
+스칼라는 트레이트라는 추상 기능도 제공한다. (자바의 인터페이스 대체)  
+
+```scala 
+trait Sized {
+    var size : Int = 0          // 필드
+    def isEmpty() = size == 0   // 기본 구현 제공
+}
+
+class Empty extends Sized       // 트레이트에서 상속
+
+println(new Empty().isEmpty())  // true
+```
+
+객체 트레이트는 인스턴스화 과정에서도 조합이 가능하다.  
+
+```scala 
+class Box
+
+val b1 = new Box() with Sized
+println(b1.isEmpty())   // true
+
+val b2 = new Box()
+b2.isEmpty()            // 상속하지 않아서 컴파일 에러
+```
+
+
