@@ -27,8 +27,43 @@ Saga Pattern 은 분산 트랜잭션 환경에서 메시지 또는 이벤트를 
 
 Saga Pattern 을 구현하는 방법에는 보통 오케스트레이션(orchestration)과 코레오그래피(choreography) 두 가지 방법이 존재한다.   
 
+<br/>
 
 ## 오케스트레이션(orchestration)
+
+오케스트레이션(orchestration)은 오케스트레이터(orchestrator) 라는 중앙 컨트롤러가 보상 작업을 트리거하는 방식이다.  
+이 오케스트레이터는 모든 트랜잭션을 처리하고 수행해야 하는 작업을 메세지를 보내 참여자들과 통신한다.
+오케스트레이터는 작업의 상태를 저장 및 해석하고 있어서 분산 트랜잭션의 중앙 집중화가 이루어지고 데이터 일관성을 지킬 수 있다.  
+
+- 서비스의 Saga 모듈이 존재
+- 마이크로 서비스들의 로컬 트랜잭션이 오케스트레이터에 의해 호출, 상태값 설정
+- 참여자들의 트랜잭션이 모두 처리되면 서비스의 상태 변경
+- 특정 서비스에서 오류가 발생되면 보상 트랜잭션 호출
+
+### 주문 생성 애플리케이션 예제
+
+{% include image.html alt="orchestration" source_txt='microservices' source='https://microservices.io/patterns/data/saga.html' path="images/theory/saga-pattern/orchestration.png" %}
+
+1. `Order Service` 에서 `POST /orders` 수신 및 오케스트레이터에 주문 생성 알림
+2. `PENDING` 상태의 주문 생성
+3. `Customer Service`에 `Reserve Credit` 명령 요청
+4. `Reserve Credit` 수행
+5. 응답 메세지 수신
+6. 오케스트레이터가 주문 생성을 승인하거나 거부
+
+### 장점
+
+- 참여자가 많거나 추가되는 상황 같이 복잡한 워크플로에 적합
+- 활동 흐름의 제어 가능
+- 오케스트레이터가 존재하여 순환 종속성이 발생되지 않음
+- 각 참여자는 다른 참여자의 명령어를 알지 않아도 됨
+
+### 단점
+
+- 중앙에서 관리를 위한 복잡한 로직 구현 필요
+- 모든 워크플로를 관리하기 때문에 실패 지점이 될 수 있음
+
+<br/>
 
 ## 코레오그래피(choreography)
 
