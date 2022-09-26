@@ -67,38 +67,6 @@ Saga Pattern 을 구현하는 방법에는 보통 오케스트레이션(orchestr
 
 ## 코레오그래피(choreography)
 
-코레오그래피(choreography)는 중앙 제어 없이 서비스끼리 이벤트로 통신하는 방법이다.  
-서비스들은 특정 동작을 수행하면 도메인 이벤트를 발행하고, 이를 구독하고 있던 서비스가 그에 따른 트랜잭션을 수행한다.  
-이벤트는 Kafka 와 같은 메세지 큐를 이용해 비동기로 전달한다.   
-
-- 트랜잭션이 실패한다면 보상 이벤트를 발행하여 롤백
-- 메시지를 발행하는 동작도 트랜잭션에 포함되어야 함
-
-### 주문 생성 애플리케이션 예제
-
-{% include image.html alt="choreography" source_txt='microservices' source='https://microservices.io/patterns/data/saga.html' path="images/theory/saga-pattern/choreography.png" %}
-
-1. `Order Service` 에서 `POST /orders` 수신 및 `PENDING` 상태 주문 생성
-2. 주문 생성(`Order Created`) 이벤트 발행
-3. `Customer Service` 에서 이벤트 수신하고 `Reserve Credit` 명령 수행
-4. `Reserve Credit` 결과 이벤트 발행
-5. `Order Service` 에서 주문을 승인 또는 거절 수행
-
-### 장점
-
-- 참여자가 적고 중앙 제어가 필요없는 경우 적합
-- 추가 서비스 구현이 필요없음 (구성 간편)
-- 역할이 분산되어 단일 실패 지점 존재하지 않음
-- 참여자는 서로 직접 알지 못하기 때문에 느슨한 결합
-
-
-### 단점
-
-- 명령 추적이 어렵기 때문에 워크플로 파악이 어려움
-- Saga 참가자 간에 순환 종속성 발생 가능
-- 통합 테스트가 어려움
-
-
 
 ## 출처 
 
