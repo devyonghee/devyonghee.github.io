@@ -68,6 +68,7 @@ categories: book
 
 **물리적 표현**과 **논리적 표현**이 같다면 기본 직렬화 형태 사용  
 - 기본 직렬화 형태가 적합해도 불변식 보장과 보안을 위해 `readObject` 메서드를 제공해야할 수도 있음
+
 ```java
 // 기본 직렬화 형태에 적합
 public class Name implements Serializable {

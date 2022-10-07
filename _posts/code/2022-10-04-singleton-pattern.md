@@ -62,7 +62,9 @@ class SingletonEager {
 - Exception Handling 불가
 
 
-### Static Block Initialization
+<br/> 
+
+#### Static Block Initialization
 
 ```java 
 class SingletonStaticBlock {
@@ -92,9 +94,116 @@ class SingletonStaticBlock {
 
 - 대부분의 특징은 Eager Initialization 와 동일하나 Exception Handling 가능 
 
+<br/> 
 
+#### Lazy Initialization
+
+```java 
+public class SingletonLazy {
+
+    private static SingletonLazy instance;
+
+    private SingletonLazy() {
+    }
+
+    public static SingletonLazy instance() {
+        if (instance == null) {
+            instance = new SingletonLazy();
+        }
+        return instance;
+    }
+
+    public void doSomething() {
+        System.out.println("doSomething");
+    }
+}
+```
+
+- 클래스 로딩이 아닌 메소드가 호출되는 시점에 객체를 생성하기 때문에 메모리 낭비를 방지
+- 멀티 스레드 환경에서는 여러 개의 객체가 생성될 수 있음
+
+<br/> 
+
+#### Thread Safe Singleton
+
+```java 
+public class SingletonThreadSafe {
+
+    private volatile static SingletonThreadSafe instance;
+
+    private SingletonThreadSafe() {
+    }
+
+    public static SingletonThreadSafe instance() {
+        if (instance == null) {
+            synchronized (SingletonThreadSafe.class) {
+                if (instance == null) {
+                    instance = new SingletonThreadSafe();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void doSomething() {
+        System.out.println("doSomething");
+    }
+}
+```
+
+- Double Checked Locking (DCL) 를 이용하여 Lazy Initialization 의 동시성 문제 개선
+- `synchronized` 키워드를 사용하여 성능 저하가 발생될 수 있음
+- 마찬가지로 멀티 코어 환경 및 코드 재배치로 인해 객체를 두번 만들게 될 수 있으므로 권장되는 방식은 아님
+
+<br/> 
+
+#### Bill Pugh Singleton Implementation
+
+```java 
+public class SingletonBillPugh {
+
+    private SingletonBillPugh() {
+    }
+
+    public static SingletonBillPugh instance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    public void doSomething() {
+        System.out.println("doSomething");
+    }
+
+    public static class SingletonHolder {
+        
+        private static final SingletonBillPugh INSTANCE = new SingletonBillPugh();
+    }
+}
+```
+
+- Bill Pugh 가 제시한 내부 정적 클래스를 이용하여 싱글톤 생성 방식
+- `SingletonHolder` 클래스가 로드되는 시점(`instance()` 호출 시점)에 인스턴스 생성 
+- `SingletonHolder` 클래스가 로드되는 시점에 객체를 생성하기 때문에 thread safe
+
+<br/> 
+
+#### Enum Singleton
+
+```java 
+public enum SingletonEnum {
+
+    INSTANCE;
+    public void doSomething() {
+        System.out.println("doSomething");
+    }
+}
+```
+
+- [이펙티브 자바 아이템 89](https://devyonghee.github.io/book/2022/02/03/effective-java-chapter12/#%EC%95%84%EC%9D%B4%ED%85%9C-89.-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%B4%EC%95%BC-%ED%95%9C%EB%8B%A4%EB%A9%B4-readResolve-%EB%B3%B4%EB%8B%A4%EB%8A%94-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%9D%BC) 에서 제시한 방법
+- 구현이 간단하며 thread safe
+- Reflection 및 직렬화에 대해 인스턴스 수 보장 가능 
 
 
 ## 출처
 - Head First Design Patterns
 - https://readystory.tistory.com/116
+- https://velog.io/@dailyzett/singleton
