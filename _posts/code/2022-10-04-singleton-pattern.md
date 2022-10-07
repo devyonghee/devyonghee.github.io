@@ -203,6 +203,9 @@ public enum SingletonEnum {
 - Reflection 및 직렬화에 대해 인스턴스 수 보장 가능 
 
 
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/singleton) 참고
+
+
 ## 출처
 - Head First Design Patterns
 - https://readystory.tistory.com/116
