@@ -15,7 +15,7 @@ GoF(Gang of Four) Design Pattern 에서 행위(behavioral)에 속한다.
 
 책임 연쇄 패턴은 주로 처리할 수 있는 객체가 여러 개이고 처리 객체가 특정되어 있지 않은 경우 사용한다.
 
-### 구조 
+## 구조 
 
 {% include image.html alt="chain of responsibility pattern structure" path="images/code/chain-of-responsibility-pattern/structure.png" %}
 
@@ -25,17 +25,84 @@ GoF(Gang of Four) Design Pattern 에서 행위(behavioral)에 속한다.
 - ConcreteHandler : 요청을 실제 처리하는 역할
 
 
-### 장점
+## 장점
 
--
+- 요청하는 객체와 처리하는 객체를 분리하여 느슨한 결합도 유지 가능
+- 클라이언트는 처리 객체 집합 내부 구조를 알 필요가 없음
+- 새로운 처리 객체 생성 간단
+
+## 단점
+
+- 요청이 처리 객체들간에 순환이 발생될 수 있음
+- 내부 어느곳에서 요청이 처리되는지 파악이 어려움
+
+## 구현
+
+### Handler
+
+```java 
+
+public abstract class Handler {
+
+    private Handler next;
+
+    public void setNext(Handler next) {
+        this.next = next;
+    }
+
+    public void handle(String request) {
+        if (canNotHandle(request)) {
+            validateExistNext();
+            next.handle(request);
+            return;
+        }
+        doHandle(request);
+    }
+
+    protected abstract boolean canNotHandle(String request);
+
+    protected abstract void doHandle(String request);
+
+    private void validateExistNext() {
+        if (next == null) {
+            throw new IllegalStateException("next handler is not exists");
+        }
+    }
+}
+```
 
 
-### 단점
+### Concrete
 
+```java 
+public class ConcreteHandler1 extends Handler {
 
+    @Override
+    protected boolean canNotHandle(String request) {
+        return !"concrete1".equals(request);
+    }
 
+    @Override
+    protected void doHandle(String request) {
+        System.out.println("ConcreteHandler1 print " + request);
+    }
+}
 
-전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/singleton) 참고
+public class ConcreteHandler2 extends Handler {
+
+    @Override
+    protected boolean canNotHandle(String request) {
+        return !"concrete2".equals(request);
+    }
+
+    @Override
+    protected void doHandle(String request) {
+        System.out.println("ConcreteHandler2 print " + request);
+    }
+}
+
+```
+
 
 
 ## 출처
