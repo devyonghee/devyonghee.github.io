@@ -103,6 +103,10 @@ public class ConcreteHandler2 extends Handler {
 
 ```
 
-
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/chain-of-responsibility) 참고
 
 ## 출처
+
+- [https://always-intern.tistory.com/1](https://always-intern.tistory.com/1)
+- [https://donghyeon.dev/design%20pattern/2020/05/11/Chain-of-Responsibility-%ED%8C%A8%ED%84%B4/](https://donghyeon.dev/design%20pattern/2020/05/11/Chain-of-Responsibility-%ED%8C%A8%ED%84%B4/)
+- [https://ko.wikipedia.org/wiki/%EC%B1%85%EC%9E%84_%EC%97%B0%EC%87%84_%ED%8C%A8%ED%84%B4](https://ko.wikipedia.org/wiki/%EC%B1%85%EC%9E%84_%EC%97%B0%EC%87%84_%ED%8C%A8%ED%84%B4)
