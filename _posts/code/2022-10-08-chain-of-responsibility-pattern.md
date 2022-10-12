@@ -5,7 +5,7 @@ categories: code
 ---
 
 책임 연쇄 패턴(Chain of Responsibility Pattern)은 다수의 객체를 체인 형태로 연결하여 처리하는 패턴이다.  
-GoF(Gang of Four) Design Pattern 에서 행위(behavioral)에 속한다. 
+GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속한다.
 
 <!--more-->
 

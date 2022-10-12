@@ -6,6 +6,7 @@ categories: code
 
 싱글톤 패턴 (Singleton Pattern) 은 인스턴스가 하나 뿐인 객체를 만들 수 있게 해주는 패턴이다.  
 생성된 이후에는 객체를 새로 생성하지 않고 처음에 생성된 객체를 다시 재활용하게 된다.  
+GoF(Gang of Four) Design Pattern 에서 생성(creational) 패턴에 속한다.
 
 <!--more-->
 

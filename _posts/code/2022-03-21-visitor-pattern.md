@@ -4,8 +4,8 @@ tags: [design-pattern, visitor-pattern]
 categories: code
 ---
 
-visitor 는 어떤 장소에 방문하는 사람이라는 의미로  
-방문자가 특정 공간에 방문할 때, 적절한 행동을 취한다.
+visitor 는 어떤 장소에 방문하는 사람이라는 의미로 방문자가 특정 공간에 방문할 때, 적절한 행동을 취한다.  
+GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속한다.
     
 <!--more-->
 
