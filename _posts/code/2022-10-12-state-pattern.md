@@ -19,11 +19,26 @@ GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속한다.
 
 {% include image.html alt="state pattern structure" path="images/code/state-pattern/structure.png" %}
 
+- Context 
+  - 다양한 내부 상태를 지닐 수 있는 객체
+  - 사용자가 요청하는 메소드를 구현 (작업은 상태 객체에게 위임)
+
+- State
+  - 구현체 인스턴스들에 대한 공통 인터페이스 정의
+
+- ConcreteState
+  - 전달된 요청을 실제로 처리하는 역할
+  - 요청을 처리하는 방법을 각자 구현 
+
 ## 장점
 
+- 각 상태에게 책임을 위임하기 때문에 코드 복잡도 감소 (조건문 제거)
+- 구현할 때 상태 객체만 보면되므로 추가, 수정, 삭제가 간단
+- 상태에 따른 행위 파악 간단
 
 ## 단점
 
+- 상태마다 새로운 클래스가 추가되어 클래스가 많아지므로 유지보수가 어려워질 수 있음
 
 ## 구현
 
