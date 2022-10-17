@@ -42,8 +42,235 @@ GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속한다.
 
 ## 구현
 
+### Context
 
-전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/chain-of-responsibility) 참고
+```java 
+class GumballMachine {
+
+    private final State soldOutState = new SoldOutState(this);
+    private final State noCoinState = new NoCoinState(this);
+    private final State hasCoinState = new HasCoinState(this);
+    private final State soldState = new SoldState(this);
+    private final State winnerState = new WinnerState(this);
+
+    private int ballsCount;
+    private State state = soldOutState;
+
+    GumballMachine(int ballsCount) {
+        this.ballsCount = ballsCount;
+        if (isNotEmpty()) {
+            state = noCoinState;
+        }
+    }
+
+    public void insertCoin() {
+        state.insertCoin();
+    }
+
+    public void ejectCoin() {
+        state.ejectCoin();
+    }
+
+    public void turnCrank() {
+        state.turnCrank();
+        state.dispense();
+    }
+
+    public void releaseBall() {
+        System.out.println("a gumball comes rolling out the slot");
+        if (isNotEmpty()) {
+            ballsCount = ballsCount - 1;
+        }
+    }
+
+    public void refill(int ballsCount) {
+        this.ballsCount += ballsCount;
+        System.out.println("The gumball machine was just refilled; its new count is: " + this.ballsCount);
+        state.refill();
+    }
+
+    public void changeSoldState() {
+        state = soldState;
+    }
+
+    void changeWinnerState() {
+        state = winnerState;
+    }
+
+    void changeNoCoinState() {
+        state = noCoinState;
+    }
+
+    void changeHasCoinState() {
+        state = hasCoinState;
+    }
+
+    void changeSoldOutState() {
+        state = soldOutState;
+    }
+
+    boolean isNotEmpty() {
+        return !isEmpty();
+    }
+
+    boolean isEmpty() {
+        return ballsCount == 0;
+    }
+
+    boolean hasGreaterThan(int count) {
+        return ballsCount > count;
+    }
+}
+```
+
+### State
+
+```java 
+interface State {
+
+    void insertCoin();
+
+    void ejectCoin();
+
+    void turnCrank();
+
+    void dispense();
+
+    void refill();
+}
+```
+
+### ConcreteState
+
+```java 
+class SoldState implements State {
+
+    private final GumballMachine gumBallMachine;
+
+    SoldState(GumballMachine gumBallMachine) {
+        this.gumBallMachine = gumBallMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("please wait, we're already giving you a gumball");
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("already turned the crank");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("please turn the crank once");
+    }
+
+    @Override
+    public void dispense() {
+        gumBallMachine.releaseBall();
+        if (gumBallMachine.isNotEmpty()) {
+            gumBallMachine.changeNoCoinState();
+            return;
+        }
+        System.out.println("Oops, out of gumballs");
+        gumBallMachine.changeSoldOutState();
+    }
+
+    @Override
+    public void refill() {
+    }
+
+    @Override
+    public String toString() {
+        return "SoldState";
+    }
+}
+```
+
+```java 
+class SoldOutState implements State {
+
+    private final GumballMachine gumballMachine;
+
+    SoldOutState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("the machine is sold out");
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("there is no coin to eject");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("there are no gumballs");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("no gumball dispensed");
+    }
+
+    @Override
+    public void refill() {
+        gumballMachine.changeNoCoinState();
+    }
+
+    @Override
+    public String toString() {
+        return "SoldOutState";
+    }
+}
+```
+
+```java 
+class NoCoinState implements State {
+
+    private final GumballMachine gumballMachine;
+
+    NoCoinState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("inserted a quarter");
+        gumballMachine.changeHasCoinState();
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("insert a coin first");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("there is no coin");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("please insert a coin");
+    }
+
+    @Override
+    public void refill() {
+    }
+
+    @Override
+    public String toString() {
+        return "NoCoinState";
+    }
+}
+```
+
+전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/state) 참고
 
 ## 출처
 
