@@ -274,4 +274,7 @@ class NoCoinState implements State {
 
 ## 출처
 
-- []()
+- Head First Design Patterns
+- [https://ko.wikipedia.org/wiki/%EC%83%81%ED%83%9C_%ED%8C%A8%ED%84%B4](https://ko.wikipedia.org/wiki/%EC%83%81%ED%83%9C_%ED%8C%A8%ED%84%B4)
+- [https://always-intern.tistory.com/9](https://always-intern.tistory.com/9)
+- [https://velog.io/@gmtmoney2357/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EC%83%81%ED%83%9C-%ED%8C%A8%ED%84%B4State-Pattern](https://velog.io/@gmtmoney2357/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EC%83%81%ED%83%9C-%ED%8C%A8%ED%84%B4State-Pattern)
