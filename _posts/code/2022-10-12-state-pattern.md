@@ -272,6 +272,21 @@ class NoCoinState implements State {
 
 전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/state) 참고
 
+## Strategy Pattern VS State Pattern 
+
+두 패턴은 모두 인터페이스를 통해 구현 클래스를 캡슐화한다.  
+이러한 이유로 두 패턴은 다이어그램은 동일하지만 용도에 있어서 차이가 있다.
+
+### Strategy Pattern
+
+- 클라이언트에서 Context 객체에게 필요한 전략 객체를 지정
+- 구성을 통해 유연성을 극대화 하기 위함
+
+### State Pattern  
+
+- Context 객체 내부에서 상태를 관리하기 때문에 클라이언트는 상태 객체에 대해 신경쓰지 않아도 됨
+- 컨텍스트 객체에서 수많은 조건문 대신 사용하기 위함
+
 ## 출처
 
 - Head First Design Patterns
