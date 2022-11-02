@@ -86,7 +86,7 @@ public interface Predicate<T> {
 대부분 자원을 처리하는 곳에서 설정과 정리하는 과정은 비슷하다.  
 이렇게 실제 작업하는 코드가 설정과 정리 사이에 위치된 코드를 **실행 어라운드 패턴**(execute around pattern)이라고 한다.  
 
-```
+```java
 public String processFile() throws IOException {
     try (BufferedReader br = 
             new BuffueredReader(new FileReader("data.txt"))) {
