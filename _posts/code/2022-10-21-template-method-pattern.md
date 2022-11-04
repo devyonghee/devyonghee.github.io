@@ -41,6 +41,149 @@ GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속하는 �
 
 ## 구현
 
+### 일반
+
+#### AbstractClass
+
+```java 
+public abstract class CaffeineBeverage {
+
+    final void prepareRecipe() {
+        boilWater();
+        brew();
+        pourInCup();
+        addCondiments();
+    }
+
+    abstract void brew();
+
+    abstract void addCondiments();
+
+    void boilWater() {
+        System.out.println("Boiling water");
+    }
+
+    void pourInCup() {
+        System.out.println("Pouring into cup");
+    }
+} 
+```
+
+
+#### ConcreteClass
+
+```java 
+public class Coffee extends CaffeineBeverage {
+
+    void brew() {
+        System.out.println("Dripping Coffee through filter");
+    }
+
+    void addCondiments() {
+        System.out.println("Adding Sugar and Milk");
+    }
+}
+```
+
+```java 
+public class Tea extends CaffeineBeverage {
+
+    void brew() {
+        System.out.println("Steeping the tea");
+    }
+
+    void addCondiments() {
+        System.out.println("Adding Lemon");
+    }
+}
+```
+
+
+### 후크(hook) 활용
+
+#### AbstractClass
+
+```java 
+public abstract class CaffeineBeverageWithHook {
+
+    final void prepareRecipe() {
+        boilWater();
+        brew();
+        pourInCup();
+        if (customerWantsCondiments()) {
+            addCondiments();
+        }
+    }
+
+     abstract void brew();
+
+     abstract void addCondiments();
+
+    void boilWater() {
+        System.out.println("Boiling water");
+    }
+
+    void pourInCup() {
+        System.out.println("Pouring into cup");
+    }
+
+    boolean customerWantsCondiments() {
+        return true;
+    }
+}
+```
+
+#### ConcreteClass
+
+```java 
+public class CoffeeWithHook extends CaffeineBeverageWithHook {
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    void brew() {
+        System.out.println("Dripping Coffee through filter");
+    }
+
+    void addCondiments() {
+        System.out.println("Adding Sugar and Milk");
+    }
+
+    public boolean customerWantsCondiments() {
+        return userInput().toLowerCase().startsWith("y");
+    }
+
+    private String userInput() {
+        System.out.print("Would you like milk and sugar with your coffee (y/n)? ");
+        return Optional.ofNullable(scanner.next())
+                .orElse("no");
+    }
+}
+```
+
+```java 
+public class TeaWithHook extends CaffeineBeverageWithHook {
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    protected void brew() {
+        System.out.println("Steeping the tea");
+    }
+
+    protected void addCondiments() {
+        System.out.println("Adding Lemon");
+    }
+
+    public boolean customerWantsCondiments() {
+        return userInput().toLowerCase().startsWith("y");
+    }
+
+    private String userInput() {
+        System.out.print("Would you like lemon with your tea (y/n)?");
+        return Optional.ofNullable(scanner.next())
+                .orElse("no");
+    }
+}
+```
 
 전체 코드는 [깃허브 레포지토리](https://github.com/devyonghee/design-pattern-java/tree/master/templatemethod) 참고
 
