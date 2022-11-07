@@ -1,7 +1,7 @@
 ---
 title: 코드 스피츠 Object83 2회차 정리
-tags: [lecture, book, object, OOP]
-categories: lecture
+tags: [study, book, object, OOP]
+categories: study
 ---
 
 조건은 많아질수록 복잡해지고 제거할 수 없다.  
@@ -151,11 +151,11 @@ jvm 에 쓸 수 있는 도용 가능한 타입 3가지
 
 
 ## 실습 Theater with Reservation
-{% include image.html alt="theater-dependency-refactor" path="/images/lecture/code-spitz/theater-dependency-refactor.jpg" %}
+{% include image.html alt="theater-dependency-refactor" path="/images/study/code-spitz/theater-dependency-refactor.jpg" %}
 
 이전 시간 모델
 
-{% include image.html alt="theater-dependency-add-movie" path="/images/lecture/code-spitz/theater-dependency-add-movie.jpg" %}
+{% include image.html alt="theater-dependency-add-movie" path="/images/study/code-spitz/theater-dependency-add-movie.jpg" %}
 
 - 이 책에서는 `Screening`이 적당한 전문가라고 소개(**expert pattern**)  
 > 전문가 패턴(expert pattern) : 자신의 정보를 외부에 보여주지 않고 자신의 정보만 가지고 처리할 수 있는 일을 받도록 하는 패턴  

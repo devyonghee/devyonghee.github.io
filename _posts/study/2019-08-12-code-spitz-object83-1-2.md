@@ -1,7 +1,7 @@
 ---
 title: 코드 스피츠 Object83 1회차 정리(2)
-tags: [lecture, book, object, OOP]
-categories: lecture
+tags: [study, book, object, OOP]
+categories: study
 ---
 
 우리의 궁극적인 목표는 바로 변화로부터 **격리**를 시키는 것이다.  
@@ -107,13 +107,13 @@ Internal identity : 내적 동질성
 ## Theater
 
 
-{% include image.html alt="theater-dependency" path="/images/lecture/code-spitz/theater-dependency.jpg" %}
+{% include image.html alt="theater-dependency" path="/images/study/code-spitz/theater-dependency.jpg" %}
 오브젝트 책에서 주어지는 다이어 그램이다. 위 설계대로 된다면 빨간 부분이 엉망으로 될 것이다.   
 Theater 가 seller를 알아야 되는게 이상하다. Theater 가 TicketOffice 도 알아야 하지 않을까. 
 Seller가 TicketOffice와 Audience를 알고 있어서 연결해주는 역할을 해주는데 
 그럼 Audience와 TicketOffice를 연결해 주어야 할까? 그렇다면 굉장히 복잡해진다.   
 
-{% include image.html alt="theater-dependency-refactor" path="/images/lecture/code-spitz/theater-dependency-refactor.jpg" %}
+{% include image.html alt="theater-dependency-refactor" path="/images/study/code-spitz/theater-dependency-refactor.jpg" %}
 위 그림과 같이 구조를 재구성했다.
 
 

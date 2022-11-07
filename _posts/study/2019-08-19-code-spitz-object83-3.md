@@ -1,7 +1,7 @@
 ---
 title: 코드 스피츠 Object83 3회차 정리
-tags: [lecture, book, object, OOP]
-categories: lecture
+tags: [study, book, object, OOP]
+categories: study
 ---
 
 객체 통신 구조가 순환이 돌면 잘못된 설계이다.  
@@ -24,7 +24,7 @@ SOLID 원칙, GRASP 패턴 등 다양한 원칙과 패턴을 이용하여 객체
 하지만 실제 객체 통신이 무엇인지는 이해하는 것은 굉장히 어렵다.
 
 
-{% include image.html alt="object-network" path="/images/lecture/code-spitz/object-network.jpg" %}
+{% include image.html alt="object-network" path="/images/study/code-spitz/object-network.jpg" %}
 
 우리가 알고 있는 객체는 내부의 정보는 은닉하고 있고 캡슐화를 이용하고 외부 소통은 메소드를 통한다.
 가장 기본적인 형태는 내부가 숨겨진 다수의 객체들끼리는 public interface 를 통해서 메세지를 주고 받는것 이다.
@@ -34,7 +34,7 @@ SOLID 원칙, GRASP 패턴 등 다양한 원칙과 패턴을 이용하여 객체
 은닉하고 있는 데이터를 자기만이 컨트롤할 수 있어야 하는데 결국 그 데이터를 기준으로 책임이 주어진다. 
 하지만 데이터는 역할에 반영되지 않고 객체를 둘러싸고 있는 인터페이스가 역할에 반영되어야 한다.
 
-{% include image.html alt="object-network-interface" path="/images/lecture/code-spitz/object-network-interface.jpg" %}
+{% include image.html alt="object-network-interface" path="/images/study/code-spitz/object-network-interface.jpg" %}
 
 현실 세계의 객체는 위와 같이 생겼다. 
 내부 상태는 캡슐화 되어있고 은닉되어있지만 외부에 보여지는 것은 여러가지 **역할** 이다. 
@@ -52,12 +52,12 @@ screening에 reserve 메서드가 존재하는지 아무도 모른다.
 
 ## 통신망의 구성
 
-{% include image.html alt="network-structure1" path="/images/lecture/code-spitz/network-structure1.jpg" %}
+{% include image.html alt="network-structure1" path="/images/study/code-spitz/network-structure1.jpg" %}
 
 도메인을 객체 망 협력의 메세지망으로 표현, 번역하는 것이 굉장히 중요하다.
 코드를 그렇게 분산할 수 있고 틀을 만들고 메세지를 연결할 수 있도록 하는게 객체 설계이다.
 
-{% include image.html alt="network-structure2" path="/images/lecture/code-spitz/network-structure2.jpg" %}
+{% include image.html alt="network-structure2" path="/images/study/code-spitz/network-structure2.jpg" %}
 
 위 그림에서 왼쪽은 **비선형구조** 오른쪽은 **선형구조** 라고하는데 **서큘러** 라고도 한다.
 일반적으로 오른쪽과 같이 순환하는 통신망이 만들어지면 잘못된 것이다.
@@ -76,7 +76,7 @@ screening에 reserve 메서드가 존재하는지 아무도 모른다.
 이런 인터페이스를 만드는 이유는 전부 도메인으로부터 발현된다. 
 우리가 바라보는 도메인에서 객체를 한가지 측면으로만 바라볼 수 없다. 
 
-{% include image.html alt="interface-group" path="/images/lecture/code-spitz/interface-group.jpg" %}
+{% include image.html alt="interface-group" path="/images/study/code-spitz/interface-group.jpg" %}
 
 도메인 A관점의 ABCD 라는 인터페이스가 도출된다면, 
 도메인 B관점으로 객체를 바라보면 또다른 abcd가 도출된다
@@ -122,7 +122,7 @@ open close를 가장 쉽게 달성할 수 있는 방법은 a가 b를 직접 참�
 부모클래스 자리에는 자식 클래스를 넣을 수 있다는 의미이다.
 당연한 말 같지만 다음을 보자.
 
-{% include image.html alt="LSP1" path="/images/lecture/code-spitz/LSP1.jpg" %}
+{% include image.html alt="LSP1" path="/images/study/code-spitz/LSP1.jpg" %}
 
 추상층이 너무 구체적이면 구현층에서 모순이 발생하게 된다.
 즉, **리스코프 치환 원칙은 추상층을 어떻게 잘 만들 것인지에 대한 원칙** 이다.
@@ -133,7 +133,7 @@ open close를 가장 쉽게 달성할 수 있는 방법은 a가 b를 직접 참�
 추상층이 가지면 안되는 구현층의 영역을 가져서 문제가 생긴 것이다.
 리스코프 치환 원칙을 달성하려면 추상층이 구현층의 확장을 포용할 수 있는 교집합만 가지고 있어야야 한다는 것이다.
 위 와같은 문제가 발생하면 우리는 바로 제거하거나 수정할 수 있어야 한다.
-{% include image.html alt="LSP2" path="/images/lecture/code-spitz/LSP2.jpg" %}
+{% include image.html alt="LSP2" path="/images/study/code-spitz/LSP2.jpg" %}
 
 위와 같이 추상층에 숨을 쉬는 생물과 다리로 이동하는 다리이동 인터페이스로 분리해서 
 중복을 제거하고 다시 전개를 해야한다.
@@ -147,15 +147,15 @@ open close를 가장 쉽게 달성할 수 있는 방법은 a가 b를 직접 참�
 
 #### <mark>I</mark>SP interface Segregation 인터페이스 분리
 구상형으로 쓰지말고 인터페이스로 분리해야 된다는 의미이다.
-{% include image.html alt="ISP1" path="/images/lecture/code-spitz/ISP1.jpg" %}
+{% include image.html alt="ISP1" path="/images/study/code-spitz/ISP1.jpg" %}
 
 어떤 객체의 메소드가 6개가 있다고 생각하고 각 2개씩 메소드는 A B C 모듈을 위한 메서드로 정의하면 안된다.
 인터페이스의 분리가 안됐으므로 잘못된 것이다.
-{% include image.html alt="ISP2" path="/images/lecture/code-spitz/ISP2.jpg" %}
+{% include image.html alt="ISP2" path="/images/study/code-spitz/ISP2.jpg" %}
 
 해결 방법은 각 인터페이스가 만족하는 객체로 쪼갠 다음에 소유하는 것이다.
 이 방법을 사용하면 각 모듈이 소유된 객체하고만 대화할 수 있도록 해야 한다.
-{% include image.html alt="ISP3" path="/images/lecture/code-spitz/ISP3.jpg" %}
+{% include image.html alt="ISP3" path="/images/study/code-spitz/ISP3.jpg" %}
 일반적으로 우리가 알고 있는 인터페이스 모델로 재정의하면 그 위그림처럼 된다.
 이렇게 하면 메서드 접근권한을 형으로 막을 수 있는 것이다.
 
@@ -206,7 +206,7 @@ classA.methodA의 최대지식한계
 
 > 객체 통신망 - 객체는 메세지를 주고 받는다.
 
-{% include image.html alt="hollywood-with-low-demeter" path="/images/lecture/code-spitz/hollywood-with-low-demeter.jpg" %}
+{% include image.html alt="hollywood-with-low-demeter" path="/images/study/code-spitz/hollywood-with-low-demeter.jpg" %}
 
 우리의 주요한 목표는 확인할 대상이 메세지가 수신됐는지 확인하는 것인데 이 두 원칙 때문에 객체 내부를 확인할 수 없다. 
 하지만 해당 객체가 제대로 통신하는지 확인하기 위해서는 회색, 빨간색, 파란색으로 충분하다.
@@ -222,7 +222,7 @@ classA.methodA의 최대지식한계
 
 #### Mock 객체를 활용한 검증
 
-{% include image.html alt="mock-test" path="/images/lecture/code-spitz/mock-test.jpg" %}
+{% include image.html alt="mock-test" path="/images/study/code-spitz/mock-test.jpg" %}
 
 mockery (모조객체) 와 mock(목객체)를 활용하는 것이다.
 mock 객체는 대충 환경을 조성하기 위해서 사용하는 것이아니라 

@@ -1,7 +1,7 @@
 ---
 title: 코드 스피츠 Object83 1회차 정리(1)
-tags: [lecture, book, object, OOP]
-categories: lecture
+tags: [study, book, object, OOP]
+categories: study
 ---
 
 IT 환경에서는 시간을 단축시키는 것이 중요하다.  
@@ -31,7 +31,7 @@ IT 환경에서는 시간을 단축시키는 것이 중요하다.
 __패턴__ 은 가치와 원칙을 기반으로 반복되는 유형이기 때문에 상위 단계에 가치와 원칙이 존재한다고 한다.  
 강의에서는 Object 책의 패러다임에 가까운 Xoriented 도 추가하여 설명해주었다. 
 
-{% include image.html alt="philosophy" path="/images/lecture/code-spitz/philosophy.jpg" %}
+{% include image.html alt="philosophy" path="/images/study/code-spitz/philosophy.jpg" %}
 
 ### 1. Value(가치)
 다음 3가지 가치를 추구해야 하며 코드를 작성한다.
@@ -105,7 +105,7 @@ IT 환경에서는 100% 인건비 (시간 = 비용) 이기 때문에 시간을 �
 
 역할 모델을 이해하려면 추상화에 대해 이해가 필요하다.
 
-{% include image.html alt="abstraction" path="/images/lecture/code-spitz/abstraction.jpg" %}
+{% include image.html alt="abstraction" path="/images/study/code-spitz/abstraction.jpg" %}
 
 ### Generalization : 일반화 - modeling, function, algorithm
 - 수학에서 온 개념
@@ -183,7 +183,7 @@ UML 에서 class diagram 을 그릴 때 사용하실 수 있는 class 간의 연
 Run Time error 는 대부분 잡을 수도 없고 재현하기도 힘들다.  
 그래서 Lint Time 이나 Compile Time 에서 에러를 받는것이 가장 좋다.  
 
-{% include image.html alt="program-timing" path="/images/lecture/code-spitz/program-timing.jpg" %}
+{% include image.html alt="program-timing" path="/images/study/code-spitz/program-timing.jpg" %}
 
 1. Language Code : Lint Time  
   코드 품질을 위해서 코드를 계속 감시하는 Lint 단계
@@ -196,29 +196,29 @@ Run Time error 는 대부분 잡을 수도 없고 재현하기도 힘들다.
 
 
 ### Run
-{% include image.html alt="script-program" path="/images/lecture/code-spitz/script-program.jpg" %}
+{% include image.html alt="script-program" path="/images/study/code-spitz/script-program.jpg" %}
 위의 코드에서 모두 Runtime 인 상태에도 불구하고 함수나 클래스를 선언 하는 Time 이 있고 사용하는 Time 으로 나눌 수 있다.
 사용되는 Time 에서는 상대적으로 선언되는 부분이 정적 타입으로 보일 수 있다. 
 Run Time 이라는 것은 상대적인 것이다.
 
 
 ### Point of Point
-{% include image.html alt="point-of-point1" path="/images/lecture/code-spitz/point-of-point1.jpg" %}
+{% include image.html alt="point-of-point1" path="/images/study/code-spitz/point-of-point1.jpg" %}
 B가 A의 주소를 가리키고, C와 D가 B랑 똑같은 값을 갖도록 만들었다면,
 B안에는 값이아니라 주소이기 때문에 C와 D도 값이 아니라 주소 값이 복사가 되고 위 그림과 같이 A를 가리키게 될 것이다.  
 
-{% include image.html alt="point-of-point2" path="/images/lecture/code-spitz/point-of-point2.jpg" %}
+{% include image.html alt="point-of-point2" path="/images/study/code-spitz/point-of-point2.jpg" %}
 하지만 위와 같이 B가 K를 가리키게 된다고 한다면 모순이 생긴다.  
 C와 D는 B와 같다고 선언했지만 B의 변화를 따라가지 못한다. 
 C와 D는 여전히 B와 같다고 생각하고 있지만 이미 B는 다른 값을 가지게 되서 오류가 생기게 된다.
 이런 것을 참조 전파라고 한다. 참조는 한번 만들어서 노출 되면 무조건 전파되서 이런 현상이 일어난다.
 
-{% include image.html alt="point-of-point3" path="/images/lecture/code-spitz/point-of-point3.jpg" %}
+{% include image.html alt="point-of-point3" path="/images/study/code-spitz/point-of-point3.jpg" %}
 참조 전파로 인한 문제를 해결하기 위해서 
 value 와 v 키를 가진 객체를 가르키는 하얀색 메모리를 생성하고 B에 그 주소를 할당한다.
 
 
-{% include image.html alt="point-of-point4" path="/images/lecture/code-spitz/point-of-point4.jpg" %}
+{% include image.html alt="point-of-point4" path="/images/study/code-spitz/point-of-point4.jpg" %}
 B.value 를 변경한다고 하면 위와 같이 나오게 될것이다. 
 B.value 가 변경되더라도 C와 D는 똑같이 하얀 메모리 주소를 참조하고 있기 때문에 B,C,D는 모두 같은 값을 가리키고 있다.  
 이게 바로 객체지향의 인터페이스를 정의하면 그 함수가 구상 클래스를 호출할 수 있는 원리, 
