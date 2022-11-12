@@ -232,7 +232,7 @@ Unix 시스템에는 `fork()`, `exec()`, 및 `wait()` 외에도 많은 프로세
 하드웨어는 이 위치를 저장하고 있다가 시스템 콜의 고유 번호를 통해 처리가 가능하다. 
 
 
-{% include image.html alt="limited direct execution" path="/images/study/operating-system/limited-direct-execution.png" %}
+{% include image.html alt="limited direct execution" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/limited-direct-execution.png" %}
 
 
 ### 6.3 문제점 2: 프로세스 간 전환
@@ -262,7 +262,7 @@ CPU를 장기간 사용하는 프로세스들이 다른 프로세스가 사용�
 프로세스 전환을 결정하면 운영체제는 문맥 교환(context switch) 코드를 실행한다.  
 문맥 교환은 실행 중인 프로세스의 레지스터 값들을 커널 스택 같은 곳에 저장하고 실행될 프로세스의 레지스터 값을 복원하는 것이다.  
 
-{% include image.html alt="limited direct execution timer interrupt.png" path="/images/study/operating-system/limited-direct-execution-timer-interrupt.png" %}
+{% include image.html alt="limited direct execution timer interrupt.png" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/limited-direct-execution-timer-interrupt.png" %}
 
 
 ### 6.4 병행실행으로 인한 문제
