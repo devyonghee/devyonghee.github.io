@@ -1,11 +1,11 @@
 ---
-title: '[Study] 운영체제 아주 쉬운 세가지 이야기 7장~10장'
+title: '[Study] 운영체제 아주 쉬운 세가지 이야기 7장~11장'
 tags: [study, book, operation-system]
 categories: study
 ---
 
 운영체제 아주 쉬운 세가지 이야기 책에 대한 스터디를 진행한다.  
-이 글에서는 7장부터 10장까지의 내용을 정리한다. 
+이 글에서는 7장부터 11장까지의 내용으로 CPU 가상화를 마무리한다. 
 
 <!--more-->
 
@@ -497,3 +497,20 @@ CPU 가 2개라면 실행할 작업 두 개를 선택하는 것이다.
   - 비례배분(proportional share) 방식
 
 
+<br/>
+
+## 11장. CPU 가상화에 관한 마무리 대화
+
+- 가상화를 이해하기 위한 기법
+  - 트랩
+  - 트랩 핸들러
+  - 타이머 인터럽트
+  - 프로세스 전환 시, 상태 저장 및 복원 방법
+- 제한적 직접 실행 (효율적인 실행, 악성 프로세스 제어)
+- 스케줄러
+  - SJF (Short Job First)
+  - RR (Round Robin)
+  - MLFQ (Multi Level Feedback Queue)
+  - CFS (Completely Faire Scheduler)
+  - BFS (BF Scheduler)
+  - O(1)
