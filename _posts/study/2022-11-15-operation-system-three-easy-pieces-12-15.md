@@ -1,5 +1,5 @@
 ---
-title: '[Study] 운영체제 아주 쉬운 세가지 이야기 12장~15장'
+title: '[Study] 운영체제 아주 쉬운 세가지 이야기 12장~16장'
 tags: [study, book, operation-system]
 categories: study
 ---
