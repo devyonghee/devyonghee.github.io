@@ -125,3 +125,100 @@ main(int argc, char *argv[]) {
   - 임계 영역에 대해 한 번에 하나의 쓰레드만 접근할 수 있도록 보장
   - 경쟁을 피할 수 있고 실행결과를 결정론적으로 얻을 수 있음
 
+## 27장. 막간: 쓰레드 API
+
+쓰레드 API 의 주요 부분을 다룬다.
+
+### 27.1 쓰레드 생성
+
+```c 
+int
+pthread_create (pthread_t            *thread, 
+                const pthread_attr_t *attr,
+                void                 *(*start_routine) (void *), 
+                void                 *arg);
+```
+
+- `thread` 
+  - `pthread_t` 타입 구조체를 가리키는 포인터
+  - 이 구조체가 쓰레드와 상호작용 
+- `attr`
+  - 쓰레드의 속성 지정 (스택의 크기와 쓰레드의 스케줄링 우선순위 같은 정보)
+  - `NULL` 로 지정하면 기본값 사용 (대부분 기본값으로 충분)
+- `start_routine`
+  - 쓰레드가 시작할 때 실행할 함수
+- `arg`
+  - 실행할 함수에게 전달할 인자
+
+### 27.2 쓰레드 종료
+
+쓰레드의 완료를 기다리기 위한 함수 
+
+```c 
+int pthread_join (pthread_t thread, void **value_ptr);
+```
+
+- `pthread_t thread`
+  - 어떤 쓰레드를 기다리는지 명시 (쓰레드 생성 루틴에 의해 초기화)
+- `value_ptr`
+  - 반환 값에 대한 포인터
+  - 전달된 인자의 값을 변경하기 때문에 포인터를 전달
+
+### 27.3 락
+
+쓰레드 라이브러리에서는 **락(lock)** 함수를 통해 임계 영역에 대한 상호 배제 기법을 제공한다. 
+
+```c 
+int pthread_mutext_lock(pthread_mutex_t *mutex);
+int pthread_mutext_unlock(pthread_mutex_t *mutex);
+```
+
+```c 
+pthread_mutext_t lock = PTHREAD_MUTEX_INITIALIZER;
+// int rc = pthread_mutext_init(&lock, NULL); 이 방식으로도 초기화 가능
+pthread_mutext_lock(&lock);
+x = x + 1;
+pthread_mutext_unlock(&lock);
+```
+
+- `pthread_mutext_lock` 가 호출되었을 때 다른 쓰레드도 락을 가지고 있지 않다면 락을 얻어 임계 영역에 진입  
+- 다른 쓰레드가 락을 가지고 있으면 락을 얻을 때까지 호출에서 리턴하지 않음
+- 락을 획득한 쓰레드가 언락을 호출해야 함
+- 락과 언락을 호출할 때 에러 코드 확인 필요
+
+### 27.4 컨디션 변수 
+
+한 쓰레드가 계속 진행하기 전에 다른 쓰레드가 작업을 기다리는 일종의 쓰레드 간에 시그널 교환할 수 있는 **컨디션 변수(condition variable)** 을 제공한다.  
+
+```c 
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+int pthread_cond_signal(pthread_cond_t *cond);
+```
+
+`pthread_cond_wait` 는 호출 쓰레드를 수면(sleep) 상태로 만들고 다른 쓰레드로부터 시그널을 대기한다.
+수면중인 쓰레드가 관심있는 사항이 변경되면 시그널을 보낸다.
+
+또한, 컨디션 변수를 사용하려면 연결된 락이 반드시 필요하다.
+
+```c
+pthread_mutext_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+Pthread_mutex_lock(&lock);
+while (ready == 0) {
+    Pthread_cond_wait(&cond, &lock);
+}
+Pthread_mutex_unlock(&lock);
+```
+
+- 시그널을 보내고 전역 변수 `ready` 를 수정할 때 락을 가지고 있어야 함
+- 시그널 보내기 함수에서는 조건만을 인자로 받는 것에 유의해야 함
+- 대기하는 쓰레드가 조건을 검사할 때 `if` 대신 `while` 문 사용해야 함
+
+
+### 27.5 컴파일과 실행 
+
+`-pthread` 플래그를 추가하여 pthread 라이브러리와 링크해야 함
+
+```text
+prompt> gcc -o main main.c -Wall -pthread
+```
