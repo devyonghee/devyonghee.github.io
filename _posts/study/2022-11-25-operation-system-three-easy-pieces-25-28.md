@@ -222,3 +222,249 @@ Pthread_mutex_unlock(&lock);
 ```text
 prompt> gcc -o main main.c -Wall -pthread
 ```
+
+<br/>
+
+## 28장. 락
+
+**락(lock)** 을 이용하여 병행 프로그램의 근본적인 문제를 다룬다.  
+임계 영역을 락으로 둘러서 하나의 원자 단위 명령어인 것처럼 실행되도록 한다.  
+
+
+### 28.1 락: 기본 개념
+
+락은 일종의 변수로 사용하기 위해 락 변수를 먼저 선언해야 한다.  
+두 개의 상태가 있는데 **사용가능 상태(available, unlocked, free)** 상태와 **사용 중(acquired)** 상태가 존재한다.  
+`lock()` 루틴 호출을 통해 락 획득을 시도하고, `unlock()` 호출을 하면 락은 다시 사용 가능한 상태로 된다.
+
+락을 획득한 쓰레드는 락 **소유자(owner)** 라고 한다.
+
+### 28.2 Pthread 락
+
+쓰레드 간에 **상호 배제(mutual exclusion)** 기능을 제공하기 때문에 POSIX 라이브러리는 락을 **mutex** 라고 한다.  
+
+```c 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+Phtread_mutex_lock(&lock);
+balance = balance + 1;
+Pthread_mutex_unlock(&lock);
+```
+
+다른 변수를 보호하기 위해 다른 락을 사용할 수도 있다.  
+하나의 락으로 모든 임계 영역들을 보호하는 것은 **coarse-grained** 락 사용 전략,  
+다수의 쓰레드가 서로 다른 락으로 보호된 코드를 실행하는 것은 **미세(fine-grained)** 락 사용 전략이라고 한다. 
+
+### 28.3 락의 구현
+
+사용 가능한 락을 만들기 위해서는 하드웨어와 운영체제 도움이 필요하다.  
+
+### 28.4 락의 평가
+
+락 설계시, 정상동작 여부 판단을 위해 판단 기준이 필요하다.  
+
+- **상호 배제** 를 제대로 지원하는가 
+  - 임계 영역 내로 다수의 쓰레드가 진입을 막을 수 있는가 
+- **공정성(fairness)**
+  - 락 획득에 대한 공정한 기회가 주어지는가
+  - 락을 획득하지 못하는 굶주리는(starve) 경우가 발생하는가
+- **성능(performance)**
+  - 경쟁이 전혀 없는 경우의 성능
+  - 단일 CPU 상에서 락을 획득하려고 경쟁할 때 성능
+  - 멀티 CPU 상황에서 락 경쟁 시의 성능
+
+### 28.5 인터럽트 제어 
+
+초창기 단일 프로세스 시스템에서는 임계 영역 내에서는 인터럽트를 비활성화화여 상호 배제를 지원했다.
+
+```c 
+void lock() {
+    DisableInterrupts();
+}
+void unlock() {
+    EnableInterrupts();
+}
+```
+
+#### 장점
+
+- 단순
+
+#### 단점
+
+- 쓰레드가 인터럽트를 활성/비활성화하는 **특권(privileged)** 연산을 실행할 수 있도록 허가 필요
+  - 악의적인 프로그램이 독점하거나 무한 반복문에 빠질 수 있음 
+- 멀티프로세서에서 적용 불가능
+  - 특정 프로세서의 인터럽트 비활성화는 다른 프로세서에 영향을 주지 않음 (임계 영역 진입 가능)
+- 장시간동안 인터럽트를 중지하면 중요한 시점을 놓칠 수 있음
+- 최신의 CPU 들에서는 느리게 실행되는 경향이 있음
+
+### 28.6 실패한 시도: 오직 load/store 명령어만 사용하기
+
+load/store 명령어만으로는 락의 구현이 불가능하다. 
+
+- 상호 배제 제공 실패 
+  - 적시에 인터럽트가 발생하면 두 쓰레드 모두 플래그가 예상치 못한 값으로 설정되어 임계 영역에 두 쓰레드가 진입 가능 
+- 성능 저하  
+  - 다른 쓰레드가 락을 해제할 때까지 시낭 낭비
+
+
+### 28.7 Test-And-Set 을 사용하여 작동하는 스핀 락 구현하기
+
+**test-and-set** 명령어 또는 **원자적 교체(atomic exchange)** 명령어가 락 지원을 위한 하드웨어 기법 중 가장 기본이다.  
+
+```c 
+int TestAndSet(int *old_ptr, int new) {
+    int old = *old_ptr;  // old_ptr 의 이전 값 가져옴
+    *old_ptr = new;      // old_ptr 에 new 값 설정
+    return old;
+}
+```
+
+`TestAndSet` 명령어는 이전 값을 **검사(test)** 하면서 메모리에 새로운 값을 **설정(set)** 하기 때문에 원자적으로 수행된다.  
+이 명령어만으로 **스핀 락(spin lock)** 을 만들 수 있다.  
+스핀 락은 가장 기초적인 형태의 락으로, 락을 획득할 때까지 CPU 사이클을 소모하면서 회전한다.
+
+```c 
+void lock(lock_t *lock) {
+    while (TestAndSet(&lock->flag, 1) == 1)
+        ; //do nothing
+}
+void unlcok(lock_t *lock) {
+    lock->flag = 0;
+}
+```
+
+### 28.8 스핀 락 평가
+
+- 상호 배제의 정확성
+  - 임의의 시간에 단 하나의 쓰레드만이 임계 영역에 진입할 수 있음
+- 공정성 보장하지 못함
+  - `while` 문을 회전 중인 쓰레드는 경쟁에 밀려 그 상태에 남아있을 수 있음
+- 성능
+  - 단일 CPU 의 경우 오버헤드가 클 수 있음 (CPU 사이클 낭비)
+  - 다중 CPU 의 경우 합리적으로 동작 (다른 CPU 에서 대기)
+
+
+### 28.9 Compare-And-Swap
+
+다른 하드웨어 기법으로는 SPARC 의 **Compare-And-Swap**, x86 에서는 **Compare-And-Exchange** 가 있다.
+
+```c 
+int CompareAndSwap(int *ptr, int expected, int new) {
+    int original = *ptr;
+    if (original == expected)
+        *ptr = new;
+    return original;
+}
+```
+
+이 기법은 `ptr` 이 가리키고 있는 주소의 값이 `extected` 변수와 일치하는지 검사하는 것이다.  
+**Compare-And-Swap** 명령어는 `TestAndSet` 명령어보다 더 강력하고 **대기 없는 동기화(wait-free synchronization)** 를 제공한다. 
+
+
+### 28.10 Load-Linked 그리고 Store-Conditional
+
+MIPS 구조에서는 **load-linked** 와 **store-conditional** 명령어를 사용하여 락이나 병행 연산을 위한 자료구조를 만들 수 있다.  
+
+```c 
+int LoadLinked(int *ptr) {
+    return *ptr;
+}
+int StoreConditional(int *ptr, int value) {
+    if (no updat to * ptr since the LoadLinked to this address) {
+        *ptr = value;
+        return 1;  // 성공
+    } else {
+        return 0;  // 갱신 실패
+    }
+}
+
+void lock(lock_t *lock) {
+    while (LoadLinked(&lock->flag) || !StoreConditional(&lock->flag, 1))
+        ; // 회전
+}
+```
+
+### 28.11 Fetch-And-Add
+
+이 기법은 Fetch-And-Add 명령어로 원자적으로 특정 주소의 예전 값을 반환하면서 값을 증가시킨다.   
+모든 쓰레드들이 각자의 순서에 따라 진행
+
+```c 
+int FetchAndAdd(int *ptr) {
+    int old = *ptr;
+    *ptr = old + 1;
+    return old;
+}
+```
+
+### 28.12 요약: 과도한 스핀
+
+위에서 소개한 하드웨어 기반의 락은 간단하고 잘 동작한다.  
+하지만 쓰레드가 스핀 구문을 실행하면서 변경되기를 기다리며 시간을 낭비한다.  
+쓰레드가 경쟁하게 되면 상황은 더 심해진다.  
+
+### 28.13 간단한 접근법: 조건 없는 양보!
+
+다른 쓰레드에서 락을 획득한 상태라서 스핀만 무한히 하는 경우에 대한 해결책 알아본다.   
+락이 해제되기를 기다려야 할 경우 CPU 를 다른 쓰레드에게 양보하는 것이다.  
+
+```c
+void lock(lock_t *lock) {
+    while (TestAndSet(&flag, 1) == 1)
+        yield();  // 다른 쓰레드에게 CPU 양보
+}
+```
+
+쓰레드는 실행중(running), 준비(ready), 막힘(blocked) 세 가지 상태가 있다.  
+**양보(yield)** 시스템 콜은 실행 중(running) 상태에서 준비(ready) 상태로 변환하여 다른 쓰레드가 실행 중 상태로 전이하도록 한다.  
+하지만 이 기법은 문맥 교환 비용이 상당하며 낭비가 많다.   
+
+### 28.14 큐의 사용: 스핀 대신 잠자기
+
+다수의 쓰레드가 대기하는 경우 명시적으로 쓰레드를 선택할 수 있도록 운영체제의 지원과 큐를 이용한 대기 쓰레드 관리가 필요하다.  
+Solaris 방식에서는 쓰레드를 잠재우는 `park()`, 깨우는 `unpark(threadID)` 함수가 있다.  
+
+락 대기자 전용 큐를 사용하여 락을 더 효율적이고 기아 현상을 피할 수 있도록 구현한다.  
+이 방식은 스핀 대기 시간이 상당히 짧아 오버헤드가 작다. 
+
+하지만 쓰레드가 `park()` 호출 직전에 다른 쓰레드에서 락을 해제하면 블럭 상태(**wakeup/waiting race** 문제)가 되기 때문에 경쟁 조건이 발생할 수 있다.    
+이 문제는 `setpark()` 를 추가하면서 해결했다. 
+
+```c 
+void lock(lock_t *m) {
+    while (TestAndSet(&m->guard, 1) == 1) 
+        ; // 회전하면서 guard 락 획득
+    if (m->flag == 0) {
+        m->flag = 1;  // 락 획득
+        m->guard = 0;
+    } else {
+        queue_add(m->q, gettid());
+        m->guard = 0;
+        park();
+    }
+}
+
+void unlock(lock_t *m) {
+    while (TestAndSet(&m->guard, 1) == 1)
+        ; // 회전하면서 guard 락 획득
+    if (queue_empty(m->q)) 
+         m->flag = 0; // 락 포기
+    else
+        unpark(queue_remove(m->q));  // 락 획득
+    m->guard = 0;
+}
+```
+
+### 28.15 다른 운영체제, 다른 지원
+
+Linux 의 경우 **futex** 를 지원한다.   
+futex 는 특정 물리 메모리 주소 그리고 커널에 정의된 큐를 갖고 있다.
+쓰레드를 블럭시키는 `futex_wait(address, expected)` , 큐에서 대기하고 있는 쓰레드를 깨우는 `futext_wake(address)` 명령어가 존재한다. 
+
+
+### 28.16 2단계 락
+
+Linux의 락은 **2단계(two-phase lock)** 이라고 불린다.  
+첫 번째 단계에서는 회전하며 대기하고, 획득하지 못했다면 두 번째 단계에서 호출자는 차단된다.  
+락 해제시 블럭된 쓰레드중 하나를 깨웩 된다.
