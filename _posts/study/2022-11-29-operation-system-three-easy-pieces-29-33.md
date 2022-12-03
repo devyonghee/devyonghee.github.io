@@ -122,6 +122,156 @@ CPU 마다 지역 카운터를 갖기 때문에 CPU 들에 분산된 쓰레드�
 깨어난 쓰레드들은 조건을 검사하고 만족하지 않으면 다시 대기모드로 들어가고 만족하면 실행을 계속한다.  
 이러한 방식을 **포함 조건(Covering Condition)** 이라고 한다.
 
-하지만 불필요하게 많은 쓰레드를 깨우기 때문에 불필요한 문맥 전환이 발생될 수 있다는 것이 단점이다.  
+하지만 불필요하게 많은 쓰레드를 깨우기 때문에 불필요한 문맥 전환이 발생될 수 있다는 것이 단점이다.
 
+<br/>
+
+## 31장. 세마포어
+
+**세마포어(semaphore)** 는 락과 컨디션 변수로 모두 사용할 수 있다.
+
+## 31.1 세마포어: 정의
+
+세마포어는 정수 값을 갖는 객체로 `sem_wait()` 와 `sem_post()` 루틴으로 조작할 수 있다.  
+세마포어는 초기값에 의해 동작이 결정되기 때문에 사용하기 전에 초기화를 해야 한다.  
+
+- `sem_wait()` 함수는 즉시 리턴하거나, 세마포어 값이 1이상이 될 때까지 호출자를 대기(spin or sleep)시킨다.  
+- `sem_post()` 함수는 대기하지 않고 세마포어 값을 증가시키고 쓰레드 하나를 깨운다
+- 세마포어가 음수라면 그 값은 현재 대기 중인 쓰레드의 갯수와 같다.
+
+## 31.2 이진 세마포어(락)
+
+세마포어를 락에 적용해본다.   
+`sem_wait()` / `sem_post()` 쌍으로 임계 영역 부분을 둘러싼다.  
+
+```c  
+sem_t m;
+sem_init(&m, 0, X);  // X 로 초기화, 초기 값은 1이 되어야 함
+sem_wait(&m);
+
+//임계 영역
+
+sem_post(&m);
+```
+
+세마 포어를 락으로 사용할 수 있는데,   
+락은 두 개의 상태(사용 가능, 사용중)만 존재하므로 **이진 세마포어(binary semaphore)** 라고도 한다.
+
+
+### 31.3 순서 보장을 위한 세마포어
+
+세마포어는 사건들의 순서를 정하는데도 유용하다.  
+컨디션 변수를 사용했던 것과 유사하게 세마포어를 순서를 위한 도구로 사용할 수 있다.  
+
+부모 프로세스에서 자식 프로세스를 생성 후 `sem_wait()` 를 호출하여 자식 종료를 대기하고,   
+자식에서는 `sem_post()` 호출하여 종료를 알리면 된다.   
+여기서 세마포어 초기값은 0으로 설정하면 된다.  
+
+
+### 31.4 생산자/소비자 (유한 버퍼) 문제
+
+다수의 생산자 쓰레드나 소비자 쓰레드가 존재할 경우 교착 상태가 발생되지 않도록 세심한 주의가 필요하다.   
+교착 상태 문제를 해결하기 위해서는 락의 범위(scope)를 줄여야 한다.  
+
+```c 
+void *producer(void *arg) {
+    int i;
+    for (i = 0; i < loops; i++) {
+        sem_wait(&empty);
+        sem_wait(&mutex);
+        put(i);
+        sem_post(&mutex);
+        sem_post(&full);
+    }
+}
+void *consumer(void *arg) {
+    int i;
+    for (i = 0; i < loops; i++) {
+        sem_wait(&full);
+        sem_wait(&mutex);
+        int tmp = get();
+        sem_post(&mutex);
+        sem_post(&empty);
+        printf("%d\n", tmp);
+    }
+}
+```
+
+### 31.5 Reader-Writer 락
+
+다수의 쓰레드가 연렬 리스트에 노드를 삽입하고 검색하는 상황을 가정한다.  
+이를 위해 만들어진 락이 **reader-writer 락** 이다.   
+
+이 기법에서는 자료구조를 갱신하려면 배타적 접근권한을 갖는 락을 사용하도록 한다.  
+하지만 쓰기 쓰레드에게 기아 현상이 발생하기 쉬워 공정성에 문제가 있는데,  
+이는 쓰기 쓰레드가 대기중일 때 읽기 쓰레드가 락을 획득하지 못하도록 해야 한다.  
+
+### 31.6 식사하는 철학자 
+
+다섯명의 철학자가 식탁 주위를 둘러 앉았고, 총 다섯 개의 포크가 철학자 사이에 하나씩 놓여있는 문제다.  
+철학자는 양쪽의 포크를 들어야 식사를 할 수 있다.  
+
+```c  
+void get_forks(int p) {
+    if (p == 4) {
+        sem_wait(forks[right(p)]);
+        sem_wait(forks[left(p)]);
+    } else {
+        sem_wait(forks[left(p)]);
+        sem_wait(forks[right(p)]);
+    }
+}
+```
+
+### 31.7 쓰레드 제어  
+
+과하게 많은 쓰레드가 동시에 수행되면 효율이 나빠진다.  
+이 현상을 방지하기 위해 세마포어를 사용하여 쓰레드 개수를 제한한다.   
+이러한 접근법을 **제어(throttling)** 이라 하며 **수락 제어**의 한 형태로 간주한다.
+
+세마포어의 값을 메모리-집약 영역에 동시에 들어갈 수 있는 최대 쓰레드 개수로 초기화하고,  
+`sem_wait()` 와 `sem_post()`를 각각 추가하면서 쓰레드 개수를 통제한다.
+
+### 31.8 세마포어 구현
+
+락과 컨디션 변수를 사용하여 세마포어인 제마포어(Zemaphore) 를 구현해본다.
+
+```c 
+typedef struct __Zem_t {
+    int value;
+    pthread_cond_t cond;
+    pthread_mutex_t lock;
+} Zem_t;
+
+void Zem_init(Zem_t *s, int value) {
+    s->value = value;
+    Cond_init(&s->cond);
+    Mutex_init(&s->lock);
+}
+
+void Zem_wait(Zem_t *s) {
+    Mutex_lock(&s->lock);
+    while (s->value <= 0)
+        Cond_wait(&s->cond, &s->lock);
+    s->value--;
+    Mutex_unlock(&s->lock);
+}
+
+void Zem_post(Zem_t *s) {
+    Mutex_lock(&s->lock);
+    s->value++;
+    Cond_signal(&s->cond);
+    Mutex_unlock(&s->lock);
+}
+```
+
+
+### 31.9 요약
+
+세마포어는 병행 프로그램 작성을 위한 강력하고 유연한 기법이다.  
+
+
+<br/>
+
+## 32장. 병행성 관련 버그 
 
