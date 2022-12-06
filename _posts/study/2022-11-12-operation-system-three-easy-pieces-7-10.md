@@ -53,7 +53,7 @@ categories: study
 
 작업 3개가 거의 동시에 들어왔다고 가정하면 위 작업의 평균 반환 시간은 (10+20+30) / 3 = 20  
 
-{% include image.html alt="FIFO" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/scheduling-policy-fifo.png" %}
+{% include image.html alt="FIFO" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/scheduling-policy-fifo-problem.png" %}
 
 하지만 가정 1(모든 작업은 같은 시간 동안 실행)이 없어져서 작업 A 가 100초 동안 실행된다면 평균 반환시간은 (100+110+120) / 3 = 110 으로 된다.  
 이 현상을 **convoy effect** 라고 한다.  
@@ -97,7 +97,7 @@ B 와 C 가 늦게 도착한다면 A 를 기다릴 수 밖에 없어서 **convoy
 
 ### 7.7 라운드 로빈
 
-{% include image.html alt="Round Robin" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/scheduling-metric-response-time.png" %}
+{% include image.html alt="Round Robin" source_txt='운영체제 아주 쉬운 세가지 이야기' path="/images/study/operating-system/scheduling-policy-round-robin.png" %}
 
 응답 시간 문제를 해결하기 위해 라운드 로빈(Round-Robin, RR 또는 타임 슬라이싱) 스케줄링이 도입된다.  
 RR 은 작업이 끝날 때까지 기다리지 않고 일정 시간동안 실행하고 실행 큐의 다음 작업으로 전환한다.  
