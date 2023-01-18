@@ -36,7 +36,7 @@ MySQL 은 하나지만 스토리지 엔진은 여러 개를 동시에 사용 가
 
 ### 스레딩 구조
 
-{% include image.html alt="mysql threading architecture" source_txt='Real MySQL 8.0' path="images/theory/mysql/mysql-thread.png" %}
+{% include image.html alt="mysql threading architecture" source_txt='Real MySQL 8.0' path="images/theory/mysql/mysql-threading-architecture.png" %}
 
 MySQL 는 스레드 기반으로 동작  
 다음 명령어로 실행 중인 스레드 확인 가능  
