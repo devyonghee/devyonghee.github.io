@@ -27,7 +27,16 @@ DDD 에서는 다음과 같은 세 가지 용도에 따라 모델을 선택하�
    - 용어를 선택, 개념 분류, 지식들을 연관 시키면서 팀원들의 사고 방식을 담을 수 있음
    - 많은 정보를 모델로 만들어서 효과적인 협업 가능
 
- 
+### Domain (도메인)
+
+- 소프트웨어로 해결하고자 하는 문제 영역
+- 한 도메인은 다시 하위 도메인으로 나누어질 수 있음
+
+### Domain Model (도메인 모델)
+
+- 도메인을 개념적으로 표현한 것 (ex. 클래스 다이어그램, 상태 다이어그램, 그래프 등)
+- 여러 관계자들이 도메인을 이해하고 공유하는데 도움
+
 ### Ubiquitous Language(보편 언어)
 
 {% include image.html alt="전문 용어 교차 지점에 형성된 ubiquitous language" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/ubiquitous-language.png" %}
