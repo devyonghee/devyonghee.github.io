@@ -128,7 +128,55 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - 일관성이 없는 단편적인 생각은 이해가 어려움
   - 하나의 개념적 객체를 구현하는 코드는 모두 같은 모듈에 위치
 
+### Aggregate(집합체)
 
+- 데이터 변경의 단위로 다루는 연관 객체의 묶음
+- 각 Aggregate 는 **루트(root)** 와 **경계(boundary)** 가 존재
+- 루트는 Aggregate 마다 하나만 존재하며, 특정 Entity 를 가리킴
+- 경계 바깥쪽의 객체는 루트를 통해서만 참조 가능
+  - 루트를 통해서만 Aggregate 상태 변경 가능
+- 루트는 Value Object 복사본을 다른 객체에 전달할 순 있음
+- 루트 Entity 는 전역 식별성을 지니며, 불변식을 검사 책임이 있음
+- 삭제 연산은 Aggregate 경계 안의 모든 요소를 한 번에 제거해야 함
+
+
+### Factory (팩토리)
+
+- 객체나 전체 Aggregate 의 복잡한 생성을 캡슐화
+- 설계하는 방법으로 팩토리 메서드(factory method), 추상 팩토리(abstract factory), 빌더(builder) 패턴 등이 존재
+- Entity Factory 와 Value Object Factory
+  - Entity Factory: 필요한 필수 속성만 받아들이는 경향이 있음
+  - Value Object Factory: 불변젹이므로 최정적인 형태로 만들어짐
+
+#### Factory 설계 기본 요건
+
+1. 생성 방법은 **원자적**, **불변식**을 모두 지켜야 함
+2. 생성하고자 하는 타입으로 추상화 되어야 함 (Factory 패턴)
+
+
+### Repository (리파지터리)
+
+- 특정 타입의 모든 객체를 개념적 집합 (**컬렉션**처럼 동작)
+- 데이터에 대한 실제 저장소와 질의 기술을 캡슐화하여 모델에 집중할 수 있게 도와줌
+  - 데이터 소스로부터 도메인 설계를 분리
+- 영속 객체는 해당 객체의 속성으로 전역적으로 접근할 수 있어야 함
+- 직접 접근 해야하는 **Aggregate 루트**에 대해서만 Repository 를 제공
+  - 마음대로 데이터베이스 질의를 한다면 도메인 객체와 Aggregate 캡슐화가 깨질 수 있음
+- 질의의 수가 많으면 **Specification(명세)** 기반하여 질의를 수행
+  - Specification: 특정 조건을 만족하는 객체를 찾는데 사용되는 객체
+  - Specification 을 이용하면 유연한 질의를 수행 가능
+
+#### Factory 와 Repository 차이
+
+{% include image.html alt="Repository 는 Factory 를 이용해 존재하는 객체 재구성" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/repository-factory-reconstruction.png" %}
+{% include image.html alt="클라이언트는 Repository 를 이용해 객체 저장" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/repository-factory-new-object-save.png" %}
+
+- Factory: 새로운 객체 생성
+  - 객체 생애의 초기 단계
+- Repository: 기존 객체 조회
+  - 객체 생애의 중간과 마지막 단계
+  - 메모리 상에 객체가 존재하고 있는 것처럼 동작
+   
 
 ## 출처 
 
