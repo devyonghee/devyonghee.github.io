@@ -204,7 +204,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
 
 ### 유연한 설계를 위한 패턴
 
-{% include image.html alt="유연한 설계에 기여하는 패턴" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/flexble-design-pattern.png" %}
+{% include image.html alt="유연한 설계에 기여하는 패턴" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/flexible-design-pattern.png" %}
 
 #### Intention-Revealing Interface (의도를 드러내는 인터페이스)
 
@@ -242,8 +242,35 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - 부차적인 개념을 사용하지 않고도 **고수준의 인터페이스 제공**
 - Value Object 연산을 정의하는데 주로 사용
 
+<br/>
+
+## 전략적 설계
+
+{% include image.html alt="모델 무결성 패턴 네비게이션 맵" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png" %}
+
+시스템이 복잡해질수록 커다란 모델을 다루고 이해하기 위한 기법이 필요하다.  
+전략적 설계는 프로젝트를 교착상태에 빠지지 않고 시스템의 핵심 개념과 비전을 포착할 수 있어야 한다.  
+도메인 주도 설계에서는 이 목표를 다루기 위해 컨텍스트, 디스틸레이션, 대규모 구조를 다룬다.
+
+### Bounded Context (제한된 컨텍스트)
+
+- 사용된 용어를 특정한 의미로 의사소통하기 위한 조건의 집합
+  - 다수의 모델이 한데 섞이면 신뢰성이 떨어지고 이해하기 힘들어짐 (중복된 개념, 허위 동적 언어)
+- 컨텍스트의 경계를 물리적인 형태(조직, 코드 기반, 데이터베이스 스키마 등)의 관점에서 명시적으로 설정
+- 경계 내에서는 모델을 일관된 상태로 유지하고 경계 바깥으로 인해 혼란이 생기지 않아야 함
+
+### Continuous Integration (지속적인 통합)
+
+- 내부적인 균열을 빠르게 포착하고 정정할 수 있도록 컨텍스트 내의 모든 작업을 병합해서 일관성을 유지하는 것
+- 하나의 Bounded Context 내에서만 필수적
+- 모델 개념의 통합 (통합 방법이 용이해짐)
+  - 변화하는 모델을 함께 이해하고 발전하면서 Ubiquitous Language 유지
+- 구현 수준에서의 통합 (유효성과 일관성 입증, 균열 포착)
+  - 단계적이고 재생 가능한 병합/빌드
+  - 자동화된 테스트 스위트 
+  - 수정사항이 통합되지 않은 상태로 존재할 수 있는 시간을 적당히 짧게 유지
+
 
 ## 출처 
 
 - 도메인 주도 설계 소프트웨어의 복잡성을 다루는 지혜 / Eric Evans
-- [https://learn.microsoft.com/ko-kr/azure/architecture/reference-architectures/saga/saga](https://learn.microsoft.com/ko-kr/azure/architecture/reference-architectures/saga/saga)
