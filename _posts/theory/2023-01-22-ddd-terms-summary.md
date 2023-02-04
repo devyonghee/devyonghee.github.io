@@ -246,13 +246,18 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
 
 ## 전략적 설계
 
-{% include image.html alt="모델 무결성 패턴 네비게이션 맵" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png" %}
-
 시스템이 복잡해질수록 커다란 모델을 다루고 이해하기 위한 기법이 필요하다.  
 전략적 설계는 프로젝트를 교착상태에 빠지지 않고 시스템의 핵심 개념과 비전을 포착할 수 있어야 한다.  
 도메인 주도 설계에서는 이 목표를 다루기 위해 컨텍스트, 디스틸레이션, 대규모 구조를 다룬다.
 
-### Bounded Context (제한된 컨텍스트)
+### 모델의 무결성 유지
+
+{% include image.html alt="모델 무결성 패턴 네비게이션 맵" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png" %}
+
+모델의 용어는 언제나 의미가 동일하고, 모순되는 규칙도 없도록 일관성(단일화, unification)을 유지해야 한다.  
+하지만 대규모 시스템에서 도메인 모델을 단일화하는 것은 어렵기 때문에 의식적으로 전략을 결정하고 따라야 한다.
+
+#### Bounded Context (제한된 컨텍스트)
 
 - 사용된 용어를 특정한 의미로 의사소통하기 위한 **조건의 집합**
   - 다수의 모델이 한데 섞이면 신뢰성이 떨어지고 이해하기 힘들어짐 (중복된 개념, 허위 동적 언어)
@@ -261,7 +266,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
 - 경계 내에서는 모델을 일관된 상태로 유지하고 경계 바깥으로 인해 혼란이 생기지 않아야 함
   - Bounded Context 간에는 코드를 재사용하지 않아야 함
 
-### Continuous Integration (지속적인 통합)
+#### Continuous Integration (지속적인 통합)
 
 - 내부적인 균열을 빠르게 포착하고 정정할 수 있도록 컨텍스트 내의 모든 작업을 병합해서 **일관성을 유지**하는 것
 - 하나의 Bounded Context 내에서만 필수적
@@ -272,7 +277,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - 자동화된 테스트 스위트 
   - 수정사항이 통합되지 않은 상태로 존재할 수 있는 시간을 적당히 짧게 유지
 
-### Context Map (컨텍스트 맵)
+#### Context Map (컨텍스트 맵)
 
 {% include image.html alt="컨텍스트 맵" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/context-map.png" %}
 
@@ -281,7 +286,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - Bounded Context 의 명확한 이름을 제공하고 경계 지점의 특성을 명확하게 표현해야 함
 - 다이어그램들이 맵을 가시화하고 의사소통하는 데 유용
 
-### Shared Kernel (공유 커널)
+#### Shared Kernel (공유 커널)
 
 {% include image.html alt="공유 커널" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/shared-kernel.png" %}
 
@@ -292,7 +297,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
 - 기능 시스템을 통합할 때는 양 팀에서 작성한 테스트 모두 실행 필요
 - 일반적으로 각 팀은 별도의 Kernel 복사본을 변경하고 다른 팀과 통합
 
-### Customer/Supplier development(고객/공급자 개발 팀)
+#### Customer/Supplier development(고객/공급자 개발 팀)
 
 - 두 팀 간에 고객/공급자 관계를 확립 필요
   - 하류 팀이 상류 팀에 대한 고객 역할
@@ -300,7 +305,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
 - 인터페이스를 검증하는 인수 테스트 작성 필요
   - 테스트 스위트에 추가하여 상류팀은 자유롭게 코드 변경 가능
 
-### Conformist (준수자)
+#### Conformist (준수자)
 
 - 연결되는 지점에서 **상류팀의 도메인 모델**을 그대로 따르는(준수하는) 모델 
   - 상류팀의 모델을 준수하여 하류 팀의 설계 형식이 상류 팀에 속박 됨
@@ -310,7 +315,7 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - conformist: 협력에 관심 없는 팀과의 통합 문제를 다룸
 
 
-### Anticorruption Layer (오류 방지 계층)
+#### Anticorruption Layer (오류 방지 계층)
 
 - 클라이언트 도메인 모델 측면에서 기능을 제공하는 **격리 계층**
   - 다른 시스템과 상호작용하는 모델로 인해 도메인 모델의 의도가 매몰되는 것을 방지
@@ -335,15 +340,38 @@ Ubiquitous Language 를 지속적으로 사용하면 모델의 취약점이 드�
   - 개념 객체나 데이터의 변환
   - Adapter 에 속하는 요소로 상태가 필요 없음
 
-### Separate Ways (각자의 길)
+#### Separate Ways (각자의 길)
 
 - Bounded Context 가 다른 것과 관계를 맺지 않도록 선언하여 범위 내에서 해결책을 찾음
   - 통합에도 큰 비용이 발생되기 때문에 관계를 끊을 수 있음
 - 통합이 필요해진다면 번역 계층이 필요해질 수 있음
 
+#### Published Language (공표된 언어)
+
+- Bounded Context 모델 간에 소통되는 공통의 언어
+- 필요한 도메인 정보를 표현하는 공유 언어를 공통의 의사소통 매개체로 사용 또는 번역
+  - 기존 모델을 직접 번역하면 복잡하고 문서화가 어려움
+- 시스템 간의 상호작용이 많아지면 Published Language 를 갖추고 관계 공식화가 필요
+- Published Language 는 안정적이어야 함
+  - 호스트 모델은 리팩토링하면서 자유로이 변경할 수 있어야 함
+
+### Distillation (디스틸레이션)
+
+{% include image.html alt="디스틸레이션 내비게이션 맵" source_txt='도메인 주도 설계' path="images/theory/ddd-terms-summary/distillation.png" %}
+
+- 혼합된 요소를 분리하여 본질을 더 값지고 유용한 형태로 뽑아내는 과정
+  - 도메인 지식과 중요한 우선순위를 추상화
+  - 모델의 산만한 요소를 없애고 중요한 부분에 집중하게 만듦
+
+#### Core Domain (핵심 도메인)
+
+- 애플리케이션의 목적에 특유하고 중심적인 모델
+  - 모델을 요약하고 가치 있고 전문화된 개념을 부각
+- 심층 모델을 찾고 유연한 설계를 개발할 수 있어야 함
+  - Core 는 작게 유지해야 함
 
 
-  
+
 ## 출처 
 
 - 도메인 주도 설계 소프트웨어의 복잡성을 다루는 지혜 / Eric Evans
