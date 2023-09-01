@@ -1,0 +1,8 @@
+@startuml
+object account
+object product
+object contact
+
+account ||--o{ contact
+product ||--o{ contact
+@enduml
