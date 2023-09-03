@@ -43,7 +43,7 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
 
 ### 해결책
 
-{% include image.html alt="contact mapping table" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/contact-mapping-table.png" %}
+{% include image.html alt="contact mapping erd" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/contact-mapping-erd.png" %}
 
 `account_id` 를 `product` 테이블이 아닌 별도의 테이블에 저장  
 이렇듯 어떤 테이블이 FK 로 두 테이블을 참조할 때 교차 테이블(조인 테이블, 다대다 테이블, 매핑 테이블) 이라고 함
@@ -55,5 +55,20 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
 - 구분자 필요하지 않음, 항목 수 제한 없음
 - 인덱스를 활용하여 성능 향상
 - 각 항목에 속성 추가 가능
+
+## 3장 순진한 트리 (계층구조 저장 및 조회)
+
+답글을 달 수 있고 답글에 대한 답글을 달 수 있다고 가정  
+데이터가 재귀적 관계를 가지고 트리나 계층 구조를 가질 수 있음  
+각 항목은 노드라고 부르고 최상위 노드는 뿌리(root) 가장 아래 노드는(leaf)라고 부름   
+
+### 안티패턴: 항상 부모에 의존
+
+{% include image.html alt="adjacency list comment table" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/adjust-list-comment-table.png" %}
+{% include image.html alt="adjacency list comment erd" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/adjust-list-comment-erd.png" %}
+{% include image.html alt="adjacency comment tree sample" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/adjacency-comment-tree-sample.png" %}
+
+이처럼 같은 테이블 안의 다른 글을 참조하는 설계를 인접 목록(adjacency list) 라고 한다. 
+
 
 
