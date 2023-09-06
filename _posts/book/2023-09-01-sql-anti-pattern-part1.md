@@ -92,7 +92,7 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
   - 중첩 집합(Nested Sets)
   - 클로저 테이블(Closure Table)
 
-#### 경로 열거
+#### 경로 열거(Path Enumeration)
 
 - 일련의 조상을 각 노드의 속성으로 저장
   - ex) 디렉터리 구조. `/usr/local/lib` 에서 `usr` 는 `local` 의 부모
@@ -103,4 +103,21 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
 - 무단횡단과 비슷한 단점 존재
   - 데이터 검증 불가
   - 문자열 컬럼의 제한으로 트리의 깊이 제한이 존재
+
+#### 중첩 집합(Nested Sets)
+
+{% include image.html alt="nested sets comment tree sample" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/nested-sets-comment-tree-sample.png" %}
+
+- 부모 대신 자손의 집합에 대한 정보 저장
+  - 트리의 각 노드를 두 개의 수로 부호화 가능
+  - `comment_id` 와 상관 없음
+  - ex) nsleft 수는 자식 노드의 nsleft 보다 작고, nsright 는 자식의 nsright 보다 큼
+- 노드 숫자 사이로 조상 및 자손 조회 가능
+- 자식을 가진 노드를 삭제해도 그 자손이 자동으로 삭제된 노드 부모의 자손이 됨
+  - 노드를 삭제하여 숫자 간격이 생겨도 트리구조에 문제가 되지 않음
+- 단점
+  - 새로운 노드를 추가하는 경우 모든 노드의 값을 다시 계산해야 함
+    - 트리에 노드를 삽입하는 경우가 많다면 중첩 집합은 적합하지 않음
+  - 직접 적인 부모 찾는 쿼리처럼 일부 쿼리가 복잡해질 수 있음 
+    - 대상의 조상 중 부모와 자식 노드 사이에 노드가 없는 경우를 찾아야 함
 
