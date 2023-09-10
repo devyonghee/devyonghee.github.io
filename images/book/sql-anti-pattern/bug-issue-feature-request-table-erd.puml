@@ -1,0 +1,20 @@
+@startuml
+object Bug {
+  + severity
+  + version_affected
+}
+
+object Issue {
+  + date_reported
+  + reporter
+  + priority
+  + status
+}
+
+object FeatureRequest{
+  + sponsor
+}
+
+Issue <|-- Bug
+Issue <|-- FeatureRequest
+@enduml

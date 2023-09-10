@@ -267,3 +267,57 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
 - 여러 테이블 변경을 위해 테이블 잠금 불필요
 - 고아 데이터를 정정하기 위한 품질 제어 스크립트 불필요
 
+<br/>
+
+## 6장 엔티티-속성-값 (가변 속성 지원)
+
+객체지향 프로그래밍 모델에서 데이터 타입을 상속하는 것과 같은 방법으로 관계를 가질 수 있다.
+
+{% include image.html alt="bug issue feature request table erd" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/bug-issue-feature-request-table-erd.png" %}
+
+버그 데이터베이스로 예를 들어,  
+`Bug` 와 `FeatureRequest` 는 베이스 타입인 `Issue` 속성을 공통으로 가지고 각자 다음 속성들을 갖는다.  
+
+`Bug`: 제품의 버전, 중요도, 영향도
+`FeatureRequest`: 예산을 지원하는 스폰서
+
+
+### 안티패턴: 범용 속성 테이블 사용
+
+별도 테이블을 생성해 속성을 행으로 저장하는 방식    
+
+{% include image.html alt="issue attribute table erd" source_txt='SQL AntiPattern' path="images/book/sql-anti-pattern/issue-attribute-table-erd.png" %}
+
+- 엔티티 (Entity)
+  - 속성하나의 엔티티에 대해 하나의 행을 가지는 부모 테이블에 대한 FK
+- 속성 (Attribute)
+  - 일반 테이블에서의 컬럼 역할
+  - 속성이 하나씩 들어감
+- 값 (Value)
+  - 속성에 대한 값을 가짐 
+
+이 설계는 엔티티-속성-값(Entity-Attribute-Value) 또는 EAV,
+오픈 스키마(open schema), 스키마리스(schemaless), 이름-값(name-value pairs) 으로 불리기도 함
+
+- 장점
+  - 두 테이블 모두 적은 컬럼을 가짐
+  - 새로운 속성을 지원하기 위해 컬럼을 추가할 필요가 없음
+  - 특정 속성이 필요 없는 경우 `NULL` 을 채워도 되지 않음
+- 속성 조회
+  - 문자열로 속성 이름을 지정하여 정보를 조회해야 함 
+  - 일반 조회 쿼리보다 더 복잡하고 명확하지 않음
+- 데이터 정합성
+  - 필수 속성(`NOT NULL`) 사용 불가
+  - 데이터 타입 사용 불가
+    - 타입마다 컬럼을 선언하여 사용할 수도 있지만 쿼리가 더 복잡해짐  
+  - 참조 정합성 강제 불가
+  - 속성 이름 강제 불가
+- 행을 재구성하기
+  - 일반적인 테이블에 저장된 것처럼 하나의 이슈를 조회하려면 각 속성에 대해 조인필요
+  - 속성 개수가 늘어나면 조인 회수도 늘어나고 쿼리 비용도 지수적으로 증가
+
+#### 사용이 합당한 경우
+
+- 다루기 어려워지므로 명심해서 사용해야 함
+- 비관계형 기술을 사용하는 경우
+  - Berkeley DB, Cassandra, CouchDB, Hadoop, MongoDB, Redis...
