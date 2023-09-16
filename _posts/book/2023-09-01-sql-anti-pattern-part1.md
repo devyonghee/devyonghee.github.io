@@ -4,7 +4,7 @@ tags: [book, sql anti pattern, database, sql]
 categories: book
 ---
 
-SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독하고 정리한다.  
+SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정리한다.  
 1부에서는 데이터베이스 테이블과 컬럼, 관계를 계획하는 방법에 대해 알아본다.  
 
 <!--more-->
@@ -16,7 +16,7 @@ SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정독
 다대다 관계를 위해 교차 테이블 생성을 피하기 위해 쉼표(`,`)로 구분된 목록을 사용한다.  
 이러한 안티패턴을 책에서는 '무단횡단' 또는 '교차로' 로 표현했다.
 
-### 안티패턴
+### 안티패턴: 쉼표로 구분된 목록에 저장
 
 `product` 테이블의 `account_id` 컬럼을 `VARCHAR` 로 선언하고 쉼표로 구분해 나열하는 방법
 (ex. '12,34')
