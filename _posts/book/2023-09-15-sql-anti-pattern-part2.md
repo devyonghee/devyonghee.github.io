@@ -210,5 +210,8 @@ MENTOR(Measure, Explain, Nominate, Test, Optimize, Rebuild) 사용
     - 파일 시스템이 단편화되는 것처럼 인덱스도 균형을 잃을 수 있음 
     - ex) MySQL 의 `ANAALYZE TABLE` 또는 `OPTIMIZE TABLE`
 
+관련 코드는 [깃허브](https://github.com/devyonghee/sql-anti-pattern-study) 참고
 
+## 출처
+- SQL AntiPatterns
 

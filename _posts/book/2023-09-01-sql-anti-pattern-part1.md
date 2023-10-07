@@ -522,3 +522,8 @@ ex) 전화번호 - 보조 휴대폰, 사무실, 팩스 번호 등
   - 함께 조회하는 경우가 드문 경우 사용
     - 함께 조회하는 경우가 많다면 오히려 성능 저하 발생
 
+
+관련 코드는 [깃허브](https://github.com/devyonghee/sql-anti-pattern-study) 참고
+
+## 출처
+- SQL AntiPatterns

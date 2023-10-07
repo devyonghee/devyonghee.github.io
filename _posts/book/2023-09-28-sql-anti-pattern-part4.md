@@ -447,3 +447,8 @@ MVC 애플리케이션에서 모든 모델 클래스가 액티브 레코드 클�
   - 테이블의 모든 제약조건은 테이블 도메인 제약조건과 키 제약조건의 논리적 결과
 - 제6 정규형
   - 모든 조인 종속성 제거 추구
+
+관련 코드는 [깃허브](https://github.com/devyonghee/sql-anti-pattern-study) 참고
+
+## 출처
+- SQL AntiPatterns

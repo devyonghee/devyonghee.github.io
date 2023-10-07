@@ -290,3 +290,7 @@ SQL 프로그래머들은 흔하게 복잡한 문제를 하나의 쿼리로 해�
   - 와일드카드를 사용하면 컬럼 하나씩 다루기 어려움 
   - 처음부터 와일드카드를 사용하지 않으면 쿼리 변경이 쉬워짐
 
+관련 코드는 [깃허브](https://github.com/devyonghee/sql-anti-pattern-study) 참고
+
+## 출처
+- SQL AntiPatterns
