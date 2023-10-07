@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [IntelliJ] MacOS 에서 PlantUML 사용하기</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[IntelliJ] MacOS 에서 PlantUML 사용하기">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/2022/02/24/plantUML-install/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/2022/02/24/plantUML-install/">
+  <meta name="twitter:title" content="[IntelliJ] MacOS 에서 PlantUML 사용하기">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[IntelliJ] MacOS 에서 PlantUML 사용하기</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    February 24, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      2 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/IntelliJ" title="See all posts with tag 'IntelliJ'">IntelliJ</a>
+    
+      <a href="/tag/plantUML" title="See all posts with tag 'plantUML'">plantUML</a>
+    
+      <a href="/tag/Graphviz" title="See all posts with tag 'Graphviz'">Graphviz</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>PlantUML 은 텍스트만으로도 UML 다이어그램을 만들 수 있게 도와주는 오픈소스다.<br />
+IntelliJ 등 JetBrain IDE 에서는 PlantUML 플러그인을 지원해주고 있는데 그 사용법에 대해서 알아본다.</p>
+
+<!--more-->
+
+<h2 id="graphviz-설치">Graphviz 설치</h2>
+
+<p>Graphviz 는 그래프 시각화해주는 오픈 소스 소프트웨어로, 
+PlantUML 을 사용하기 위해서는 사전에 Graphviz 설치가 필요하다.  <br />
+만약, Graphviz 설치 없이 PlantUML 을 사용하려고 한다면 
+다음과 같은 에러가 발생될 것이다.</p>
+
+<figure>
+    <a href="/images/etc/plantUML-graphviz/graphviz-error.png">
+        <img src="/images/etc/plantUML-graphviz/graphviz-error.png" data-rjs="/images/etc/plantUML-graphviz/graphviz-error.png" class="zooming" alt="not found graphviz" />
+    </a>
+    
+    <figcaption>
+        not found graphviz
+        
+    </figcaption>
+    
+</figure>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dot: Executable: /opt/local/bin/dot
+File does not exist
+Cannot find Graphviz. You should try... 
+</code></pre></div></div>
+
+<p>MacOS 환경에서 Graphviz 설치하기 위해 패키지 관리자 <a href="https://brew.sh/index_ko">homebrew</a> 를 이용한다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>libtool
+brew <span class="nb">link </span>libtool
+brew <span class="nb">install </span>graphviz
+brew <span class="nb">link</span> <span class="nt">--overwrite</span> graphviz
+</code></pre></div></div>
+
+<p>다른 운영체제 환경에서 Graphviz 설치가 필요하다면, 
+<a href="https://plantuml.com/ko/graphviz-dot">PlantUML 공식 홈페이지</a> 를 참고하도록 하자.</p>
+
+<h2 id="plantuml-plugin-설치">PlantUML Plugin 설치</h2>
+
+<p>이제 IntelliJ 에서 plantUML 을 사용하기 위해 플러그인을 설치하도록 하자.<br />
+<code class="language-plaintext highlighter-rouge">Command</code> + <code class="language-plaintext highlighter-rouge">,</code> 또는 IntelliJ Idea → Preferences 을 클릭하여 IDE 설정으로 이동한다.</p>
+
+<figure>
+    <a href="/images/etc/plantUML-graphviz/plantUML-plugin.png">
+        <img src="/images/etc/plantUML-graphviz/plantUML-plugin.png" data-rjs="/images/etc/plantUML-graphviz/plantUML-plugin.png" class="zooming" alt="not found graphviz" />
+    </a>
+    
+    <figcaption>
+        not found graphviz
+        
+    </figcaption>
+    
+</figure>
+
+<p>왼쪽 메뉴에서 Plugins 을 클릭해서 PlantUML 을 검색하면 위와 같이 보인다. 
+가장 상단에 있는 ‘PlantUML integration’ 을 설치해주면 된다. 
+플러그인 설치가 끝나면, 반드시 IDE 를 재실행해주도록 하자</p>
+
+<figure>
+    <a href="/images/etc/plantUML-graphviz/plantUML-example.png">
+        <img src="/images/etc/plantUML-graphviz/plantUML-example.png" data-rjs="/images/etc/plantUML-graphviz/plantUML-example.png" class="zooming" alt="plantUML example" />
+    </a>
+    
+    <figcaption>
+        plantUML example
+        
+    </figcaption>
+    
+</figure>
+
+<p>이처럼 예시 이미지가 보이면 정상적으로 plantUML 설치가 된 것이다.<br />
+하지만, 위와 같이 설정을 했어도 graphviz 을 못찾는 경우가 있는데, 
+이런 경우 직접 경로를 지정해주어야 한다.<br />
+아래 명령어를 통해서 dot 의 경로를 검색해주도록 한다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>which dot 
+/opt/homebrew/bin/dot
+</code></pre></div></div>
+
+<p>컴퓨터 환경에 따라 경로가 다를 수 있으므로 주의하자.<br />
+다시, IDE 의 Preference 로 이동해서 이번에는 PlantUML 설정을 해주도록 하자.</p>
+
+<figure>
+    <a href="/images/etc/plantUML-graphviz/plantUML-preference.png">
+        <img src="/images/etc/plantUML-graphviz/plantUML-preference.png" data-rjs="/images/etc/plantUML-graphviz/plantUML-preference.png" class="zooming" alt="plantUML preference" />
+    </a>
+    
+    <figcaption>
+        plantUML preference
+        
+    </figcaption>
+    
+</figure>
+
+<p>PlantUML 설정을 보면 중간에 Graphviz dot executable 항목이 있다.<br />
+이곳에 본인 컴퓨터 환경에서의 dot 경로를 지정해주면 정상적으로 plantUML이 작동한다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[IntelliJ]+MacOS+%EC%97%90%EC%84%9C+PlantUML+%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0%20-%20https://devyonghee.github.io/2022/02/24/plantUML-install/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/2022/02/24/plantUML-install/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

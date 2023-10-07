@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Execution Engine</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Execution Engine">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/theory/2022/05/20/jvm-understanding-execution-engine/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/theory/2022/05/20/jvm-understanding-execution-engine/">
+  <meta name="twitter:title" content="자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Execution Engine">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Execution Engine</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    May 20, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      4 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/java" title="See all posts with tag 'java'">java</a>
+    
+      <a href="/tag/jvm" title="See all posts with tag 'jvm'">jvm</a>
+    
+      <a href="/tag/java virtual machine" title="See all posts with tag 'java virtual machine'">java virtual machine</a>
+    
+      <a href="/tag/execution engine" title="See all posts with tag 'execution engine'">execution engine</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>JVM 은 Java Virtual Machine 의 약자로 자바 가상 머신을 의미한다.
+자바 코드는 이 JVM 에 의해서 실행되는데 그렇다면 어떻게 실행되는지 알아보도록 한다.
+이번 글에서는 JVM 의 Execution Engine 에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<h2 id="jvm-구성">JVM 구성</h2>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/jvm-architecture.png">
+        <img src="/images/theory/jvm-understanding/jvm-architecture.png" data-rjs="/images/theory/jvm-understanding/jvm-architecture.png" class="zooming" alt="jvm architecture" />
+    </a>
+    
+    <figcaption>
+        jvm architecture
+        
+        (출처: <a href="https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722" target="_blank"> Understanding JVM Architecture </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li>ClassLoader Subsystem</li>
+  <li>Runtime Data Area</li>
+  <li><strong>Execution Engine</strong></li>
+</ol>
+
+<h2 id="execution-engine">Execution Engine</h2>
+
+<p>Execution Engine 은 Class Loader 에 의해 적재된 Class 파일(바이트 코드)들을 기계어로 변경하여 실행한다.<br />
+명령어 단위로 나누어서 실행하게 되는데 크게 두가지 방식이 사용된다.</p>
+
+<ul>
+  <li>인터프리터(interpreter)</li>
+  <li>JIT(just in time) 컴파일러</li>
+</ul>
+
+<h2 id="interpreter">Interpreter</h2>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/java-interpreter.png">
+        <img src="/images/theory/jvm-understanding/java-interpreter.png" data-rjs="/images/theory/jvm-understanding/java-interpreter.png" class="zooming" alt="interpreter" />
+    </a>
+    
+    <figcaption>
+        interpreter
+        
+        (출처: <a href="https://www.javatpoint.com/java-interpreter" target="_blank"> javatpoint </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<p>인터프리터는 바이트 코드를 한줄씩 기계어로 해석하고 명령을 실행한다.<br />
+매번 동일한 메소드에 대해 기계어로 해석하고 실행하기 때문에 비효율적이고 속도가 느리다는 단점이 있다.</p>
+
+<h2 id="jitjust-in-time-compiler">JIT(just-in-time) compiler</h2>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/jit-compiler.png">
+        <img src="/images/theory/jvm-understanding/jit-compiler.png" data-rjs="/images/theory/jvm-understanding/jit-compiler.png" class="zooming" alt="jit compiler" />
+    </a>
+    
+    <figcaption>
+        jit compiler
+        
+        (출처: <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04547-0" target="_blank"> biomedcentral </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<p>인터프리터의 성능 문제를 개선하기 위해 JIT 컴파일러가 도입되었다.
+JIT 컴파일 방식은 동적 번역(dynamic translation)이라고도 하며, 
+즉석으로 해석하는 대신 자주 사용되는 코드를 캐싱하고 변경된 부분만 컴파일한다.</p>
+
+<p>JIT 컴파일러는 먼저 전체 바이트 코드를 native 코드로 컴파일하고 반복적으로 메소드가 호출되면 native 코드를 제공하여 실행된다.<br />
+native 코드는 캐시에 저장되므로 한줄씩 해석하는 인터프리터 방식에 비해 빠르게 실행할 수 있다.</p>
+
+<p>하지만, JIT 컴파일러는 인터프리터가 해석하는 것보다 컴파일하는 데 시간이 많이 소요된다.<br />
+한번만 실행되는 코드라면 오히려 인터프리터 방식이 더 좋을 수 있다. 
+그리고 컴파일된 native 코드는 중요한 리소스인 캐시를 사용하게 된다. 
+이러한 이유로 JIT 컴파일러는 메소드 호출의 빈도를 확인하여 일정 수준 이상인 경우에만 컴파일을 결정하게 된다. (컴파일 임계치)</p>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>캐싱된 코드를 사용하기 때문에 인터프리터(interpreter) 방식에 비해 실행 속도 개선</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>실행 시간이 매우 짧은 경우, 컴파일된 코드를 재사용하지도 못하고 프로그램이 끝날 수 있음</li>
+      <li>런타임에 동적으로 코드를 생성하기 때문에 잠재적인 보안 문제
+        <ul>
+          <li>JIT 컴파일러 자체에 버그가 있는 경우 보안 취약점이 될 수 있음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="컴파일-임계치-compile-threshold">컴파일 임계치 (compile threshold)</h3>
+
+<p>컴파일 임계치는 JIT 컴파일러가 컴파일을 결정할 기준을 의미한다.<br />
+컴파일 임계치를 만족하면 JIT 컴파일은 해당 코드를 native 코드로 컴파일하여 캐시에 저장한다.</p>
+
+<p>컴파일 임계치는 아래 두 가지를 합친 것을 의미한다.</p>
+<ul>
+  <li>메소드가 호출된 횟수 (method entry counter)
+    <ul>
+      <li>CompileThreashold</li>
+    </ul>
+  </li>
+  <li>루프를 회전한 횟수 (back-edge loop counter)
+    <ul>
+      <li>CompileThreashold * OnStackReplacePercentage / 100</li>
+    </ul>
+  </li>
+</ul>
+
+<p>어플리케이션을 실행할 때, 다음 VM 옵션을 통해 컴파일 임계치를 설정할 수 있다.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">XX:CompileThreshold=N</code></li>
+  <li><code class="language-plaintext highlighter-rouge">XX:OnStackReplacePercentage=N</code></li>
+</ul>
+
+<h2 id="aotahead-of-time-compiler">AOT(ahead-of-time) Compiler</h2>
+
+<p>AOT(ahead-of-time) Compiler 는 JVM 의 실행 시간을 개선한 방법으로,
+실행 전에 바이트코드를 native 코드로 컴파일하는 방식이다.
+Java9 에서 실험 기능으로 추가되었으며, <a href="https://openjdk.java.net/jeps/295">JRE-295</a> 에 자세히 설명되어 있다.</p>
+
+<p>JIT compiler 는 Java 바이트 코드를 실행하고 자주 실행되는 코드를 런타임에 컴파일 하기 때문에 성능 이슈가 있다.<br />
+AOT compiler 는 모두 native 코드로 변경하기 때문에 성능 저하 없이 native 한 성능을 낼 수 있다.</p>
+
+<p>하지만 AOT compiler 를 사용하면 native 코드로 변경하는 작업도 포함되어야 하기 때문에 빌드 속도가 느리다.<br />
+또한, JIT compiler 에서 사용되는 Hot Reload 기능도 사용할 수 없다.</p>
+
+<h3 id="aot-compile-예시">AOT Compile 예시</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JaotCompilation</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">argv</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">message</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"The JAOT compiler says 'Hello'"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>AOT compiler 를 사용하기 전에, Java compiler(<code class="language-plaintext highlighter-rouge">javac</code>)로 컴파일한다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javac JaotCompilation.java
+</code></pre></div></div>
+
+<p>자바 컴파일러와 동일한 디렉터리에 존재하고 있는 AOT compiler(<code class="language-plaintext highlighter-rouge">jaotc</code>) 로 컴파일된 파일(<code class="language-plaintext highlighter-rouge">JaotCompilation.class</code>)을 다시 컴파일한다.<br />
+다음과 같이 컴파일하게 되면 현재 디렉토리에 <code class="language-plaintext highlighter-rouge">jaotCompilation.so</code> 이 생성된다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jaotc <span class="nt">--output</span> jaotCompilation.so JaotCompilation.class
+</code></pre></div></div>
+
+<p>프로그램을 실행하려면 <code class="language-plaintext highlighter-rouge">-XX:AOTLibrary</code> 인자를 추가하면 된다.
+다음과 같이 파일을 직접 지정하거나, <code class="language-plaintext highlighter-rouge">lib</code> 디렉토리에 추가하여 라이브러리 이름으로 지정할 수 있다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-XX</span>:AOTLibrary<span class="o">=</span>./jaotCompilation.so JaotCompilation
+</code></pre></div></div>
+
+<h2 id="garbage-collector-gc">Garbage Collector (GC)</h2>
+
+<p>Garbage Collector 는 사용자가 동적으로 할당한 메모리 영역(heap) 중 더이상 사용되지 않는 영역을 자동으로 메모리를 회수하는 프로그램이다.<br />
+생성된 객체가 참조되고 있으면 사용중인 것으로 간주하고, 참조되지 않고 접근이 불가능하면 Garbage Collector 가 메모리를 회수한다.</p>
+
+<p>Garbage Collection 은 일반적으로 JVM 내부에서 자동으로 실행되지만 <code class="language-plaintext highlighter-rouge">System.gc()</code> 코드를 통해 수동으로 실행할 수도 있다. <br />
+하지만 Garbage Collection 은 stop-the-world 가 발생되어 성능에 영향을 줄 수 있기 때문에 가급적 사용하지 않도록 한다.</p>
+
+<p>Garbage Collector 에 대한 자세한 설명은 다음 글을 참고한다.<br />
+<a href="/theory/2022/03/07/garbage-collection/">가비지 컬렉션 (Garbage Collection) 자세히 알아보기</a></p>
+
+<h2 id="출처">출처</h2>
+<ul>
+  <li><a href="https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722">https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722</a></li>
+  <li><a href="https://junhyunny.github.io/information/java/jvm-execution-engine/">https://junhyunny.github.io/information/java/jvm-execution-engine/</a></li>
+  <li><a href="https://www.baeldung.com/ahead-of-time-compilation">https://www.baeldung.com/ahead-of-time-compilation</a></li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%9E%90%EB%B0%94+%EA%B0%80%EC%83%81+%EB%A8%B8%EC%8B%A0(JVM,+Java+Virtual+Machine)+%EC%9E%90%EC%84%25B...%20-%20https://devyonghee.github.io/theory/2022/05/20/jvm-understanding-execution-engine/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/theory/2022/05/20/jvm-understanding-execution-engine/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

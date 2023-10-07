@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 이펙티브 자바 Chapter5. 제네릭</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="이펙티브 자바 Chapter5. 제네릭">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2021/11/13/effective-java-chapter5/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2021/11/13/effective-java-chapter5/">
+  <meta name="twitter:title" content="이펙티브 자바 Chapter5. 제네릭">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>이펙티브 자바 Chapter5. 제네릭</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    November 13, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      6 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/effective-java" title="See all posts with tag 'effective-java'">effective-java</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>이펙티브 자바 5장 제네릭에 대해서 설명하고 있다.<br />
+이전에는 런타임에 형변환 오류가 나곤 했는데 제네릭을 통해 컴파일 과정에서 방지할 수 있다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="아이템-26-로-타입은-사용하지-말라">아이템 26. 로 타입은 사용하지 말라</h2>
+
+<blockquote>
+  <p>로타입 : 제네릭 타입에서 타입 매개변수를 사용하지 않음 (ex. <code class="language-plaintext highlighter-rouge">List&lt;E&gt;</code>의 로타입은 <code class="language-plaintext highlighter-rouge">List</code>)</p>
+</blockquote>
+
+<ul>
+  <li>로타입은 제네릭이 주는 안전성과 표현력 상실 (호환성 때문에 지원)
+    <ul>
+      <li>컬렉션에 다른 타입을 넣어도 컴파일되고 실행</li>
+      <li><code class="language-plaintext highlighter-rouge">List&lt;Object&gt;</code> 는 제네릭 하위 타입 규칙으로 괜찮다. (<code class="language-plaintext highlighter-rouge">List&lt;String&gt;</code> 이 <code class="language-plaintext highlighter-rouge">List&lt;Object&gt;</code> 하위 타입이 아님)</li>
+      <li>실제 타입 매개변수를 신경쓰고 싶지 않다면 와일드 카드 타입(<code class="language-plaintext highlighter-rouge">&lt;?&gt;</code>) 사용 (<code class="language-plaintext highlighter-rouge">Collection&lt;?&gt;</code> 에는 <code class="language-plaintext highlighter-rouge">null</code> 외의 어떤 원소도 추가 불가)</li>
+    </ul>
+  </li>
+  <li>로타입 사용 예외
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">class</code> 리터럴에 로타입 사용 (ex. <code class="language-plaintext highlighter-rouge">List.class</code>, <code class="language-plaintext highlighter-rouge">String[].class</code>, <code class="language-plaintext highlighter-rouge">int.class</code>)</li>
+      <li><code class="language-plaintext highlighter-rouge">instanceof</code> 연산자 사용할 때 와일드 카드는 아무 역할 없어 지저분해지므로 로타입 사용 (ex. <code class="language-plaintext highlighter-rouge">o instanceof Set</code>)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-27-비검사-경고를-제거하라">아이템 27. 비검사 경고를 제거하라</h2>
+
+<p>비검사 경고는 런타임중 <code class="language-plaintext highlighter-rouge">ClassCastException</code> 일으킬 수 있는 잠재적 가능성을 나타내므로 최대한 제거하라</p>
+
+<ul>
+  <li>경고를 제거할 수 없지만 타입 안전하다고 확신한다면 <code class="language-plaintext highlighter-rouge">@SuppressWarnings("unchecked")</code> 달아 경고 숨기자
+    <ul>
+      <li>가능하면 <code class="language-plaintext highlighter-rouge">@SuppressWarnings("unchecked")</code> 범위는 좁은 범위</li>
+      <li><code class="language-plaintext highlighter-rouge">return</code> 문제 필요하다면 메소드에 추가하지말고 지역 변수 선언하여 반환</li>
+      <li><code class="language-plaintext highlighter-rouge">@SuppressWarnings("unchecked")</code> 사용한다면 경고를 무시해도 되는 이유를 주석으로 남기자</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-28-배열보다는-리스트를-사용하라">아이템 28. 배열보다는 리스트를 사용하라</h2>
+
+<p>배열은 런타임 에러 발생할 수 있음<br />
+리스트를 사용하여 타입 안전성과 상호운용성 향상</p>
+
+<ul>
+  <li>배열은 공변 (특정 클래스의 하위 타입이라면 배열도 하위 타입)<br />
+제너릭은 불공변 (다른 타입은 서로 하위 타입도 상위 타입도 아님)
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Object</span><span class="o">[]</span> <span class="n">objectArray</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Long</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+<span class="n">objectArray</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="s">"넣기 불가능"</span>  <span class="c1">//ArrayStoreException 런타임 에러</span>
+  
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">ol</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;();</span> <span class="c1">//컴파일 에러</span>
+</code></pre></div>    </div>
+  </li>
+  <li>배열은 실체화 (런타임에도 자신이 담아야하는 원소 타입을 인지)<br />
+제네릭은 런타임에 소거 (컴파일 타임에만 원소 타입 검사)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-29-이왕이면-제네릭-타입으로-만들라">아이템 29. 이왕이면 제네릭 타입으로 만들라</h2>
+
+<p>새로운 타입을 설계할 때 형변환 없이 사용할 수 있도록 하라</p>
+
+<ul>
+  <li>모호한 타입(ex. <code class="language-plaintext highlighter-rouge">Object</code>)으로 데이터를 관리하면 클라이언트에서 형변환하면서 런타임 오류가 날 위험이 있다.
+    <ul>
+      <li>제네릭으로 만들어도 클라이언트에는 문제가 되지 않는다.</li>
+    </ul>
+  </li>
+  <li>제네릭 배열 생성 오류 해결 방법
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">(E[]) new Object[CAPACITY]</code>
+        <ul>
+          <li>코드가 더 짧음  코드가 더 짧음, 가독성이 더 좋음</li>
+          <li>런타임이 컴파일타임 타입과 달라 힙 오염 발생 (아이템 32)</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">E[]</code> → <code class="language-plaintext highlighter-rouge">Object[]</code>
+        <ul>
+          <li>원소를 읽을 때마다 형변환 필요</li>
+          <li>힙 오염 방지</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>두가지 방법 모두 일반적으로 타입 안전하지 않지만 확실하게 관리되고 있다면 <code class="language-plaintext highlighter-rouge">@SuppressWarnings</code> 선언</p>
+
+<p><br /></p>
+
+<h2 id="아이템-30-이왕이면-제네릭-메서드로-만들라">아이템 30. 이왕이면 제네릭 메서드로 만들라</h2>
+
+<p>제네릭을 이용하면 직접 형변환 하지 않아도 오류 없이 컴파일된다.
+메서드도 안전하게 사용할 수 있도록 형변환 없이 사용하는 편이 좋다.</p>
+
+<h3 id="제네릭-싱글턴-팩터리">제네릭 싱글턴 팩터리</h3>
+<p>불변 객체를 여러 타입으로 활용할 필요가 있다. (ex. <code class="language-plaintext highlighter-rouge">Collections.reverseOrder</code>, <code class="language-plaintext highlighter-rouge">Collections.emptySet</code>)<br />
+항등 함수의 경우 다음과 같이 제네릭 싱글턴 팩터리 패턴을 사용할 수 있다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="nc">UnaryOperator</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="no">IDENTITY_FN</span> <span class="o">=</span> <span class="o">(</span><span class="n">t</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">;</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nc">UnaryOperator</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">identityFunction</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="nc">UnaryOperator</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">IDENTITY_FN</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="재귀적-타입-한정">재귀적 타입 한정</h3>
+
+<p>자기 자신이 들어간 표현식을 사용하여 타입 매개변수 허용 범위 한정<br />
+주로 순서를 정하는 <code class="language-plaintext highlighter-rouge">Comparable</code> 인터페스와 함께 사용</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">E</span> <span class="kd">extends</span> <span class="nc">Comparable</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;&gt;</span> <span class="no">E</span> <span class="nf">max</span><span class="o">(</span><span class="nc">Collections</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="아이템-31-한정적-와일드카드를-사용해-api-유연성을-높이라">아이템 31. 한정적 와일드카드를 사용해 API 유연성을 높이라</h2>
+
+<p>매개 변수화 타입은 불공변(invariant) → <code class="language-plaintext highlighter-rouge">List&lt;String&gt;</code>은 <code class="language-plaintext highlighter-rouge">List&lt;Object&gt;</code> 하위 타입이 아님<br />
+불공변 방식보다 유연한 상황이 필요할 수 있음</p>
+
+<p>유연성을 극대화하려면 원소의 생산자나 소비자용 입력 매개변수에 와일드 카드 타입 사용하라<br />
+하지만 생산자와 소비자 역할을 동시에 한다면 와일드 카드 타입 쓰지 말자</p>
+
+<blockquote>
+  <p>펙스(PECS) : producer-extends, consumer-super</p>
+</blockquote>
+
+<h3 id="생산자producer">생산자(producer)</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">pushAll</span><span class="o">(</span><span class="nc">Iterable</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="no">E</span> <span class="n">e</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">push</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Statck</span><span class="o">&lt;</span><span class="nc">Number</span><span class="o">&gt;</span> <span class="n">numberStatck</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+<span class="nc">Iterable</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">integers</span> <span class="o">=</span> <span class="o">...?</span>
+<span class="n">numberStack</span><span class="o">.</span><span class="na">pushAll</span><span class="o">(</span><span class="n">integers</span><span class="o">);</span>  <span class="c1">// 오류 발생</span>
+</code></pre></div></div>
+
+<p>와일드 카드를 이용해 <code class="language-plaintext highlighter-rouge">extends</code> 추가</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">pushAll</span><span class="o">(</span><span class="nc">Iterable</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="no">E</span><span class="o">&gt;</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="no">E</span> <span class="n">e</span> <span class="o">:</span> <span class="n">src</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">push</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span> 
+</code></pre></div></div>
+
+<h3 id="소비자consumer">소비자(consumer)</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">popAll</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">dst</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">while</span> <span class="o">(!</span><span class="n">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">dst</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">pop</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Statck</span><span class="o">&lt;</span><span class="nc">Number</span><span class="o">&gt;</span> <span class="n">numberStatck</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+<span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">objects</span> <span class="o">=</span> <span class="o">...?</span>
+<span class="n">numberStack</span><span class="o">.</span><span class="na">popAll</span><span class="o">(</span><span class="n">objects</span><span class="o">);</span>  <span class="c1">// 오류 발생</span>
+</code></pre></div></div>
+
+<p>와일드 카드 이용해 <code class="language-plaintext highlighter-rouge">super</code> 추가</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">popAll</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">E</span><span class="o">&gt;</span> <span class="n">dst</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">while</span> <span class="o">(!</span><span class="n">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">dst</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">pop</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="메서드-선언">메서드 선언</h3>
+
+<p>메서드 선언에 타입 매개 변수가 한 번만 나오면 와일드 카드로 대체하라<br />
+신경 써야 할 타입 매개변수도 없어서 편리</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">);</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;?&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">);</span>  <span class="c1">// 이 방식이 더 좋다</span>
+
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;?&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">swapHelper</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// 와일드 카드에서는 꺼낸 객체를 다시 넣어줄 수 없기 때문에 실제 타입을 알려주는 도우미 메서드가 필요 </span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">swapHelper</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">list</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="아이템-32-제네릭과-가변인수를-함께-쓸-때는-신중하라">아이템 32. 제네릭과 가변인수를 함께 쓸 때는 신중하라</h2>
+
+<p>가변인수를 사용하면 내부에 감춰야할 배열이 클라이언트에게 노출되어 제네릭이나 매개변수화 타입이 포함되면 컴파일 에러가 발생된다.
+그래서 제네릭 가변인수(varargs) 배열 매개변수에 값을 저장하는 것은 안전하지 않다.</p>
+
+<p>타입안전한지 확인하고 제네릭이나 매개변수화 타입의 varargs 매개변수를 받는 모든 메서드에 <code class="language-plaintext highlighter-rouge">@SafeVarargs</code> 달자<br />
+하지만 다음 두가지 조건을 어긴다면 수정해야 한다.</p>
+<ul>
+  <li>varargs 매개변수 배열에 아무것도 저장하지 않는다.</li>
+  <li>배열을 신뢰할 수 없는 코드에 노출하지 않는다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-33-타입-안전-이종-컨테이너를-고려하라">아이템 33. 타입 안전 이종 컨테이너를 고려하라</h2>
+
+<h3 id="타입-안전-이동-컨테이너-패턴type-safe-heterogeneous-container-pattern">타입 안전 이동 컨테이너 패턴(type safe heterogeneous container pattern)</h3>
+
+<p>컨테이너 대신 키를 매개변수화한 다음, 컨테이너에 값을 넣거나 뺄때 매개변수화한 키를 함께 제공</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Favorites</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&lt;?&gt;,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">favorites</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>    
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">putFavorite</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="no">T</span> <span class="n">instance</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">favorites</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">type</span><span class="o">),</span> <span class="n">instance</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">getFavorite</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">favorites</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">type</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Favorites</code> 제약
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Class</code>객체를 제네릭이 아닌 로타입으로 넘기면 안전성이 깨짐 (ex. <code class="language-plaintext highlighter-rouge">f.putFavorite((Class) Integer.class, "인스턴스")</code>)</li>
+      <li>실체화 불가 타입에는 사용할 수 없음 (ex. <code class="language-plaintext highlighter-rouge">List&lt;String&gt;</code>)
+        <ul>
+          <li><strong>슈퍼 타입 토큰</strong> 으로 해결하려는 시도가 있다. (ex. <code class="language-plaintext highlighter-rouge">new TypeRef&lt;List&lt;String&gt;&gt;(){}</code>)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C+%EC%9E%90%EB%B0%94+Chapter5.+%EC%A0%9C%EB%84%A4%EB%A6%AD%20-%20https://devyonghee.github.io/book/2021/11/13/effective-java-chapter5/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2021/11/13/effective-java-chapter5/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

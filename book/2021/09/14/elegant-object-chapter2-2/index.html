@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 엘레강트 오브젝트 Chapter2. 교육 (2)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="엘레강트 오브젝트 Chapter2. 교육 (2)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2021/09/14/elegant-object-chapter2-2/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2021/09/14/elegant-object-chapter2-2/">
+  <meta name="twitter:title" content="엘레강트 오브젝트 Chapter2. 교육 (2)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>엘레강트 오브젝트 Chapter2. 교육 (2)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 14, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      7 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/elegant-object" title="See all posts with tag 'elegant-object'">elegant-object</a>
+    
+      <a href="/tag/OOP" title="See all posts with tag 'OOP'">OOP</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>객체는 작아야 한다는 내용이 이어지고 있다.<br />
+그 이유와 방법에 대해서 계속 알아보도록 한다.</p>
+
+<!--more-->
+<p><br /></p>
+
+<h2 id="26-불변-객체로-만드세요">2.6 불변 객체로 만드세요</h2>
+
+<p>상태 변경이 불가능한 불변 클래스는 응집력이 높고, 결합도가 낮아 유지보수성을 크게 향상한다.</p>
+
+<blockquote>
+  <h4 id="불변-객체">불변 객체</h4>
+  <p>인스턴스를 생성한 후 상태를 변경할 수 없는 객체</p>
+</blockquote>
+
+<h3 id="가변-객체의-사용을-엄격하게-금지해야한다">가변 객체의 사용을 엄격하게 금지해야한다</h3>
+<ul>
+  <li>java 에서는 지연로딩을 불변으로 만들 수 없다. 언어 차원에서 지연로딩을 제공해줘야 한다고 생각한다.</li>
+</ul>
+
+<h3 id="식별자-가변성identity-mutability">식별자 가변성(Identity Mutability)</h3>
+
+<p>불변 객체에서는 식별자 가변성(Identity Mutability) 문제가 없다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Cash</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="nc">Cach</span> <span class="n">five</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cash</span><span class="o">(</span><span class="s">"$5"</span><span class="o">);</span>
+<span class="nc">Cach</span> <span class="n">ten</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cash</span><span class="o">(</span><span class="s">"$10"</span><span class="o">);</span>
+
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">five</span><span class="o">,</span> <span class="s">"five"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ten</span><span class="o">,</span> <span class="s">"ten"</span><span class="o">);</span>
+
+<span class="n">five</span><span class="o">.</span><span class="na">mul</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printls</span><span class="o">(</span><span class="n">map</span><span class="o">);</span> <span class="c1">// {$10=&gt;"five", $10=&gt;"ten"}</span>
+<span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">five</span><span class="o">);</span> <span class="c1">//"ten"과 "five" 중 하나가 반환</span>
+</code></pre></div></div>
+
+<p>위 코드는 식별자 가변성 문제로 매우 심각하고 찾기 어려운 버그가 될 수 있다.<br />
+불변 객체를 사용하면 이러한 문제를 완벽하게 해결할 수 있다.</p>
+
+<h3 id="실패-원자성failure-atomicity">실패 원자성(Failure Atomicity)</h3>
+
+<p>불변 객체는 실패 원자성(Failure Atomicity) 장점이 있다.</p>
+
+<blockquote>
+  <h4 id="실패-원자성">실패 원자성</h4>
+  <p>견고한 상태의 객체를 얻거나 실패하거나 둘 중 하나만 가능한 특성</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">Cach</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">dollars</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">cents</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">mul</span><span class="o">(</span><span class="kt">int</span> <span class="n">factor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dollars</span> <span class="o">*=</span> <span class="n">factor</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="cm">/* 잘못됨 */</span><span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeExcption</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">cents</span> <span class="o">*=</span> <span class="n">factor</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>가변 객체인 <code class="language-plaintext highlighter-rouge">Cash</code> 에서 <code class="language-plaintext highlighter-rouge">mul()</code> 메서드 호출도중 예외가 발생된다면 <code class="language-plaintext highlighter-rouge">dollars</code> 만 수정되고 <code class="language-plaintext highlighter-rouge">cents</code>는 유지된다.
+심각하고 찾기 어려운 버그이다.<br />
+코드를 수정할 순 있지만 <strong>가변 객체</strong>에서는 <strong>코드가 복잡</strong>해지고 처리가 어려워진다.</p>
+
+<h3 id="시간적-결합-temporal-coupling">시간적 결합 (Temporal Coupling)</h3>
+
+<p>불변 객체는 시간적 결합(Temporal Coupling)을 제거할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Cash</span> <span class="n">price</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cash</span><span class="o">();</span>
+<span class="n">price</span><span class="o">.</span><span class="na">setDollars</span><span class="o">(</span><span class="mi">29</span><span class="o">);</span>
+<span class="n">price</span><span class="o">.</span><span class="na">setCents</span><span class="o">(</span><span class="mi">95</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">price</span><span class="o">)</span> <span class="c1">//"$29.95"</span>
+</code></pre></div></div>
+
+<p>이 코드에서 각 줄은 특정한 순서로 정렬되어 있으며 시간적인 순서에 따라 서로 결합되어 있다.
+<code class="language-plaintext highlighter-rouge">println</code> 과 <code class="language-plaintext highlighter-rouge">setCents</code> 호출 순서가 바뀌어도 정상적으로 컴파일이 될 것이다.</p>
+
+<p>수정하려면 코드의 시간적인 결합을 이해해야 하며, 유지보수가 어려워진다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Cash</span> <span class="n">price</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cash</span><span class="o">(</span><span class="mi">29</span><span class="o">,</span> <span class="mi">95</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">price</span><span class="o">);</span> <span class="c1">// "$29.95"</span>
+</code></pre></div></div>
+
+<p>불변 객체는 이러한 문제를 해결할 수 있으며, 
+위 코드에서는 <strong>인스턴스화(instantiation)</strong>와 <strong>초기화(initialization)</strong>이 함께 이루어지기 때문에 시간적인 결합을 제거한다.</p>
+
+<h3 id="부수효과-제거side-effect-free">부수효과 제거(Side effect-free)</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">print</span><span class="o">(</span><span class="nc">Cash</span> <span class="n">price</span><span class="o">){</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">price</span><span class="o">);</span>
+    <span class="n">price</span><span class="o">.</span><span class="na">mul</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">price</span><span class="o">);</span>    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위와 같이 메소드를 사용한다면 내부에서 값이 변하기 때문에 <strong>side effect</strong> 가 발생된다.
+이 문제를 해결하려면 오랜시간이 걸릴 수 있다.
+하지만 불변 객체에서는 수정할 수 없으므로 상태에 대해 확신을 가질 수 있다.</p>
+
+<h3 id="null-참조-없애기">NULL 참조 없애기</h3>
+
+<p>이번 섹션에서는 <strong>unset</strong> 의 경우에만 다룬다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">User</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">num</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>이 코드에서 <code class="language-plaintext highlighter-rouge">name</code>은 언제 유효한 상태인지 아닌지 이해가 어렵다.
+<code class="language-plaintext highlighter-rouge">null</code> 체크를 하면 되지만 코드가 복잡해지며, 혹시라도 체크를 잊어버리면 <code class="language-plaintext highlighter-rouge">NullPointerException</code> 을 마주치게 된다.</p>
+
+<p><strong>불변 객체</strong>로 만든다면 <strong>견고하고 응집도 높은 객체</strong>를 생성하도록 강제되기 때문에 <strong>유지보수</strong>하기 더 수월하다.</p>
+
+<h3 id="스레드-안전성thread-safety">스레드 안전성(Thread Safety)</h3>
+
+<blockquote>
+  <h4 id="스레드-안정성">스레드 안정성</h4>
+  <p>여러 스레드에서 동시에 사용될 수 있고 그 결과를 예측가능하도록 유지하는 <strong>객체의 품질</strong></p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Cash</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">dollars</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">cents</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">mul</span><span class="o">(</span><span class="kt">int</span> <span class="n">factor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dollars</span> <span class="o">*=</span> <span class="n">factor</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">cents</span> <span class="o">*=</span> <span class="n">factor</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Cash</span> <span class="n">price</span> <span class="o">=</span> <span class="k">new</span> <span class="k">new</span> <span class="nc">Cache</span><span class="o">(</span><span class="s">"$15.10"</span><span class="o">);</span>
+<span class="c1">// 두 스레드에서 실행</span>
+<span class="n">price</span><span class="o">.</span><span class="na">mul</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">price</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>이 코드에서 두 스레드에서 $30.20과 $60.40을 예상했지만 짧은 시간의 오류로 가끔 $60.20 이 발생됨. 
+이러한 버그는 재현도 안되고 해결하기 어렵다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">synchronized</code> 키워드로 동기화를 할 수 있겠지만 다음과 같은 문제가 있다.</p>
+<ol>
+  <li>가변 클래스는 스레드 안정성을 추가하기 어렵다.(<strong>데드락</strong>을 제어해야 함)</li>
+  <li><strong>성능상의 비용</strong>이 발생된다. (다른 스레드에서 해방될 때까지 기다려야 함)</li>
+</ol>
+
+<h3 id="더-작고-더-단순한-객체">더 작고 더 단순한 객체</h3>
+
+<p>불변성의 장점은 단순성(유지보수성)</p>
+
+<ul>
+  <li>객체가 단순해질수록 응집도는 높아지고 유지보수는 쉬워진다.</li>
+  <li>java에서 한 클래스에는 주석과 공백 포함하여 <strong>250줄</strong>(그 이상은 리팩토링)</li>
+  <li>불변 객체는 객체를 크게 만드는 것이 불가능</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="review">Review</h3>
+
+<p>객체를 불변성으로 만들어야 하는 이유에 대해 두루뭉실하게 알고 있던 내용을 명확하게 정리해준 것 같다.
+확실히 객체를 불변으로 만드는 것이 관리측면에서 훨씬 나았다.  <br />
+하지만 실제 데이터를 관리하면서 무조건 불변 객체만 만든다는 것이 실제로 가능할까 의문이든다.
+그래도 가능하다면 최대한 불변 객체로 만들고 필요한 곳에만 가변 객체를 이용해야겠다.</p>
+
+<p><br /></p>
+
+<h2 id="27-문서를-작성하는-대신-테스트를-만드세요">2.7 문서를 작성하는 대신 테스트를 만드세요</h2>
+
+<p>유지보수가 가능한 클래스는 문서화가 필요하지 않다</p>
+
+<h3 id="문서화-대신-단위-테스트와-함께-코드를-깔끔하게-만들어야-한다-테스트가-바로-문서화">문서화 대신 단위 테스트와 함께 코드를 깔끔하게 만들어야 한다. (테스트가 바로 문서화)</h3>
+<ul>
+  <li>단위 테스트는 <strong>클래스의 일부</strong>이지 독립적인 객체가 아니다.</li>
+  <li><strong>깔끔한 단위 테스트</strong>를 추가하면 클래스를 더 깔끔하게 만들 수 있다.</li>
+  <li><strong>테스트</strong>가 문서화보다 <strong>클래스를 이해</strong>하는데 큰 도움이 된다.</li>
+</ul>
+
+<h3 id="review-1">Review</h3>
+<p>실제 사용하는 코드를 보는 것이 이해하기 편했지만 문서를 대체할 수 있을거라는 생각은 못했다.<br />
+엘레강트 오브젝트 책을 읽고 <strong>켄트벡의 테스트 주도 개발</strong> 책을 다시 읽어봐야겠다.</p>
+
+<p><br /></p>
+
+<h2 id="28-모의-객체mock-대신-페이크-객체fake를-사용하세요">2.8 모의 객체(Mock) 대신 페이크 객체(Fake)를 사용하세요</h2>
+
+<h3 id="모킹mocking은-나쁜-프랙티스이며-최후의-수단"><strong>모킹(mocking)</strong>은 나쁜 프랙티스이며 <strong>최후의 수단</strong></h3>
+<ul>
+  <li><strong>페이크(fake) 객체</strong>를 이용하면 테스트 코드가 간결해지고 <strong>유지보수성</strong>이 좋아진다.(모킹의 경우 장황해지고 이해가 어려움)</li>
+  <li><strong>모킹</strong>은 <strong>불확실한 가정</strong>을 세우고 테스트를 구축하게 됨 (클래스가 블랙박스이기 때문에 메소드를 실제 호출되는지 모름)</li>
+  <li><strong>모킹</strong>은 내부에서 실제 호출되는 메소드만 바꿔도 <strong>테스트는 실패</strong>한다.</li>
+  <li><strong>페이크 클래스</strong>는 <strong>인터페이스의 설계</strong>에 관해 고민하도록 도와준다.</li>
+</ul>
+
+<blockquote>
+  <p>지금 만드는 인터페이스부터 ‘페이크’ 클래스들을 함께 제공하자</p>
+</blockquote>
+
+<h3 id="fake-객체를-이용한-테스트-구현">Fake 객체를 이용한 테스트 구현</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Exchange</span> <span class="o">{</span>
+    <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">origin</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Fake</span> <span class="kd">implements</span> <span class="nc">Exchange</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">origin</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="mf">1.2345f</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="nc">Exchange</span> <span class="n">exchange</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Exchange</span><span class="o">.</span><span class="na">Fake</span><span class="o">();</span>
+<span class="nc">Cash</span> <span class="n">dollar</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cash</span><span class="o">(</span><span class="n">exchange</span><span class="o">,</span> <span class="mi">500</span><span class="o">);</span>
+<span class="nc">Cash</span> <span class="n">euro</span> <span class="o">=</span> <span class="n">dollar</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="s">"EUR"</span><span class="o">);</span>
+<span class="k">assert</span> <span class="s">"6.17"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">euro</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="review-2">Review</h3>
+<p>테스트 코드를 작성하면서 모킹에 대해서 장황하다고 생각은 했지만 사용하는 것에 대해 의구심은 가지지 않았다.
+이번 섹션을 통해 아주 유용한 방법을 알게되었다. 
+만약, 이 방식을 이용한다면 <a href="/book/2021/09/11/elegant-object-chapter2-1/#23-항상-인터페이스를-사용하세요">2.3</a> 
+도 지키려고 고민할 것 같다.</p>
+
+<p><br /></p>
+
+<h2 id="29-인터페이스를-짧게-유지하고-스마트smart를-사용하세요">2.9 인터페이스를 짧게 유지하고 스마트(smart)를 사용하세요</h2>
+
+<p>클래스도 작게 만들어야 하지만 인터페이스를 작게 만드는 것이 더 중요하다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Exchange</span> <span class="o">{</span>
+    <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">target</span><span class="o">);</span>
+    <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이 인터페이스는 너무 많은 구현을 요구하므로 좋지 않다. (Single Responsibility Principle 위반)</p>
+
+<p>하나의 인자를 받는 <code class="language-plaintext highlighter-rouge">rate</code> 메서드를 제거하고 다음과 같이 <strong>스마트(smart)클래스</strong>를 추가해주도록 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Exchange</span> <span class="o">{</span>
+
+    <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Smart</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Exchange</span> <span class="n">origin</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kt">float</span> <span class="nf">toUsd</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">origin</span><span class="o">.</span><span class="na">rate</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="s">"USD"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kt">float</span> <span class="nf">eurToUsd</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">toUsd</span><span class="o">(</span><span class="s">"EUR"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kt">float</span> <span class="n">rate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Exchange</span><span class="o">.</span><span class="na">Smart</span><span class="o">(</span><span class="k">new</span> <span class="no">NYSE</span><span class="o">()).</span><span class="na">toUsd</span><span class="o">(</span><span class="s">"EUR"</span><span class="o">);</span> 
+<span class="kt">float</span> <span class="n">rate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Exchange</span><span class="o">.</span><span class="na">Smart</span><span class="o">(</span><span class="k">new</span> <span class="no">NYSE</span><span class="o">()).</span><span class="na">eurToUsd</span><span class="o">();</span> 
+</code></pre></div></div>
+
+<h3 id="스마트-클래스-장점">스마트 클래스 장점</h3>
+<ol>
+  <li><strong>스마트 클래스</strong>는 명확하고 공통적인 작업을 수행하는 <strong>메서드들을 추가</strong>할 수 있다.</li>
+  <li>서로 다른 클래스 안에 동일한 기능을 <strong>반복해서 구현하지 않</strong>는다.</li>
+  <li><strong>스마트 클래스</strong>는 커질 수 있지만 <strong>인터페이스는 작고</strong>, <strong>높은 응집도</strong>를 유지할 수 있다.</li>
+</ol>
+
+<blockquote>
+  <h4 id="조합-가능한-데코레이터composable-decorator와-스마트-클래스-차이점">조합 가능한 <strong>데코레이터</strong>(composable decorator)와 <strong>스마트 클래스</strong> 차이점</h4>
+  <p>데코레이터 : 이미 존재하는 메서드를 더 강력하게 만듦
+스마트 클래스 : 객체에 새로운 메소드들을 추가</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Exchange</span> <span class="o">{</span>
+
+    <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="kd">class</span> <span class="nc">Fast</span> <span class="kd">implements</span> <span class="nc">Exchange</span> <span class="o">{</span>
+
+        <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Exchange</span> <span class="n">origin</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">float</span> <span class="nf">rate</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">source</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">target</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="mf">1.0f</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">origin</span><span class="o">.</span><span class="na">rate</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="n">target</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kt">float</span> <span class="nf">toUsd</span><span class="o">(</span><span class="nc">String</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">origin</span><span class="o">.</span><span class="na">rate</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="s">"USD"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이 코드에서 <code class="language-plaintext highlighter-rouge">Fast</code> 는 <strong>데코레이터</strong>인 동시에 <strong>스마트 클래스</strong>이다.</p>
+<ol>
+  <li>오버라이드를 통해 메소드를 더 강력하게 해준다. (데코레이터)</li>
+  <li><code class="language-plaintext highlighter-rouge">toUsd()</code> 메소드가 추가되어 쉽게 호출할 수 있다. (스마트 클래스)</li>
+</ol>
+
+<h3 id="review-3">Review</h3>
+<p>이번 섹션을 통해 스마트 클래스라는 새로운 개념을 알게되어 너무 흥미로웠다.
+아직 인터페이스가 습관화 되지 않았지만 고쳐나가면서 테스트를 위한 Fake 객체와, 스마트 클래스를 항상 생각해두어야겠다!</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%97%98%EB%A0%88%EA%B0%95%ED%8A%B8+%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8+Chapter2.+%EA%B5%90%EC%9C%A1+(2)%20-%20https://devyonghee.github.io/book/2021/09/14/elegant-object-chapter2-2/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2021/09/14/elegant-object-chapter2-2/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

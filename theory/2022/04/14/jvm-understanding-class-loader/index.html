@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Class Loader</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Class Loader">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/theory/2022/04/14/jvm-understanding-class-loader/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/theory/2022/04/14/jvm-understanding-class-loader/">
+  <meta name="twitter:title" content="자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Class Loader">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>자바 가상 머신(JVM, Java Virtual Machine) 자세히 알아보기 - Class Loader</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    April 14, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      5 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/java" title="See all posts with tag 'java'">java</a>
+    
+      <a href="/tag/jvm" title="See all posts with tag 'jvm'">jvm</a>
+    
+      <a href="/tag/java virtual machine" title="See all posts with tag 'java virtual machine'">java virtual machine</a>
+    
+      <a href="/tag/class loader" title="See all posts with tag 'class loader'">class loader</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>JVM 은 Java Virtual Machine 의 약자로 자바 가상 머신을 의미한다.
+자바 코드는 이 JVM 에 의해서 실행되는데 그렇다면 어떻게 실행되는지 알아보도록 한다.
+이번 글에서는 JVM 과 Class Loader 에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<h2 id="jvm-java-virtual-machine">JVM (Java Virtual Machine)</h2>
+
+<p>JVM 은 JAVA 와 OS 사이의 중개자 역할로 Java Byte Code 를 OS 에 맞게 해석하고 실행한다.<br />
+그렇기 때문에 자바는 JVM 덕분에 OS에 종속되지 않고 실행될 수 있다.</p>
+
+<p>Java compiler(<code class="language-plaintext highlighter-rouge">javac</code>) 는 java 소스 코드(<code class="language-plaintext highlighter-rouge">*.java</code>)를 java byte code(<code class="language-plaintext highlighter-rouge">*.class</code>) 로 변환시켜준다.<br />
+하지만 이 java byte code 는 기계어가 아니기 OS 에서 바로 실행이 불가능하다.<br />
+이러한 java byte code 는 Class Loader 에 의해 JVM 에 적재되고 JIT 컴파일 방식으로 실행된다.</p>
+
+<h2 id="jitjust-in-time-compiler">JIT(just-in-time) compiler</h2>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/jit-compiler.png">
+        <img src="/images/theory/jvm-understanding/jit-compiler.png" data-rjs="/images/theory/jvm-understanding/jit-compiler.png" class="zooming" alt="jit compiler" />
+    </a>
+    
+    <figcaption>
+        jit compiler
+        
+        (출처: <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04547-0" target="_blank"> biomedcentral </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<p>JIT 컴파일 방식은 동적 번역(dynamic translation)이라고도 하며, 
+기존의 인터프리터 방식의 문제점을 보완하기 위해 도입된 방식이다.</p>
+
+<p>인터프리터 방식의 경우 프로그램을 실행하는 시점에 필요한 부분을 즉석으로 번역하고 실행한다. 
+JIT 컴파일러는 즉석으로 번역하는 대신 자주 사용되는 코드를 캐싱하고 변경된 부분만 컴파일한다.</p>
+
+<h3 id="장점">장점</h3>
+<ul>
+  <li>캐싱된 코드를 사용하기 때문에 인터프리터(interpreter) 방식에 비해 실행 속도 개선</li>
+</ul>
+
+<h3 id="단점">단점</h3>
+<ul>
+  <li>초기 구동 시, 컴파일하는데 시간과 메모리를 소모하기 때문에 정적 컴파일(static compile) 방식에 비해 실행 속도가 느림</li>
+  <li>실행 시간이 매우 짧은 경우, 컴파일된 코드를 재사용하지도 못하고 프로그램이 끝날 수 있음</li>
+  <li>런타임에 동적으로 코드를 생성하기 때문에 잠재적인 보안 문제
+    <ul>
+      <li>JIT 컴파일러 자체에 버그가 있는 경우 보안 취약점이 될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <h4 id="interpreter-방식">interpreter 방식</h4>
+  <p>소스 코드를 한줄씩 해석하고 바로 실행하는 방식<br />
+컴파일하는 시간이 없지만 해석과 실행을 동시에 하기 때문에 속도가 느림</p>
+
+  <h4 id="static-compile-방식">static compile 방식</h4>
+  <p>실행하기전에 소스 코드를 한번에 다른 코드(ex. native code)로 번역하는 방식<br />
+컴파일된 코드를 실행하기 때문에 속도는 빠르지만, 컴파일하는 과정에 시간과 메모리를 많이 사용</p>
+</blockquote>
+
+<h2 id="jvm-구성">JVM 구성</h2>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/jvm-architecture.png">
+        <img src="/images/theory/jvm-understanding/jvm-architecture.png" data-rjs="/images/theory/jvm-understanding/jvm-architecture.png" class="zooming" alt="jvm architecture" />
+    </a>
+    
+    <figcaption>
+        jvm architecture
+        
+        (출처: <a href="https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722" target="_blank"> Understanding JVM Architecture </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li><strong>ClassLoader Subsystem</strong></li>
+  <li>Runtime Data Area</li>
+  <li>Execution Engine</li>
+</ol>
+
+<h2 id="class-loader-subsystem">Class Loader Subsystem</h2>
+
+<p>JVM 은 기본적으로 RAM 위에서 동작하게 되는데<br />
+Class Loader Subsystem 을 통해 클래스 파일들을 RAM 으로 가져온다.<br />
+이 과정을 동적 클래스 로딩(dynamic class loading) 이라고 하며,<br />
+클래스 파일은 컴파일 타임이 아니라 처음 클래스를 참조할 때 로드 및 초기화 된다.</p>
+
+<h3 id="1-loading">1 Loading</h3>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/class-loader.png">
+        <img src="/images/theory/jvm-understanding/class-loader.png" data-rjs="/images/theory/jvm-understanding/class-loader.png" class="zooming" alt="class loader" />
+    </a>
+    
+    <figcaption>
+        class loader
+        
+    </figcaption>
+    
+</figure>
+
+<p>Java ClassLoader 는 컴파일 된 파일(<code class="language-plaintext highlighter-rouge">.class</code>) 메모리에 로드한다. <br />
+실행중인 클래스에서 다른 클래스를 참조할 때 Loading 을 시도하게 되며, 보통 메인 클래스(<code class="language-plaintext highlighter-rouge">main()</code>) 부터 시작된다.</p>
+
+<h4 id="11-bootstrap-class-loader">1.1 Bootstrap Class Loader</h4>
+
+<p>부트스트랩 경로(<code class="language-plaintext highlighter-rouge">$JAVA_HOME/jre/lib</code>)에 있는 
+핵심 자바 API 클래스 같은 <code class="language-plaintext highlighter-rouge">rt.jar</code> 에서 JDK 내부 클래스를 로드한다. (ex. <code class="language-plaintext highlighter-rouge">java.lang.*</code> 패키지 클래스)<br />
+C/C++와 같은 네이티브 언어로 구현되며, 이 로더에게 가장 높은 우선순위가 부여된다.</p>
+
+<h4 id="12-extension-class-loader">1.2 Extension Class Loader</h4>
+
+<p>JDK 확장 디렉토리(<code class="language-plaintext highlighter-rouge">JAVA_HOME/jre/lib/ext</code> 또는 <code class="language-plaintext highlighter-rouge">java.ext.dirs</code> 지정된 디렉토리) 에서 클래스를 로드한다.
+Bootstrap Class Loader 자식이기도 하다.</p>
+
+<h4 id="13-systemapplication-class-loader">1.3 System/Application Class Loader</h4>
+
+<p>모든 응용 프로그램 수준의 클래스를 JVM 으로 로드하는 역할이다. 
+<code class="language-plaintext highlighter-rouge">java.class.path</code> 에 매핑된 classpath 환경변수 , <code class="language-plaintext highlighter-rouge">-cp</code> 또는 <code class="language-plaintext highlighter-rouge">-classpath</code> 옵션으로 찾은 클래스를 로드한다.
+Extension Class Loader 자식이기도 하다.</p>
+
+<p>클래스 로더는 로딩에 대해 아래 4가지 주요 원칙을 따르고 있다.</p>
+
+<h4 id="원칙-1-visibility-principle-가시범위-원칙">원칙 1) Visibility Principle (가시범위 원칙)</h4>
+
+<p>자식 클래스 로더는 부모 클래스 로더가 로드한 클래스를 볼 수 있지만,<br />
+부모 클래스는 자식 클래스가 로드한 클래스를 확인할 수 없다.</p>
+
+<p>만약, 이 원칙이 없다면 클래스 로더는 위와 같은 계층 구조가 존재할 수 없다.<br />
+격리 수준이 존재하지 않으면 모든 클래스들을 로드해오는 플랫 클래스로더와 동일하다.</p>
+
+<h4 id="원칙-2-uniqueness-principle-유일성-원칙">원칙 2) Uniqueness Principle (유일성 원칙)</h4>
+
+<p>부모에 의해 로드된 클래스가 자식 클래스 로더에서 다시 로드되지 않도록 유일성을 보장하는 원칙이다.<br />
+이 원칙에 의해 클래스를 중복으로 로드하지 않는다.</p>
+
+<h4 id="원칙-3-delegation-hierarchy-principle-위임-원칙">원칙 3) Delegation Hierarchy Principle (위임 원칙)</h4>
+
+<figure>
+    <a href="/images/theory/jvm-understanding/delegation-hierarchy-principle.png">
+        <img src="/images/theory/jvm-understanding/delegation-hierarchy-principle.png" data-rjs="/images/theory/jvm-understanding/delegation-hierarchy-principle.png" class="zooming" alt="delegation hierarchy principle" />
+    </a>
+    
+    <figcaption>
+        delegation hierarchy principle
+        
+        (출처: <a href="https://stackoverflow.com/questions/34650568/difference-between-appclassloader-and-systemclassloader" target="_blank"> stackoverflow </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<p>JVM 은 클래스 로딩 요청에 대해 계층 구조에 따라 적절한 클래스 로더를 선택 위임한다.<br />
+Application Class Loader 는 낮은 레벨의 클래스 로딩 요청을 Extension Class Loader 에 위임,<br />
+Extension Class Loader 는 Bootstrap Class Loader 에 요청을 위임한다.</p>
+
+<h4 id="원칙-4-no-unloading-principle">원칙 4) No Unloading Principle</h4>
+
+<p>클래스 로더는 클래스를 로드할 수 있지만 로드 된 클래스를 언로드할 수 없다.<br />
+하지만, 언로딩 대신 현재 클래스 로더를 삭제하고 새로운 클래스 로더로 생성할 수 있다.</p>
+
+<h3 id="2-linking">2 Linking</h3>
+
+<p>링크는 로드된 클래스, 인터페이스 등 필요에 따라 요소의 타입에 따라 
+검증(verification) -&gt; 준비(preparation) -&gt; 해결(resolution) 3단계가 이루어진다.<br />
+이 단계가 진행되면서 아래의 특성들을 따르고 있다.</p>
+
+<ul>
+  <li>링크가 되기전에 클래스 또는 인터페이스는 완전히 로드가 되어야 한다.</li>
+  <li>클래스나 인터페이스는 초기화되기 전에 완전히 검증되고 준비가 되어 있어야 한다.</li>
+  <li>링크되는 동안 오류가 발생되면, 관련된 클래스 또는 인터페이스가 필요한 프로그램 한 부분에서 오류가 발생된다.</li>
+</ul>
+
+<h4 id="21-verification">2.1 Verification</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">.class</code> 파일의 형식이 유효한지 확인 (Java, JVM 사양에 따라 유효한 코드 또는 컴파일러에 의해 생성됐는지 확인)
+    <ul>
+      <li>바이트 코드 수정했을 수 있으므로 검증</li>
+      <li>클래스 로드 프로세스 중 가장 복잡하고 오랜 시간이 소요</li>
+      <li>검증에 실패하면 런타임 오류(<code class="language-plaintext highlighter-rouge">java.lang.VerifyError</code>) 발생</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <h5 id="예시-검증-요소">예시 검증 요소</h5>
+  <ul>
+    <li>consistent and correctly formatted symbol table</li>
+    <li>final methods / classes not overridden</li>
+    <li>methods respect access control keywords</li>
+    <li>methods have correct number and type of parameters</li>
+    <li>bytecode doesn`t manipulate stack incorrectly</li>
+    <li>variables are initialized before being read</li>
+    <li>variables are a value of the correct type</li>
+  </ul>
+</blockquote>
+
+<h4 id="21-preparation">2.1 Preparation</h4>
+
+<ul>
+  <li>클래스 변수(<code class="language-plaintext highlighter-rouge">static</code> 변수)와 기본 값에 메모리를 할당하고 초기화 하는 단계</li>
+  <li>initializer 나 코드가 실행되지 않음</li>
+</ul>
+
+<h4 id="22-resolution-optional">2.2 Resolution (Optional)</h4>
+
+<ul>
+  <li>사용 환경에 따라 동작 여부가 달라진다.</li>
+  <li>타입의 심볼릭 참조를(symbolic references) 직접 참조(direct reference)로 변경된다.</li>
+  <li>참조된 엔티티를 찾기 위해 method area 에서 검색하고 실행된다.</li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">new User()</code> 이 실제 레퍼런스를 가리키지 않는 상태에서 <br />
+실제 힙에 있는 인스턴스를 가리키는 작업을 이 단계에서 수행한다.</p>
+</blockquote>
+
+<h3 id="3-initialization">3 Initialization</h3>
+
+<p>클래스 로딩의 마지막 단계로, 
+모든 정적(<code class="language-plaintext highlighter-rouge">static</code>) 변수는 코드나 <code class="language-plaintext highlighter-rouge">static</code> 블록 안에서 정의된 값으로 할당되는 단계다. (ex. 클래스 생성자 호출) <br />
+클래스에서는 위에서 아래로, 클래스 계층에서 부모에서 자식으로 한줄씩 실행된다.</p>
+
+<p>JVM 은 다중 스레드이기 때문에,<br />
+이 단계에서는 동기화를 통해 같은 클래스나 인터페이스를 초기화하지 않도록 방지해야 한다.(<code class="language-plaintext highlighter-rouge">thread safe</code>)</p>
+
+<h2 id="출처">출처</h2>
+<ul>
+  <li><a href="https://d2.naver.com/helloworld/1230">https://d2.naver.com/helloworld/1230</a></li>
+  <li><a href="https://asfirstalways.tistory.com/158">https://asfirstalways.tistory.com/158</a></li>
+  <li><a href="https://www.baeldung.com/java-classloaders">https://www.baeldung.com/java-classloaders</a></li>
+  <li><a href="https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722">https://medium.com/platform-engineer/understanding-jvm-architecture-22c0ddf09722</a></li>
+  <li><a href="[https://www.geeksforgeeks.org/jvm-works-jvm-architecture]">https://www.geeksforgeeks.org/jvm-works-jvm-architecture</a></li>
+  <li><a href="https://javatutorial.net/jvm-explained">https://javatutorial.net/jvm-explained</a></li>
+  <li><a href="https://dzone.com/articles/jvm-architecture-explained">https://dzone.com/articles/jvm-architecture-explained</a></li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%9E%90%EB%B0%94+%EA%B0%80%EC%83%81+%EB%A8%B8%EC%8B%A0(JVM,+Java+Virtual+Machine)+%EC%9E%90%EC%84%25B...%20-%20https://devyonghee.github.io/theory/2022/04/14/jvm-understanding-class-loader/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/theory/2022/04/14/jvm-understanding-class-loader/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

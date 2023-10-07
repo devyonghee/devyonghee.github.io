@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [마이크로서비스] Saga Pattern 자세히 알아보기 (feat. orchestration, choreography)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[마이크로서비스] Saga Pattern 자세히 알아보기 (feat. orchestration, choreography)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/theory/2022/09/24/orchestration-vs-choreography/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/theory/2022/09/24/orchestration-vs-choreography/">
+  <meta name="twitter:title" content="[마이크로서비스] Saga Pattern 자세히 알아보기 (feat. orchestration, choreography)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[마이크로서비스] Saga Pattern 자세히 알아보기 (feat. orchestration, choreography)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 24, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/msa" title="See all posts with tag 'msa'">msa</a>
+    
+      <a href="/tag/orchestration" title="See all posts with tag 'orchestration'">orchestration</a>
+    
+      <a href="/tag/choreography" title="See all posts with tag 'choreography'">choreography</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>마이크로서비스는 하나의 거대한 서비스를 소규모 독립적인 서비스로 나눠서 기능을 제공하는 아키텍처이다.<br />
+이 아키텍처를 이용하면 확장이 용이하고 개발 속도를 향상시킬 수 있다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<p>하지만 마이크로서비스 환경에서 트랜잭션이 여러 서비스에 걸쳐있기 때문에 일관성을 지키는 것은 쉽지 않다.<br />
+그래서 여러 서비스에서 트랜잭션을 구현할 수 있는 과정이 필요하다.</p>
+
+<h2 id="saga-pattern">Saga Pattern</h2>
+
+<p>이전에는 분산 트랜잭션을 관리하기 위해 2PC(two-phaze commit) 프로토콜을 이용했다.<br />
+모든 참가자가 커밋하거나 롤백할지에 대해 관여했기 때문에 트랜잭션 관리가 가능했다. 
+하지만 같은 DB 여야 하고, DB가 분산 트랜잭션을 지원해야 한다. (ex. NoSQL 은 지원하지 않음)</p>
+
+<figure>
+    <a href="/images/theory/saga-pattern/saga.png">
+        <img src="/images/theory/saga-pattern/saga.png" data-rjs="/images/theory/saga-pattern/saga.png" class="zooming" alt="saga" />
+    </a>
+    
+    <figcaption>
+        saga
+        
+        (출처: <a href="https://learn.microsoft.com/ko-kr/azure/architecture/reference-architectures/saga/saga" target="_blank"> microsoft </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<p>Saga Pattern 은 분산 트랜잭션 환경에서 메시지 또는 이벤트를 주고 받으며 서비스 간의 데이터 일관성을 지키기 위한 패턴이다.<br />
+이 패턴은 로컬 트랜잭션을 사용하며, 트랜잭션이 실패되면 변경된 내용을 취소하는 보상 트랜잭션을 실행한다.</p>
+
+<p>Saga Pattern 을 구현하는 방법에는 보통 오케스트레이션(orchestration)과 코레오그래피(choreography) 두 가지 방법이 존재한다.</p>
+
+<p><br /></p>
+
+<h2 id="오케스트레이션orchestration">오케스트레이션(orchestration)</h2>
+
+<p>오케스트레이션(orchestration)은 오케스트레이터(orchestrator) 라는 중앙 컨트롤러가 보상 작업을 트리거하는 방식이다.<br />
+이 오케스트레이터는 모든 트랜잭션을 처리하고 수행해야 하는 작업을 메세지를 보내 참여자들과 통신한다.
+오케스트레이터는 작업의 상태를 저장 및 해석하고 있어서 분산 트랜잭션의 중앙 집중화가 이루어지고 데이터 일관성을 지킬 수 있다.</p>
+
+<ul>
+  <li>서비스의 Saga 모듈이 존재</li>
+  <li>마이크로 서비스들의 로컬 트랜잭션이 오케스트레이터에 의해 호출, 상태값 설정</li>
+  <li>참여자들의 트랜잭션이 모두 처리되면 서비스의 상태 변경</li>
+  <li>특정 서비스에서 오류가 발생되면 보상 트랜잭션 호출</li>
+</ul>
+
+<h3 id="주문-생성-애플리케이션-예제">주문 생성 애플리케이션 예제</h3>
+
+<figure>
+    <a href="/images/theory/saga-pattern/orchestration.png">
+        <img src="/images/theory/saga-pattern/orchestration.png" data-rjs="/images/theory/saga-pattern/orchestration.png" class="zooming" alt="orchestration" />
+    </a>
+    
+    <figcaption>
+        orchestration
+        
+        (출처: <a href="https://microservices.io/patterns/data/saga.html" target="_blank"> microservices </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">Order Service</code> 에서 <code class="language-plaintext highlighter-rouge">POST /orders</code> 수신 및 오케스트레이터에 주문 생성 알림</li>
+  <li><code class="language-plaintext highlighter-rouge">PENDING</code> 상태의 주문 생성</li>
+  <li><code class="language-plaintext highlighter-rouge">Customer Service</code>에 <code class="language-plaintext highlighter-rouge">Reserve Credit</code> 명령 요청</li>
+  <li><code class="language-plaintext highlighter-rouge">Reserve Credit</code> 수행</li>
+  <li>응답 메세지 수신</li>
+  <li>오케스트레이터가 주문 생성을 승인하거나 거부</li>
+</ol>
+
+<h3 id="장점">장점</h3>
+
+<ul>
+  <li>참여자가 많거나 추가되는 상황 같이 복잡한 워크플로에 적합</li>
+  <li>활동 흐름의 제어 가능</li>
+  <li>오케스트레이터가 존재하여 순환 종속성이 발생되지 않음</li>
+  <li>각 참여자는 다른 참여자의 명령어를 알지 않아도 됨</li>
+</ul>
+
+<h3 id="단점">단점</h3>
+
+<ul>
+  <li>중앙에서 관리를 위한 복잡한 로직 구현 필요</li>
+  <li>모든 워크플로를 관리하기 때문에 실패 지점이 될 수 있음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="코레오그래피choreography">코레오그래피(choreography)</h2>
+
+<p>코레오그래피(choreography)는 중앙 제어 없이 서비스끼리 이벤트로 통신하는 방법이다.<br />
+서비스들은 특정 동작을 수행하면 도메인 이벤트를 발행하고, 이를 구독하고 있던 서비스가 그에 따른 트랜잭션을 수행한다.<br />
+이벤트는 Kafka 와 같은 메세지 큐를 이용해 비동기로 전달한다.</p>
+
+<ul>
+  <li>트랜잭션이 실패한다면 보상 이벤트를 발행하여 롤백</li>
+  <li>메시지를 발행하는 동작도 트랜잭션에 포함되어야 함</li>
+</ul>
+
+<h3 id="주문-생성-애플리케이션-예제-1">주문 생성 애플리케이션 예제</h3>
+
+<figure>
+    <a href="/images/theory/saga-pattern/choreography.png">
+        <img src="/images/theory/saga-pattern/choreography.png" data-rjs="/images/theory/saga-pattern/choreography.png" class="zooming" alt="choreography" />
+    </a>
+    
+    <figcaption>
+        choreography
+        
+        (출처: <a href="https://microservices.io/patterns/data/saga.html" target="_blank"> microservices </a>)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">Order Service</code> 에서 <code class="language-plaintext highlighter-rouge">POST /orders</code> 수신 및 <code class="language-plaintext highlighter-rouge">PENDING</code> 상태 주문 생성</li>
+  <li>주문 생성(<code class="language-plaintext highlighter-rouge">Order Created</code>) 이벤트 발행</li>
+  <li><code class="language-plaintext highlighter-rouge">Customer Service</code> 에서 이벤트 수신하고 <code class="language-plaintext highlighter-rouge">Reserve Credit</code> 명령 수행</li>
+  <li><code class="language-plaintext highlighter-rouge">Reserve Credit</code> 결과 이벤트 발행</li>
+  <li><code class="language-plaintext highlighter-rouge">Order Service</code> 에서 주문을 승인 또는 거절 수행</li>
+</ol>
+
+<h3 id="장점-1">장점</h3>
+
+<ul>
+  <li>참여자가 적고 중앙 제어가 필요없는 경우 적합</li>
+  <li>추가 서비스 구현이 필요없음 (구성 간편)</li>
+  <li>역할이 분산되어 단일 실패 지점 존재하지 않음</li>
+  <li>참여자는 서로 직접 알지 못하기 때문에 느슨한 결합</li>
+</ul>
+
+<h3 id="단점-1">단점</h3>
+
+<ul>
+  <li>명령 추적이 어렵기 때문에 워크플로 파악이 어려움</li>
+  <li>Saga 참가자 간에 순환 종속성 발생 가능</li>
+  <li>통합 테스트가 어려움</li>
+</ul>
+
+<h2 id="출처">출처</h2>
+
+<ul>
+  <li><a href="https://microservices.io/patterns/data/saga.html">https://microservices.io/patterns/data/saga.html</a></li>
+  <li><a href="https://learn.microsoft.com/ko-kr/azure/architecture/reference-architectures/saga/saga">https://learn.microsoft.com/ko-kr/azure/architecture/reference-architectures/saga/saga</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/choreography">https://docs.microsoft.com/en-us/azure/architecture/patterns/choreography</a></li>
+  <li><a href="https://thebook.io/007035/ch04/02/01/03/">https://thebook.io/007035/ch04/02/01/03/</a></li>
+  <li><a href="https://sarc.io/index.php/development/2128-saga-pattern">https://sarc.io/index.php/development/2128-saga-pattern</a></li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4]+Saga+Pattern+%EC%9E%90%EC%84%B8%ED%9E...%20-%20https://devyonghee.github.io/theory/2022/09/24/orchestration-vs-choreography/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/theory/2022/09/24/orchestration-vs-choreography/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

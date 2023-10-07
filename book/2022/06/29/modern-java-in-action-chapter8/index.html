@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter8. 컬렉션 API 개선</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter8. 컬렉션 API 개선">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/29/modern-java-in-action-chapter8/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/29/modern-java-in-action-chapter8/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter8. 컬렉션 API 개선">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter8. 컬렉션 API 개선</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 29, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      5 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 8장에서는 개선된 컬렉션에 대해 소개한다.<br />
+개선된 사항, 컬렉션 팩토리, 새로운 기능들에 대해 자세히 살펴본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="81-컬렉션-팩토리">8.1 컬렉션 팩토리</h2>
+
+<p>자바 9에서는 작은 컬렉션 객체를 쉽게 만들 수 있는 방법들을 제공한다.
+이와 같은 기능은 다음과 같이 코드를 간단하게 줄일 수 도 있고, <br />
+고정 크기의 리스트를 만들기 때문에 의도치 않게 컬렉션이 변화되지 않도록 막을 수 있다. (<code class="language-plaintext highlighter-rouge">UnsupportedOperationException</code> 발생)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">friends</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArraysList</span><span class="o">&lt;&gt;();</span>
+<span class="n">friends</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">);</span>
+<span class="n">friends</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"Olivia"</span><span class="o">);</span>
+<span class="n">friends</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"Thibaut"</span><span class="o">);</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">friends</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">,</span> <span class="s">"Olivia"</span><span class="o">,</span> <span class="s">"Thibaut"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>리스트 팩토리 (<code class="language-plaintext highlighter-rouge">List.of</code>)
+    <ul>
+      <li>변경할 수 없는 리스트 (추가하려고 하면 <code class="language-plaintext highlighter-rouge">UnsupportedOperationException</code> 발생)</li>
+      <li><code class="language-plaintext highlighter-rouge">null</code> 요소 금지
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">friends</span> <span class="o">=</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">,</span> <span class="s">"Olivia"</span><span class="o">,</span> <span class="s">"Thibaut"</span><span class="o">);</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>집합 팩토리 (<code class="language-plaintext highlighter-rouge">Set.of</code>)
+    <ul>
+      <li>변경할 수 없는 집합</li>
+      <li>중복된 요소를 제공 불가 (<code class="language-plaintext highlighter-rouge">IllegalArgumentException</code> 발생)
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">friends</span> <span class="o">=</span> <span class="nc">Set</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">,</span> <span class="s">"Olivia"</span><span class="o">,</span> <span class="s">"Thibaut"</span><span class="o">);</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>맵 팩토리 (<code class="language-plaintext highlighter-rouge">Map.of</code>, <code class="language-plaintext highlighter-rouge">Map.ofEntries</code>)
+    <ul>
+      <li>변경할 수 없는 맵</li>
+      <li>키와 값이 열개 이하인 경우 <code class="language-plaintext highlighter-rouge">Map.of</code>, 이상인 경우 <code class="language-plaintext highlighter-rouge">Map.ofEntries</code> 사용
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">ageOfFriends</span> <span class="o">=</span> <span class="nc">Map</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="s">"Olivia"</span><span class="o">,</span> <span class="mi">25</span><span class="o">,</span> <span class="s">"Thibaut"</span><span class="o">,</span> <span class="mi">26</span><span class="o">);</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">ageOfFriends</span> <span class="o">=</span> <span class="nc">Map</span><span class="o">.</span><span class="na">ofEntries</span><span class="o">(</span><span class="n">entry</span><span class="o">(</span><span class="s">"Raphael"</span><span class="o">,</span> <span class="mi">30</span><span class="o">),</span> 
+                                                  <span class="n">entry</span><span class="o">(</span><span class="s">"Olivia"</span><span class="o">,</span> <span class="mi">25</span><span class="o">),</span> 
+                                                  <span class="n">entry</span><span class="o">(</span><span class="s">"Thibaut"</span><span class="o">,</span> <span class="mi">26</span><span class="o">));</span>
+</code></pre></div>        </div>
+        <p><br /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="82-리스트와-집합-처리">8.2 리스트와 집합 처리</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">removeIf</code>
+    <ul>
+      <li>프레디케이트를 만족하는 요소를 제거</li>
+      <li>기존 컬렉션을 변경</li>
+      <li>코드가 단순해지고 <code class="language-plaintext highlighter-rouge">ConcurrentMOdificationException</code> 버그 방지</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">replaceAll</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">List</code>에서 이용할 수 있으며 <code class="language-plaintext highlighter-rouge">UnaryOperator</code> 함수로 각 요소를 변경</li>
+      <li>새로운 컬렉션을 생성하지 않고 간단하게 변경 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="83-맵-처리">8.3 맵 처리</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">forEach</code> 메서드
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">BiConsumer</code>를 인수로 받는 키와 값을 반복하면서 확인하는 작업</li>
+      <li>기존에는 <code class="language-plaintext highlighter-rouge">Map.Entry&lt;K, V&gt;</code> 을 이용함
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ageOfFriends</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">friend</span><span class="o">,</span> <span class="n">age</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">friend</span> <span class="o">+</span> <span class="s">" is "</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">" yeas old"</span><span class="o">));</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>정렬 메서드 (<code class="language-plaintext highlighter-rouge">Entry.comparingByValue</code>, <code class="language-plaintext highlighter-rouge">Entry.comparingByKey</code>)
+    <ul>
+      <li>맵의 항목을 값 또는 키를 기준으로 정렬
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">favoriteMovies</span><span class="o">.</span><span class="na">entrySet</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">sorted</span><span class="o">(</span><span class="nc">Entry</span><span class="o">.</span><span class="na">comparingByKey</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">forEachOrdered</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="c1">// Cristina = Matrix </span>
+<span class="c1">// Olivia = James Bond </span>
+<span class="c1">// Raphael = Star Wars </span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">getOrDefault</code> 메서드
+    <ul>
+      <li>첫 번째 인수는 키, 두 번째 인수는 기본값을 받고 키가 존재하지 않으면 기본값 반환</li>
+      <li>기존에는 <code class="language-plaintext highlighter-rouge">null</code> 이 반환되어 <code class="language-plaintext highlighter-rouge">NullPointerException</code> 발생될 여지가 있었음
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// matrix 출력</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">favoriteMovies</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="s">"not exists key"</span><span class="o">,</span> <span class="s">"matrix"</span><span class="o">))</span> 
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>계산 패턴(<code class="language-plaintext highlighter-rouge">computeIfAbsent</code>, <code class="language-plaintext highlighter-rouge">computeIfPresent</code>, <code class="language-plaintext highlighter-rouge">comput</code>)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">computeIfAbsent</code>: 제공된 키에 해당하는 값이 없으면 키를 이용해 새 값을 계산하고 추가</li>
+      <li><code class="language-plaintext highlighter-rouge">computeIfPresent</code>: 제공된 키가 존재하면 새 값을 계산하고 맵에 추가</li>
+      <li><code class="language-plaintext highlighter-rouge">comput</code>: 제공된 키로 새값을 계산하고 맵에 저장</li>
+    </ul>
+  </li>
+  <li>삭제 패턴 (<code class="language-plaintext highlighter-rouge">remove</code>)
+    <ul>
+      <li>기존에는 <code class="language-plaintext highlighter-rouge">remove</code>는 삭제만 되었지만 자바 8에서는 특정한 키 값과 연관된 경우에만 제거하는 메서드가 제공된다.
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 키와 값이 동일한 경우에만 삭제</span>
+<span class="n">favouriteMovies</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span> 
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>교체 패턴 (<code class="language-plaintext highlighter-rouge">replaceAll</code>, <code class="language-plaintext highlighter-rouge">Replace</code>)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">replaceAll</code>: 모든 항목의 값을 <code class="language-plaintext highlighter-rouge">BiFunction</code> 을 적용한 결과들로 교체</li>
+      <li><code class="language-plaintext highlighter-rouge">Replace</code>: 키가 존재하면 맵의 값을 변경 (키가 특정 값으로 매핑된 경우에도 교체 가능)</li>
+    </ul>
+  </li>
+  <li>합침
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">merge</code> 를 이용하면 값을 유연하게 합칠 수 있음</li>
+      <li><code class="language-plaintext highlighter-rouge">putAll</code> 을 이용하면 합쳐지긴 하지만 중복된 키에 대한 처리 불가능
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 두번째 인수는 키가 없거나 반환 값이 null 인 경우 기존 값으로 사용</span>
+<span class="c1">// 세번째 인수는 중복된 키가 어떻게 합쳐질 지 결정하는 BIFunction</span>
+<span class="n">moviesToCount</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">movieName</span><span class="o">,</span> <span class="mi">1L</span><span class="o">,</span> <span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1L</span><span class="o">)</span> 
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="84-개선된-concurrenthashmap">8.4 개선된 ConcurrentHashMap</h2>
+
+<p><code class="language-plaintext highlighter-rouge">ConcurrentHashMap</code> 은 자료구조의 특정 부분만 잠궈서 동시 추가, 갱신 작업을 허용하여, 
+<code class="language-plaintext highlighter-rouge">Hashtable</code> 버전에 비해 읽기 쓰기 연산 성능이 뛰어나다.</p>
+
+<ul>
+  <li>리듀스와 검색
+    <ul>
+      <li>키와 값으로 연산
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">forEach</code>: 각 키와 값에 주어진 액션을 실행</li>
+          <li><code class="language-plaintext highlighter-rouge">reduce</code>: 모든 키와 값을 제공된 리듀스 함수를 이용해 합침</li>
+          <li><code class="language-plaintext highlighter-rouge">search</code>: 널이 아닌  값을 반환할 때까지 각 키와 값에 함수 적용</li>
+        </ul>
+      </li>
+      <li>키로 연산(<code class="language-plaintext highlighter-rouge">forEachKey</code>, <code class="language-plaintext highlighter-rouge">reduceKey</code>, <code class="language-plaintext highlighter-rouge">searchKey</code>)</li>
+      <li>값으로 연산(<code class="language-plaintext highlighter-rouge">forEachValue</code>, <code class="language-plaintext highlighter-rouge">reduceValues</code>, <code class="language-plaintext highlighter-rouge">searchValues</code>)</li>
+      <li>Map.Entry 객체로 연산(<code class="language-plaintext highlighter-rouge">forEachEntry</code>, <code class="language-plaintext highlighter-rouge">reduceEntries</code>, <code class="language-plaintext highlighter-rouge">searchEntries</code>)</li>
+      <li>함수를 실행할 때는 병렬성 기준값(threshold) 지정 필요
+        <ul>
+          <li>맵의 크기가 기준 값보다 작으면 순차적으로 연산 실행</li>
+          <li>기준값을 1로 지정하면 공통 스레드 풀을 이용해 병렬성 극대화</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>계수(<code class="language-plaintext highlighter-rouge">mappingCount</code>)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">int</code> 범위를 넘어설 수 있어서 <code class="language-plaintext highlighter-rouge">size</code> 메서드 대신 <code class="language-plaintext highlighter-rouge">mappingCount</code> 메서드 사용</li>
+    </ul>
+  </li>
+  <li>집합뷰(<code class="language-plaintext highlighter-rouge">newkeySet</code>)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">keySet</code> 으로 생성한 집합은 맵과 서로 변경에 대해 영향을 받음</li>
+      <li>서로 영향 없이 유지할 수 있도록 <code class="language-plaintext highlighter-rouge">newKeySet</code> 메서드 사용</li>
+    </ul>
+  </li>
+</ul>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter8.+%EC%BB%AC%EB%A0%89%EC%85%98+API+%EA%B0%9C%EC%84%A0%20-%20https://devyonghee.github.io/book/2022/06/29/modern-java-in-action-chapter8/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/29/modern-java-in-action-chapter8/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

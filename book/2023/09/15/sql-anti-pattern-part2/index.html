@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [SQL AntiPattern] 2부 물리적 데이터베이스 설계 안티패턴</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[SQL AntiPattern] 2부 물리적 데이터베이스 설계 안티패턴">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2023/09/15/sql-anti-pattern-part2/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2023/09/15/sql-anti-pattern-part2/">
+  <meta name="twitter:title" content="[SQL AntiPattern] 2부 물리적 데이터베이스 설계 안티패턴">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[SQL AntiPattern] 2부 물리적 데이터베이스 설계 안티패턴</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 15, 2023
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      6 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/sql anti pattern" title="See all posts with tag 'sql anti pattern'">sql anti pattern</a>
+    
+      <a href="/tag/database" title="See all posts with tag 'database'">database</a>
+    
+      <a href="/tag/sql" title="See all posts with tag 'sql'">sql</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정리한다.<br />
+2부에서는 데이터를 효율적으로 관리하는 방법에 대해 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="10장-반올림-오류-정수-대신-소수-사용">10장 반올림 오류: 정수 대신 소수 사용</h2>
+
+<p>정수가 아닌 수를 저장하고 수를 저장해야 하는데,  <br />
+산술 연산도 수행하고 그 결과가 정확하도록 관리하고자 한다.</p>
+
+<h3 id="안티패턴-float-데이터-타입-사용">안티패턴: FLOAT 데이터 타입 사용</h3>
+
+<ul>
+  <li>소수 데이터가 필요한 경우, <code class="language-plaintext highlighter-rouge">FLOAT</code> 데이터 타입을 사용
+    <ul>
+      <li>IEEE 754 표준에 따라 실수를 이진 형식으로 부호화</li>
+    </ul>
+  </li>
+  <li><strong>필요에 의한 반올림</strong>
+    <ul>
+      <li>십진수로 표현된 모든 수를 이진수로 표현할 수 없음</li>
+      <li>부동 소수점에 대해 정확하게 저장되지 않고 오차가 발생될 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>SQL 에서 FLOAT 사용</strong>
+    <ul>
+      <li>특정 데이터베이스에서는 부정확한 값을 보정해 스스로 의도한 값으로 표시됨</li>
+      <li>특정 값으로 검색을 해도 조회가 안될 수 있음</li>
+      <li>합계나 곱을 하는 경우 부동 소수점 수의 누적으로 더 큰 오차가 발생될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우">사용이 합당한 경우</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">INTEGER</code> 나 <code class="language-plaintext highlighter-rouge">NUMERIC</code> 타입이 지원하는 것보다 큰 범위의 실수 값을 사용하는 경우</li>
+</ul>
+
+<h3 id="해법-numeric-또는-decimal-데이터-타입-사용">해법: <code class="language-plaintext highlighter-rouge">NUMERIC</code> 또는 <code class="language-plaintext highlighter-rouge">DECIMAL</code> 데이터 타입 사용</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NUMERIC</code>, <code class="language-plaintext highlighter-rouge">DECIMAL</code> 두 타입은 동일하게 동작
+    <ul>
+      <li>가능하면 <code class="language-plaintext highlighter-rouge">FLOAT</code> 은 사용하지 말자</li>
+    </ul>
+  </li>
+  <li>컬럼 정의에서 지정한 정도까치 수치를 정확하게 표현</li>
+  <li>스케일 지정 가능</li>
+  <li>유리수가 반올림되지 않고 저장</li>
+  <li>산술 연산을 해도 기대한 값으로 표시됨</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="11장-31가지-맛-칼럼을-특정-값으로-제한하기">11장 31가지 맛: 칼럼을 특정 값으로 제한하기</h2>
+
+<p>칼럼의 값을 고정된 집합의 값으로 제한하고자 한다.<br />
+유효하지 않은 값은 데이터베이스에서 거부하는 것이 이상적이다.</p>
+
+<h3 id="안티패턴-칼럼-정의에-값-지정">안티패턴: 칼럼 정의에 값 지정</h3>
+
+<ul>
+  <li>칼럼을 정의할 때 유효한 데이터 값 지정
+    <ul>
+      <li>ex) <code class="language-plaintext highlighter-rouge">CHECK</code> 제약조건 또는 <code class="language-plaintext highlighter-rouge">ENUM</code> 타입 사용</li>
+      <li>MySQL 의 <code class="language-plaintext highlighter-rouge">ENUM</code> 은 값을 문자열로 선언하지만, 내부적으로 서수(ordinal number)로 저장</li>
+    </ul>
+  </li>
+  <li><strong>중간에 있는 게 뭐지?</strong>
+    <ul>
+      <li>해당 컬럼에서 허용되는 값의 목록을 얻기 어려움
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">MySQL</code> 의 경우, <code class="language-plaintext highlighter-rouge">INFORMATION_SCHEMA</code> 시스템 뷰의 <code class="language-plaintext highlighter-rouge">COLUMN_TYPE</code> 에서 파싱하여 추출</li>
+          <li><code class="language-plaintext highlighter-rouge">DISTINCT</code> 를 사용해도 현재 데이터에 있는 값만 반환</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>새로운 맛 추가하기</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ENUM</code> 이나 <code class="language-plaintext highlighter-rouge">CHECK</code> 제약조건에 값을 추가하려면 컬럼 재정의 필요</li>
+      <li>이전 정의에서 사용 되던 값 조회가 필요할 수 있음</li>
+      <li>ETL(extract, transform, load) 작업이 필요할 수 있음
+        <ul>
+          <li>해당 작업동안 테이블 접근 불가</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>예전 맛은 절대 없어지지 않는다</strong>
+    <ul>
+      <li>특정 값을 더 이상 사용되지 않게 만들면, 과거 데이터가 망가질 수 있음
+        <ul>
+          <li>과거 값을 유지하면, 입력하지 못하도록 설정 불가</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>포팅이 어렵다</strong>
+    <ul>
+      <li>체크 제약조건, 도메인, 사용자 정의 타입은 모든 데이터베이스 제품에서 균일하게 지원되지 않는 기능
+        <ul>
+          <li>ex) <code class="language-plaintext highlighter-rouge">ENUM</code> 은 MySQL 고유 기능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-1">사용이 합당한 경우</h4>
+
+<ul>
+  <li>값의 집합이 변하지 않는 경우
+    <ul>
+      <li>집합 조회가 필요하다면 애플리케이션의 코드에서 유지하면 됨</li>
+    </ul>
+  </li>
+  <li>상호 배타적인 두 값 중 하나를 나타내는 경우
+    <ul>
+      <li>ex) LEFT/RIGHT, ACTIVE/INACTIVE, ON/OFF, INTERNAL/EXTERNAL</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="해법-데이터로-값을-지정하기">해법: 데이터로 값을 지정하기</h3>
+
+<ul>
+  <li>각 값을 행으로 하는 색인 테이블 생성
+    <ul>
+      <li>해당 테이블을 FK 제약조건으로 선언</li>
+      <li>값 제한 가능</li>
+    </ul>
+  </li>
+  <li><strong>값의 집합 쿼리하기</strong>
+    <ul>
+      <li>메타데이터로 저장되지 않고 데이터로 저장되기 때문에 <code class="language-plaintext highlighter-rouge">SELECT</code> 문으로 조회 가능</li>
+    </ul>
+  </li>
+  <li><strong>색인 테이블의 값 갱신하기</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">INSERT</code> 문으로 값 추가 가능</li>
+      <li>접근 제한, ETL 작업, 컬럼 재정의 불필요</li>
+      <li>이전 정의했던 값 조회할 필요가 없음</li>
+    </ul>
+  </li>
+  <li><strong>더 이상 사용하지 않는 값 지원하기</strong>
+    <ul>
+      <li>속성 컬럼을 추가하여 사용되지 않는 값 표시 가능
+        <ul>
+          <li>ex) ACTIVE/INACTIVE</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>포팅이 쉽다</strong>
+    <ul>
+      <li>표준 SQL 기능(FK 제약조건을 이용한 참조 정합성)만 사용</li>
+      <li>무한한 개수의 값 저장 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="12장-유령-파일-이미지-또는-벌크-미디어-저장">12장 유령 파일: 이미지 또는 벌크 미디어 저장</h2>
+
+<p>이미지나 다른 미디어에 대해 데이터베이스 엔티티와 연관을 갖도록 저장하고자 한다.</p>
+
+<h3 id="안티패턴-파일을-사용해야-한다고-가정">안티패턴: 파일을 사용해야 한다고 가정</h3>
+
+<p>파일을 별도로 저장하고 경로만 저장하는 방식은 위험이 있음</p>
+
+<ul>
+  <li><strong>DELETE 문제</strong>
+    <ul>
+      <li>이미지 경로를 포함하는 행을 삭제할 때 자동으로 삭제 하는 방법이 없음</li>
+      <li>고아 이미지 파일이 누적될 위험</li>
+    </ul>
+  </li>
+  <li><strong>트랜잭션 문제</strong>
+    <ul>
+      <li>트랜잭션이 커밋되지 않아도 변경된 내용이 보여질 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>ROLLBACK 문제</strong>
+    <ul>
+      <li>에러가 발생되어도 지워진 이미지 파일이 복구되지 않음 (업로드된 이미지도 삭제되지 않음)</li>
+    </ul>
+  </li>
+  <li><strong>백업 문제</strong>
+    <ul>
+      <li>데이터베이스에는 백업 도구를 제공</li>
+      <li>외부 이미지 파일에 대해서도 백업하기 위한 도구 필요
+        <ul>
+          <li>백업했어도 제대로 동기화 된 상태인지도 파악이 어려움</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>SQL 접근 권한 문제</strong>
+    <ul>
+      <li>외부 파일은 SQL 문으로 접근권한 적용 불가</li>
+    </ul>
+  </li>
+  <li><strong>SQL 데이터 타입 문제</strong>
+    <ul>
+      <li>저장된 경로는 문자열일 뿐이기 때문에 유효한 검증이 어려움</li>
+      <li>경로가 존재하는지 검증이 어려움</li>
+      <li>이동, 삭제에 대해 자동으로 업데이트되지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-2">사용이 합당한 경우</h4>
+
+<ul>
+  <li>보통 이미지는 크기가 크기 때문에 외부에 저장해야 성능에 영향을 미치지 않음</li>
+  <li>이미지를 제외해야 데이터베이스 백업 속도가 빨라짐</li>
+  <li>외부에 저장된 이미지는 미리보기나 편집이 쉬워짐
+    <ul>
+      <li>배치 편집이 필요한 경우 유용</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="해법-필요한-경우에는-blob-데이터-타입-사용">해법: 필요한 경우에는 BLOB 데이터 타입 사용</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">BLOB</code> 칼럼에 저장하면 좋은 이유
+    <ul>
+      <li>이미지가 데이터베이스에 저장
+        <ul>
+          <li>이미지를 로드하기 위한 별도의 단계가 필요 없음</li>
+          <li>파일 경로가 잘못될 위험 없음</li>
+        </ul>
+      </li>
+      <li>행이 삭제되면 이미지도 자동 삭제</li>
+      <li>커밋하기 전까지 이미지 변경이 적용되지 않음</li>
+      <li>롤백되면 이전 상태로 자동 복원</li>
+      <li>행을 업데이트하면 잠금이 걸리므로 동시 업데이트 방지</li>
+      <li>데이터베이스 백업에 모든 이미지가 자동 포함</li>
+      <li>SQL 을 통해 이미지에 대한 접근 제어 가능</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">BLOB</code> 의 최대크기는 데이터베이스 종류마다 다름
+    <ul>
+      <li>ex) MySQL 의 <code class="language-plaintext highlighter-rouge">MEDIUMBLOB</code> 은 16MB</li>
+    </ul>
+  </li>
+  <li>기존에 파일로 존재하던 이미지를 데이터베이스 BLOB 컬럼으로 로드 가능
+    <ul>
+      <li>ex) MySQL 의 <code class="language-plaintext highlighter-rouge">LOAD_FILE()</code> 함수</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">BLOB</code> 컬럼의 내용을 파일로 저장 가능
+    <ul>
+      <li>ex) MySQL 의 <code class="language-plaintext highlighter-rouge">SELECT ... INTO DUMPFILE</code> 문</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="13장-인덱스-샷건-성능-최적화">13장 인덱스 샷건: 성능 최적화</h2>
+
+<p>데이터베이스 성능을 향상 시키는 좋은 방법은 인덱스를 잘 활용하는 것이다.<br />
+인덱스를 언제, 어떻게 사용해야 하는지 알아보고자 한다.</p>
+
+<h3 id="안티패턴-무계획하게-인덱스-사용하기">안티패턴: 무계획하게 인덱스 사용하기</h3>
+
+<ul>
+  <li>인덱스를 잘못 사용하는 예
+    <ul>
+      <li>불충분한 인덱스 또는 정의하지 않음</li>
+      <li>너무 많은 인덱스 또는 도움 되지 않는 인덱스 정의</li>
+      <li>인덱스를 사용하지 않는 쿼리 실행</li>
+    </ul>
+  </li>
+  <li><strong>없는 인덱스</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">INSERT</code>, <code class="language-plaintext highlighter-rouge">UPDATE</code>, <code class="language-plaintext highlighter-rouge">DELETE</code> 사용할 때마다, 인덱스 데이터 구조 업데이트 필요
+        <ul>
+          <li>오버헤드가 발생되지만, 상쇄할 정도의 이득이 있음</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">UPDATE</code> 또는 <code class="language-plaintext highlighter-rouge">DELETE</code> 문에도 행을 찾을 때 인덱스가 도움이 될 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>너무 많은 인덱스</strong>
+    <ul>
+      <li>PK 에 인덱스를 정의할 필요 없음</li>
+      <li>긴 문자열 타입에 인덱스가 크므로 컬럼 전체 검색이나 정렬할 쿼리가 없다면 필요 없음</li>
+      <li>복합 인덱스에서는 컬럼 순서가 중요함
+        <ul>
+          <li>검색 조건, 조인 조건, 정렬 순서에 맞춰 왼쪽에서 오른쪽 정렬</li>
+        </ul>
+      </li>
+      <li>많은 인덱스는 오버헤드만 발생시킴</li>
+    </ul>
+  </li>
+  <li><strong>인덱스가 도움이 되지 않을 때</strong>
+    <ul>
+      <li>복합 인덱스를 정의했는데 정렬 순서가 다른 경우</li>
+      <li>인덱스 컬럼이 변형된 경우
+        <ul>
+          <li>ex) <code class="language-plaintext highlighter-rouge">WHERE MONTH(date) = 4</code></li>
+        </ul>
+      </li>
+      <li>조회하는 데이터가 예측 불가능하게 흩어져 있는 경우</li>
+      <li>검색할 문자열이 뒤에 있는 <code class="language-plaintext highlighter-rouge">LIKE</code> 검색하는 경우(<code class="language-plaintext highlighter-rouge">LIKE '%??'</code>)</li>
+      <li>검색하는 데이터 타입이 다른 경우</li>
+      <li>NOT-EQUAL 비교된 경우
+        <ul>
+          <li>ex) <code class="language-plaintext highlighter-rouge">&lt;&gt;</code>, <code class="language-plaintext highlighter-rouge">NOT IN</code>, <code class="language-plaintext highlighter-rouge">NOT BETWEEN</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-3">사용이 합당한 경우</h4>
+
+<ul>
+  <li>경험에 근거해 가능한 최적의 추측하여 인덱스 정의 필요</li>
+</ul>
+
+<h3 id="해법-인덱스를-mentor하라">해법: 인덱스를 MENTOR하라</h3>
+
+<p>MENTOR(Measure, Explain, Nominate, Test, Optimize, Rebuild) 사용</p>
+
+<ul>
+  <li><strong>Measure(측정)</strong>
+    <ul>
+      <li>쿼리가 실행된 시간을 로그로 남겨 많은 비용이 들어간 작업을 식별하여 최적화</li>
+      <li>측정할 때에는 캐싱 기능 비활성화 필요</li>
+      <li>측정이 끝난 다음에는 오버헤드가 발생될 수 있으니 프로파일링 빈도를 줄이거나 비활성화 필요</li>
+    </ul>
+  </li>
+  <li><strong>Explain(실행 계획 확인)</strong>
+    <ul>
+      <li>쿼리 실행 계획 확인 (QEP, Query Execution Plan)</li>
+    </ul>
+  </li>
+  <li><strong>Nominate(지명)</strong>
+    <ul>
+      <li>쿼리에서 인덱스를 사용하지 않고 테이블에 접근하는 부분 확인
+        <ul>
+          <li>ex) MySQL Enterprise Query Analyzer</li>
+          <li>쿼리 실행 계획을 살펴봐도 확인 가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Test(테스트)</strong>
+    <ul>
+      <li>인덱스 생성 후 확인</li>
+    </ul>
+  </li>
+  <li><strong>Optimize(최적화)</strong>
+    <ul>
+      <li>시스템 메모리의 일정량을 캐시에 할당</li>
+      <li>인덱스를 캐시 메모리에 미리 로딩
+        <ul>
+          <li>ex) MySQL 의 <code class="language-plaintext highlighter-rouge">LOAD INDEX INTO CACHE</code> 문</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Rebuild(재구성)</strong>
+    <ul>
+      <li>주기적으로 인덱스 재정비
+        <ul>
+          <li>파일 시스템이 단편화되는 것처럼 인덱스도 균형을 잃을 수 있음</li>
+          <li>ex) MySQL 의 <code class="language-plaintext highlighter-rouge">ANAALYZE TABLE</code> 또는 <code class="language-plaintext highlighter-rouge">OPTIMIZE TABLE</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>관련 코드는 <a href="https://github.com/devyonghee/sql-anti-pattern-study">깃허브</a> 참고</p>
+
+<h2 id="출처">출처</h2>
+<ul>
+  <li>SQL AntiPatterns</li>
+</ul>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[SQL+AntiPattern]+2%EB%B6%80+%EB%AC%BC%EB%A6%AC%EC%A0%81+%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%25...%20-%20https://devyonghee.github.io/book/2023/09/15/sql-anti-pattern-part2/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2023/09/15/sql-anti-pattern-part2/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter19. 함수형 프로그래밍 기법</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter19. 함수형 프로그래밍 기법">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/09/15/modern-java-in-action-chapter19/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/09/15/modern-java-in-action-chapter19/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter19. 함수형 프로그래밍 기법">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter19. 함수형 프로그래밍 기법</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 15, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      15 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 19장에서는 함수형 프로그래밍 기법에 대해 소개한다. <br />
+함수형 프로그래밍의 실용적 기법에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="191-함수는-모든-곳에-존재한다">19.1 함수는 모든 곳에 존재한다.</h2>
+
+<p>함수형 프로그래밍에서는 함수를 마치 일반값처럼 사용해서 인수로 전달, 결과로 반환, 자료 구조 저장이 가능하다.<br />
+이처럼 일반값처럼 취갑할 수 있는 함수를 일급 함수(first-class function) 이라고 한다.  <br />
+자바 8에서는 <code class="language-plaintext highlighter-rouge">::</code> 연산자로 메서드 참조를 만들거나 람다 표현식으로 직접 함숫값을 표현해서 사용할 수 있다.</p>
+
+<h3 id="고차원-함수">고차원 함수</h3>
+
+<p>함수형 프로그래밍 커뮤니티에서는 고차원 함수를 하나 이상의 동작을 수행하는 함수라고 한다. (ex. <code class="language-plaintext highlighter-rouge">Comparator.comparing</code>)</p>
+
+<ul>
+  <li>하나 이상의 함수를 인수로 받음</li>
+  <li>함수를 결과로 반환</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Double</span><span class="o">,</span> <span class="nc">Double</span><span class="o">&gt;</span> <span class="nf">differentiate</span><span class="o">(</span><span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Double</span><span class="o">,</span> <span class="nc">Double</span><span class="o">&gt;</span> <span class="n">func</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="커링currying">커링(currying)</h3>
+
+<p>커링(currying)은 함수를 모듈화하고 코드 재사용에 도움을 준다.<br />
+커링은 x 와 y라는 두 인수를 함수 f 를 받는 한 개의 인수를 받는 g라는 함수로 대체하는 기법이다. (<code class="language-plaintext highlighter-rouge">f(x, y) = (g(x))(y)</code>)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 세 개의 인수를 받을 수 있지만 인수에 매번 같은 인수를 넣으면 재활용하는 것이 불가능</span>
+<span class="kd">static</span> <span class="kt">double</span> <span class="nf">converter</span><span class="o">(</span><span class="kt">double</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">f</span><span class="o">,</span> <span class="kt">double</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">f</span> <span class="o">+</span> <span class="n">b</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// 커링 개념을 활용하여 한 개의 인수를 갖는 함수를 생성하는 '팩토리' 정의</span>
+<span class="kd">static</span> <span class="nc">DoubleUnaryOperator</span> <span class="nf">curriedConverter</span><span class="o">(</span><span class="kt">double</span> <span class="n">f</span><span class="o">,</span> <span class="kt">double</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="kt">double</span> <span class="n">x</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">f</span> <span class="o">+</span> <span class="n">b</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="nc">DoubleOperator</span> <span class="n">convertCtoF</span> <span class="o">=</span> <span class="n">curriedConverter</span><span class="o">(</span><span class="mf">9.0</span><span class="o">/</span><span class="mi">5</span><span class="o">,</span> <span class="mi">32</span><span class="o">);</span>
+<span class="nc">DoubleOperator</span> <span class="n">convertUSDtoGBP</span> <span class="o">=</span> <span class="n">curriedConverter</span><span class="o">(</span><span class="mf">0.6</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+<span class="nc">DoubleOperator</span> <span class="n">convertKmtoMi</span> <span class="o">=</span> <span class="n">curriedConverter</span><span class="o">(</span><span class="mf">0.6214</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="192-영속-자료구조">19.2 영속 자료구조</h2>
+
+<p>함수형 메서드에서는 전역 자료구조나 인수로 전달된 구조를 갱신할 수 없다.<br />
+구조를 변경하면 결과가 달라지면서 참조 투명성 위배되고 인수를 결과로 매핑할 수 없어지기 때문이다.</p>
+
+<h3 id="파괴적인-갱신과-함수형">파괴적인 갱신과 함수형</h3>
+
+<p>예제를 통해 자료구조를 갱신할 때 발생할 수 있는 문제를 확인하자</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">TrainJourney</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">price</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">TrainJourney</span> <span class="n">onward</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">TrainJourney</span><span class="o">(</span><span class="kt">int</span> <span class="n">p</span><span class="o">,</span> <span class="nc">TranJourney</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">price</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+        <span class="n">onward</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="nc">TrainJourney</span> <span class="nf">link</span><span class="o">(</span><span class="nc">TrainJourney</span> <span class="n">a</span><span class="o">,</span> <span class="nc">TrainJourney</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">b</span><span class="o">;</span>
+    <span class="nc">TrainJourney</span> <span class="n">t</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">onward</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">onward</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">t</span><span class="o">.</span><span class="na">onward</span> <span class="o">=</span> <span class="n">b</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위 코드를 통해 <code class="language-plaintext highlighter-rouge">link(firstJourney, secondJourney)</code> 를 호출하면 <code class="language-plaintext highlighter-rouge">firstJourney</code> 가 변경되면서 파괴적인 갱신이 일어난다.<br />
+그렇게 되면 기존에 <code class="language-plaintext highlighter-rouge">firstJourney</code> 을 의존하고 있던 코드는 동작하지 않게 된다.</p>
+
+<p>함수형에서는 이러한 부작용을 수반하는 메서드를 제한하는 방식으로 문제를 해결한다.<br />
+결과를 표현할 자료구조가 필요하면 갱신하지 않고 새로 생성해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">TrainJourney</span> <span class="nf">append</span><span class="o">(</span><span class="nc">TrainJourney</span> <span class="n">a</span><span class="o">,</span> <span class="nc">TrainJourney</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">b</span> <span class="o">:</span> <span class="k">new</span> <span class="nc">TrainJourney</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">price</span><span class="o">,</span> <span class="n">append</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">onward</span><span class="o">,</span> <span class="n">b</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="트리를-사용한-다른-예제">트리를 사용한 다른 예제</h3>
+
+<p><code class="language-plaintext highlighter-rouge">HashMap</code> 같은 인터페이스를 구현할 때는 이진 탐색 트리가 사용된다.<br />
+주어진 키와 연관된 값 갱신하는 방법에 대해 알아본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Tree</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">key</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">val</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Tree</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Tree</span> <span class="o">(</span><span class="nc">String</span> <span class="n">k</span><span class="o">,</span> <span class="kt">int</span> <span class="n">v</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">l</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">k</span><span class="o">;</span> <span class="n">val</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span> <span class="n">left</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span> <span class="n">right</span> <span class="o">=</span> <span class="n">r</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">TreeProcessor</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">lookup</span><span class="o">(</span><span class="nc">String</span> <span class="n">k</span><span class="o">,</span> <span class="kt">int</span> <span class="n">defaultval</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">t</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">defaultval</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">))</span> <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+        <span class="k">return</span> <span class="nf">lookup</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">defulatval</span><span class="o">,</span> <span class="n">k</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span> <span class="o">:</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="nc">String</span> <span class="n">k</span><span class="o">,</span> <span class="kt">int</span> <span class="n">newval</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">t</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="cm">/* 새로운 노드 추가*/</span> <span class="o">}</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">))</span> <span class="n">t</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">newval</span><span class="o">;</span>
+    <span class="k">else</span> <span class="nf">update</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">k</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span> <span class="o">:</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nc">Tree</span> <span class="nf">update</span><span class="o">(</span><span class="nc">String</span> <span class="n">k</span><span class="o">,</span> <span class="kt">int</span> <span class="n">newval</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">t</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">))</span> <span class="n">t</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">newval</span><span class="o">;</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">update</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+    <span class="k">else</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">update</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">t</span><span class="o">;</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>두 가지 <code class="language-plaintext highlighter-rouge">update</code> 모두 기존 트리를 변경한다.<br />
+그러므로 트리에 저장된 맵은 변경에 대해 모든 곳에 영향을 주게 된다.</p>
+
+<p>함수형으로 이 문제를 처리하는 방법을 알아보자.<br />
+새로운 노드를 생성하고 트리의 루트에서 경로에 있는 노드들도 새로 생성해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Tree</span> <span class="nf">fupdate</span><span class="o">(</span><span class="nc">String</span> <span class="n">k</span><span class="o">,</span> <span class="kt">int</span> <span class="n">newval</span><span class="o">,</span> <span class="nc">Tree</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">t</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span>
+        <span class="k">new</span> <span class="nf">Tree</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">)</span> <span class="o">:</span>
+            <span class="n">k</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">?</span> <span class="k">new</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">)</span> <span class="o">:</span>
+                <span class="n">k</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> 
+                    <span class="k">new</span> <span class="nf">Tree</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">val</span><span class="o">,</span> <span class="n">fupdate</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span><span class="o">),</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">)</span> <span class="o">:</span>
+                    <span class="k">new</span> <span class="nf">Tree</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">key</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">val</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">fupdate</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">newval</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">)));</span>                
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>인수를 이용해서 가능한 한 많은 정보를 공유하고 새로운 노드를 만들었다.<br />
+기존 구조를 변화시키지 않기 때문에 공통 부분을 공유할 수 있다는 점에서 다른 구조체와 조금 다르다.</p>
+
+<p><br /></p>
+
+<h2 id="193-스트림과-게으른-평가">19.3 스트림과 게으른 평가</h2>
+
+<p>스트림은 한 번만 소비할 수 있는 재약이 있어서 재귀적으로 정의해야 한다.<br />
+이러한 제약 때문에 발생되는 문제에 대해 알아본다.</p>
+
+<h3 id="자기-정의-스트림">자기 정의 스트림</h3>
+
+<p>소수를 생성하는 재귀 스트림을 살펴본다.<br />
+소수로 나눌 수 있는 수를 제외하는 과정을 다음 알고리즘으로 구현해본다.</p>
+
+<ol>
+  <li>소수를 선택할 숫자 스트림 필요</li>
+  <li>스트림에서 첫번째 소수를 가져온다. (처음은 2)</li>
+  <li>스트림의 꼬리에서 가져온 수로 나누어 떨어지는 모든 수를 제외</li>
+  <li>남은 숫자만 포함하는 새로운 스트림에서 소수를 찾기 (반복)</li>
+</ol>
+
+<h4 id="1단계-스트림-숫자-얻기">1단계 스트림 숫자 얻기</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">Intstream</span> <span class="nf">numbers</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">IntStream</span><span class="o">.</span><span class="na">iterate</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="2단계-머리-획득">2단계 머리 획득</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="kt">int</span> <span class="nf">head</span><span class="o">(</span><span class="nc">IntStream</span> <span class="n">numbers</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">numbers</span><span class="o">.</span><span class="na">findFirst</span><span class="o">().</span><span class="na">getAsInt</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="3단계-꼬리-필터링">3단계 꼬리 필터링</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">IntStream</span> <span class="nf">tail</span><span class="o">(</span><span class="nc">IntStream</span> <span class="n">numbers</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">numbers</span><span class="o">.</span><span class="na">skip</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="4단계-재귀적으로-소수-스트림-생성">4단계 재귀적으로 소수 스트림 생성</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">IntStream</span> <span class="nf">primes</span><span class="o">(</span><span class="nc">IntStream</span> <span class="n">numbers</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">(</span><span class="n">numbers</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">IntStream</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span>
+        <span class="nc">IntStream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">head</span><span class="o">),</span>
+        <span class="n">primes</span><span class="o">(</span><span class="n">tail</span><span class="o">(</span><span class="n">numbers</span><span class="o">).</span><span class="na">filter</span><span class="o">(</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">%</span> <span class="n">head</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">))</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>하지만 위 코드는 최종연산 <code class="language-plaintext highlighter-rouge">findFirst</code>, <code class="language-plaintext highlighter-rouge">skip</code> 을 사용했기 때문에 
+<code class="language-plaintext highlighter-rouge">stream has already been operated upon or closed.</code> 라는 에러가 발생된다.</p>
+
+<p>또한, 두번째 인수가 <code class="language-plaintext highlighter-rouge">primes</code>를 재귀적으로 호출하기 때문에 무한 재귀에 빠진다.<br />
+이러한 문제는 두 번째 인수에서 <code class="language-plaintext highlighter-rouge">primes</code>를 게으른 평가를 통해 해결할 수 있다.</p>
+
+<h3 id="게으른-리스트-만들기">게으른 리스트 만들기</h3>
+
+<p>스트림은 최종연산(<code class="language-plaintext highlighter-rouge">filter</code>, <code class="language-plaintext highlighter-rouge">map</code>, <code class="language-plaintext highlighter-rouge">reduce</code> 등)을 적용해서 계산을 해야 하는 상황에서만 연산이 이루어진다.<br />
+게으른 특성 때문에 연산별로 스트림을 탐색할 필요 없이 한 번에 처리할 수 있다.</p>
+
+<h4 id="기본적인-연결-리스트">기본적인 연결 리스트</h4>
+
+<p>기본적인 리스트는 메모리에 존재한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="no">T</span> <span class="nf">head</span><span class="o">();</span>
+    <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">tail</span><span class="o">();</span>
+    <span class="k">default</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">MyLinkedList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="no">T</span> <span class="n">head</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">MyLinkedList</span><span class="o">(</span><span class="no">T</span> <span class="n">head</span><span class="o">,</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">tail</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">head</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">tail</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Empty</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">head</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">tail</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">MyList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyLinkedList</span><span class="o">&lt;&gt;(</span><span class="mi">5</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MyLinkedList</span><span class="o">&lt;&gt;(</span><span class="mi">10</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Empty</span><span class="o">()));</span>
+</code></pre></div></div>
+
+<h4 id="기본적인-게으른-리스트">기본적인 게으른 리스트</h4>
+
+<p><code class="language-plaintext highlighter-rouge">Supplier&lt;T&gt;</code> 를 이용하여 게으른 리스트를 만들면 메모리에 존재하지 않게 할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LazyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="no">T</span> <span class="n">head</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">LazyList</span><span class="o">(</span><span class="no">T</span> <span class="n">head</span><span class="o">,</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">tail</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">head</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">tail</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">tail</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">filter</span><span class="o">(</span><span class="nc">Predicate</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">p</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">?</span> 
+            <span class="k">this</span> <span class="o">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">head</span><span class="o">())</span> <span class="o">?</span>
+                <span class="k">new</span> <span class="nc">LazyList</span><span class="o">&lt;&gt;(</span><span class="n">head</span><span class="o">(),</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">tail</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">))</span> <span class="o">:</span>
+                <span class="n">tail</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">p</span><span class="o">);</span> 
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">LazyList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">from</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">LazyList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;(</span><span class="n">n</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">from</span><span class="o">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="게으른-소수-리스트-생성">게으른 소수 리스트 생성</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">MyList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">primes</span><span class="o">(</span><span class="nc">MyList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">LazyList</span><span class="o">&lt;&gt;</span> <span class="o">(</span>
+        <span class="n">numbers</span><span class="o">.</span><span class="na">head</span><span class="o">(),</span>
+        <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">primes</span><span class="o">(</span>
+            <span class="n">numbers</span><span class="o">.</span><span class="na">tail</span><span class="o">()</span>
+                   <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">%</span> <span class="n">numbers</span><span class="o">.</span><span class="na">head</span><span class="o">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="o">)</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="194-패턴-매칭">19.4 패턴 매칭</h2>
+
+<p>패턴 매칭은 함수형 프로그래밍을 구분하는 중요한 특징 중 하나이다.<br />
+자바에서는 if-then-else 나 switch 문을 이용해야 하는데 자료형이 복잡해지면 필요한 코드의 양도 증가한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Expr</span> <span class="nf">simplifyExpression</span><span class="o">(</span><span class="nc">Expr</span> <span class="n">expr</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">expr</span> <span class="k">instanceof</span> <span class="nc">Binof</span>
+        <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">BinOp</span><span class="o">)</span> <span class="n">expr</span><span class="o">).</span><span class="na">opname</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"+"</span><span class="o">))</span>
+        <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">BinOp</span><span class="o">)</span> <span class="n">expr</span><span class="o">).</span><span class="na">right</span> <span class="k">instanceof</span> <span class="nc">Number</span>
+        <span class="o">&amp;&amp;</span> <span class="o">...</span>  <span class="c1">// 코드가 지저분해짐</span>
+        <span class="o">&amp;&amp;</span> <span class="o">...)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">Binop</span><span class="o">)</span> <span class="n">expr</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>       
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="방문자-디자인-패턴">방문자 디자인 패턴</h3>
+
+<p>자바에서는 방문자 디자인 패턴(visitor design pattern) 으로 자료형을 언랩할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BinOp</span> <span class="kd">extends</span> <span class="nc">Expr</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">public</span> <span class="nc">Expr</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">SimplifyExprVisitor</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimplifyExprVisitor</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">public</span> <span class="nc">Expr</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">BinOp</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">"+"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">opname</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">e</span><span class="o">.</span><span class="na">right</span> <span class="k">instanceof</span> <span class="nc">Number</span> <span class="o">&amp;&amp;</span> <span class="o">...)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="패턴-매칭의-힘">패턴 매칭의 힘</h3>
+
+<p>자바는 패턴 매칭을 지원하지 않으므로 스칼라로 예시를 살펴본다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">simplifyExpression</span><span class="o">(</span><span class="n">expr</span><span class="k">:</span> <span class="kt">Expr</span><span class="o">)</span><span class="k">:</span> <span class="kt">Expr</span> <span class="o">=</span> <span class="n">expr</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">BinOp</span><span class="o">(</span><span class="s">"+"</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="nc">Number</span><span class="o">(</span><span class="mi">0</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="n">e</span>
+    <span class="k">case</span> <span class="nc">BinOp</span><span class="o">(</span><span class="s">"*"</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="nc">Number</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="n">e</span>
+    <span class="k">case</span> <span class="nc">BinOp</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="nc">Number</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="n">e</span>
+    <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="n">expr</span>
+<span class="o">}</span>
+
+<span class="nc">Expression</span> <span class="k">match</span> <span class="o">{</span> <span class="k">case</span> <span class="nc">Pattern</span> <span class="k">=&gt;</span> <span class="nc">Expression</span> <span class="o">...</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="자바로-패턴-매칭-흉내내기">자바로 패턴 매칭 흉내내기</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">myIf</span><span class="o">(</span><span class="n">condition</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">e1</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">e2</span><span class="o">);</span>
+
+<span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">myIf</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">b</span><span class="o">,</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">truecase</span><span class="o">,</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">falsecase</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="o">?</span> <span class="n">truecase</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">:</span> <span class="n">falsecase</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">BinOp</code> 와 <code class="language-plaintext highlighter-rouge">Number</code> 를 포함하는 <code class="language-plaintext highlighter-rouge">Expr</code> 클래스 패턴 매칭하는 메서드를 정의해본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">TriFunction</span><span class="o">&lt;</span><span class="no">S</span><span class="o">,</span> <span class="no">T</span><span class="o">,</span> <span class="no">U</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="no">R</span> <span class="nf">apply</span><span class="o">(</span><span class="no">S</span> <span class="n">s</span><span class="o">,</span> <span class="no">T</span> <span class="n">t</span><span class="o">,</span> <span class="no">U</span> <span class="n">u</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">patternMatchExpr</span><span class="o">(</span>
+                        <span class="nc">Expr</span> <span class="n">e</span><span class="o">,</span>
+                        <span class="nc">TriFunction</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">binopcase</span><span class="o">,</span>
+                        <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">numcase</span><span class="o">,</span>
+                        <span class="nc">Supplier</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">defaultcase</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">e</span> <span class="k">instanceof</span> <span class="nc">BinOp</span><span class="o">)</span> <span class="o">?</span> <span class="n">binopcase</span><span class="o">.</span><span class="na">apply</span><span class="o">(((</span><span class="nc">BinOp</span><span class="o">)</span> <span class="n">e</span><span class="o">).</span><span class="na">opname</span><span class="o">,</span> <span class="o">((</span><span class="nc">BinOp</span><span class="o">)</span> <span class="n">e</span><span class="o">).</span><span class="na">left</span><span class="o">,</span> <span class="o">((</span><span class="nc">BinOp</span><span class="o">)</span> <span class="n">e</span><span class="o">).</span><span class="na">right</span><span class="o">)</span> <span class="o">:</span>
+                                  <span class="o">(</span><span class="n">e</span> <span class="k">instanceof</span> <span class="nc">Number</span><span class="o">)</span> <span class="o">?</span> <span class="n">numcase</span><span class="o">.</span><span class="na">apply</span><span class="o">((</span><span class="nc">Number</span><span class="o">)</span> <span class="n">e</span><span class="o">).</span><span class="na">val</span><span class="o">)</span> <span class="o">:</span> <span class="n">defaultcase</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="n">patternMatchExpr</span><span class="o">(</span><span class="n">e</span><span class="o">,</span> <span class="o">(</span><span class="n">op</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="k">return</span> <span class="n">binopcode</span><span class="o">;</span> <span class="o">}),</span>
+                    <span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="k">return</span> <span class="n">numcode</span><span class="o">;</span> <span class="o">},</span>
+                    <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="k">return</span> <span class="n">defaultcode</span><span class="o">;</span> <span class="o">});</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">patternMatchExpr</code> 을 이용해서 덧셈과 곱셈 표현식을 단순화하는 방법을 알아본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Expr</span> <span class="nf">simplify</span><span class="o">(</span><span class="nc">Expr</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">TriFunction</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">&gt;</span> <span class="n">binopcase</span> <span class="o">=</span> 
+        <span class="o">(</span><span class="n">opname</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="s">"+"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">opname</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">left</span> <span class="k">instanceof</span> <span class="nc">Number</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">Number</span><span class="o">)</span> <span class="n">left</span><span class="o">).</span><span class="na">val</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">right</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="k">instanceof</span> <span class="nc">Number</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">Number</span><span class="o">)</span> <span class="n">right</span><span class="o">).</span><span class="na">val</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">left</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="s">"*"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">opname</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">left</span> <span class="k">instanceof</span> <span class="nc">Number</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">Number</span><span class="o">)</span> <span class="n">left</span><span class="o">).</span><span class="na">val</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">right</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="k">instanceof</span> <span class="nc">Number</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="nc">Number</span><span class="o">)</span> <span class="n">right</span><span class="o">).</span><span class="na">val</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">left</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">BinOp</span><span class="o">(</span><span class="n">opname</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">);</span>
+        <span class="o">};</span>
+    <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Expr</span><span class="o">&gt;</span> <span class="n">numcase</span> <span class="o">=</span> <span class="n">val</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Number</span><span class="o">(</span><span class="n">val</span><span class="o">);</span>
+    <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Expr</span><span class="o">&gt;</span> <span class="n">defaultcase</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Number</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    
+    <span class="k">return</span> <span class="nf">patternMatchExpr</span><span class="o">(</span><span class="n">e</span><span class="o">,</span> <span class="n">binpcase</span><span class="o">,</span> <span class="n">numcase</span><span class="o">,</span> <span class="n">defaultcase</span><span class="o">);</span>  <span class="c1">// 패턴 매칭 적용</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="195-기타-정보">19.5 기타 정보</h2>
+
+<p>참조 투명성과 관련된 효율성과 염려사항에 대해 알아본다.</p>
+
+<h3 id="캐싱-또는-기억화">캐싱 또는 기억화</h3>
+
+<p>트리 형식의 토포로지(topology)를 갖는 노드의 수를 계산하는 메서드가 있다고 가정한다.<br />
+이 메서드를 호출하면 재귀적으로 탐색해야하므로 노드 계산 비용은 비싸다.<br />
+이러한 문제는 기억화(memorization) 기법으로 해결할 수 있다. (메서드에 래퍼로 캐시)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Range</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numberOfNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="nc">Integer</span> <span class="nf">computeNumberOfNodesUsingCache</span><span class="o">(</span><span class="nc">Range</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Integer</span> <span class="n">result</span> <span class="o">=</span> <span class="n">numberOfNodes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">range</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">computeNumberOfNodes</span><span class="o">(</span><span class="n">range</span><span class="o">);</span>
+    <span class="n">numberOfNodes</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">range</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="같은-객체를-반환함은-무엇을-의미하는가">‘같은 객체를 반환함’은 무엇을 의미하는가?</h3>
+
+<p>참조 투명성이란 ‘인수가 같다면 결과도 같아야 한다’ 라는 규칙을 만족함을 의미한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t2</span> <span class="o">=</span> <span class="n">fupdate</span><span class="o">(</span><span class="s">"Will"</span><span class="o">,</span> <span class="mi">26</span><span class="o">,</span> <span class="n">t</span><span class="o">);</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">fupdate</span><span class="o">(</span><span class="s">"Will"</span><span class="o">,</span> <span class="mi">26</span><span class="o">,</span> <span class="n">t</span><span class="o">);</span>
+</code></pre></div></div>
+<p>여기서 t2 와 t3 는 서로 다른 참조이기 때문에 <code class="language-plaintext highlighter-rouge">t2 == t3</code> 를 만족하지 않는다.<br />
+그러므로 참조 투명성을 갖지 않는다고 결론내릴 수 있으나 논리적으로 같다고 판단할 수 있다.<br />
+따라서 함수형 프로그래밍 관점에서 <code class="language-plaintext highlighter-rouge">fupdate</code> 는 참조 투명성을 갖는다고 할 수 있다.</p>
+
+<h3 id="콤비네이터combinator">콤비네이터(combinator)</h3>
+
+<p>두 함수를 인수로 받아 다른 함수를 반환하는 등 함수를 조합하는 고차원 함수를 콤비네이터라고 한다.(ex. <code class="language-plaintext highlighter-rouge">Completable::thenCombine</code>)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">B</span><span class="o">,</span> <span class="no">C</span><span class="o">&gt;</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">C</span><span class="o">&gt;</span> <span class="nf">compose</span><span class="o">(</span><span class="nc">Function</span><span class="o">&lt;</span><span class="no">B</span><span class="o">,</span> <span class="no">C</span><span class="o">&gt;</span> <span class="n">g</span><span class="o">,</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">B</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">g</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">x</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">A</span><span class="o">&gt;</span> <span class="nf">repeat</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">A</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">:</span> <span class="n">compose</span><span class="o">(</span><span class="n">f</span><span class="o">,</span> <span class="n">repeat</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">f</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter19.+%ED%95%A8%EC%88%98%ED%98%95+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%25...%20-%20https://devyonghee.github.io/book/2022/09/15/modern-java-in-action-chapter19/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/09/15/modern-java-in-action-chapter19/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

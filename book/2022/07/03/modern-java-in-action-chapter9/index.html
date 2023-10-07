@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter9. 리팩터링, 테스팅, 디버깅</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter9. 리팩터링, 테스팅, 디버깅">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/07/03/modern-java-in-action-chapter9/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/07/03/modern-java-in-action-chapter9/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter9. 리팩터링, 테스팅, 디버깅">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter9. 리팩터링, 테스팅, 디버깅</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    July 3, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      14 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 9장에서는 스트림과 람다 표현식 활용에 대해 소개한다.<br />
+스트림과 람다 표현식을 활용하여 리팩터링하고 테스트, 디버깅하는 방법에 대해 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="91-가독성과-유연성을-개선하는-리팩터링">9.1 가독성과 유연성을 개선하는 리팩터링</h2>
+
+<p>스트림과 람다 표현식을 이용하여 가독성이 좋고 유연한 코드로 리팩터링 하는 방법에 대해 알아본다.</p>
+
+<h3 id="익명-클래스를-람다-표현식으로-리팩터링">익명 클래스를 람다 표현식으로 리팩터링</h3>
+
+<p>하나의 추상 메서드를 구현하는 익명 클래스는 람다 표현식으로 리팩터링이 가능하다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 익명 클래스 이용</span>
+<span class="nc">Runnable</span> <span class="n">r1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// 람다 표현식 이용</span>
+<span class="nc">Runnable</span> <span class="n">r2</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>모든 익명 클래스를 람다 표현식으로 변환은 불가능함
+    <ul>
+      <li>익명 클래스에서 사용한 <code class="language-plaintext highlighter-rouge">this</code>, <code class="language-plaintext highlighter-rouge">super</code>는 다른 의미를 가짐
+        <ul>
+          <li>람다 <code class="language-plaintext highlighter-rouge">this</code>: 람다를 감싸는 클래스</li>
+          <li>익명 클래스 <code class="language-plaintext highlighter-rouge">this</code>: 자신</li>
+        </ul>
+      </li>
+      <li>람다 표현식으로 변수를 가릴 수 없음 (같은 변수명 사용 불가능)</li>
+      <li>익명 클래스를 람다표현식으로 바꾸면 콘텍스트 오버로딩에 모호함
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Task</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="nc">Runnable</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span> <span class="n">r</span><span class="o">.</span><span class="na">run</span><span class="o">();</span> <span class="o">}</span> 
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="nc">Task</span> <span class="n">a</span><span class="o">)</span> <span class="o">{</span> <span class="n">r</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span> <span class="o">}</span>
+<span class="c1">// 람다 표현식을 이용하면 모호함이 생기므로 명시적 형변환 필요</span>
+<span class="n">doSomething</span><span class="o">((</span><span class="nc">Task</span><span class="o">)()</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Danger danger!!"</span><span class="o">));</span> 
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="람다-표현식을-메서드-참조로-리팩터링">람다 표현식을 메서드 참조로 리팩터링</h2>
+
+<p>람다 표현식 대신 메서드 참조를 이용하면 가독성을 높일 수 있음</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inventory</span><span class="o">.</span><span class="na">sort</span><span class="o">((</span><span class="nc">Apple</span> <span class="n">a1</span><span class="o">,</span> <span class="nc">Apple</span> <span class="n">a2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">a2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()));</span>
+<span class="n">inventory</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">comparing</span><span class="o">(</span><span class="nl">Apple:</span><span class="o">:</span><span class="n">getWeight</span><span class="o">));</span>
+</code></pre></div></div>
+
+<h2 id="명령형-데이터-처리를-스트림으로-리팩터링">명령형 데이터 처리를 스트림으로 리팩터링</h2>
+
+<p>스트림을 이용하면 쇼트서킷과 게으름으로 최적화가 가능하고 멀티코어 아키텍처를 쉽게 활용할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">dishNames</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">Dish</span> <span class="nl">dish:</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">dish</span><span class="o">.</span><span class="na">getCalories</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">dishNames</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">dish</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">menu</span><span class="o">.</span><span class="na">parallelStream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="n">d</span><span class="o">.</span><span class="na">getCalories</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">toList</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h2 id="코드-유연성-개선">코드 유연성 개선</h2>
+
+<p>람다 표현식을 이용하여 동작 파라미터화를 쉽게 구현할 수 있다.<br />
+동작 파라미터화로 변화하는 요구사항에 대응할 수 있는 코드를 만든다.
+조건부 연기 실행(conditional deferred execution)과 실행 어라운드(execute around) 패턴으로 람다 표현식 리팩터링을 살펴본다.</p>
+
+<ul>
+  <li>함수형 인터페이스 적용
+    <ul>
+      <li>람다 표현식을 이용하려면 함수형 인터페이스가 필요하므로 추가</li>
+    </ul>
+  </li>
+  <li>조건부 연기 실행
+    <ul>
+      <li>클라이언트 코드에서 상태를 자주 확인하거나, 일부 메서드를 호출해야 한다면 내부적으로 호출하도록 구현하는 것이 좋음 (가독성, 캡슐화 강화)
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isLoggable</span><span class="o">(</span><span class="nc">Log</span><span class="o">.</span><span class="na">FINER</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">logger</span><span class="o">.</span><span class="na">finer</span><span class="o">(</span><span class="s">"Problem: "</span> <span class="o">+</span> <span class="n">generateDiagnostic</span><span class="o">());</span>
+<span class="o">}</span> 
+<span class="c1">// 위의 코드에서 메세지 생성 과정을 연기</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">Level</span> <span class="n">level</span><span class="o">,</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">msgSupplier</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">log</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">FINER</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="s">"Problem: "</span> <span class="o">+</span> <span class="n">generateDiagnostic</span><span class="o">());</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>실행 어라운드
+    <ul>
+      <li>매번 같은 준비, 종료 과정을 반복적으로 수행 해야한다면 람다로 변환하여 코드 중복을 줄일 수 있음
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">oneLine</span> <span class="o">=</span> <span class="n">processFile</span><span class="o">((</span><span class="nc">BufferedReader</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span> 
+<span class="nc">String</span> <span class="n">twoLines</span> <span class="o">=</span> <span class="n">processFile</span><span class="o">((</span><span class="nc">BufferedReader</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">()</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">processFile</span><span class="o">(</span><span class="nc">BufferedReaderProcessor</span> <span class="n">p</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+  <span class="k">try</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileReader</span><span class="o">(</span><span class="s">"..."</span><span class="o">)))</span> <span class="o">{</span> 
+      <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">br</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BufferedReaderProcessor</span> <span class="o">{</span> 
+  <span class="nc">String</span> <span class="nf">process</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">b</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="92-람다로-객체지향-디자인-패턴-리팩터링">9.2 람다로 객체지향 디자인 패턴 리팩터링</h2>
+
+<h3 id="전략-패턴-strategy-pattern">전략 패턴 (strategy pattern)</h3>
+
+<p>전략 패턴은 한 유형의 알고리즘을 보유하여 런타임에 적절한 알고리즘을 선택하는 기법이다.</p>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/strategy-pattern.png">
+        <img src="/images/book/modern-java-in-action/strategy-pattern.png" data-rjs="/images/book/modern-java-in-action/strategy-pattern.png" class="zooming" alt="strategy pattern" />
+    </a>
+    
+    <figcaption>
+        strategy pattern
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>알고리즘을 나타내는 인터페이스 (Strategy 인터페이스)</li>
+  <li>다양한 알고리즘을 나타내는 한 개 이상의 인터페이스 구현(ConcreteStrategyA, ConcreteStrategyB)</li>
+  <li>전략 객체를 사용한 한 개 이상의 클라이언트</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// strategy</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ValidationStrategy</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="c1">// concrete</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IsAllLowerCase</span> <span class="kd">implements</span> <span class="nc">ValidationStrategy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="s">"[a-z]+"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// client</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Validator</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ValidationStrategy</span> <span class="n">strategy</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Validator</span><span class="o">(</span><span class="nc">ValidationStrategy</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">strategy</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validate</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">strategy</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="nc">Validator</span> <span class="n">nemericValidator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Validator</span><span class="o">(</span><span class="k">new</span> <span class="nc">IsNumeric</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ValidationStrategy</code> 은 함수형 인터페이스로 <code class="language-plaintext highlighter-rouge">Predicate&lt;String&gt;</code> 함수 디스크립터를 가지고 있어서 람다 표현식으로 변경 가능</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Validator</span> <span class="n">numericValidator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Validator</span><span class="o">((</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="s">"[a-z]+"</span><span class="o">));</span>
+<span class="n">numericValidator</span><span class="o">.</span><span class="na">validate</span><span class="o">(</span><span class="s">"aaaaa"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="템플릿-메서드-template-method">템플릿 메서드 (template method)</h3>
+
+<p>템플릿 메서드 패턴을 사용하면 알고리즘의 일부를 고칠 수 있는 유연함을 제공할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">OnlineBanking</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">processCustomer</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Customer</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">Database</span><span class="o">.</span><span class="na">getCustomerWithId</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+        <span class="n">makeCustomerHappy</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">makeCustomerHappy</span><span class="o">(</span><span class="nc">Customer</span> <span class="n">c</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>람다 표현식을 이용해서 유연하게 변경이 가능</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">processCustomer</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">,</span> <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">Customer</span><span class="o">&gt;</span> <span class="n">makeCustomerHappy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Customer</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">Database</span><span class="o">.</span><span class="na">getCustomerWithId</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="n">makeCustomerHappy</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="k">new</span> <span class="nf">OnlineBankingLambda</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">processCustomer</span><span class="o">(</span><span class="mi">1337</span><span class="o">,</span> <span class="o">(</span><span class="nc">Customer</span> <span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello "</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="옵저버-패턴-observer-pattern">옵저버 패턴 (Observer pattern)</h3>
+
+<p>옵저버 패턴은 특정 이벤트가 발생했을 때, 한 객체(주제 subject)가 다른 객체 리스트(옵저버 observer)에 자동으로 알림을 보내는 패턴이다.</p>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/observer-pattern.png">
+        <img src="/images/book/modern-java-in-action/observer-pattern.png" data-rjs="/images/book/modern-java-in-action/observer-pattern.png" class="zooming" alt="observer pattern" />
+    </a>
+    
+    <figcaption>
+        observer pattern
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// observer</span>
+<span class="kd">interface</span> <span class="nc">Observer</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">notify</span><span class="o">(</span><span class="nc">String</span> <span class="n">tweet</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">NYTimes</span> <span class="kd">implements</span> <span class="nc">Observer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notify</span> <span class="o">(</span><span class="nc">String</span> <span class="n">tweet</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="k">if</span> <span class="o">(</span><span class="n">tweet</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"money"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Breaking news in NY! "</span> <span class="o">+</span> <span class="n">tweet</span><span class="o">);</span>
+        <span class="o">}</span>    
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// subject</span>
+<span class="kd">interface</span> <span class="nc">Subject</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">registerObserver</span><span class="o">(</span><span class="nc">Observer</span> <span class="n">o</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">notifyObservers</span><span class="o">(</span><span class="nc">String</span> <span class="n">tweet</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Feed</span> <span class="kd">implements</span> <span class="nc">Subject</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Observer</span><span class="o">&gt;</span> <span class="n">observers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">registerObserver</span> <span class="o">(</span><span class="nc">Observer</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">observers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notifyObservers</span><span class="o">(</span><span class="nc">String</span> <span class="n">tweet</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">observers</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">o</span> <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">tweet</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// client</span>
+<span class="nc">Feed</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Feed</span><span class="o">();</span>
+<span class="n">f</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">(</span><span class="k">new</span> <span class="nc">NYTimes</span><span class="o">());</span>
+<span class="n">f</span><span class="o">.</span><span class="na">notifyObservers</span><span class="o">(</span><span class="s">"The queen said her favourite book is Modern Java in Action!"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Observer</code> 인터페이스를 구현하는 모든 클래스를 인스턴스화하지 않고 람다 표현식을 직접 전달하여 동작을 지정한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="o">.</span><span class="na">registerObserver</span><span class="o">((</span><span class="nc">String</span> <span class="n">tweet</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">tweet</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"money"</span><span class="o">))</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Breaking news in NY! "</span> <span class="o">+</span> <span class="n">tweet</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">f</span><span class="o">.</span><span class="na">notifyObservers</span><span class="o">(</span><span class="s">"The queen said her favourite book is Modern Java in Action!"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="의무-체인chain-of-responsibility">의무 체인(chain of responsibility)</h3>
+
+<p>의무 체인 패턴을 이용하면 작업 처리 객체의 체인을 만들 수 있다.</p>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/chain-of-responsibility-pattern.png">
+        <img src="/images/book/modern-java-in-action/chain-of-responsibility-pattern.png" data-rjs="/images/book/modern-java-in-action/chain-of-responsibility-pattern.png" class="zooming" alt="chain of responsibility pattern" />
+    </a>
+    
+    <figcaption>
+        chain of responsibility pattern
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">successor</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setSuccessor</span><span class="o">(</span><span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">successor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">successor</span> <span class="o">=</span> <span class="n">successor</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">handle</span><span class="o">(</span><span class="no">T</span> <span class="n">input</span><span class="o">)</span> <span class="o">{</span>
+        <span class="no">T</span> <span class="n">r</span> <span class="o">=</span> <span class="n">handleWork</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">successor</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">successor</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">abstract</span> <span class="kd">protected</span> <span class="no">T</span> <span class="nf">handleWork</span><span class="o">(</span><span class="no">T</span> <span class="n">input</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HeaderTextProcessing</span> <span class="kd">extends</span> <span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">handleWork</span><span class="o">(</span><span class="nc">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"From Raoul, Mario and Alan: "</span> <span class="o">+</span> <span class="n">text</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpellChckerProcessing</span> <span class="kd">extends</span> <span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">handleWork</span><span class="o">(</span><span class="nc">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">"labda"</span><span class="o">,</span> <span class="s">"lambda"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// client</span>
+<span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HeaderTextProcessing</span><span class="o">();</span>
+<span class="nc">ProcessingObject</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpellCheckerProcessing</span><span class="o">();</span>
+<span class="n">p1</span><span class="o">.</span><span class="na">setSuccessor</span><span class="o">(</span><span class="n">p2</span><span class="o">);</span>
+<span class="n">p1</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="s">"Aren`t labdas really sexy?!!"</span><span class="o">);</span>  <span class="c1">// From Raoul, Mario and Alan: Aren`t lambdas really sexy?!! </span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">andThen</code>으로 함수를 조합해서 체인 생성이 가능하다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">UnaryOperator</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">headerProcessing</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s">"From Raoul, Mario and Alan: "</span> <span class="o">+</span> <span class="n">text</span><span class="o">;</span>
+<span class="nc">UnaryOperator</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">spellChckerProcessing</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">text</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">"labda"</span><span class="o">,</span> <span class="s">"lambda"</span><span class="o">);</span>
+<span class="nc">Function</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">pipeline</span> <span class="o">=</span> <span class="n">headerProcessing</span><span class="o">.</span><span class="na">andThen</span><span class="o">(</span><span class="n">spellChckerProcessing</span><span class="o">);</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="na">apply</span><span class="o">(...);</span>
+</code></pre></div></div>
+
+<h3 id="팩토리-factory">팩토리 (factory)</h3>
+
+<p>팩토리 패턴은 인스턴스화 로직을 클라이언트에 노출하지 않고 객체를 만들 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProductFactory</span> <span class="o">{</span> 
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Product</span> <span class="nf">createProduct</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">switch</span><span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">case</span> <span class="s">"loan"</span> <span class="o">:</span> <span class="k">return</span> <span class="k">new</span> <span class="nc">Loan</span><span class="o">();</span>
+            <span class="k">case</span> <span class="s">"stock"</span> <span class="o">:</span> <span class="k">return</span> <span class="k">new</span> <span class="nc">Stock</span><span class="o">();</span>
+            <span class="k">case</span> <span class="s">"bond"</span> <span class="o">:</span> <span class="k">return</span> <span class="k">new</span> <span class="nc">Bond</span><span class="o">();</span>
+            <span class="k">default</span> <span class="o">:</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"No such product "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// client</span>
+<span class="nc">Product</span> <span class="n">p</span> <span class="o">=</span> <span class="nc">ProductFactory</span><span class="o">.</span><span class="na">createProduct</span><span class="o">(</span><span class="s">"loan"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>생성자도 메서드 참조처럼 접근할 수 있으므로 <code class="language-plaintext highlighter-rouge">Map</code>을 만들어서 코드를 재구현 가능</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">final</span> <span class="kd">static</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="kd">static</span> <span class="o">{</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"loan"</span><span class="o">,</span> <span class="nl">Loan:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"stock"</span><span class="o">,</span> <span class="nl">Stock:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"bond"</span><span class="o">,</span> <span class="nl">Bond:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="c1">// client</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Product</span> <span class="nf">createProduct</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Product</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"No such product "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="93-람다-테스팅">9.3 람다 테스팅</h2>
+
+<p>프로그램이 의도한대로 동작하는 것을 확인하기 위해서는 단위 테스팅(unit testing) 이 필요하다.<br />
+예시를 통해 람다를 이용하여 테스트 코드를 작성해보도록 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Point</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">y</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nf">Point</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getX</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">x</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getY</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">y</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">Point</span> <span class="nf">moveRightBy</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">+</span> <span class="n">x</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">y</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMoveRightBy</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">Point</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
+    <span class="nc">Point</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="na">moveRightBy</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="n">p2</span><span class="o">.</span><span class="na">getX</span><span class="o">());</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="n">p2</span><span class="o">.</span><span class="na">getY</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="람다-표현식의-동작-테스팅">람다 표현식의 동작 테스팅</h3>
+
+<p>람다를 필드에 저장해서 재사용할 수 있고 로직을 테스트할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Point</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">compareByXAndThenY</span> <span class="o">=</span> 
+        <span class="n">comparing</span><span class="o">(</span><span class="nl">Point:</span><span class="o">:</span><span class="n">getX</span><span class="o">).</span><span class="na">thenComparing</span><span class="o">(</span><span class="nl">Point:</span><span class="o">:</span><span class="n">getY</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testComparingTwoPoints</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">Point</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">15</span><span class="o">);</span>
+    <span class="nc">Point</span> <span class="n">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="nc">Point</span><span class="o">.</span><span class="na">compareByXAndThenY</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="람다를-사용하는-메서드의-동작에-집중하라">람다를 사용하는 메서드의 동작에 집중하라</h3>
+
+<p>람다는 정해진 동작을 다른 메서드에서 사용할 수 있으나 캡슐화하는 것이 목표이므로 세부 구현을 공개하지 않아야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="nf">moveAllPointsRightBy</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">points</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">points</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                 <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">p</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">+</span> <span class="n">x</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="na">getY</span><span class="o">()))</span>
+                 <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">toList</span><span class="o">());</span>
+<span class="o">}</span>
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMoveAllPointsRightBy</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">points</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">),</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">5</span><span class="o">));</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">expectedPoints</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">5</span><span class="o">),</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">20</span><span class="o">,</span> <span class="mi">5</span><span class="o">));</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">newPoints</span> <span class="o">=</span> <span class="nc">Point</span><span class="o">.</span><span class="na">moveAllPointsRightBy</span><span class="o">(</span><span class="n">points</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="n">expectedPoints</span><span class="o">,</span> <span class="n">newPoints</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="복잡한-람다를-개별-메서드로-분할하기">복잡한 람다를 개별 메서드로 분할하기</h3>
+
+<p>복잡한 람다 표현식은 테스트를 작성하는 것도 어렵다. <br />
+그러나 람다 표현식을 메서드 참조로 바꿔서 일반 메서드처럼 분할한다면 테스트가 수월해진다.</p>
+
+<h3 id="고차원-함수-테스팅">고차원 함수 테스팅</h3>
+
+<p>함수를 인수로 받거나 다른 함수를 반환하는 메서드는 사용하기 어렵다.<br />
+메서드가 람다를 인수로 받는다면 다른 람다로 메서드의 동작을 테스트가 가능하다.<br />
+테스트할 메서드가 다른 함수를 반환한다면 함수형 인터페이스의 인스턴스로 간주하고 함수의 동작을 테스트할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFilter</span><span class="o">()</span> <span class="k">throw</span> <span class="nc">Exception</span> <span class="o">{</span> 
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">even</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span><span class="n">numbers</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">smallerThanThree</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span><span class="n">numbers</span><span class="o">,</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">4</span><span class="o">),</span> <span class="n">even</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="n">smallerThanThree</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="94-디버깅">9.4 디버깅</h2>
+
+<p>코드를 디버깅할 때 개발자는 스택 트레이스와, 로깅을 확인한다.<br />
+하지만 람다 표현식과 스트림은 기존의 디버깅 기법을 무력화하기 때문에 다른 디버깅 방법을 살펴보도록 한다.</p>
+
+<h3 id="스택-트레이스-확인">스택 트레이스 확인</h3>
+
+<p>프로그램이 중단되면 호출 위치, 인수값, 지역 변수 등을 스택 프레임(stack frame)에서 확인이 가능하다.  <br />
+하지만 람다 표현식은 이름이 없기 때문에 조금 복잡한 스택 트레이스가 생성된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Debugging</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">points</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="mi">12</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="n">points</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">p</span> <span class="o">-&gt;</span> <span class="n">p</span><span class="o">.</span><span class="na">getX</span><span class="o">()).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" java.lang.NullPointerException
+    at Debugging.lambda$main$0(Debugging.java:6)
+    at Debugging$$Lambda$5/284720968.apply(Unknown Source)
+    at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+    at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)  
+</code></pre></div></div>
+
+<p>람다 표현식은 이름이 없으므로 컴파일러가 람다를 참조하는 <code class="language-plaintext highlighter-rouge">lambda$main$0</code> 같은 이름을 만들어낸다. <br />
+메서드 참조를 사용하는 클래스와 같은 곳에 있는 메서드를 참조하면 메서드 참조 이름이 스택 트레이스에 나타난다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Debugging</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+        <span class="n">numbers</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">Debugging:</span><span class="o">:</span><span class="n">divideByZero</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">divideByZero</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at com.sodacrew.admin.auth.Debugging.divideByZero(Debugging.java:10)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	...
+</code></pre></div></div>
+
+<h3 id="정보-로깅">정보 로깅</h3>
+
+<p>스트림의 파이프라인 연산을 디버깅한다면 <code class="language-plaintext highlighter-rouge">peek</code> 이라는 스트림 연산을 활용할 수 있다.<br />
+<code class="language-plaintext highlighter-rouge">peek</code> 연산은 각 요소를 소비하지 않고 다음 연산으로 그대로 전달한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">peek</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"from stream: "</span> <span class="o">+</span> <span class="n">x</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">17</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">peek</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"after map: "</span> <span class="o">+</span> <span class="n">x</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter9.+%EB%A6%AC%ED%8C%A9%ED%84%B0%EB%A7%81,+%ED%85%8C%EC%8A%A4%ED%8C%85%252...%20-%20https://devyonghee.github.io/book/2022/07/03/modern-java-in-action-chapter9/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/07/03/modern-java-in-action-chapter9/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

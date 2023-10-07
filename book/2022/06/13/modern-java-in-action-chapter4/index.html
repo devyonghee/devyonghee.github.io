@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter4. 스트림 소개</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter4. 스트림 소개">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/13/modern-java-in-action-chapter4/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/13/modern-java-in-action-chapter4/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter4. 스트림 소개">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter4. 스트림 소개</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 13, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 4장에서는 스트림에 대해 소개하고 있다.<br />
+스트림에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="41-스트림이란-무엇인가">4.1 스트림이란 무엇인가?</h2>
+
+<p>스트림은 자바 8 에서 추가된 기능으로 컬렉션 데이터를 편하게 처리가 가능하다.<br />
+또한, 멀티 스레드 코드 구현 없이 간편하게 병렬로도 처리가 가능하다.</p>
+
+<h3 id="장점">장점</h3>
+<ul>
+  <li>선언형으로 코드 구현 가능
+    <ul>
+      <li>루프, <code class="language-plaintext highlighter-rouge">if</code> 조건문 등 제어블록을 이용한 동작 구현 없이 동작의 수행만을 지정할 수 있음</li>
+      <li>선언형 코드와 동작 파라미터화를 활용하면 유연하게 대응 가능</li>
+    </ul>
+  </li>
+  <li>복잡한 데이터 처리 파이프 라인 생성 가능(ex. <code class="language-plaintext highlighter-rouge">filter</code>, <code class="language-plaintext highlighter-rouge">sorted</code>, <code class="language-plaintext highlighter-rouge">map</code>…)
+    <ul>
+      <li>가독성과 명확성 유지</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="특징">특징</h3>
+<ul>
+  <li>선언형
+    <ul>
+      <li>더 간결하고 가독성 향상</li>
+    </ul>
+  </li>
+  <li>조립 가능
+    <ul>
+      <li>유연성 향상</li>
+    </ul>
+  </li>
+  <li>병렬화
+    <ul>
+      <li>성능 향상</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>컬렉션 제어하는데 도움이 되는 라이브러리</p>
+  <ul>
+    <li>구아바(Guava)</li>
+    <li>멀티맵 (Multimap)</li>
+    <li>멀티셋(Multiset)</li>
+    <li>아파치 공통 컬렉션(Apache Commons Collections)</li>
+    <li>람다제이(lambdaj)</li>
+  </ul>
+</blockquote>
+
+<h2 id="42-스트림-시작하기">4.2 스트림 시작하기</h2>
+
+<p>스트림은 데이터 처리 연산을 지원하도록 소스에서 추출된 연속된 요소를 의미한다.</p>
+
+<ul>
+  <li>연속된 요소
+    <ul>
+      <li>특정 요소 형식으로 이루어진 연속된 값 집합의 인터페이스 제공</li>
+      <li><code class="language-plaintext highlighter-rouge">filter</code>, <code class="language-plaintext highlighter-rouge">sorted</code>, <code class="language-plaintext highlighter-rouge">map</code> 같은 표현 계산식 위주</li>
+      <li>컬렉션의 주제는 데이터, 스트림은 계산</li>
+    </ul>
+  </li>
+  <li>소스
+    <ul>
+      <li>스트림은 데이터 제공 소스로부터 데이터를 소비한다.</li>
+      <li>정렬된 컬렉션으로 스트림을 생성하면 같은 순서를 유지</li>
+    </ul>
+  </li>
+  <li>데이터 처리 연산
+    <ul>
+      <li>일반적인 연산과 데이터베이스 비슷한 연산들을 지원</li>
+      <li><code class="language-plaintext highlighter-rouge">filter</code>, <code class="language-plaintext highlighter-rouge">map</code>, <code class="language-plaintext highlighter-rouge">reduce</code>, <code class="language-plaintext highlighter-rouge">find</code>, <code class="language-plaintext highlighter-rouge">match</code>, <code class="language-plaintext highlighter-rouge">sort</code> 등 지원</li>
+      <li>순차 또는 병렬로 실행 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스트림-특징">스트림 특징</h3>
+
+<ul>
+  <li>파이프라이닝(pipelining)
+    <ul>
+      <li>대부분의 연산이 자신을 반환하여 파이프라인 구성 가능</li>
+      <li>laziness, short-circuiting 같은 최적화 가능</li>
+    </ul>
+  </li>
+  <li>내부 반복</li>
+</ul>
+
+<h2 id="43-스트림과-컬렉션">4.3 스트림과 컬렉션</h2>
+
+<ul>
+  <li>계산 시점
+    <ul>
+      <li>컬렉션 : 자료구조가 포함하는 모든 값을 메모리에 저장 (컬렉션의 모든 요소는 컬렉션에 추가하기 전에 계산)</li>
+      <li>스트림 : 요청할 때만 요소를 계산하는 고정된 자료구조 (요소를 추가하거나 제거 불가, 게으른 생성)</li>
+    </ul>
+  </li>
+  <li>탐색
+    <ul>
+      <li>컬렉션 : 데이터 소스 반복 사용 가능</li>
+      <li>스트림 : 한번만 탐색 가능, 탐색된 요소는 소비 (다시 사용하려면 새로운 스트림 생성 필요)</li>
+    </ul>
+  </li>
+  <li>반복 처리
+    <ul>
+      <li>컬렉션 : 사용자가 직접 요소를 반복(외부 반복, external iteration)
+        <ul>
+          <li>병렬성을 스스로 관리해야 함</li>
+        </ul>
+      </li>
+      <li>스트림 : 어떤 작업을 수행할지만 지정하면 알아서 처리 (내부 반복, internal iteration)
+        <ul>
+          <li>병렬성 구현을 자동으로 선택 가능</li>
+          <li>반복 과정을 신경쓰지 않아도 됨</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/internal-external-iteration.png">
+        <img src="/images/book/modern-java-in-action/internal-external-iteration.png" data-rjs="/images/book/modern-java-in-action/internal-external-iteration.png" class="zooming" alt="internal and external iteration" />
+    </a>
+    
+    <figcaption>
+        internal and external iteration
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<h2 id="44-스트림-연산">4.4 스트림 연산</h2>
+
+<ul>
+  <li>중간 연산(intermediate operation): 연결할 수 있는 스트림 연산
+    <ul>
+      <li>중간 연산을 연결해서 질의 생성</li>
+      <li>단말 연산을 스트림 파이프라인에 실행하기 전까지 연산을 수행하지 않음(최종 연산으로 한번에 처리)</li>
+    </ul>
+  </li>
+  <li>최종 연산(terminal operation): 스트림을 닫는 연산
+    <ul>
+      <li>파이프라인에서 결과 도출</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스트림-이용-과정-builder-pattern-과-비슷">스트림 이용 과정 (builder pattern 과 비슷)</h3>
+<ul>
+  <li>질의를 수행할 데이터 소스</li>
+  <li>스트림 파이프라인을 구성할 중간 연산 연결</li>
+  <li>스트림 파이프라인을 실행하고 결과를 만들 최종 연산</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>연산</th>
+      <th>형식</th>
+      <th>반환 형식</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">filter</code></td>
+      <td>중간 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">map</code></td>
+      <td>중간 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">limit</code></td>
+      <td>중간 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">sorted</code></td>
+      <td>중간 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">distinct</code></td>
+      <td>중간 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">forEach</code></td>
+      <td>최종 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">count</code></td>
+      <td>최종 연산</td>
+      <td><code class="language-plaintext highlighter-rouge">long(generic)</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">collect</code></td>
+      <td>최종 연산</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter4.+%EC%8A%A4%ED%8A%B8%EB%A6%BC+%EC%86%8C%EA%B0%9C%20-%20https://devyonghee.github.io/book/2022/06/13/modern-java-in-action-chapter4/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/13/modern-java-in-action-chapter4/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

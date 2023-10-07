@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter3. 람다 표현식</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter3. 람다 표현식">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/07/modern-java-in-action-chapter3/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/07/modern-java-in-action-chapter3/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter3. 람다 표현식">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter3. 람다 표현식</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 7, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      8 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 3장에서는 자바 8의 새로운 기능인 람다 표현식에 대해 소개한다.<br />
+람다 표현식을 어떻게 만들고, 사용하여 코드를 간결하게 만드는지 자세히 알아보도록 한다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="31-람다란-무엇인가">3.1 람다란 무엇인가?</h2>
+
+<p>람다 표현식은 메서드로 전달할 수 있는 익명 함수를 단순화 한 것이다.</p>
+
+<h3 id="람다-특징">람다 특징</h3>
+<ul>
+  <li>익명
+    <ul>
+      <li>보통 메서드와 달리 이름이 없음</li>
+      <li>구현할 코드에 대해 걱정거리 감소</li>
+    </ul>
+  </li>
+  <li>함수
+    <ul>
+      <li>특정 클래스에 종속되지 않으므로 함수라고 부름</li>
+      <li>메서드처럼 파라미터 리스트, 바디, 반환 형식, 가능한 예외리스트는 포함</li>
+    </ul>
+  </li>
+  <li>전달
+    <ul>
+      <li>람다 표현식을 메서드 인수로 전달하거나 변수로 저장</li>
+    </ul>
+  </li>
+  <li>간결성
+    <ul>
+      <li>익명 클래스처럼 많은 코드가 필요하지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="람다-구성">람다 구성</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//       람다 파라미터       // 화살표 //               람다 바디                      // </span>
+<span class="o">(</span><span class="nc">Apple</span> <span class="n">apple1</span><span class="o">,</span> <span class="nc">Apple</span> <span class="n">apple2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">apple1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">apple2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">());</span>    
+</code></pre></div></div>
+
+<ul>
+  <li>람다 파라미터
+    <ul>
+      <li>메서드 파라미터 (<code class="language-plaintext highlighter-rouge">apple1</code>, <code class="language-plaintext highlighter-rouge">apple2</code>)</li>
+    </ul>
+  </li>
+  <li>화살표 (<code class="language-plaintext highlighter-rouge">-&gt;</code>)
+    <ul>
+      <li>람다 파라미터와 람다 바디를 구분</li>
+    </ul>
+  </li>
+  <li>람다 바디
+    <ul>
+      <li>람다의 반환 값에 해당하는 표현식</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="람다-기본-문법">람다 기본 문법</h3>
+
+<ul>
+  <li>표현식 스타일(expression style) : <code class="language-plaintext highlighter-rouge">(parameters) -&gt; expression</code></li>
+  <li>블록 스타일(block style) : <code class="language-plaintext highlighter-rouge">(parameters) -&gt; { statements; }</code></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="32-어디에-어떻게-람다를-사용할까">3.2 어디에, 어떻게 람다를 사용할까?</h2>
+
+<h3 id="함수형-인터페이스">함수형 인터페이스</h3>
+
+<p>함수형 인터페이스란 하나의 추상메서드만 지정하는 인터페이스를 의미한다.<br />
+<code class="language-plaintext highlighter-rouge">Predicate&lt;T&gt;</code>, <code class="language-plaintext highlighter-rouge">Comparator</code>, <code class="language-plaintext highlighter-rouge">Runnable</code> 등이 바로 함수형 인터페이스다.<br />
+<strong>람다 표현식</strong>은 추상 메소드의 구현을 직접 전달하므로 <strong>함수형 인터페이스의 인스턴스</strong>로 취급한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Predicate</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">test</span> <span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <h4 id="functionalinterface">@FunctionalInterface</h4>
+  <p><code class="language-plaintext highlighter-rouge">@FunctionalInterface</code> 은 함수형 인터페이스임을 의미하는 애노테이션이다.<br />
+이 애노테이션을 추가했는데 추상 메서드가 한 개 이상이라면 컴파일 에러가 발생된다.</p>
+</blockquote>
+
+<h3 id="함수-디스크립터-function-descriptor">함수 디스크립터 (function descriptor)</h3>
+
+<p>함수 디스크립터는 람다 표현식의 시그니처(signature)를 서술하는 메서드를 의미한다.</p>
+
+<h4 id="example">Example</h4>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">() -&gt; void </code>
+    <ul>
+      <li>파라미터가 없으며, <code class="language-plaintext highlighter-rouge">void</code> 를 반환하는 함수를 의미</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">(Apple, Apple) -&gt; int</code>
+    <ul>
+      <li>두 개의 Apple 을 인수로 받아 int 반환하는 함수를 의미</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="33-람다-활용--실행-어라운드-패턴-execute-around-pattern">3.3 람다 활용 : 실행 어라운드 패턴 (execute around pattern)</h2>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/execute-around-pattern.png">
+        <img src="/images/book/modern-java-in-action/execute-around-pattern.png" data-rjs="/images/book/modern-java-in-action/execute-around-pattern.png" class="zooming" alt="execute around pattern" />
+    </a>
+    
+    <figcaption>
+        execute around pattern
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<p>실용적인 예제를 통해 람다를 활용하여 유연하고 간결한 코드를 구현하는 방법에 대해 알아본다.<br />
+대부분 자원을 처리하는 곳에서 설정과 정리하는 과정은 비슷하다.<br />
+이렇게 실제 작업하는 코드가 설정과 정리 사이에 위치된 코드를 <strong>실행 어라운드 패턴</strong>(execute around pattern)이라고 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">String</span> <span class="nf">processFile</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> 
+            <span class="k">new</span> <span class="nf">BuffueredReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileReader</span><span class="o">(</span><span class="s">"data.txt"</span><span class="o">)))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span> <span class="c1">// 실제 작업하는 코드</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위 코드를 람다와 동작 파라미터로 유연하고 간결한 코드가 되도록 수정한다.<br />
+위에서 한 행을 읽던 부분이 두 행도 읽어야 한다는 상황을 가정한다.
+동작을 파라미터화하여 전달하기 위해 함수형 인터페이스를 정의하고 <code class="language-plaintext highlighter-rouge">processFile</code> 메서드 인수를 변경한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BufferedReaderProcessor</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="nf">process</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">b</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">processFile</span><span class="o">(</span><span class="nc">BufferedReaderProcessor</span> <span class="n">p</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="o">....</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>람다 표현식으로 추상 메서드 구현이 전달되었으니, 
+<code class="language-plaintext highlighter-rouge">processFile</code> 메서드 바디 내에서 <code class="language-plaintext highlighter-rouge">BufferedReaderProcessor</code> 의 <code class="language-plaintext highlighter-rouge">prcess</code> 를 호출하도록 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">String</span> <span class="nf">processFile</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> 
+            <span class="k">new</span> <span class="nf">BuffueredReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileReader</span><span class="o">(</span><span class="s">"data.txt"</span><span class="o">)))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">br</span><span class="o">);</span> <span class="c1">// 객체 처리</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이제 람다를 이용해서 <code class="language-plaintext highlighter-rouge">processFile</code> 메서드에서 다양한 동작을 수행할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">processFile</span><span class="o">((</span><span class="nc">BufferedReader</span> <span class="n">br</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+<span class="n">processFile</span><span class="o">((</span><span class="nc">BufferedReader</span> <span class="n">br</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">()</span> <span class="o">+</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h2 id="34-함수형-인터페이스-사용">3.4 함수형 인터페이스 사용</h2>
+
+<p>함수형 인터페이스의 추상 메서드 시그니처를 함수 디스크립터라고 한다.<br />
+람다 표현식을 다양하게 사용하려면 공통 함수 디스크립터를 기술하는 함수형 인터페이스 집합이 필요하다.<br />
+자바 8 에서는 이를 위해 <code class="language-plaintext highlighter-rouge">jaava.util.function</code> 패키지로 다양한 함수형 인터페이스를 제공하고 있다.</p>
+
+<h3 id="predicate">Predicate</h3>
+
+<p><code class="language-plaintext highlighter-rouge">java.util.function.Predicate&lt;T&gt;</code> 는 제네릭 형식의 <code class="language-plaintext highlighter-rouge">T</code> 객체를 인수로 받아 불리언을 반환하는 <code class="language-plaintext highlighter-rouge">test</code> 메소드를 정의한다.<br />
+자바독 명세를 보면 <code class="language-plaintext highlighter-rouge">and</code>, <code class="language-plaintext highlighter-rouge">or</code> 같은 메서드도 존재한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Predicate</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">test</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nc">Predicate</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">nonEmptyStringPredicate</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">!</span><span class="n">s</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h3 id="consumer">Consumer</h3>
+
+<p><code class="language-plaintext highlighter-rouge">java.util.function.Consumer&lt;T&gt;</code> 인터페이스는 <code class="language-plaintext highlighter-rouge">T</code> 객체를 받아서 <code class="language-plaintext highlighter-rouge">void</code> 를 반환하는 <code class="language-plaintext highlighter-rouge">accept</code> 메소드를 정의한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@FunctionalInterface
+public interface Consumer&lt;T&gt; {
+    void accept(T t);
+}
+
+Consumer&lt;Integer&gt; c = (Integer i) -&gt; System.out.println(i);
+</code></pre></div></div>
+
+<h3 id="function">Function</h3>
+
+<p><code class="language-plaintext highlighter-rouge">java.util.function.Function&lt;T, R&gt;</code> 인터페이스는 제네릭 형식 <code class="language-plaintext highlighter-rouge">T</code> 객체를 받아 <code class="language-plaintext highlighter-rouge">R</code> 객체를 반환하는 <code class="language-plaintext highlighter-rouge">apply</code> 메서드를 정의한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="no">R</span> <span class="nf">apply</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nc">Function</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h3 id="기본형-특화">기본형 특화</h3>
+
+<p>자바의 모든 형식은 참조형(reference type) 또는 기본형(primitive type)으로 이루어져 있다.<br />
+제네릭 파라미터에는 참조형만 사용 가능하기 때문에 기본형은 박싱(boxing) 기능을 이용하여 참조형으로 변환해서 사용해야 한다.<br />
+하지만 박싱된 값은 힙에 저장하여 메모리를 더 사용하게 되며, 가져올 때도 메모리를 탐색하게 되기 때문에 비용이 추가된다.<br />
+이러한 과정을 피할 수 있도록 자바에서는 특화된 함수형 인터페이스를 제공한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>함수형 인터페이스</th>
+      <th>함수 디스크립터</th>
+      <th>기본형 특화</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Predicate<T></T></td>
+      <td>T -&gt; boolean</td>
+      <td>IntPredicate<br />LongPredicate<br />DoublePredicate</td>
+    </tr>
+    <tr>
+      <td>Consumer<T></T></td>
+      <td>T -&gt; void</td>
+      <td>IntConsumer<br />LongConsumer<br />DoubleConsumer</td>
+    </tr>
+    <tr>
+      <td>Function&lt;T, R&gt;</td>
+      <td>T -&gt; R</td>
+      <td>IntFunction<R><br />IntToDoubleFunction<br />IntToLongFunction<br />LongFunction<R><br />...</R></R></td>
+    </tr>
+    <tr>
+      <td>Supplier<T></T></td>
+      <td>() -&gt; R</td>
+      <td>BooleanSupplier<br />IntSupplier<br />LongSupplier<br />DoubleSupplier</td>
+    </tr>
+    <tr>
+      <td>UnaryOperator<T></T></td>
+      <td>T -&gt; T</td>
+      <td>IntUnaryOperator<br />LongUnaryOperator</td>
+    </tr>
+    <tr>
+      <td>BinaryOperator<T></T></td>
+      <td>(T, T) -&gt; T</td>
+      <td>IntBinaryOperator<br />LongBinaryOperator<br />DoubleBinaryOperator</td>
+    </tr>
+    <tr>
+      <td>BiPredicate&lt;L, R&gt;</td>
+      <td>(T, U) -&gt; boolean</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>BiConsumer&lt;T, U&gt;</td>
+      <td>(T, U) -&gt; void</td>
+      <td>ObjInConsumer<T><br />ObjLongConsumer<T><br />ObjDoubleConsumer<T></T></T></T></td>
+    </tr>
+    <tr>
+      <td>BiFunction&lt;T, U, R&gt;</td>
+      <td>(T, U) -&gt; R</td>
+      <td>ToIntBiFunction&lt;T, U&gt;<br />ToLongBiFunction&lt;T, U&gt;<br />ToDoubleBiFunction&lt;T, U&gt;</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="35-형식-검사-형식-추론-제약">3.5 형식 검사, 형식 추론, 제약</h2>
+
+<h3 id="형식-검사">형식 검사</h3>
+
+<p>람다가 사용되는 콘텍스트(context, 전달 될 메서드 파라미터나 변수 등)를 이용해서 람다의 형식을 추론한다.<br />
+콘텍스트에서 기대하고 있는 람다 표현식을 <strong>대상 형식</strong>(target type)이라고 한다.</p>
+
+<h4 id="형식-검사-과정">형식 검사 과정</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">filter</span><span class="o">(</span><span class="n">inventory</span><span class="o">,</span> <span class="o">(</span><span class="nc">Apple</span> <span class="n">a</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="o">.</span><span class="na">getWeight</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">150</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">filter</code> 메서드의 선언 확인</li>
+  <li>메서드에서 두번째 파라미터로 <code class="language-plaintext highlighter-rouge">Predicate&lt;Apple&gt;</code> 대상 형식을 기대</li>
+  <li><code class="language-plaintext highlighter-rouge">Predicate&lt;Apple&gt;</code>은 한 개의 추상 메서드를 정의한 함수형 인터페이스인지 확인</li>
+  <li><code class="language-plaintext highlighter-rouge">test</code> 메서드가 <code class="language-plaintext highlighter-rouge">Apple</code> 인수로 받아 <code class="language-plaintext highlighter-rouge">boolean</code>을 반환하는 함수 디스크립터 확인</li>
+  <li>함수 디스크립터와 람다(메서드로 전달된 인수)의 시그니처가 같은지 확인</li>
+</ol>
+
+<h3 id="같은-람다-다른-함수형-인터페이스">같은 람다, 다른 함수형 인터페이스</h3>
+
+<p>대상 형식(target type)이라는 특성 때문에 같은 람다 표현식이어도 다른 함수형 인터페이스로 사용될 수 있다.<br />
+아래 할당문들은 모두 유효한 코드이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Callable</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="mi">42</span><span class="o">;</span>
+<span class="nc">PrivilegeAction</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="mi">42</span><span class="o">;</span>
+
+<span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">c1</span> <span class="o">=</span>                <span class="o">(</span><span class="nc">Apple</span> <span class="n">a1</span><span class="o">,</span> <span class="nc">Apple</span> <span class="n">a2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">a2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">());</span>
+<span class="nc">ToIntBiFunction</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">,</span> <span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">c2</span> <span class="o">=</span>    <span class="o">(</span><span class="nc">Apple</span> <span class="n">a1</span><span class="o">,</span> <span class="nc">Apple</span> <span class="n">a2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">a2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">());</span>
+<span class="nc">BiFunction</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">,</span> <span class="nc">Apple</span><span class="o">,</span> <span class="nc">Intger</span><span class="o">&gt;</span> <span class="n">c3</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Apple</span> <span class="n">a1</span><span class="o">,</span> <span class="nc">Apple</span> <span class="n">a2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">a2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="형식-추론">형식 추론</h3>
+
+<p>컴파일러는 대상 형식(target type)을 통해 함수 디스크립터를 파악하고 람다의 시그디처를 추론할 수 있다.<br />
+그러므로 파라미터 형식을 추론할 수 있기 때문에 람다 문법에서 이를 생략할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">greenApples</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span><span class="n">inventory</span><span class="o">,</span> <span class="n">apple</span> <span class="o">-&gt;</span> <span class="no">GREEN</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">apple</span><span class="o">.</span><span class="na">getColor</span><span class="o">()));</span>
+<span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">(</span><span class="n">a1</span><span class="o">,</span> <span class="n">a2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">a1</span><span class="o">.</span><span class="na">getWeight</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">a2</span><span class="o">.</span><span class="na">getWeight</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="지역-변수-사용">지역 변수 사용</h3>
+
+<p>람다 표현식에서는 인수 뿐만 아니라 람다 캡처링(capturing lambda)을 통해 외부에서 정의된 변수인 <strong>자유 변수</strong>(free variable)도 활용할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">portNumber</span> <span class="o">=</span> <span class="mi">123</span><span class="o">;</span>
+<span class="nc">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">portNumber</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>하지만 자유 변수를 사용하기 위해서는 지역 변수는 <code class="language-plaintext highlighter-rouge">final</code> 선언이 되어 있거나 <code class="language-plaintext highlighter-rouge">final</code> 변수와 비슷하게 사용되어야 한다. <br />
+한번만 활당할 수 있는 지역 변수여야 한다는 것이다.<br />
+지역 변수는 스택에 저장되는데 스레드가 종료되면 변수 할당이 사라질 수 있기 때문에 람다에는 복사본의 값이 전달된다.<br />
+복사된 값은 변경되지 않아야 하기 때문에 한번만 할당되어야 한다는 제약이 필요한 것이다.</p>
+
+<h2 id="36-메서드-참조">3.6 메서드 참조</h2>
+
+<p>메서드 참조를 이용하면 기존의 메서드를 람다처럼 가독성이 좋고 자연스럽게 전달할 수 있다.<br />
+메서드 참조는 메서드명 앞에 구분자(<code class="language-plaintext highlighter-rouge">::</code>)를 붙여서 활용할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nc">Apple</span> <span class="n">apple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">apple</span><span class="o">.</span><span class="na">getWeight</span><span class="o">();</span>  <span class="nl">Apple:</span><span class="o">:</span><span class="n">getWeight</span><span class="o">;</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>람다</th>
+      <th>메서드 참조 단축 표현</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">(Apple apple) -&gt; apple.getWeight();  Apple::getWeight;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Apple::getWeight</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">(str, i) -&gt; str.substring(i)</code></td>
+      <td><code class="language-plaintext highlighter-rouge">String::substring</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">this.isValidName(s)</code></td>
+      <td><code class="language-plaintext highlighter-rouge">this::isValidName</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="메서드-참조-유형">메서드 참조 유형</h3>
+
+<ul>
+  <li>정적 메서드 참조
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Integer.parseInt()</code> 메서드는 <code class="language-plaintext highlighter-rouge">Integer::parseInt</code> 로 표현</li>
+    </ul>
+  </li>
+  <li>다양한 형식의 인스턴스 메서드 참조
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">String</code>의 <code class="language-plaintext highlighter-rouge">length</code> 메서드는 <code class="language-plaintext highlighter-rouge">String::lenght</code> 로 표현</li>
+    </ul>
+  </li>
+  <li>기존 객체의 인스턴스 메서드 참조
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">expensiveTransaction</code> 지역 변수의 <code class="language-plaintext highlighter-rouge">getValue</code> 메서드는 <code class="language-plaintext highlighter-rouge">expensiveTransaction::getValue</code> 로 표현</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="생성자-참조">생성자 참조</h3>
+
+<p>정적 메서드의 참조를 만드는 방법과 비슷하게 <code class="language-plaintext highlighter-rouge">ClassName::new</code> 처럼 <code class="language-plaintext highlighter-rouge">new</code> 키워드로 생성자의 참조를 만들 수 있다.<br />
+아래 두 코드는 동일한 동작을 하는 코드이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">c1</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">Apple</span><span class="o">();</span>
+<span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;</span> <span class="n">c2</span> <span class="o">=</span> <span class="nl">Apple:</span><span class="o">:</span><span class="k">new</span><span class="o">;</span>
+</code></pre></div></div>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter3.+%EB%9E%8C%EB%8B%A4+%ED%91%9C%ED%98%84%EC%8B%9D%20-%20https://devyonghee.github.io/book/2022/06/07/modern-java-in-action-chapter3/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/07/modern-java-in-action-chapter3/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

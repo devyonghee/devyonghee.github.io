@@ -1,0 +1,17 @@
+@startuml
+top to bottom direction
+usecase "(1) Fran:\n이 버그의 원인이 뭘까" as 1
+usecase "(2) Ollie:\n널 포인터 때문인 것 같아" as 2
+usecase "(3) Fran:\n아니, 그건 확인해봤어" as 3
+usecase "(4) Kukla:\n입력 값이 유효한지 확인" as 4
+usecase "(5) Ollie:\n그래, 그게 버그야" as 5
+usecase "(6) Fran:\n그래 확인 코드 추가" as 6
+usecase "(7) Kukla:\n수정했어" as 7
+
+1 --> 2
+1 --> 4
+2 --> 3
+4 --> 5
+4 --> 6
+6 --> 7
+@enduml

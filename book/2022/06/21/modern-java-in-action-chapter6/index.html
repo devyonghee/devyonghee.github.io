@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter6. 스트림으로 데이터 수집</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter6. 스트림으로 데이터 수집">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/21/modern-java-in-action-chapter6/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/21/modern-java-in-action-chapter6/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter6. 스트림으로 데이터 수집">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter6. 스트림으로 데이터 수집</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 21, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      10 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 6장에서는 다양한 요소 누적 방식으로 리듀싱 연산하는 방법에 대해 소개한다.<br />
+<code class="language-plaintext highlighter-rouge">collect</code> 메서드에 범용적인 컬렉터를 전달하여 원하는 연산을 간결하게 구현해본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="61-컬렉터란-무엇인가">6.1 컬렉터란 무엇인가</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Collector</code> 인터페이스 구현은 스트림의 요소를 어떻게 결과를 도출할지 지정한다.   <br />
+조합성과 재사용도 뛰어나며, 결과를 수집하는 과정을 간단하면서 유연하게 구현할 수 있다는 점이 큰 장점이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Collector</code> 에서 제공하는 메서드의 기능은 크게 세 가지가 있다.</p>
+
+<ul>
+  <li>스트림 요소를 하나의 값으로 리듀스하고 요약
+    <ul>
+      <li>총합, 최대 최소 등 다양한 계산을 수행할 때 활용</li>
+    </ul>
+  </li>
+  <li>요소 그룹화
+    <ul>
+      <li>다수준으로 그룹화 하거나 서브그룹에 추가로 리듀싱 연산</li>
+    </ul>
+  </li>
+  <li>요소 분할
+    <ul>
+      <li>프레디케이트를 그룹화 함수로 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="62-리듀싱과-요약">6.2 리듀싱과 요약</h2>
+
+<p>컬렉터로 스트림의 모든 항목을 하나의 결과로 도출해낼 수 있다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Collectors.counting</code>
+    <ul>
+      <li>요소의 갯수를 계산</li>
+      <li>다른 컬렉터와 함께 사용할 때 특히 유용</li>
+      <li><code class="language-plaintext highlighter-rouge">count()</code> 로 대체 가능</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Collectors.maxBy</code>, <code class="language-plaintext highlighter-rouge">Collectors.minBy</code>
+    <ul>
+      <li>스트림의 최댓값과 최솟값 계산 가능</li>
+      <li><code class="language-plaintext highlighter-rouge">Comparator</code> 를 인수로 받음</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Collectors.summingInt</code>, <code class="language-plaintext highlighter-rouge">Collectors.summingLong</code>, <code class="language-plaintext highlighter-rouge">Collectors.summingDouble</code>
+    <ul>
+      <li>요약 팩토리 메서드</li>
+      <li>요소들을 매핑한 값들의 합을 구함 (요약 연산)</li>
+      <li>객체를 <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">long</code>, <code class="language-plaintext highlighter-rouge">double</code> 로 매핑하는 함수를 인수로 받음</li>
+      <li><code class="language-plaintext highlighter-rouge">Collectors.averagingInt</code> (평균값), <code class="language-plaintext highlighter-rouge">Collectors.summarizingInt</code> (합계, 평균, 최댓값 등 한번에 계산) 메서드도 존재</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Collectors.joining</code>
+    <ul>
+      <li>추출한 모든 문자열을 하나의 문자열로 연결</li>
+      <li>구분 문자열 추가 가능 (ex. <code class="language-plaintext highlighter-rouge">joining(", ")</code>)</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Collectors.reducing</code>
+    <ul>
+      <li>위의 모든 기능들을 <code class="language-plaintext highlighter-rouge">reducing</code> 으로도 구현 가능</li>
+      <li>리듀싱 연산의 시작값, 변환 함수, 두 항목을 하나의 값으로 더하는 <code class="language-plaintext highlighter-rouge">BinaryOperator</code> 를 인수로 받음</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="collect-vs-reduce">collect vs reduce</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">collect</code>
+    <ul>
+      <li>도출하려는 결과를 누적하는 컨테이너를 변경하도록 설계된 메서드</li>
+      <li>가변 컨테이너를 다루면서 병렬성도 확보 가능</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">reduce</code>
+    <ul>
+      <li>두 값을 하나로 도출하는 불변형 연산</li>
+      <li>여러 스레드가 동시에 데이터 구조체를 변경하면 문제가 발생되므로 병렬 수행 불가능 (매번 새로운 리스트를 할당한다면 성능저하)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="63-그룹화">6.3 그룹화</h2>
+
+<p>그룹화는 데이터 집합을 하나 이상의 특성으로 분류하는 작업이다.<br />
+자바 8의 함수형과 팩토리 메서드 <code class="language-plaintext highlighter-rouge">Collectors.groupingBy</code> 를 이용하면 가독성있는 그룹화를 구현할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;</span> <span class="n">dishesByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">));</span>
+
+<span class="o">{</span> <span class="no">FISH</span><span class="o">=[</span><span class="n">prawns</span><span class="o">,</span> <span class="n">salmon</span><span class="o">],</span> <span class="no">OTHER</span><span class="o">=[</span><span class="n">french</span> <span class="n">fries</span><span class="o">,</span> <span class="n">rice</span><span class="o">,</span> <span class="n">season</span><span class="o">,</span> <span class="n">fruit</span><span class="o">,</span> <span class="n">pizza</span><span class="o">],</span> <span class="no">MEAT</span><span class="o">=[</span><span class="n">pork</span><span class="o">,</span> <span class="n">beef</span><span class="o">,</span> <span class="n">chicken</span><span class="o">]</span> <span class="o">}</span>        
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">groupingBy</code> 에 두 번째 인수를 이용하면 다양한 문제를 해결할 수 있다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">filtering</code><br />
+프레디케이트로 키를 유지하면서 필터링이 가능
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;</span> <span class="n">dishesByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                 <span class="n">filtering</span><span class="o">(</span><span class="n">dish</span> <span class="o">-&gt;</span> <span class="n">dish</span><span class="o">.</span><span class="na">getCalories</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="o">,</span> <span class="n">toList</span><span class="o">())));</span>
+  
+<span class="o">{</span> <span class="no">OTHER</span><span class="o">=[</span><span class="n">french</span> <span class="n">fries</span><span class="o">,</span> <span class="n">pizza</span><span class="o">],</span> <span class="no">MEAT</span><span class="o">=[</span><span class="n">pork</span><span class="o">,</span> <span class="n">beef</span><span class="o">],</span> <span class="no">FISH</span><span class="o">=[]</span> <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">mapping</code><br />
+각 항목에 함수를 적용한 리스트를 모음
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="n">dishNamesByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> <span class="n">mapping</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getName</span><span class="o">,</span> <span class="n">toList</span><span class="o">())));</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">flatMapping</code><br />
+리스트를 한수준으로 평면화
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="n">dishTagsByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                 <span class="n">flatMapping</span><span class="o">(</span><span class="n">dish</span> <span class="o">-&gt;</span> <span class="n">dishTags</span><span class="o">.</span><span class="na">get</span><span class="o">(</span> <span class="n">dish</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">).</span><span class="na">stream</span><span class="o">(),</span> <span class="n">toSet</span><span class="o">())));</span>
+</code></pre></div>    </div>
+  </li>
+  <li>다수준그룹화<br />
+<code class="language-plaintext highlighter-rouge">groupingBy</code> 를 이용하여 두 수준으로 그룹화 가능
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">CaloricLevel</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;&gt;</span> <span class="n">dishesByTypeCaloricLevel</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                 <span class="n">groupingBy</span><span class="o">(</span><span class="n">dish</span> <span class="o">-&gt;</span> 
+                     <span class="k">if</span> <span class="o">(</span><span class="n">dish</span><span class="o">.</span><span class="na">getCalories</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="mi">400</span><span class="o">)</span> <span class="o">{</span>
+                         <span class="k">return</span> <span class="nc">CaloricLevel</span><span class="o">.</span><span class="na">DIET</span><span class="o">;</span>
+                     <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">dish</span><span class="o">.</span><span class="na">getCalories</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="mi">700</span><span class="o">)</span> <span class="o">{</span>
+                         <span class="k">return</span> <span class="nc">CaloricLevel</span><span class="o">.</span><span class="na">NORMAL</span><span class="o">;</span> 
+                     <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                         <span class="k">return</span> <span class="nc">CaloricLevel</span><span class="o">.</span><span class="na">FAT</span><span class="o">;</span>
+                     <span class="o">}</span>
+                  <span class="o">)));</span>
+  
+<span class="o">{</span> <span class="no">MEAT</span><span class="o">={</span> <span class="no">DIET</span><span class="o">=[</span><span class="n">chicken</span><span class="o">],</span> <span class="no">NORMAL</span><span class="o">=[</span><span class="n">beef</span><span class="o">],</span> <span class="no">FAT</span><span class="o">=[</span><span class="n">pork</span><span class="o">]</span> <span class="o">},</span> 
+  <span class="no">FISH</span><span class="o">={</span> <span class="no">DIET</span><span class="o">=[</span><span class="n">prawns</span><span class="o">],</span> <span class="no">NORMAL</span><span class="o">=[</span><span class="n">salmon</span><span class="o">]</span> <span class="o">},</span>
+  <span class="no">OTHER</span><span class="o">={</span> <span class="no">DIET</span><span class="o">=[</span><span class="n">rice</span><span class="o">,</span> <span class="n">seasonal</span> <span class="n">fruit</span><span class="o">],</span> <span class="no">NORMAL</span><span class="o">=[</span><span class="n">french</span> <span class="n">fries</span><span class="o">,</span> <span class="n">pizza</span><span class="o">]</span> <span class="o">}</span> <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">counting</code><br />
+종류별로 갯수를 계산
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;</span> <span class="n">typesCount</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> <span class="n">counting</span><span class="o">()));</span>
+  
+<span class="o">{</span> <span class="no">MEAT</span><span class="o">=</span><span class="mi">3</span><span class="o">,</span> <span class="no">FISH</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="no">OTHER</span><span class="o">=</span><span class="mi">4</span> <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">maxBy</code><br />
+최대 값의 종류
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;</span> <span class="n">mostCaloricByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                            <span class="n">maxBy</span><span class="o">(</span><span class="n">comparingInt</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getCalories</span><span class="o">))));</span>
+  
+<span class="o">{</span> <span class="no">FISH</span><span class="o">=</span><span class="nc">Optional</span><span class="o">[</span><span class="n">slamon</span><span class="o">],</span> <span class="no">OTHER</span><span class="o">=</span><span class="nc">Optional</span><span class="o">[</span><span class="n">pizza</span><span class="o">],</span> <span class="no">MEAT</span><span class="o">=</span><span class="nc">Optional</span><span class="o">[</span><span class="n">pork</span><span class="o">]</span> <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">collectingAndThen</code><br />
+컬렉터가 반환한 결과를 다른 형식으로 활용<br />
+리듀싱 컬렉터는 <code class="language-plaintext highlighter-rouge">Optional.empty()</code>를 반환하지 않으므로 안전한 코드
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Dish</span><span class="o">&gt;</span> <span class="n">mostCaloricByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                            <span class="n">collectingAndThen</span><span class="o">(</span>
+                                <span class="n">maxBy</span><span class="o">(</span><span class="n">comparingInt</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getCalories</span><span class="o">)),</span>
+                            <span class="nl">Optional:</span><span class="o">:</span><span class="n">get</span><span class="o">)));</span>
+  
+<span class="o">{</span> <span class="no">FISH</span><span class="o">=</span><span class="n">slamon</span><span class="o">,</span> <span class="no">OTHER</span><span class="o">=</span><span class="n">pizza</span><span class="o">,</span> <span class="no">MEAT</span><span class="o">=</span><span class="n">pork</span> <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">summingInt</code><br />
+모든 요소의 합계
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">mostCaloricByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">,</span> 
+                            <span class="n">summingInt</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getCalories</span><span class="o">)));</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="64-분할">6.4 분할</h2>
+
+<p>분할은 분할 함수(partitioning function) 이라는 프레디케이트를 사용하는 그룹화 기능이다.<br />
+분할 함수는 불리언을 반환하므로 키 형식은 <code class="language-plaintext highlighter-rouge">Boolean</code>으로 두 개의 그룹으로 분류된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;</span> <span class="n">partitionedMenu</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">collect</span><span class="o">(</span><span class="n">partitioningBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">isVegetarian</span><span class="o">));</span>
+    
+<span class="o">{</span> <span class="kc">false</span> <span class="o">=</span> <span class="o">[</span><span class="n">pork</span><span class="o">,</span> <span class="n">beef</span><span class="o">,</span> <span class="n">chicken</span><span class="o">,</span> <span class="n">prawns</span><span class="o">,</span> <span class="n">salmon</span><span class="o">],</span> 
+  <span class="kc">true</span> <span class="o">=</span> <span class="o">[</span><span class="n">french</span> <span class="n">fries</span><span class="o">,</span> <span class="n">rice</span><span class="o">,</span> <span class="n">season</span> <span class="n">fruit</span><span class="o">,</span> <span class="n">pizza</span><span class="o">]</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">groupingBy</code>와 마찬가지로 <code class="language-plaintext highlighter-rouge">partitioningBy</code> 에 두 번째 인수를 이용하면 다양하게 활용 가능하다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">groupingBy</code>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">.</span><span class="na">Type</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;&gt;</span> <span class="n">vegetarianDishesByType</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">collect</span><span class="o">(</span>
+        <span class="n">partitioningBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">isVegetarian</span><span class="o">,</span> <span class="n">groupingBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getType</span><span class="o">)));</span>
+  
+<span class="o">{</span> <span class="kc">false</span> <span class="o">=</span> <span class="o">{</span><span class="no">FISH</span><span class="o">=[</span><span class="n">prawns</span><span class="o">,</span> <span class="n">salmon</span><span class="o">],</span> <span class="no">MEAT</span><span class="o">=[</span><span class="n">pork</span><span class="o">,</span> <span class="n">beef</span><span class="o">,</span> <span class="n">chicken</span><span class="o">]}</span>
+  <span class="kc">true</span> <span class="o">=</span> <span class="o">{</span><span class="no">OTHER</span><span class="o">=[</span><span class="n">french</span> <span class="n">fries</span><span class="o">,</span> <span class="n">rice</span><span class="o">,</span> <span class="n">season</span> <span class="n">fruit</span><span class="o">,</span> <span class="n">pizza</span><span class="o">]}}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">collectingAndThen</code>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">Dish</span><span class="o">&gt;</span> <span class="n">mostCaloricPartitionedByVegetarian</span> <span class="o">=</span> 
+    <span class="n">menu</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">collect</span><span class="o">(</span>
+        <span class="n">partitioningBy</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">isVegetarian</span><span class="o">,</span> 
+            <span class="n">collectingAndThen</span><span class="o">(</span><span class="n">maxBy</span><span class="o">(</span><span class="n">comparingInt</span><span class="o">(</span><span class="nl">Dish:</span><span class="o">:</span><span class="n">getCalories</span><span class="o">)),</span> <span class="nl">Optional:</span><span class="o">:</span><span class="n">get</span><span class="o">)));</span>
+  
+<span class="o">{</span> <span class="kc">false</span> <span class="o">=</span> <span class="n">pork</span><span class="o">,</span> <span class="kc">true</span> <span class="o">=</span> <span class="n">pizza</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="65-collector-인터페이스">6.5 Collector 인터페이스</h2>
+
+<p>Collector 인터페이스를 직접 구현하여 효율적으로 문제를 해결해본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Collector</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">A</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nc">Supplier</span><span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="nf">supplier</span><span class="o">();</span>
+    <span class="nc">BiConsumer</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="nf">accumulator</span><span class="o">();</span>
+    <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">finisher</span><span class="o">();</span>
+    <span class="nc">BinaryOperator</span><span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="nf">combiner</span><span class="o">();</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Characteristics</span><span class="o">&gt;</span> <span class="nf">characteristics</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">T</code> 는 수집될 스트림 항목의 제네릭 형식</li>
+  <li><code class="language-plaintext highlighter-rouge">A</code> 는 누적자, 수집 과정에서 중간 결과를 누적하는 객체의 형식</li>
+  <li><code class="language-plaintext highlighter-rouge">R</code> 은 수집 연산 결과 객체의 형식</li>
+</ul>
+
+<h3 id="collector-메서드-살펴보기">Collector 메서드 살펴보기</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">supplier</code> 메서드: 새로운 결과 컨테이너 생성
+    <ul>
+      <li>수집 과정에서 빈 누적자 인스턴스를 만드는 함수
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="nf">supplier</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nl">ArrayList:</span><span class="o">:</span><span class="k">new</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">accumulator</code> 메서드: 결과 컨테이너에 요소 추가
+    <ul>
+      <li>리듀싱 연산을 수행하는 함수</li>
+      <li>누적자(n-1개 항목을 수집한 상태)와 n번째 요소를 함수에 적용
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">BiConsumer</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="nf">accumulator</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nl">List:</span><span class="o">:</span><span class="n">add</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">finisher</code> 메서드: 최종 변환값을 결과 컨테이너로 적용하기
+    <ul>
+      <li>누적과정을 끝낼 때 호출할 함수</li>
+      <li>스트림 탐색을 끝내고 누적자 객체를 최종 결과로 변환
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 변환 과정이 필요없는 경우</span>
+<span class="kd">public</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="nf">finisher</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nc">Function</span><span class="o">.</span><span class="na">identity</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">combiner</code> 메서드: 두 결과 컨테이너 병합
+    <ul>
+      <li>리듀싱 연산에서 사용할 함수</li>
+      <li>스트림의 서로 다른 서브파트를 병렬로 처리할 때 결과를 어떻게 처리할지 정의</li>
+      <li>스트림의 리듀싱을 병렬로 수행 가능
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">BinaryOperator</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="nf">combiner</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">list1</span><span class="o">,</span> <span class="n">list2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="n">list1</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">list2</span><span class="o">);</span>
+      <span class="k">return</span> <span class="n">list1</span><span class="o">;</span> 
+  <span class="o">};</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">characteristics</code> 메서드
+    <ul>
+      <li>컬렉터의 연산을 정의하는 <code class="language-plaintext highlighter-rouge">characteristics</code> 형식의 불변 집합</li>
+      <li>스트림을 병렬로 리듀스할 것인지, 리듀스한다면 어떤 최적화를 선택하는지 힌트 제공
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">UNORDERED</code>: 리듀싱 결과는 스트림 요소의 방문 순서나 누적 순서에 영향 없음</li>
+          <li><code class="language-plaintext highlighter-rouge">CONCURRENT</code>: 다중 스레드에서 <code class="language-plaintext highlighter-rouge">accumulator</code> 동시 호출 가능, <code class="language-plaintext highlighter-rouge">UNORDERED</code>을 함께 설정하지 않았다면 정렬안된 상태에서만 병렬 리듀싱 수행 가능</li>
+          <li><code class="language-plaintext highlighter-rouge">IDENTITY_FINISH</code>: <code class="language-plaintext highlighter-rouge">finisher</code> 메서드가 반환되는 함수는 <code class="language-plaintext highlighter-rouge">identity</code> 를 적용하므로 생략 가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="collector-구현-없이-커스텀-수집">Collector 구현 없이 커스텀 수집</h3>
+
+<p>세 함수를 인수로 받는 <code class="language-plaintext highlighter-rouge">collector</code> 메서드를 통해 <code class="language-plaintext highlighter-rouge">Collector</code> 와 비슷한 기능 수행<br />
+하지만 다음과 같은 단점들이 존재한다.</p>
+
+<ul>
+  <li>코드는 간결하지만 가독성이 떨어짐</li>
+  <li>커스텀 컬렉터를 구현하는 것이 중복도 피하고 재사용성이 높음</li>
+  <li><code class="language-plaintext highlighter-rouge">Characteristics</code> 전달 불가능 (<code class="language-plaintext highlighter-rouge">IDENTITY_FINISH</code> 와 <code class="language-plaintext highlighter-rouge">CONCURRENT</code> 지만 <code class="language-plaintext highlighter-rouge">UNORDERED</code> 아닌 컬렉터로만 동작)</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Dish</span><span class="o">&gt;</span> <span class="n">dishes</span> <span class="o">=</span> <span class="n">menuStream</span><span class="o">.</span><span class="na">collect</span><span class="o">(</span>
+    <span class="nl">ArrayList:</span><span class="o">:</span><span class="k">new</span><span class="o">,</span>   <span class="c1">// 발행</span>
+    <span class="nl">List:</span><span class="o">:</span><span class="n">add</span><span class="o">,</span>        <span class="c1">// 누적</span>
+    <span class="nl">List:</span><span class="o">:</span><span class="n">addAll</span><span class="o">);</span>    <span class="c1">// 합침</span>
+</code></pre></div></div>
+
+<h2 id="66-커스텀-컬렉터를-구현해서-성능-개선하기">6.6 커스텀 컬렉터를 구현해서 성능 개선하기</h2>
+
+<p>n 까지의 자연수를 소수와 비소수로 분할하는 컬렉터를 직접 구현한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PrimeNumbersCollector</span> <span class="kd">implements</span> 
+    <span class="nc">Collector</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;&gt;</span> <span class="o">{</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">supplier</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="n">put</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;());</span>
+            <span class="n">put</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;());</span>
+        <span class="o">}</span> <span class="o">};</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">BiConsumer</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">accumulator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">acc</span><span class="o">,</span> <span class="nc">Integer</span> <span class="n">candidate</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">acc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span> <span class="n">isPirme</span><span class="o">(</span> <span class="n">acc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">true</span><span class="o">),</span> <span class="n">candidate</span><span class="o">)).</span><span class="na">add</span><span class="o">(</span><span class="n">candidate</span><span class="o">);</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Override</span>
+    <span class="n">publid</span> <span class="nc">BinaryOperator</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">combiner</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">map1</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">map2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">map1</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">addAll</span><span class="o">(</span><span class="n">map2</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+            <span class="n">map1</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">false</span><span class="o">).</span><span class="na">addAll</span><span class="o">(</span><span class="n">map2</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">false</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">finisher</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 최종 수집 과정에 변환이 필요 없음</span>
+        <span class="k">return</span> <span class="nc">Function</span><span class="o">.</span><span class="na">identity</span><span class="o">();</span>
+    <span class="o">}</span>    
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Characteristics</span><span class="o">&gt;</span> <span class="nf">characteristics</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 소수의 순서에 의미가 있으므로 UNORDERED, CONCURRENT 가 아님</span>
+        <span class="k">return</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">unmodifiableSet</span><span class="o">(</span><span class="nc">EnumSet</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="no">IDENTITY_FINISH</span><span class="o">));</span>
+    <span class="o">}</span> 
+<span class="o">}</span>
+
+<span class="nc">IntStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">).</span><span class="na">boxed</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="k">new</span> <span class="nc">PrimeNumbersCollector</span><span class="o">());</span> 
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter6.+%EC%8A%A4%ED%8A%B8%EB%A6%BC%EC%9C%BC%EB%A1%9C+%EB%8D%B0%EC%9D%B4%ED%258...%20-%20https://devyonghee.github.io/book/2022/06/21/modern-java-in-action-chapter6/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/21/modern-java-in-action-chapter6/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter20. OOP와 FP의 조화: 자바와 스칼라 비교</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter20. OOP와 FP의 조화: 자바와 스칼라 비교">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/09/21/modern-java-in-action-chapter20/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/09/21/modern-java-in-action-chapter20/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter20. OOP와 FP의 조화: 자바와 스칼라 비교">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter20. OOP와 FP의 조화: 자바와 스칼라 비교</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 21, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      8 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 20장에서는 OOP와 FP 조화에 대해 설명한다. <br />
+스칼라에 대해 가볍게 알아보고 자바와 스칼라의 기능을 비교해본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="201-스칼라-소개">20.1 스칼라 소개</h2>
+
+<p>스칼라의 특성에 대해 살펴볼 수 있도록 다음 사항들을 소개한다.</p>
+
+<ul>
+  <li>명령형과 함수형으로 구현된 예제</li>
+  <li>스칼라가 지원하는 리스트, 집합, 맵, 스트림, 튜플, 옵션 등의 자료구조를 살펴보며 자바의 자료구조와 비교</li>
+  <li>스칼라의 트레이트 (자바의 인터페이스)</li>
+</ul>
+
+<h3 id="hello-beer">Hello beer</h3>
+
+<h4 id="명령형-스칼라">명령형 스칼라</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Beer</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+        <span class="k">var</span> <span class="n">n</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="nf">while</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="k">=</span> <span class="mi">6</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"Hello ${n}"</span> <span class="n">bottoles</span> <span class="n">of</span> <span class="n">beer</span><span class="o">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>스칼라에서는 object 로 직접 싱글턴 객체를 만들 수 있음 (한 번에 단 하나의 인스턴스 생성)</li>
+  <li>내부 선언된 메서드는 정적 메서드로 간주 (<code class="language-plaintext highlighter-rouge">static</code> 없음)</li>
+  <li>문자열 보간법(string interpolation, 문자열 자체에 변수와 표현식 삽입)</li>
+</ul>
+
+<h4 id="함수형-스칼라">함수형 스칼라</h4>
+
+<p>자바의 함수형</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foo</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">IntStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+                 <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello "</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="s">" bottles of beer"</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>스칼라의 함수형</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Beer</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+        <span class="mi">2</span> <span class="n">to</span> <span class="mi">6</span> <span class="n">foreach</span> <span class="o">{</span> <span class="n">n</span> <span class="k">=&gt;</span> <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"Hello ${n} bottles of beer"</span><span class="o">)</span> <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>스칼라는 기본형이 없고 모든 것이 객체 (2는 Int 형식의 객체)</li>
+  <li>인픽스 형식 구현 가능 (<code class="language-plaintext highlighter-rouge">2.to(6)</code> -&gt; <code class="language-plaintext highlighter-rouge">2 to 6</code>)</li>
+  <li>람다 표현식 문법은 비슷 (<code class="language-plaintext highlighter-rouge">-&gt;</code> 대신 <code class="language-plaintext highlighter-rouge">=&gt;</code>)</li>
+</ul>
+
+<h3 id="기본-자료구조--리스트-집합-맵-튜플-스트림-옵션">기본 자료구조 : 리스트, 집합, 맵, 튜플, 스트림, 옵션</h3>
+
+<h4 id="컬렉션-만들기">컬렉션 만들기</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">authorsToAge</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">"Raoul"</span> <span class="o">-&gt;</span> <span class="mi">23</span><span class="o">,</span> <span class="s">"Mario"</span> <span class="o">-&gt;</span> <span class="mi">40</span><span class="o">,</span> <span class="s">"Alan"</span> <span class="o">-&gt;</span> <span class="mi">53</span><span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-&gt;</code> 문법으로 키를 값에 대응</li>
+  <li>변수형 자동 추론 기능 (형식 생략 가능)</li>
+  <li><code class="language-plaintext highlighter-rouge">var</code> 대신 <code class="language-plaintext highlighter-rouge">val</code> 키워드 사용 (읽기 전용, 할당 불가)</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 리스트 만들기</span>
+<span class="k">val</span> <span class="nv">authors</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">"Raoul"</span><span class="o">,</span> <span class="s">"Mario"</span><span class="o">,</span> <span class="s">"Alan"</span><span class="o">)</span>
+<span class="c1">// 집합 만들기</span>
+<span class="k">val</span> <span class="nv">numbers</span> <span class="k">=</span> <span class="nc">Set</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">8</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="불변과-가변">불변과 가변</h4>
+
+<p>컬렉션은 기본적으로 불변(immutable)이다.<br />
+스칼라에서는 자료를 공유하는 새로운 컬렉션을 만드는 방법으로 자료구조를 갱신한다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">numbers</span> <span class="k">=</span> <span class="nc">Set</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+<span class="k">val</span> <span class="nv">newNumbers</span> <span class="k">=</span> <span class="n">numbers</span> <span class="o">+</span> <span class="mi">8</span><span class="o">;</span>
+<span class="nf">println</span><span class="o">(</span><span class="n">newNumbers</span><span class="o">)</span>  <span class="c1">// 2, 5, 3, 8</span>
+<span class="nf">println</span><span class="o">(</span><span class="n">numbers</span><span class="o">)</span>     <span class="c1">// 2, 5, 3</span>
+</code></pre></div></div>
+
+<h4 id="컬렉션-사용하기">컬렉션 사용하기</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">fileLines</span> <span class="k">=</span> <span class="nv">Source</span><span class="o">.</span><span class="py">fromFile</span><span class="o">(</span><span class="s">"data.txt"</span><span class="o">).</span><span class="py">getLines</span><span class="o">.</span><span class="py">toList</span><span class="o">()</span>
+<span class="k">val</span> <span class="nv">linesLongUpper</span> <span class="k">=</span> <span class="nv">fileLines</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">l</span> <span class="k">=&gt;</span> <span class="nv">l</span><span class="o">.</span><span class="py">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="o">)</span>
+                              <span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">l</span> <span class="k">=&gt;</span> <span class="nv">l</span><span class="o">.</span><span class="py">toUpperCase</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>다음처럼 구현도 가능하다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">linesLongUpper</span> <span class="k">=</span> <span class="n">fileLines</span> <span class="nf">filter</span> <span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="o">)</span> <span class="nf">map</span> <span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">toUpperCase</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h4 id="튜플">튜플</h4>
+
+<p>자바는 튜플을 지원하지 않으므로 직접 자료구조를 구현해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Pair</span><span class="o">&lt;</span><span class="no">X</span><span class="o">,</span> <span class="no">Y</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="no">X</span> <span class="n">x</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="no">Y</span> <span class="n">y</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Pair</span><span class="o">(</span><span class="no">X</span> <span class="n">x</span><span class="o">,</span> <span class="no">Y</span> <span class="n">y</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>스칼라는 튜플 축약어로 튜플을 만들 수 있는 기능을 제공한다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">raoul</span> <span class="k">=</span> <span class="o">(</span><span class="s">"Raoul"</span><span class="o">,</span> <span class="s">"+ 44 887007007"</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">alan</span> <span class="k">=</span> <span class="o">(</span><span class="s">"Alan"</span><span class="o">,</span> <span class="s">"+44 883133700"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">book</span> <span class="k">=</span> <span class="o">(</span><span class="mi">2018</span><span class="o">,</span> <span class="s">"Modern Java in Action"</span><span class="o">,</span> <span class="s">"Manning"</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">numbers</span> <span class="k">=</span> <span class="o">(</span><span class="mi">42</span><span class="o">,</span> <span class="mi">1337</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">14</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="스트림">스트림</h4>
+
+<p>스칼라에서도 게으르게 평가되는 자료구조인 스트림을 제공한다.
+자바의 스트림보다 다양한 기능이 존재하지만 메모리 효율성이 떨어짐</p>
+
+<ul>
+  <li>이전 요소가 접근할 수 있도록 기존의 계산값 기억</li>
+  <li>인덱스를 제공하여 인덱스로 스트림의 요소 접근 가능</li>
+</ul>
+
+<h4 id="옵션">옵션</h4>
+
+<p>자바의 <code class="language-plaintext highlighter-rouge">Optional</code> 과 같은 기능 제공</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">getCarInsuranceName</span><span class="o">(</span><span class="n">person</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Person</span><span class="o">],</span> <span class="n">minAge</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span>
+    <span class="nv">person</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">getAge</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="n">minAge</span><span class="o">)</span>
+          <span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">getCar</span><span class="o">)</span>
+          <span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">getInsurance</span><span class="o">)</span>
+          <span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">getName</span><span class="o">)</span>
+          <span class="o">.</span><span class="py">getOrElse</span><span class="o">(</span><span class="s">"Unknown"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="202-함수">20.2 함수</h2>
+
+<p>스칼라에서는 자바에 비해 많은 함수 기능을 제공한다.</p>
+
+<ul>
+  <li>함수 형식
+    <ul>
+      <li>자바 함수 디스크립터의 개념을 표현하는 편의 문법 (추상 메서드의 시그니처를 표현하는 개념)</li>
+    </ul>
+  </li>
+  <li>익명 함수
+    <ul>
+      <li>자바의 람다 표현식과 달리 비지역 변수 기록에 제한을 받지 않음</li>
+    </ul>
+  </li>
+  <li>커링 지원
+    <ul>
+      <li>여러 인수를 받는 함수를 일부 인수를 받는 여러 함수로 분리하는 기법</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스칼라의-일급-함수">스칼라의 일급 함수</h3>
+
+<p>스칼라의 함수는 일급값(first-class value)이다. (인수 전달, 결과 반환, 변수 저장 가능)</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">isJavaMentioned</span><span class="o">(</span><span class="n">tweet</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="nv">tweet</span><span class="o">.</span><span class="py">contains</span><span class="o">(</span><span class="s">"Java"</span><span class="o">)</span>
+<span class="k">def</span> <span class="nf">isShortTweet</span><span class="o">(</span><span class="n">tweet</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="nv">tweet</span><span class="o">.</span><span class="py">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">20</span>
+
+<span class="k">val</span> <span class="nv">tweets</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span>
+    <span class="s">"I love the new features in Java 8"</span><span class="o">,</span>
+    <span class="s">"How`s it going?"</span>
+<span class="o">)</span>
+<span class="nv">tweets</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">isJavaMentioned</span><span class="o">).</span><span class="py">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">)</span>
+<span class="nv">tweets</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">isShortTweet</span><span class="o">).</span><span class="py">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="익명-함수와-클로저">익명 함수와 클로저</h3>
+
+<p>스칼라도 익명 함수(anonymous function)의 개념을 지원한다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// apply 메서드의 구현을 제공하는 scala.Function1</span>
+<span class="k">val</span> <span class="nv">isLongTweet</span> <span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span> <span class="k">=</span> 
+    <span class="k">new</span> <span class="nc">Function1</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Boolean</span><span class="o">]</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">tweet</span> <span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="nv">tweet</span><span class="o">.</span><span class="py">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">60</span>
+<span class="o">}</span>
+
+<span class="c1">// 익명 클래스 축약</span>
+<span class="k">val</span> <span class="nv">isLongTweet</span> <span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span> <span class="k">=</span> 
+    <span class="o">(</span><span class="n">tweet</span> <span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nv">tweet</span><span class="o">.</span><span class="py">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">60</span> <span class="c1">// 익명 함수</span>
+    
+<span class="nv">isLongTeet</span><span class="o">.</span><span class="py">apply</span><span class="o">(</span><span class="s">"A very short tweet"</span><span class="o">)</span> <span class="c1">// false    </span>
+</code></pre></div></div>
+
+<p>자바에서 람다 표현식을 사용할 수 있도록 <code class="language-plaintext highlighter-rouge">Predicate</code>, <code class="language-plaintext highlighter-rouge">Function</code>, <code class="language-plaintext highlighter-rouge">Consumer</code> 등의 내장 함수형 인터페이스를 제공한다.  <br />
+마찬가지로 스칼라는 트레이트를 지원한다. <code class="language-plaintext highlighter-rouge">Function0</code>(인수 없음) 에서 <code class="language-plaintext highlighter-rouge">Function22</code>(인수 22개) 를 제공한다.</p>
+
+<h4 id="클로저">클로저</h4>
+
+<p>클로저란 함수의 비지역 변수를 자유롭게 참조할 수 있는 함수의 인스턴스다.<br />
+스칼라의 익명 함수는 값이 아니라 변수를 캡처할 수 있다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">count</span> <span class="k">=</span> <span class="mi">0</span>
+    <span class="k">val</span> <span class="nv">inc</span> <span class="k">=</span> <span class="o">()</span> <span class="k">=&gt;</span> <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nf">inc</span><span class="o">()</span>
+    <span class="nf">println</span><span class="o">(</span><span class="n">count</span><span class="o">)</span>  <span class="c1">// 1</span>
+    <span class="nf">inc</span><span class="o">()</span>
+    <span class="nf">println</span><span class="o">(</span><span class="n">count</span><span class="o">)</span>  <span class="c1">// 2</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>하지만 자바에서 위와 같은 코드를 작성하면 <code class="language-plaintext highlighter-rouge">count</code>가 <code class="language-plaintext highlighter-rouge">final</code> 이 되므로 컴파일 에러가 발생한다.</p>
+
+<h3 id="커링">커링</h3>
+
+<p>여러 인수를 가진 함수를 인수의 일부를 받는 여러 함수로 분할할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">multiplyCurry</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="nc">Integer</span> <span class="n">y</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nc">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">7</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">multiplyCurry</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+      <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>스칼라에서는 자동으로 처리하는 특수 문법이 존재한다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">multiplyCurry</span><span class="o">(</span><span class="n">x</span> <span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="n">y</span> <span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="k">var</span> <span class="n">r</span> <span class="k">=</span> <span class="nf">multiplyCurry</span><span class="o">(</span><span class="mi">2</span><span class="o">)(</span><span class="mi">10</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="203-클래스와-트레이트">20.3 클래스와 트레이트</h2>
+
+<h3 id="간결성을-제공하는-스칼라의-클래스">간결성을 제공하는 스칼라의 클래스</h3>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Hello</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">sayThankYou</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nf">println</span><span class="o">(</span><span class="s">"Thanks for reading out book"</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">val</span> <span class="nv">h</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Hello</span><span class="o">()</span>
+<span class="nv">h</span><span class="o">.</span><span class="py">sayThankYou</span><span class="o">()</span>
+</code></pre></div></div>
+
+<h4 id="게터와-세터">게터와 세터</h4>
+
+<p>스칼라에서는 생성자, 게터, 세터가 암시적으로 생성되어 코드가 단순하다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Student</span><span class="o">(</span><span class="k">var</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">var</span> <span class="n">id</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> 
+<span class="k">val</span> <span class="nv">s</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="s">"Raoul"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>  <span class="c1">//객체 초기화</span>
+<span class="nf">println</span><span class="o">(</span><span class="nv">s</span><span class="o">.</span><span class="py">name</span><span class="o">)</span>  <span class="c1">// 이름 출력</span>
+<span class="nv">s</span><span class="o">.</span><span class="py">id</span> <span class="k">=</span> <span class="mi">1337</span>      <span class="c1">// id 설정</span>
+<span class="nf">println</span><span class="o">(</span><span class="nv">s</span><span class="o">.</span><span class="py">id</span><span class="o">)</span>    <span class="c1">// 변경된 id 출력</span>
+</code></pre></div></div>
+
+<h3 id="스칼라-트레이트와-자바-인터페이스">스칼라 트레이트와 자바 인터페이스</h3>
+
+<p>스칼라는 트레이트라는 추상 기능도 제공한다. (자바의 인터페이스 대체)</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Sized</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">size</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>          <span class="c1">// 필드</span>
+    <span class="k">def</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="k">=</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>   <span class="c1">// 기본 구현 제공</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">Sized</span>       <span class="c1">// 트레이트에서 상속</span>
+
+<span class="nf">println</span><span class="o">(</span><span class="k">new</span> <span class="nc">Empty</span><span class="o">().</span><span class="py">isEmpty</span><span class="o">())</span>  <span class="c1">// true</span>
+</code></pre></div></div>
+
+<p>객체 트레이트는 인스턴스화 과정에서도 조합이 가능하다.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Box</span>
+
+<span class="k">val</span> <span class="nv">b1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Box</span><span class="o">()</span> <span class="k">with</span> <span class="nc">Sized</span>
+<span class="nf">println</span><span class="o">(</span><span class="nv">b1</span><span class="o">.</span><span class="py">isEmpty</span><span class="o">())</span>   <span class="c1">// true</span>
+
+<span class="k">val</span> <span class="nv">b2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Box</span><span class="o">()</span>
+<span class="nv">b2</span><span class="o">.</span><span class="py">isEmpty</span><span class="o">()</span>            <span class="c1">// 상속하지 않아서 컴파일 에러</span>
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter20.+OOP%EC%99%80+FP%EC%9D%98+%EC%A1%B0%ED%99%94:+%EC%9E%90%EB%B0%94%EC...%20-%20https://devyonghee.github.io/book/2022/09/21/modern-java-in-action-chapter20/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/09/21/modern-java-in-action-chapter20/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

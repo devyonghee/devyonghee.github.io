@@ -1,0 +1,25 @@
+@startuml
+left to right direction
+usecase 1NF
+usecase 2NF
+usecase 3NF
+usecase BCNF
+usecase 4NF
+usecase 5NF
+usecase DKNF
+usecase 6NF
+
+1NF --> 2NF
+2NF --> 3NF
+3NF --> 4NF
+4NF --> 5NF
+5NF --> 6NF
+3NF --> BCNF
+BCNF --> 4NF
+5NF --> DKNF
+
+
+
+
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+
+Main -> Publisher: subscribe(Subscriber)
+Publisher -> Subscriber: onSubscribe(Subscription)
+Subscriber -> Subscription: request(int)
+note right: 역압력
+Subscription -> Subscriber: onNext(data)
+Subscription -> Subscriber: onNext(data)
+Subscriber -> Subscription: request(int)
+Subscription -> Subscriber: onNext(data)
+Subscription -> Subscriber: onComplete / onError
+
+note right of Main
+onSubscribe onNext* (onError | onComplete)
+end note
+@enduml

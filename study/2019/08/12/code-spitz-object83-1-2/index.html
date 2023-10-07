@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 코드 스피츠 Object83 1회차 정리(2)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="코드 스피츠 Object83 1회차 정리(2)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2019/08/12/code-spitz-object83-1-2/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2019/08/12/code-spitz-object83-1-2/">
+  <meta name="twitter:title" content="코드 스피츠 Object83 1회차 정리(2)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>코드 스피츠 Object83 1회차 정리(2)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    August 12, 2019
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      9 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/object" title="See all posts with tag 'object'">object</a>
+    
+      <a href="/tag/OOP" title="See all posts with tag 'OOP'">OOP</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>우리의 궁극적인 목표는 바로 변화로부터 <strong>격리</strong>를 시키는 것이다.<br />
+그러기 위해서는 클라이언트 코드부터 작성하고 클래스들을 만들어나가야 한다.
+<!--more--></p>
+
+<h2 id="oop-base-system">OOP base system</h2>
+
+<h3 id="value--identifier">Value &amp; Identifier</h3>
+<p>객체를 구별하는 방법은 식별자</p>
+<blockquote>
+  <p>식별자 : Runtime 메모리에 적재 되어 있던 메모리의 주소</p>
+</blockquote>
+
+<p>객체 지향에서 객체의 동가성을 평가하는 방법은 객체의 주소이다.<br />
+객체 지향에서는 미리 정해져있는 값 외에는 전부 객체가 되어야 한다.(식별자로 시스템을 만들어가야 한다.)</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">ValueType</span><span class="p">(</span><span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">){</span>
+    <span class="k">override</span> <span class="k">operator</span> <span class="k">fun</span> <span class="nf">equals</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?)</span> <span class="p">=</span> <span class="n">n</span> <span class="p">==</span> <span class="n">name</span>
+<span class="p">}</span>
+
+
+<span class="c1">// kotlin 에서는 '==' 면 equals 를 호출 </span>
+<span class="c1">// 아래와 같이 사용하면 안된다. 전부 식별자로 사용하는걸 지향</span>
+<span class="nc">Valuetype</span><span class="p">(</span><span class="s">"abc"</span><span class="p">)</span> <span class="p">==</span> <span class="nc">Valuetype</span><span class="p">(</span><span class="s">"abc"</span><span class="p">)</span> <span class="c1">//true</span>
+
+
+<span class="c1">// kotlin 에서는 '===' 면 식별자를 비교</span>
+<span class="nc">Valuetype</span><span class="p">(</span><span class="s">"abc"</span><span class="p">)</span> <span class="p">===</span> <span class="nc">Valuetype</span><span class="p">(</span><span class="s">"abc"</span><span class="p">)</span> <span class="c1">//false</span>
+
+</code></pre></div></div>
+
+<h3 id="polymorphism-다형성">Polymorphism (다형성)</h3>
+<p>아래 두가지가 충족해야만 다형성이 성립된다.<br />
+Substitution : 대체 가능성<br />
+Internal identity : 내적 동질성</p>
+
+<ol>
+  <li>
+    <p>Substitution(대체 가능성)<br />
+다형성을 사용하면 Runnable 의 run 메소드를 먼저 참조하기 때문에 직접 Worker를 사용하는 것보다 느려진다.<br />
+어떤 것이랑 바인딩될지는 pointer의 연속으로 이루어지기 때문에 동적 바인딩</p>
+
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">open</span> <span class="kd">class</span> <span class="nc">Worker</span><span class="p">:</span> <span class="nc">Runnable</span><span class="p">{</span>
+     <span class="k">override</span> <span class="k">fun</span> <span class="nf">run</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"working"</span><span class="p">)</span>
+ <span class="p">}</span>
+    
+ <span class="k">open</span> <span class="kd">class</span> <span class="nc">HardWorker</span><span class="p">:</span> <span class="nc">Runnable</span><span class="p">{</span>
+     <span class="k">override</span> <span class="k">fun</span> <span class="nf">run</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"HardWorking"</span><span class="p">)</span>
+ <span class="p">}</span>
+    
+    
+ <span class="c1">// Runnable로 넣으면 Worker로서의 동작이아니라 Runnable의 역할만 할 수 있다. </span>
+    
+ <span class="kd">var</span> <span class="py">worker</span><span class="p">:</span><span class="nc">Runnable</span> <span class="p">=</span> <span class="nc">Worker</span><span class="p">()</span>
+ <span class="nf">println</span><span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="nf">run</span><span class="p">())</span>  <span class="c1">// working</span>
+ <span class="n">worker</span> <span class="p">=</span> <span class="nc">HardWorker</span><span class="p">()</span>
+ <span class="nf">println</span><span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="nf">run</span><span class="p">())</span>  <span class="c1">// HardWorking</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Internal identity (내적 동질성)<br />
+최초의 생소한 객체의 함수 포인터를 유지 <br />
+어떤 형으로 변경해도 태어난 출신지는 바뀌지 않는다.<br />
+받은 타입을 Worker 라고 하더라도 변형된 있는 형에 참조를 사용하지 않고 원래 만들어졌던 본질적인 객체의 형을
+그대로 참조하도록 한 것이 내적 동질성 규칙이다.</p>
+
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    
+ <span class="k">open</span> <span class="kd">class</span> <span class="nc">Worker</span><span class="p">:</span> <span class="nc">Runnable</span><span class="p">{</span>
+     <span class="k">override</span> <span class="k">fun</span> <span class="nf">run</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"working"</span><span class="p">)</span>
+     <span class="k">fun</span> <span class="nf">print</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="nf">run</span><span class="p">())</span>
+ <span class="p">}</span>
+    
+ <span class="k">open</span> <span class="kd">class</span> <span class="nc">HardWorker</span><span class="p">:</span> <span class="nc">Runnable</span><span class="p">{</span>
+     <span class="k">override</span> <span class="k">fun</span> <span class="nf">run</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"HardWorking"</span><span class="p">)</span>
+ <span class="p">}</span>
+    
+    
+ <span class="kd">var</span> <span class="py">worker</span><span class="p">:</span><span class="nc">Worker</span> <span class="p">=</span> <span class="nc">HardWorker</span><span class="p">()</span>
+ <span class="nf">println</span><span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="nf">print</span><span class="p">())</span>  <span class="c1">// HardWorking</span>
+    
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="object-객체">Object (객체)</h3>
+<p>객체 지향에서 객체가 갖춰야할 기본적인 2가지 소양</p>
+
+<ul>
+  <li>Encapsulation of Functionality (기능의 캡슐화)
+    <ul>
+      <li>외부에게 상세한 기능을 노출하지 않고 보다 잘 사용할 수 있게 노출 한다.</li>
+      <li>다양한 나머지 변화율이 격리</li>
+    </ul>
+  </li>
+  <li>Maintenance of State(상태 관리)
+    <ul>
+      <li>객체 지향이 레퍼런스를 가리키고 식별자를 참조하려고 하는 이유는 상태관리 때문</li>
+      <li>데이터 갱신, observing 등등 상태의 모든 관리</li>
+      <li>은닉</li>
+    </ul>
+  </li>
+</ul>
+
+<p>우리의 궁극 적인 목표는 <b>Isolation(격리)</b> 이다.</p>
+
+<h2 id="theater">Theater</h2>
+
+<figure>
+    <a href="/images/study/code-spitz/theater-dependency.jpg">
+        <img src="/images/study/code-spitz/theater-dependency.jpg" data-rjs="/images/study/code-spitz/theater-dependency.jpg" class="zooming" alt="theater-dependency" />
+    </a>
+    
+    <figcaption>
+        theater-dependency
+        
+    </figcaption>
+    
+</figure>
+
+<p>오브젝트 책에서 주어지는 다이어 그램이다. 위 설계대로 된다면 빨간 부분이 엉망으로 될 것이다. <br />
+Theater 가 seller를 알아야 되는게 이상하다. Theater 가 TicketOffice 도 알아야 하지 않을까. 
+Seller가 TicketOffice와 Audience를 알고 있어서 연결해주는 역할을 해주는데 
+그럼 Audience와 TicketOffice를 연결해 주어야 할까? 그렇다면 굉장히 복잡해진다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/theater-dependency-refactor.jpg">
+        <img src="/images/study/code-spitz/theater-dependency-refactor.jpg" data-rjs="/images/study/code-spitz/theater-dependency-refactor.jpg" class="zooming" alt="theater-dependency-refactor" />
+    </a>
+    
+    <figcaption>
+        theater-dependency-refactor
+        
+    </figcaption>
+    
+</figure>
+
+<p>위 그림과 같이 구조를 재구성했다.</p>
+
+<h3 id="theater-1">Theater</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    
+<span class="kd">class</span> <span class="nc">Theater</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">TicketOffice</span><span class="o">&gt;</span> <span class="n">ticketOffices</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">final</span> <span class="kd">private</span> <span class="nc">Long</span> <span class="n">fee</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Theater</span><span class="o">(</span><span class="nc">Long</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">fee</span> <span class="o">=</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nc">Long</span> <span class="nf">getFee</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTicketOffices</span><span class="o">(</span><span class="nc">TicketOffice</span><span class="o">...</span> <span class="n">ticketOffices</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">ticketOffices</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">ticketOffices</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// ticketOffices 에 Theater가 생성한 Ticket을 추가해준다.</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTicket</span><span class="o">(</span><span class="nc">TicketOffice</span> <span class="n">ticketOffice</span><span class="o">,</span> <span class="nc">Long</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">ticketOffices</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">ticketOffice</span><span class="o">))</span> <span class="k">return</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">num</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// Ticket 에는 반드시 객체를 구별하기 위해서 객체 식별자를 넣어 주어야 한다.</span>
+            <span class="c1">// name 같은 값을 넣으면 name 만으로 다른 극장을 구분하기 힘들어진다. </span>
+            <span class="n">ticketOffice</span><span class="o">.</span><span class="na">addTickke</span><span class="o">(</span><span class="k">new</span> <span class="nc">Ticket</span><span class="o">(</span><span class="k">this</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+   <span class="c1">// Invitation 도 마찬가지로 Theater가 Audience 만들어서 제공을 한다. </span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setInvitation</span><span class="o">(</span><span class="nc">Audience</span> <span class="n">audience</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">audience</span><span class="o">.</span><span class="na">setInvitation</span><span class="o">(</span><span class="k">new</span> <span class="nc">Invitation</span><span class="o">(</span><span class="k">this</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">enter</span><span class="o">(</span><span class="nc">Audience</span> <span class="n">audience</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Ticket</span> <span class="n">ticket</span> <span class="o">=</span> <span class="n">audience</span><span class="o">.</span><span class="na">getTicket</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">ticket</span><span class="o">.</span><span class="na">isValid</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+    
+    
+</code></pre></div></div>
+
+<h3 id="ticket">Ticket</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Ticket</span> <span class="o">{</span>
+    <span class="c1">// 이펙티브 자바 (null 객체 패턴)</span>
+    <span class="c1">// 식별자로 Empty를 판단</span>
+    <span class="kd">final</span> <span class="kd">static</span> <span class="kd">public</span> <span class="nc">Ticket</span> <span class="no">EMPTY</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Ticket</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    
+    <span class="c1">// 절대 불변하도록 final로 theater를 잡아 둔다.</span>
+    <span class="kd">final</span> <span class="kd">private</span> <span class="nc">Theater</span> <span class="n">theater</span><span class="o">;</span>
+    
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isEntered</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Ticket</span><span class="o">(</span><span class="nc">Theater</span> <span class="n">theater</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">theater</span> <span class="o">=</span> <span class="n">theater</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// isEntered</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isValid</span><span class="o">(</span><span class="nc">Theater</span> <span class="n">theater</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isEntered</span> <span class="o">||</span> <span class="n">theater</span> <span class="o">!=</span> <span class="k">this</span><span class="o">.</span><span class="na">theater</span> <span class="o">||</span> <span class="k">this</span> <span class="o">==</span> <span class="no">EMPTY</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">isEntered</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// pointer의 pointer의 pointer를 사용하는 중</span>
+    <span class="c1">// 만약 Theater의 fee를 필드 값으로 잡았다면 Theater의 fee 값이 변경 되어도 반영이 안됐을 것이다.</span>
+    <span class="kd">public</span> <span class="nc">Long</span> <span class="nf">getFee</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">theater</span><span class="o">.</span><span class="na">getFee</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h3 id="invitation">Invitation</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Invitation</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="kd">static</span> <span class="kd">public</span> <span class="nc">Invitation</span> <span class="no">EMPTY</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Invitation</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="kd">private</span> <span class="nc">Theater</span> <span class="n">theater</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Invitation</span><span class="o">(</span><span class="nc">Theater</span> <span class="n">theater</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">theater</span> <span class="o">=</span> <span class="n">theater</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h3 id="ticketoffice">TicketOffice</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TicketOffice</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Ticket</span><span class="o">&gt;</span> <span class="n">tickets</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="nf">TicketOffice</span><span class="o">(</span><span class="nc">Long</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addTicket</span><span class="o">(</span><span class="nc">Ticket</span> <span class="n">ticket</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">tickets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ticket</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Ticket</span> <span class="nf">getTicketWithFee</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">tickets</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="nc">Ticket</span> <span class="n">ticket</span> <span class="o">=</span> <span class="n">tickets</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+            <span class="n">amount</span> <span class="o">+=</span> <span class="n">ticket</span><span class="o">.</span><span class="na">getFee</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">ticket</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Ticket</span> <span class="nf">getTicketWithNoFee</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">tickets</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="n">tickets</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Long</span> <span class="nf">getTicketPrice</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">tickets</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="mi">0L</span><span class="o">;</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="n">tickets</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getFee</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h3 id="ticketseller">TicketSeller</h3>
+<p>getTicket 에 대한 비즈니스 로직을 가지고 있는 것이 seller 의 주업무이다.<br />
+fee 에 대한 지식과 트랜잭션 상에서 audience 의 처리에 대해서 도메인 지식을 가지고 있는 것 seller 이다.
+이 도메인 지식이 가지고 있는 부분들은 바뀔 수 있거나 추가될 확률이 TicketOffice 와 로직과 다르기 때문에 분리.
+TicketOffice 로직이 변하는 변화율과 TicketSeller 의 로직이 변하는 변화율이 다르다.<br />
+TicketSeller 는 TicketOffice 와 Audience 의 생태계를 Isolation 해주는 방패 역할이 되는 것이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TicketSeller</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">TicketOffice</span> <span class="n">ticketOffice</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTicketOffice</span><span class="o">(</span><span class="nc">TicketOffice</span> <span class="n">ticketOffice</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">ticketOffice</span> <span class="o">=</span> <span class="n">ticketOffice</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Ticket</span> <span class="nf">getTicket</span><span class="o">(</span><span class="nc">Audience</span> <span class="n">audience</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Ticket</span> <span class="n">ticket</span> <span class="o">=</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">audience</span><span class="o">.</span><span class="na">getInvitation</span><span class="o">()</span> <span class="o">!=</span> <span class="nc">Invitation</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">ticket</span> <span class="o">=</span> <span class="n">ticketOffice</span><span class="o">.</span><span class="na">getTicketWithNoFee</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">ticket</span> <span class="o">!=</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span> <span class="n">audience</span><span class="o">.</span><span class="na">removeInvitation</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nc">Long</span> <span class="n">price</span> <span class="o">=</span> <span class="n">ticketOffice</span><span class="o">.</span><span class="na">getTicketPrice</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">price</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">audience</span><span class="o">.</span><span class="na">hasAmount</span><span class="o">(</span><span class="n">price</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">ticket</span> <span class="o">=</span> <span class="n">ticketOffice</span><span class="o">.</span><span class="na">getTicketWithFee</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">ticket</span> <span class="o">!=</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span> <span class="n">audience</span><span class="o">.</span><span class="na">minusAmount</span><span class="o">(</span><span class="n">price</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ticket</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h3 id="audience">Audience</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">Audience</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Ticket</span> <span class="n">ticket</span> <span class="o">=</span> <span class="nc">Ticket</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Invitation</span> <span class="n">invitation</span> <span class="o">=</span> <span class="nc">Invitation</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">amount</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Audience</span><span class="o">(</span><span class="nc">Long</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="c1">// 유일하게 바깥에 노출되는 메소드 다른 메소드들은 같은 패키지 내에서 사용되기 위한 접대하는 메소드이다.</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">buyTicket</span><span class="o">(</span><span class="nc">TicketSeller</span> <span class="n">seller</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ticket</span> <span class="o">=</span> <span class="n">seller</span><span class="o">.</span><span class="na">getTicket</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasAmount</span><span class="o">(</span><span class="nc">Long</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">&gt;=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">minusAmount</span><span class="o">(</span><span class="nc">Long</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">amount</span> <span class="o">&gt;</span> <span class="k">this</span><span class="o">.</span><span class="na">amount</span><span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">-=</span> <span class="n">amount</span><span class="o">;</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Invitation</span> <span class="nf">getInvitation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">invitation</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeInvitation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">invitation</span> <span class="o">=</span> <span class="nc">Invitation</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Ticket</span> <span class="nf">getTicket</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">ticket</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setInvitation</span><span class="o">(</span><span class="nc">Invitation</span> <span class="n">invitation</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">invitation</span> <span class="o">=</span> <span class="n">invitation</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h3 id="main">Main</h3>
+<p>강의를 보면서 클래스를 짜고 아래 코드를 작성했지만 절대로 혼자서는 이대로 설계될 수 없다.
+우리가 이렇게 짤 수 있는 방법은 아래와 같은 실행 코드를 먼저 짜보고 코드에 맞는 클래스들을 만드는 방법밖에 없다.
+오브젝트 책에서는 다양한 책임을 먼저 부여하고 책임을 수행할 역할들을 찾아보라고 하지만 실제로 이렇게 짜기는 힘들다.
+내 도메인에 맞는 시나리오를 먼저 짜고 클래스를 설계하는게 더 낫다.
+아래와 같은 시나리오를 짜면 클래스를 짜는건 쉬워진다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Theater</span> <span class="n">theater</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Theater</span><span class="o">(</span><span class="mi">100L</span><span class="o">);</span>
+        <span class="nc">Audience</span> <span class="n">audience1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Audience</span><span class="o">(</span><span class="mi">0L</span><span class="o">);</span>
+        <span class="nc">Audience</span> <span class="n">audience2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Audience</span><span class="o">(</span><span class="mi">50L</span><span class="o">);</span>
+        <span class="nc">TicketOffice</span> <span class="n">ticketOffice</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TicketOffice</span><span class="o">(</span><span class="mi">0L</span><span class="o">);</span>
+        <span class="nc">TicketSeller</span> <span class="n">seller</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TicketSeller</span><span class="o">();</span>
+        <span class="n">theater</span><span class="o">.</span><span class="na">setTicketOffices</span><span class="o">(</span><span class="n">ticketOffice</span><span class="o">);</span>
+        <span class="n">theater</span><span class="o">.</span><span class="na">setTicket</span><span class="o">(</span><span class="n">ticketOffice</span><span class="o">,</span> <span class="mi">10L</span><span class="o">);</span>
+        <span class="n">theater</span><span class="o">.</span><span class="na">setInvitation</span><span class="o">(</span><span class="n">audience1</span><span class="o">);</span>
+        <span class="n">seller</span><span class="o">.</span><span class="na">setTicketOffice</span><span class="o">(</span><span class="n">ticketOffice</span><span class="o">);</span>
+        <span class="n">audience1</span><span class="o">.</span><span class="na">buyTicket</span><span class="o">(</span><span class="n">seller</span><span class="o">);</span>
+        <span class="n">audience2</span><span class="o">.</span><span class="na">buyTicket</span><span class="o">(</span><span class="n">seller</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">isOk1</span> <span class="o">=</span> <span class="n">theater</span><span class="o">.</span><span class="na">enter</span><span class="o">(</span><span class="n">audience1</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">isOk2</span> <span class="o">=</span> <span class="n">theater</span><span class="o">.</span><span class="na">enter</span><span class="o">(</span><span class="n">audience2</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">isOk1</span><span class="o">);</span>  <span class="c1">// True</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">isOk2</span><span class="o">);</span>  <span class="c1">// False</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h2 id="practice">Practice</h2>
+<ol>
+  <li>
+    <p>마지막 theater예제에서 TicketOffice는 암묵적으로 하나의 극장하고만 계약하고 있다는 가정이 있게 구현되어있다.<br />
+코드 상 이 조건을 강제하도록 개선하라.</p>
+  </li>
+  <li>
+    <p>마지막 theater예제에서 Theater는 단 하나의 영화만 고정가격으로 상영 중이다.<br />
+다양한 가격의 영화를 상영할 수 있게 개선하라.
+(Movie클래스가 새롭게 필요하고 또한 이에 따라 초대, 티켓, 티켓 오피스등의 총괄적인 변화가 일어남)</p>
+  </li>
+</ol>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%BD%94%EB%93%9C+%EC%8A%A4%ED%94%BC%EC%B8%A0+Object83+1%ED%9A%8C%EC%B0%A8+%EC%A0%95%EB%A6%AC(2)%20-%20https://devyonghee.github.io/study/2019/08/12/code-spitz-object83-1-2/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2019/08/12/code-spitz-object83-1-2/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

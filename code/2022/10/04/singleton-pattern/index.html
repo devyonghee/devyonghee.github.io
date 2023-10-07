@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Design Pattern] 싱글톤 패턴(Singleton Pattern)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Design Pattern] 싱글톤 패턴(Singleton Pattern)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/code/2022/10/04/singleton-pattern/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/code/2022/10/04/singleton-pattern/">
+  <meta name="twitter:title" content="[Design Pattern] 싱글톤 패턴(Singleton Pattern)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Design Pattern] 싱글톤 패턴(Singleton Pattern)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    October 4, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      4 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/design-pattern" title="See all posts with tag 'design-pattern'">design-pattern</a>
+    
+      <a href="/tag/singleton-pattern" title="See all posts with tag 'singleton-pattern'">singleton-pattern</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>싱글톤 패턴 (Singleton Pattern) 은 인스턴스가 하나 뿐인 객체를 만들 수 있게 해주는 패턴이다.<br />
+생성된 이후에는 객체를 새로 생성하지 않고 처음에 생성된 객체를 다시 재활용하게 된다.<br />
+GoF(Gang of Four) Design Pattern 에서 생성(creational) 패턴에 속한다.</p>
+
+<!--more-->
+
+<p>싱글톤 패턴(Singleton Pattern)은 공통된 객체를 여러개 생성해야하는 경우에 많이 사용된다.<br />
+대표적인 예로는 스레드 풀, 캐시, 사용자 설정, 로그 기록 객체, 커넥션 풀 등이 있다.</p>
+
+<p>동일한 행동을 하는 객체를 여러개 생성한다면 불필요한 메모리를 차지하거나 일관성에 문제가 생길 수 있다.<br />
+싱글톤으로 생성한 인스턴스는 전역에서 공유하여 사용할 수 있으므로 이와 같은 문제들을 방지할 수 있다.</p>
+
+<h3 id="싱글톤-패턴-장점">싱글톤 패턴 장점</h3>
+
+<ul>
+  <li>생성한 인스턴스를 공유하기 때문 메모리 낭비 방지</li>
+  <li>전역에서 사용되기 때문에 쉬운 데이터 공유</li>
+  <li>하나의 인스턴스만을 이용하기 때문에 일관성 유지 가능</li>
+  <li>유틸리티 클래스에 비해 내부에 캡슐화된 객체를 mock, fake 등으로 대체하여 테스트 가능</li>
+</ul>
+
+<h3 id="싱글톤-패턴-단점">싱글톤 패턴 단점</h3>
+
+<p>싱글톤 패턴에는 다음과 같은 단점들이 존재하기 때문에 반드시 필요한 상황이 아니라면 지양하도록 한다.</p>
+
+<ul>
+  <li>사용되지 않는다면 메모리만 차지하게 될 수 있음</li>
+  <li>많은 역할을 담당하게 되면 결합도가 높아져 OCP(open close principle) 위반이 쉬움
+    <ul>
+      <li>유틸리티 클래스와 비슷하여 안티 패턴 <a href="https://devyonghee.github.io/book/2021/09/15/elegant-object-chapter3/#324-%EC%8B%B1%EA%B8%80%ED%86%A4singleton-%ED%8C%A8%ED%84%B4">엘레강트 오브젝트 Chapter3. 취업</a></li>
+    </ul>
+  </li>
+  <li>멀티 스레드 환경에서 2개의 인스턴스가 생기지 않도록 동기화 처리 필요</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="구현">구현</h3>
+
+<h4 id="eager-initialization">Eager Initialization</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">SingletonEager</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">SingletonEager</span> <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingletonEager</span><span class="o">();</span>
+
+    <span class="kd">private</span> <span class="nf">SingletonEager</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">SingletonEager</span> <span class="nf">instance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="no">INSTANCE</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>Class Loader 가 클래스를 로딩할 때 객체를 생성</li>
+  <li>인스턴스가 생성되기 전에는 스레드는 <code class="language-plaintext highlighter-rouge">INSTANCE</code> 에 접근할 수 없으므로 멀티 스레드 환경에서도 안전</li>
+  <li>사용하지 않아도 인스턴스를 생성하기 때문에 메모리 차지</li>
+  <li>Exception Handling 불가</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="static-block-initialization">Static Block Initialization</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SingletonStaticBlock</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">SingletonStaticBlock</span> <span class="no">INSTANCE</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingletonStaticBlock</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nf">SingletonStaticBlock</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">SingletonStaticBlock</span> <span class="nf">instance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="no">INSTANCE</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>대부분의 특징은 Eager Initialization 와 동일하나 Exception Handling 가능</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="lazy-initialization">Lazy Initialization</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SingletonLazy</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">SingletonLazy</span> <span class="n">instance</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">SingletonLazy</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">SingletonLazy</span> <span class="nf">instance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingletonLazy</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>클래스 로딩이 아닌 메소드가 호출되는 시점에 객체를 생성하기 때문에 메모리 낭비를 방지</li>
+  <li>멀티 스레드 환경에서는 여러 개의 객체가 생성될 수 있음</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="thread-safe-singleton">Thread Safe Singleton</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SingletonThreadSafe</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kd">static</span> <span class="nc">SingletonThreadSafe</span> <span class="n">instance</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">SingletonThreadSafe</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">SingletonThreadSafe</span> <span class="nf">instance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="nc">SingletonThreadSafe</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingletonThreadSafe</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Double Checked Locking (DCL) 를 이용하여 Lazy Initialization 의 동시성 문제 개선</li>
+  <li><code class="language-plaintext highlighter-rouge">synchronized</code> 키워드를 사용하여 성능 저하가 발생될 수 있음</li>
+  <li>마찬가지로 멀티 코어 환경 및 코드 재배치로 인해 객체를 두번 만들게 될 수 있으므로 권장되는 방식은 아님</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="bill-pugh-singleton-implementation">Bill Pugh Singleton Implementation</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SingletonBillPugh</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nf">SingletonBillPugh</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">SingletonBillPugh</span> <span class="nf">instance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">SingletonHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SingletonHolder</span> <span class="o">{</span>
+        
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">SingletonBillPugh</span> <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SingletonBillPugh</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Bill Pugh 가 제시한 내부 정적 클래스를 이용하여 싱글톤 생성 방식</li>
+  <li><code class="language-plaintext highlighter-rouge">SingletonHolder</code> 클래스가 로드되는 시점(<code class="language-plaintext highlighter-rouge">instance()</code> 호출 시점)에 인스턴스 생성</li>
+  <li><code class="language-plaintext highlighter-rouge">SingletonHolder</code> 클래스가 로드되는 시점에 객체를 생성하기 때문에 thread safe</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="enum-singleton">Enum Singleton</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="nc">SingletonEnum</span> <span class="o">{</span>
+
+    <span class="no">INSTANCE</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"doSomething"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://devyonghee.github.io/book/2022/02/03/effective-java-chapter12/#%EC%95%84%EC%9D%B4%ED%85%9C-89.-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%88%98%EB%A5%BC-%ED%86%B5%EC%A0%9C%ED%95%B4%EC%95%BC-%ED%95%9C%EB%8B%A4%EB%A9%B4-readResolve-%EB%B3%B4%EB%8B%A4%EB%8A%94-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%9D%BC">이펙티브 자바 아이템 89</a> 에서 제시한 방법</li>
+  <li>구현이 간단하며 thread safe</li>
+  <li>Reflection 및 직렬화에 대해 인스턴스 수 보장 가능</li>
+</ul>
+
+<p>전체 코드는 <a href="https://github.com/devyonghee/design-pattern-java/tree/master/singleton">깃허브 레포지토리</a> 참고</p>
+
+<h2 id="출처">출처</h2>
+<ul>
+  <li>Head First Design Patterns</li>
+  <li>https://readystory.tistory.com/116</li>
+  <li>https://velog.io/@dailyzett/singleton</li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Design+Pattern]+%EC%8B%B1%EA%B8%80%ED%86%A4+%ED%8C%A8%ED%84%B4(Singleton+Pattern)%20-%20https://devyonghee.github.io/code/2022/10/04/singleton-pattern/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/code/2022/10/04/singleton-pattern/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

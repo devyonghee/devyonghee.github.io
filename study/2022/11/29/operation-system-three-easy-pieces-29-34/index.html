@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Study] 운영체제 아주 쉬운 세가지 이야기 29장~34장</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 29장~34장">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2022/11/29/operation-system-three-easy-pieces-29-34/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2022/11/29/operation-system-three-easy-pieces-29-34/">
+  <meta name="twitter:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 29장~34장">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Study] 운영체제 아주 쉬운 세가지 이야기 29장~34장</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    November 29, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      12 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/operation-system" title="See all posts with tag 'operation-system'">operation-system</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>운영체제 아주 쉬운 세가지 이야기 책에 대한 스터디를 진행한다.<br />
+이 글에서는 병행성에 대해 다룬 29장부터 34장까지의 내용을 정리한다.</p>
+
+<!--more-->
+
+<h2 id="29장-락-기반의-병행-자료-구조">29장. 락 기반의 병행 자료 구조</h2>
+
+<p>자료 구조에 락을 추가하면 경쟁조건으로 부터 안전한 <strong>쓰레드 안전(thread safe)</strong> 자료 구조로 만들 수 있다.<br />
+어떤 방식으로 병행 자료 구조를 다뤄야하는지 알아본다.</p>
+
+<h3 id="291-병행-카운터">29.1 병행 카운터</h3>
+
+<p>카운터는 보편적으로 사용되면서 가장 간단한 자료 구조이다.</p>
+
+<h4 id="간단하지만-확장성이-없음">간단하지만 확장성이 없음</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="n">__counter_t</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">pthread_mutex_t</span> <span class="n">lock</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">counter_t</span><span class="p">;</span>
+ 
+<span class="kt">void</span> <span class="nf">increment</span><span class="p">(</span><span class="n">counter_t</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="n">c</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">Pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">decrement</span><span class="p">(</span><span class="n">counter_t</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="n">c</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">Pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">get</span><span class="p">(</span><span class="n">counter_t</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+    <span class="n">Pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">rc</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>간단하지만 정확하게 동작, 병행 자료 구조의 보편적인 디자인 패턴</li>
+  <li><strong>모니터(monitor)</strong> 를 사용하여 만든 자료구조와 유사</li>
+  <li>쓰레드 개수가 늘어날 수록 성능이 나빠짐</li>
+</ul>
+
+<p><strong>완벽한 확장성(perfect scaling)</strong> 이 보장된 환경에서는 작업양이 CPU 개수에 비례해서 증가해도 전체 완료 시간이 늘어나지 않는다.</p>
+
+<h4 id="확장성-있는-카운팅">확장성 있는 카운팅</h4>
+
+<p>확장성 있는 카운터를 만들기 위해 <strong>근사 카운터(approximate counter)</strong> 기법을 사용한다.<br />
+근사 카운터는 하나의 논리적 카운터로 표현되는데 CPU 코어마다 하나의 물리적인 <strong>지역 카운터</strong>와 하나의 <strong>전역 카운터</strong>로 구성되어있다.</p>
+
+<p>쓰레드는 지역 카운터를 증가시켜 지역 락으로 보호한다.<br />
+CPU 마다 지역 카운터를 갖기 때문에 CPU 들에 분산된 쓰레드들은 지역 카운터를 경쟁 없이 갱신할 수 있다. (확장성)</p>
+
+<p>주기적으로 지역 카운터 값을 전역 카운터에 반영하고 쓰레드는 전역 카운터를 읽어 카운터 값을 판단한다.<br />
+전역 락을 사용하면 지역 카운터의 값을 전역 카운터 값에 더하고, 지역 카운터의 값은 0으로 초기화 한다.</p>
+
+<h2 id="292-병행-연결-리스트">29.2 병행 연결 리스트</h2>
+
+<p>연결 리스트를 병행적으로 다루기 위해 삽입 연산을 시작하기 전에 락을 획득하고 리턴 직전에 해제한다.</p>
+
+<h3 id="확장성-있는-연결리스트">확장성 있는 연결리스트</h3>
+
+<p>병행 가능한 연결 리스트는 확장성이 좋지 않다.<br />
+이를 개선하기 위해 hand-over-hand locking (또는 lock coupling) 기법 개발</p>
+
+<p>전체 리스트에 하나의 락이 아니라 노드마다 락을 추가하는 것이다.<br />
+리스트를 순회하면서 다음 노드의 락을 획득하고 지금 노드의 락을 해제한다.<br />
+하지만 락을 획득하고 해제하는 오버헤드가 크기 때문에 속도 개선이 쉽지 않다.</p>
+
+<h2 id="293-병행-큐">29.3 병행 큐</h2>
+
+<p>병행 큐는 큐의 헤드와 테일에 락을 사용한다.<br />
+큐에 삽입과 추출 연산에 병행성을 부여하는 것이다.</p>
+
+<p>하지만 이 락만 존재하는 큐는 쓰레드가 대기하는 기능이 없기 때문에 실제로 사용할 수 없다.</p>
+
+<h2 id="294-병행-해시-테이블">29.4 병행 해시 테이블</h2>
+
+<p>병행 해시 테이블은 전체 자료 구조에 하나의 락이 아닌 해시 버켓마다 락을 사용했기 때문에 병행 리스트에 비해 병행성이 좋다.</p>
+
+<h3 id="295-요약">29.5 요약</h3>
+
+<p>카운터, 리스트, 큐 해시 테이블 병행 자료 구조들을 소개했다.<br />
+락 획득과 해제 코드에 대해 주의를 기울여야 하는데, <br />
+성능 개선은 <strong>미숙한 최적화(premature optimization)</strong> 를 피하기 위해 성능에 문제가 생길 경우에만 고려해야 한다.</p>
+
+<p><br /></p>
+
+<h2 id="30장-컨디션-변수">30장. 컨디션 변수</h2>
+
+<p>병행 프로그램을 제작하는데 락 이외에도 특정 <strong>조건</strong> 의 만족 여부를 검사하는 기법도 존재한다.</p>
+
+<h3 id="301-컨디션-변수의-개념과-관련-루틴">30.1 컨디션 변수의 개념과 관련 루틴</h3>
+
+<p>쓰레드 실행 시, 특정 조건이 만족될 때까지 대기를 위해 <strong>컨디션 변수(conditional variable)</strong> 를 사용할 수 있다.<br />
+컨디션 변수는 쓰레드 실행에서 특정 조건이 만족되기를 대기하는 큐 자료 구조다.</p>
+
+<p>슬립에서 깨어난 프로세스는 리턴하기 전에 락을 재획득 해야 한다.<br />
+대기상태에서 깨어났어도 락 획득에 실패하면 다시 sleep 상태로 들어간다.</p>
+
+<h2 id="302-생산자소비자유한-버퍼-문제">30.2 생산자/소비자(유한 버퍼) 문제</h2>
+
+<p>동기화 문제인 <strong>생산자/소비자(producer/consumer)</strong> 또는 <strong>유한 버퍼(bounded 버퍼)</strong> 문제에 대해 살펴본다.<br />
+생산자 쓰레드는 데이터 만들어 버퍼에 넣고, 소비자 쓰레드는 버퍼에서 데이터를 꺼내 사용한다.</p>
+
+<p>유한 버퍼는 공유 자원으로 경쟁 조건이 발생되지 않도록 동기화가 필요하다.</p>
+
+<h2 id="303-포함-조건covering-condition">30.3 포함 조건(Covering Condition)</h2>
+
+<p>다수의 쓰레드가 메모리 공간의 발생을 대기하고 있는 경우 어떤 쓰레드를 깨워야할지 선택해야 한다.<br />
+이 문제를 해결하기 위해 대기 중인 모든 쓰레드에게 시그널을 보내 대기상태에서 준비상태로 전이하여 모든 쓰레드를 깨워서 실행한다.<br />
+깨어난 쓰레드들은 조건을 검사하고 만족하지 않으면 다시 대기모드로 들어가고 만족하면 실행을 계속한다.<br />
+이러한 방식을 <strong>포함 조건(Covering Condition)</strong> 이라고 한다.</p>
+
+<p>하지만 불필요하게 많은 쓰레드를 깨우기 때문에 불필요한 문맥 전환이 발생될 수 있다는 것이 단점이다.</p>
+
+<p><br /></p>
+
+<h2 id="31장-세마포어">31장. 세마포어</h2>
+
+<p><strong>세마포어(semaphore)</strong> 는 락과 컨디션 변수로 모두 사용할 수 있다.</p>
+
+<h2 id="311-세마포어-정의">31.1 세마포어: 정의</h2>
+
+<p>세마포어는 정수 값을 갖는 객체로 <code class="language-plaintext highlighter-rouge">sem_wait()</code> 와 <code class="language-plaintext highlighter-rouge">sem_post()</code> 루틴으로 조작할 수 있다.<br />
+세마포어는 초기값에 의해 동작이 결정되기 때문에 사용하기 전에 초기화를 해야 한다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sem_wait()</code> 함수는 즉시 리턴하거나, 세마포어 값이 1이상이 될 때까지 호출자를 대기(spin or sleep)시킨다.</li>
+  <li><code class="language-plaintext highlighter-rouge">sem_post()</code> 함수는 대기하지 않고 세마포어 값을 증가시키고 쓰레드 하나를 깨운다</li>
+  <li>세마포어가 음수라면 그 값은 현재 대기 중인 쓰레드의 갯수와 같다.</li>
+</ul>
+
+<h2 id="312-이진-세마포어락">31.2 이진 세마포어(락)</h2>
+
+<p>세마포어를 락에 적용해본다. <br />
+<code class="language-plaintext highlighter-rouge">sem_wait()</code> / <code class="language-plaintext highlighter-rouge">sem_post()</code> 쌍으로 임계 영역 부분을 둘러싼다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sem_t</span> <span class="n">m</span><span class="p">;</span>
+<span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span>  <span class="c1">// X 로 초기화, 초기 값은 1이 되어야 함</span>
+<span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">);</span>
+
+<span class="c1">//임계 영역</span>
+
+<span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>세마 포어를 락으로 사용할 수 있는데, <br />
+락은 두 개의 상태(사용 가능, 사용중)만 존재하므로 <strong>이진 세마포어(binary semaphore)</strong> 라고도 한다.</p>
+
+<h3 id="313-순서-보장을-위한-세마포어">31.3 순서 보장을 위한 세마포어</h3>
+
+<p>세마포어는 사건들의 순서를 정하는데도 유용하다.<br />
+컨디션 변수를 사용했던 것과 유사하게 세마포어를 순서를 위한 도구로 사용할 수 있다.</p>
+
+<p>부모 프로세스에서 자식 프로세스를 생성 후 <code class="language-plaintext highlighter-rouge">sem_wait()</code> 를 호출하여 자식 종료를 대기하고, <br />
+자식에서는 <code class="language-plaintext highlighter-rouge">sem_post()</code> 호출하여 종료를 알리면 된다. <br />
+여기서 세마포어 초기값은 0으로 설정하면 된다.</p>
+
+<h3 id="314-생산자소비자-유한-버퍼-문제">31.4 생산자/소비자 (유한 버퍼) 문제</h3>
+
+<p>다수의 생산자 쓰레드나 소비자 쓰레드가 존재할 경우 교착 상태가 발생되지 않도록 세심한 주의가 필요하다. <br />
+교착 상태 문제를 해결하기 위해서는 락의 범위(scope)를 줄여야 한다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="o">*</span><span class="nf">producer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">loops</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">empty</span><span class="p">);</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">put</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">full</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">loops</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">full</span><span class="p">);</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">get</span><span class="p">();</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">empty</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tmp</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="315-reader-writer-락">31.5 Reader-Writer 락</h3>
+
+<p>다수의 쓰레드가 연렬 리스트에 노드를 삽입하고 검색하는 상황을 가정한다.<br />
+이를 위해 만들어진 락이 <strong>reader-writer 락</strong> 이다.</p>
+
+<p>이 기법에서는 자료구조를 갱신하려면 배타적 접근권한을 갖는 락을 사용하도록 한다.<br />
+하지만 쓰기 쓰레드에게 기아 현상이 발생하기 쉬워 공정성에 문제가 있는데,<br />
+이는 쓰기 쓰레드가 대기중일 때 읽기 쓰레드가 락을 획득하지 못하도록 해야 한다.</p>
+
+<h3 id="316-식사하는-철학자">31.6 식사하는 철학자</h3>
+
+<p>다섯명의 철학자가 식탁 주위를 둘러 앉았고, 총 다섯 개의 포크가 철학자 사이에 하나씩 놓여있는 문제다.<br />
+철학자는 양쪽의 포크를 들어야 식사를 할 수 있다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">get_forks</span><span class="p">(</span><span class="kt">int</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="n">forks</span><span class="p">[</span><span class="n">right</span><span class="p">(</span><span class="n">p</span><span class="p">)]);</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="n">forks</span><span class="p">[</span><span class="n">left</span><span class="p">(</span><span class="n">p</span><span class="p">)]);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="n">forks</span><span class="p">[</span><span class="n">left</span><span class="p">(</span><span class="n">p</span><span class="p">)]);</span>
+        <span class="n">sem_wait</span><span class="p">(</span><span class="n">forks</span><span class="p">[</span><span class="n">right</span><span class="p">(</span><span class="n">p</span><span class="p">)]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="317-쓰레드-제어">31.7 쓰레드 제어</h3>
+
+<p>과하게 많은 쓰레드가 동시에 수행되면 효율이 나빠진다.<br />
+이 현상을 방지하기 위해 세마포어를 사용하여 쓰레드 개수를 제한한다. <br />
+이러한 접근법을 <strong>제어(throttling)</strong> 이라 하며 <strong>수락 제어</strong>의 한 형태로 간주한다.</p>
+
+<p>세마포어의 값을 메모리-집약 영역에 동시에 들어갈 수 있는 최대 쓰레드 개수로 초기화하고,<br />
+<code class="language-plaintext highlighter-rouge">sem_wait()</code> 와 <code class="language-plaintext highlighter-rouge">sem_post()</code>를 각각 추가하면서 쓰레드 개수를 통제한다.</p>
+
+<h3 id="318-세마포어-구현">31.8 세마포어 구현</h3>
+
+<p>락과 컨디션 변수를 사용하여 세마포어인 제마포어(Zemaphore) 를 구현해본다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="n">__Zem_t</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">pthread_cond_t</span> <span class="n">cond</span><span class="p">;</span>
+    <span class="n">pthread_mutex_t</span> <span class="n">lock</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Zem_t</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">Zem_init</span><span class="p">(</span><span class="n">Zem_t</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">Cond_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">);</span>
+    <span class="n">Mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Zem_wait</span><span class="p">(</span><span class="n">Zem_t</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">Cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span>
+    <span class="n">Mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Zem_post</span><span class="p">(</span><span class="n">Zem_t</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">Cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">);</span>
+    <span class="n">Mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="319-요약">31.9 요약</h3>
+
+<p>세마포어는 병행 프로그램 작성을 위한 강력하고 유연한 기법이다.</p>
+
+<p><br /></p>
+
+<h2 id="32장-병행성-관련-버그">32장. 병행성 관련 버그</h2>
+
+<p><strong>교착 상태(deadlock)</strong> 를 비롯한 병행성 관련 오류를 자세하게 알아본다.</p>
+
+<h3 id="321-오류의-종류">32.1 오류의 종류</h3>
+
+<figure>
+    <a href="/images/study/operating-system/program-error-count.png">
+        <img src="/images/study/operating-system/program-error-count.png" data-rjs="/images/study/operating-system/program-error-count.png" class="zooming" alt="현대 응용 프로그램들의 오류들" />
+    </a>
+    
+    <figcaption>
+        현대 응용 프로그램들의 오류들
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<h3 id="322-비-교착-상태-오류">32.2 비 교착 상태 오류</h3>
+
+<p>비 교착 상태 오류는 대표적으로 <strong>원자성 위반(atomicity violation)</strong> 오류와 <strong>순서 위반(order violation)</strong> 이 있다.</p>
+
+<h4 id="원자성-위반-오류">원자성 위반 오류</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Thread</span> <span class="mi">1</span><span class="o">::</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">proc_info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fputs</span><span class="p">(</span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">proc_info</span><span class="p">,</span> <span class="p">...);</span>
+<span class="p">}</span>
+
+<span class="n">Thread</span> <span class="mi">2</span><span class="o">::</span>
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">proc_info</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>첫번째 쓰레드에서 값을 검사한 후 <code class="language-plaintext highlighter-rouge">fputs()</code> 호출하기 전에 두 번째 쓰레드가 실행되면 NULL 포인터 참조 오류가 발생한다.<br />
+공유 변수 참조 앞 뒤에 락을 추가하여 <code class="language-plaintext highlighter-rouge">proc_info</code> 필드 <code class="language-plaintext highlighter-rouge">NULL</code> 검사와 <code class="language-plaintext highlighter-rouge">fputs()</code> 호출이 원자적으로 수행되어야 한다.</p>
+
+<h3 id="순서-위반-오류">순서 위반 오류</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Thread</span> <span class="mi">1</span><span class="o">::</span>
+<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">mThread</span> <span class="o">=</span> <span class="n">PR_CreateThread</span><span class="p">(</span><span class="n">mMain</span><span class="p">,</span> <span class="p">...);</span>
+<span class="p">}</span>
+
+<span class="n">Thread</span> <span class="mi">2</span><span class="o">::</span>
+<span class="kt">void</span> <span class="nf">mMain</span><span class="p">(...)</span> <span class="p">{</span>
+    <span class="n">mState</span> <span class="o">=</span> <span class="n">mThread</span><span class="o">-&gt;</span><span class="n">State</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>쓰레드 2의 코드는 <code class="language-plaintext highlighter-rouge">mThread</code> 변수가 이미 초기화 된 것을 가정하지만,<br />
+쓰레드 1이 먼저 실행되지 않으면 NULL 포인터 참조 오류가 발생한다.</p>
+
+<p>이러한 오류는 <strong>컨디션 변수</strong> 를 활용하여 순서를 강제해야 한다.</p>
+
+<h4 id="비-교착-상태-오류-정리">비 교착 상태 오류: 정리</h4>
+
+<p>비 교착 상태 오류가 전체 오류 분포에서 많은 비중을 차지하기 때문에,<br />
+이러한 오류에 대해 초점을 맞춰야 한다.</p>
+
+<h3 id="323-교착-상태-오류">32.3 교착 상태 오류</h3>
+
+<p>많은 병행 시스템에서는 <strong>교착 상태(deadlock)</strong> 문제가 발생된다.<br />
+아래 그래프에서 <strong>사이클(cycle)</strong> 의 존재는 교착 상태 발생 가능성을 의미한다.</p>
+
+<figure>
+    <a href="/images/study/operating-system/deadlock-dependency-graph.png">
+        <img src="/images/study/operating-system/deadlock-dependency-graph.png" data-rjs="/images/study/operating-system/deadlock-dependency-graph.png" class="zooming" alt="교착 상태 의존성 그래프" />
+    </a>
+    
+    <figcaption>
+        교착 상태 의존성 그래프
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<h4 id="교착-상태는-왜-발생하는가">교착 상태는 왜 발생하는가</h4>
+
+<ul>
+  <li>구성 요소 간에 복잡한 의존성</li>
+  <li><strong>캡슐화(encapsulation)</strong> 의 성질
+    <ul>
+      <li>모듈화와 락은 잘 조화되지 않음</li>
+      <li>호출한 응용 프로그램은 모르게 교착 상태 발생 될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="교착-상태-발생-조건">교착 상태 발생 조건</h4>
+
+<p>교착 상태가 발생하기 위해서는 아래 네 가지 조건이 모두 충족되어야 한다.</p>
+
+<ul>
+  <li><strong>상호 배제(Mutual Exclusion)</strong>
+    <ul>
+      <li>쓰레드가 자신이 필요로 하는 자원에 대한 독자적인 제어권 주장</li>
+    </ul>
+  </li>
+  <li><strong>점유 및 대기(Hold-and-wait)</strong>
+    <ul>
+      <li>쓰레드가 자신에게 할당된 자원을 점유한 채로 다른 자원을 대기</li>
+    </ul>
+  </li>
+  <li><strong>비 선점(No preemption)</strong>
+    <ul>
+      <li>락을 점유하고 있는 쓰레드로부터 자원을 강제적으로 빼앗을 수 없음</li>
+    </ul>
+  </li>
+  <li><strong>환형 대기(Circular wait)</strong>
+    <ul>
+      <li>각 쓰레드는 다음 쓰레드가 요청한 하나 또는 그 이상의 락을 갖고 있는 쓰레드들의 순환 고리 존재</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="교착-상태의-예방">교착 상태의 예방</h4>
+
+<ul>
+  <li>순환 대기(Circular Wait)
+    <ul>
+      <li>순환 대기가 발생하지 않도록 락 획득을 하는 <strong>전체 순서(total ordering)</strong> 을 정함</li>
+      <li>교착 상태를 피하기 위해 <strong>부분 순서(partial ordering)</strong> 만 정의할 수도 있음</li>
+    </ul>
+  </li>
+  <li>점유 및 대기(Hold-and-Wait)
+    <ul>
+      <li>원자적으로 모든 락을 단번에 획득하도록 하여 예방</li>
+      <li>캡슐화로 인해 필요한 락들을 정확하게 파악하고 획득해야 하는 문제가 있음 (병행성 저하)</li>
+    </ul>
+  </li>
+  <li>비선점(No Preemption)
+    <ul>
+      <li>다른 쓰레드에서 락이 점유되었다면 다시 획득을 시도하는 유연한 인터페이스 사용</li>
+      <li><strong>무한반복(livelock)</strong> 이라는 문제가 발생 됨 (두 쓰레드 모두 락을 획득하지 못하여 진척이 안되는 경우)</li>
+    </ul>
+  </li>
+  <li>상호 배제(Mutual Exclusion)
+    <ul>
+      <li>상호 배제를 없애기 위해 <strong>락이 없는(lock-free)</strong> 자교 구조 접근법</li>
+      <li>여러 쓰레드에 의해 동시에 호출 되면 경쟁 조건이 발생됨</li>
+    </ul>
+  </li>
+  <li>스케줄링으로 교착 상태 회피하기
+    <ul>
+      <li>교착 상태를 예방하는 대신 회피가 더 유용할 수 있음</li>
+      <li>여러 쓰레드가 어떤 락을 획득할 것인지 파악하고 쓰레드들을 스케줄링하여 교착 상태가 발생되지 않도록 보장 필요</li>
+      <li>병행성에 제약이 생길 수 있음 (보편적인 방법은 아님)</li>
+    </ul>
+  </li>
+  <li>발견 및 복구
+    <ul>
+      <li>교착 상태 발생을 허용하고 복구하는 방법</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="324-요약">32.4 요약</h3>
+
+<ul>
+  <li>비 교착 상태 오류
+    <ul>
+      <li>흔하지만 대체적으로 고치기 쉬운 오류들</li>
+      <li>원자성 위반, 순서 위반 오류 포함</li>
+    </ul>
+  </li>
+  <li>교착 상태 오류
+    <ul>
+      <li>락 획득 순서를 정해서 애초에 교착 상태가 발생하지 않도록 예방 필요</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="33장-이벤트-기반의-병행성고급">33장. 이벤트 기반의 병행성(고급)</h2>
+
+<p>병행 프로그램을 제작하는 도구로 쓰레드뿐만 아니라 <strong>이벤트 기반의 병행성(event-based concurrency)</strong> 스타일도 있다. (<strong>node.js</strong> 서버 프레이뭐크에서 사용)
+이벤트 기반의 프로그래밍으로 쓰레드 기반의 병령 프로그래밍의 두가지 문제를 해결할 수 있다.</p>
+
+<ul>
+  <li>멀티 쓰레드 기반 프로그래밍은 어려움
+    <ul>
+      <li>락 보호, 교착 상태 등 문제</li>
+    </ul>
+  </li>
+  <li>개발자가 쓰레드 스케줄링에 대한 제어권이 없음
+    <ul>
+      <li>운영체제가 합리적으로 쓰레드들의 실행 순서를 결정하기만을 기대해야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="331-기본-개념-이벤트-루프">33.1 기본 개념: 이벤트 루프</h3>
+
+<p>이벤트 기반의 병행성 접근 방법은 다음과 같다.<br />
+이벤트의 발생 대기 → 이벤트가 종류 파악 → I/O 요청 또는 추후 처리를 위한 다른 이벤트 발생 등의 작업</p>
+
+<p>이벤트 기반의 서버는 <strong>이벤트 루프(event loop)</strong> 라는 단순한 구조를 갖는다. <br />
+루프내에서 이벤트 발생을 하나씩 처리하는데 이 처리하는 코드를 <strong>이벤트 핸들러(event handler)</strong> 라고 부른다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">getEvents</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">e</span> <span class="n">in</span> <span class="n">events</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">processEvent</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="332-중요-api-select-또는-poll">33.2 중요 API: select() (또는 poll())</h3>
+
+<p>이벤트 발생은 <code class="language-plaintext highlighter-rouge">select()</code> 또는 <code class="language-plaintext highlighter-rouge">poll()</code> 시스템 콜을 통해 감지한다.<br />
+이 인터페이스들은 처리가 필요한 것들이 있는지 검사한다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">select()</code>
+    <ul>
+      <li>전체 집합에서 준비된 디스크립터(descriptor)들의 총 개수를 반환</li>
+      <li>디스크립터에 대한 읽기 또는 쓰기 가능여부 파악 가능</li>
+      <li><code class="language-plaintext highlighter-rouge">timeout</code> 디스크립터에 상태가 변경할 때까지 무한정 대기하거나 즉시 리턴하도록 설정 가능 (널리 0 으로 설정하여 즉시 리턴)</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">poll()</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">select()</code> 시스템 콜과 유사</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="333-select-의-사용">33.3 select() 의 사용</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// fd_set 를 모두 0으로 초기화</span>
+        <span class="n">fd_set</span> <span class="n">readFDs</span><span class="p">;</span>
+        <span class="n">FD_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">readFDs</span><span class="p">);</span>
+        
+        <span class="c1">// 서버가 관심 있어 하는 디스크립터들의 bit 설정</span>
+        <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">fd</span> <span class="o">=</span> <span class="n">minFD</span><span class="p">;</span> <span class="n">fd</span> <span class="o">&lt;</span> <span class="n">maxFD</span><span class="p">;</span> <span class="n">fd</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">FD_SET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readFDs</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// 선택</span>
+        <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">maxFD</span><span class="o">+</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readFDs</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+        
+        <span class="c1">// FD_ISSET() 를 사용하여 실제 데이터 사용 여부 검사</span>
+        <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">fd</span> <span class="o">=</span> <span class="n">minFD</span><span class="p">;</span> <span class="n">fd</span> <span class="o">&lt;</span> <span class="n">maxFD</span><span class="p">;</span> <span class="n">fd</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">FD_ISSET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readFDs</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">processFD</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="334-왜-간단한가-락이-필요-없음">33.4 왜 간단한가? 락이 필요 없음</h3>
+
+<p>쓰레드 기반 병행 프로그램의 문제점들이 발생되지 않음<br />
+한번에 하나의 이벤트만 처리하기 때문에 락 획득, 해제가 필요 없음 (단일 쓰레드 구성)</p>
+
+<h3 id="335-문제점-블로킹-시스템-콜blocking-system-call">33.5 문제점: 블로킹 시스템 콜(Blocking System Call)</h3>
+
+<p>이벤트 기반의 접근법에서는 쓰레드가 없고 이벤트 루프만 존재한다.<br />
+이벤트 핸들러가 블로킹 콜을 호출하면 서버 전체가 그 일을 처리하기 위해 정지된다. (자원 낭비)</p>
+
+<h3 id="336-해법-비동기-io">33.6 해법: 비동기 I/O</h3>
+
+<p>이벤트 기반 서버의 한계를 극복하기 위해 <strong>비동기 I/O(asynchronous I/O)</strong> 방법 개발  <br />
+<strong>폴링(poll)</strong> 또는 인터럽트 기반의 시스템에서 <strong>시그널(signal)</strong> 을 사용하여 I/O 가 완료되었다고 프로그램에게 알린다.</p>
+
+<h3 id="337-또-다른-문제점-상태관리">33.7 또 다른 문제점: 상태관리</h3>
+
+<p>이벤트 기반 접근법은 이벤트 핸들러가 비동기 I/O 를 발생시킬 때 프로그램 상태를 관리해야 하기 때문에 일반적으로 쓰레드 기반 코드보다 복잡하다.<br />
+쓰레드 기반 프로그램에는 쓰레드 스택에 정보들이 들어있는데 이벤트 기반 프로그램에서는 이 정보들을 관리해야 한다. <br />
+이를 <strong>수동 스택 관리(manual stack management)</strong> 라고 한다.</p>
+
+<p>이벤트 기반 서버에서는 <strong>continuation</strong> 개념을 사용하여,<br />
+이벤트 종료하는 데에 필요한 자료들을 한곳에 저장해두고 이벤트가 발생하면 이벤트를 처리한다.</p>
+
+<h3 id="338-이벤트-사용의-어려움">33.8 이벤트 사용의 어려움</h3>
+
+<ul>
+  <li><strong>멀티 CPU</strong> 의 경우 복잡해짐
+    <ul>
+      <li>다수의 CPU 를 활용하기 위해 다수의 이벤트 핸들러를 병렬 실행</li>
+      <li>동기화 문제 발생하여 락과 같은 기법 필요</li>
+    </ul>
+  </li>
+  <li><strong>페이징(paging)</strong> 같은 시스템 작업과 조화롭게 실행 불가능
+    <ul>
+      <li>운영체제 내부적으로 발생하는 페이지 폴트 같은 경우에는 이벤트 서버가 블럭</li>
+    </ul>
+  </li>
+  <li>루틴들의 <strong>작동 방식</strong> 변화
+    <ul>
+      <li>소프트웨어가 개성되고 갱신되면 루틴들의 특성이 변경될 수 있음</li>
+    </ul>
+  </li>
+  <li>비동기 디스크 I/O 의 사용가능 여부
+    <ul>
+      <li>아직까지도 비동기 I/O 는 일관성 있게 적용되어 있지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="34장-병랭성을-정리하는-대화">34장. 병랭성을 정리하는 대화</h2>
+
+<ul>
+  <li>병행성은 가능하다면 피해야 함
+    <ul>
+      <li>어설프게 최적화된 프로그램은 더 좋지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Study]+%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C+%EC%95%84%EC%A3%BC+%EC%89%AC%EC%9A%B4+%EC%84%B8%EA%B0%80%25E...%20-%20https://devyonghee.github.io/study/2022/11/29/operation-system-three-easy-pieces-29-34/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2022/11/29/operation-system-three-easy-pieces-29-34/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

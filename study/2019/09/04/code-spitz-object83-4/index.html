@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 코드 스피츠 Object83 4회차 정리</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="코드 스피츠 Object83 4회차 정리">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2019/09/04/code-spitz-object83-4/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2019/09/04/code-spitz-object83-4/">
+  <meta name="twitter:title" content="코드 스피츠 Object83 4회차 정리">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>코드 스피츠 Object83 4회차 정리</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 4, 2019
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      25 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/object" title="See all posts with tag 'object'">object</a>
+    
+      <a href="/tag/OOP" title="See all posts with tag 'OOP'">OOP</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>실제로 리스코프 치환 원칙(LSP) 지켜지는 것이 힘들다.<br />
+다양한 역할로 나누어질 경우 최대한 client 쪽으로 밀어내면서 <strong>type</strong>으로 해결하자</p>
+
+<!--more-->
+
+<blockquote>
+  <p>강의 시작 전에 ‘개발자가 반드시 알아야할 객체 지향과 디자인 패턴’ 책을 추천한다. 
+얇은 분량으로 코드 실무적으로 자세하게 적은 책이라고 한다.</p>
+</blockquote>
+
+<p>우리는 보통 객체 설계할 때, 다른 객체에게 물어보고 동작을 수행도록 한다.
+이러한 이유로 기차 폭주 사건을 일으키게 되고 이용되는 객체가 변화하면 반드시 영향이 미친다. 
+그래서 결국 객체 지향에 실패한다.<br />
+물어보지 않고 명령(Tell Don`t Ask) 하도록 하면 이러한 영향을 줄일 수 있고 디미터의 원칙도 달성할 수 있다.</p>
+
+<p><strong>디미터의 원칙</strong>과 <strong>Tell Don’t Ask(Hollywood 원칙)</strong> 같은 원칙들은 수정에 강한 코드를 만들 수 있게 한다.
+<strong>SOLID</strong> 원칙에서 <strong>OCP</strong> 와 <strong>LSP</strong> 가 이 두 원칙과 밀접한 관계를 가진다. 
+<strong>OCP</strong>, <strong>LSP</strong> 를 지키려면 <strong>Hollywood 원칙</strong>을 사용할 수 밖에 없다.</p>
+
+<h2 id="lsp-리스코프-치환-원칙-에-대해-다시-한번-생각해보자">LSP (리스코프 치환 원칙) 에 대해 다시 한번 생각해보자</h2>
+
+<p><strong>LSP</strong>은 자식형을 부모형으로 안전하게 치환할 수 있다라는 원칙이다.
+당연한 내용이지만 실제로 개발을 하려고 하면 잘 지켜지지 않는다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/hasty-abstract.jpg">
+        <img src="/images/study/code-spitz/hasty-abstract.jpg" data-rjs="/images/study/code-spitz/hasty-abstract.jpg" class="zooming" alt="hasty-abstract1" />
+    </a>
+    
+    <figcaption>
+        hasty-abstract1
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">concreate1</code>, <code class="language-plaintext highlighter-rouge">concreate2</code> 클래스를 만들었는데 a b c 메소드라는 공통점이 있어서 추상화를 했다.
+추상층 a b c 를 만들고 구상층을 만들 수 있다.
+하지만 <code class="language-plaintext highlighter-rouge">concreate3</code> 도 같은 구상층이 생긴다면 c 의 책임을 주려고한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/hasty-abstract2.jpg">
+        <img src="/images/study/code-spitz/hasty-abstract2.jpg" data-rjs="/images/study/code-spitz/hasty-abstract2.jpg" class="zooming" alt="hasty-abstract2" />
+    </a>
+    
+    <figcaption>
+        hasty-abstract2
+        
+    </figcaption>
+    
+</figure>
+
+<p>그래서 위와 같이 fake C()를 만들어 버린다.
+여기서 <code class="language-plaintext highlighter-rouge">concreate3</code> 같은 추상층에 존재하면 안되지만 억지로 그 역할을 수행하려고 하는 것이다.
+이런 경우, 리스코프 치환 원칙을 어기게 되며 <strong>성급한 추상화</strong>를 했다고 한다. 
+성급한 추상화로 인해 <code class="language-plaintext highlighter-rouge">runtime error</code>, <code class="language-plaintext highlighter-rouge">compile error</code> 보다 더 심각한 <code class="language-plaintext highlighter-rouge">context error </code>가 발생 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/hasty-abstract3.jpg">
+        <img src="/images/study/code-spitz/hasty-abstract3.jpg" data-rjs="/images/study/code-spitz/hasty-abstract3.jpg" class="zooming" alt="hasty-abstract3" />
+    </a>
+    
+    <figcaption>
+        hasty-abstract3
+        
+    </figcaption>
+    
+</figure>
+
+<p>리스코프 치환 원칙을 지키기 위해서 fake C()를 만들지 말고 새로운 추상층을 만들어야 한다.
+이러면 우리는 안전하게 리스코프 치환 원칙을 준수할 수 있다.
+리스코프 치환 원칙은 기존 보다 기능이 감소하면 어렵지 않은 방법으로 지켜낼 수 있다. 하지만 반대의 경우에는 어떻게 될 것인가</p>
+
+<figure>
+    <a href="/images/study/code-spitz/hasty-abstract4.jpg">
+        <img src="/images/study/code-spitz/hasty-abstract4.jpg" data-rjs="/images/study/code-spitz/hasty-abstract4.jpg" class="zooming" alt="hasty-abstract4" />
+    </a>
+    
+    <figcaption>
+        hasty-abstract4
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">concreate3</code>에 d 가 생겼다고 가정했다. <br />
+리스코프 치환 원칙을 위배하지는 않았지만 d 를 사용하는 방법을 찾기가 어렵다.
+그래서 다운 캐스팅을 하게 된다.<br />
+<strong>리스코프 치환 원칙</strong>을 지키려고 다운 캐스팅을 하지 않으려고 했지만 d를 사용하기 위해서는 다운캐스팅을 하는 방법밖에 떠오르지 않는다.
+그래서 다운캐스팅을 사용하니까 <strong>리스코프 치환원칙</strong>을 지켜지지 않고 자동으로 <strong>OCP</strong> 를 어기게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/hasty-abstract5.jpg">
+        <img src="/images/study/code-spitz/hasty-abstract5.jpg" data-rjs="/images/study/code-spitz/hasty-abstract5.jpg" class="zooming" alt="hasty-abstract5" />
+    </a>
+    
+    <figcaption>
+        hasty-abstract5
+        
+    </figcaption>
+    
+</figure>
+
+<p>그래서 우리는 <code class="language-plaintext highlighter-rouge">Generic</code> 을 이용하여 확장이 일어날때 <strong>리스코프 치환 원칙</strong>을 지키는 방법을 찾는다.</p>
+
+<h2 id="개발자의-세계-코드">개발자의 세계 (코드)</h2>
+
+<figure>
+    <a href="/images/study/code-spitz/programmer-world.jpg">
+        <img src="/images/study/code-spitz/programmer-world.jpg" data-rjs="/images/study/code-spitz/programmer-world.jpg" class="zooming" alt="programmer-world" />
+    </a>
+    
+    <figcaption>
+        programmer-world
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Director</code> 는 <code class="language-plaintext highlighter-rouge">Paper</code>(기획서)를 받고, <code class="language-plaintext highlighter-rouge">Paper</code> 는 <code class="language-plaintext highlighter-rouge">ServerClient</code> 와 <code class="language-plaintext highlighter-rouge">Client</code> 로 만드는 사양서로 이루어져 있다.<br />
+이 프로젝트를 수행하는 <code class="language-plaintext highlighter-rouge">Frontend</code>, <code class="language-plaintext highlighter-rouge">Backend Programmer</code> 가 있고 <code class="language-plaintext highlighter-rouge">Programmer</code> 는 <code class="language-plaintext highlighter-rouge">Paper</code> 를 알아야만 개발을 할 수 있으므로 아는 관계여야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Paper</span> <span class="o">{</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>형으로만 추상하기 위해 메소드가 없는 <code class="language-plaintext highlighter-rouge">Paper</code> 만들었다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Programmer</code>는 <code class="language-plaintext highlighter-rouge">Director</code>에게 <code class="language-plaintext highlighter-rouge">Paper</code>를 제공 받아 <code class="language-plaintext highlighter-rouge">Program</code>으로 모델링 하는 메소드가 필요하다.
+그래서 <code class="language-plaintext highlighter-rouge">Programmer</code>는 <code class="language-plaintext highlighter-rouge">Program</code>을 만드는 인터페이스를 외부에 제공한다.</p>
+
+<blockquote>
+  <p>모델링 : 복잡한 현실세계를 숨기고 목적에 맞게 필요한 것만 추려내는 것</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Client</code> 는 marker interface 인 <code class="language-plaintext highlighter-rouge">Paper</code> 기반으로 구현한 것이다.
+<code class="language-plaintext highlighter-rouge">Client</code> 에는 library 와 language 이라는 사양서가 있고 <code class="language-plaintext highlighter-rouge">Programmer</code> 도 필요하다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>서버클라이언트에는 <code class="language-plaintext highlighter-rouge">server</code>, <code class="language-plaintext highlighter-rouge">backEndLanguage</code>, <code class="language-plaintext highlighter-rouge">frontEndLanguage</code> 사양이 있고
+그에 맞는 backEndProgrammer, frontEndProgrammer 가 필요하다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrontEnd</span> <span class="kd">implements</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Library</span> <span class="n">library</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">Client</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Client</span> <span class="n">pb</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Client</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="n">language</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="na">language</span><span class="o">;</span>
+            <span class="n">library</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="na">library</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">makeFrontEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Frontend</code> 개발자는 <code class="language-plaintext highlighter-rouge">language</code> 와 <code class="language-plaintext highlighter-rouge">library</code> 의 사양을 받아서 프로그램을 만든다.
+그런데 <code class="language-plaintext highlighter-rouge">Paper</code> 가 maker interface 이기 때문에 <code class="language-plaintext highlighter-rouge">language</code> 와 <code class="language-plaintext highlighter-rouge">library</code> 사양을 가져올 수 없다.
+정보를 받기 위해 <code class="language-plaintext highlighter-rouge">Client</code> 로 다운캐스팅을 하게 되지만 결국 <strong>LSP</strong> 와 <strong>OCP</strong> 를 어기게 된다.</p>
+
+<p>또한, <code class="language-plaintext highlighter-rouge">Paper</code>가 <code class="language-plaintext highlighter-rouge">Client</code> 일 경우도 이외에 더 많은 <code class="language-plaintext highlighter-rouge">Paper</code> 의 구상형이 생길 수록 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 의 코드를 수정 해야 하는 문제점도 생긴다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BackEnd</span> <span class="kd">implements</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Server</span> <span class="n">server</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">ServerClient</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ServerClient</span> <span class="n">pa</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ServerClient</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="na">server</span><span class="o">;</span>
+            <span class="n">language</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="na">backEndLanguage</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">makeFrontEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">BackEnd</code> 도 비슷하다. 
+여기서도 <code class="language-plaintext highlighter-rouge">Client</code> 로 받을 경우의 처리가 존재하지 않는다. 
+마찬가지로 <code class="language-plaintext highlighter-rouge">LSP</code>와 <code class="language-plaintext highlighter-rouge">OCP</code>를 어기고 있다. 
+<code class="language-plaintext highlighter-rouge">BackEnd</code> 도 <code class="language-plaintext highlighter-rouge">Paper</code> 의 구상형을 만들때 마다 영향을 받으니 구상형을 추가하는 것이 어려워진다.
+결국, 모든 <code class="language-plaintext highlighter-rouge">Programmer</code>의 구상형을 찾아서 <code class="language-plaintext highlighter-rouge">Paper</code>의 구상형 처리를 추가 해야 되는 문제가 생긴다.
+<code class="language-plaintext highlighter-rouge">if</code> 나 <code class="language-plaintext highlighter-rouge">switch</code>를 사용하면 Runtime 중에 흐름 분기를 맡기게 되는 셈인데, 이러면 정적타입의 안정성을 잃어버리게 된다.
+가능하면 코드에서 <code class="language-plaintext highlighter-rouge">if</code> 나 <code class="language-plaintext highlighter-rouge">switch</code> 를 제거하고 형으로 구분 해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Director</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="n">projects</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">projects</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">paper</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">projects</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"no project"</span><span class="o">);</span>
+        <span class="nc">Paper</span> <span class="n">paper</span> <span class="o">=</span> <span class="n">projects</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">ServerClient</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ServerClient</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ServerClient</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">(),</span>
+                    <span class="n">backEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BackEnd</span><span class="o">();</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setFrontEndProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setBackEndProgrammer</span><span class="o">(</span><span class="n">backEnd</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">client</span> <span class="o">=</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">server</span> <span class="o">=</span> <span class="n">backEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">server</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">Client</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Client</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Client</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">();</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deploy</span><span class="o">(</span><span class="nc">String</span> <span class="n">projectName</span><span class="o">,</span> <span class="nc">Program</span><span class="o">...</span> <span class="n">programs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Director</code> 코드에서 <code class="language-plaintext highlighter-rouge">frontEnd</code> 에게 <code class="language-plaintext highlighter-rouge">ServerClient</code> 를 주고 있는데 
+이러면 <code class="language-plaintext highlighter-rouge">frontEnd</code>는 <code class="language-plaintext highlighter-rouge">language</code> 와 <code class="language-plaintext highlighter-rouge">library</code> 를 가져오지 못해서 이상한 결과가 나오게 된다.
+LSP 나 OCP 를 위반하면 프로그램이 불안정해진다. 설계사가 LSP 와 OCP 를 특별히 신경써야 한다.<br />
+이 두 원칙을 지키려고 한다면 나머지 <strong>SRP</strong>, <strong>ISP</strong>, <strong>DIP</strong> 3가지 원칙은 자연스럽게 지켜진다.</p>
+
+<h2 id="lsp-위반-시행착오">LSP 위반 시행착오</h2>
+
+<figure>
+    <a href="/images/study/code-spitz/frontend-programmer-code.jpg">
+        <img src="/images/study/code-spitz/frontend-programmer-code.jpg" data-rjs="/images/study/code-spitz/frontend-programmer-code.jpg" class="zooming" alt="frontend-programmer-code" />
+    </a>
+    
+    <figcaption>
+        frontend-programmer-code
+        
+    </figcaption>
+    
+</figure>
+
+<p>그림에서 빨간 영역이 <strong>LSP</strong> 를 위반하는 부분이다.
+자식형을 부모형으로 치환해도 충분해야 하지만 그러지 못하기 때문에 다운캐스팅을 하고 있다.
+다운 캐스팅을 하는 이유는 <strong>LSP</strong> 를 어겼기 때문이지만, 다운 캐스팅을 한 결과는 <strong>OCP</strong> 위반이 된다.
+<strong>LSP</strong> 위반이 이 <strong>OCP</strong> 위반을 유도하는 것이다.</p>
+
+<p>추상형에 대한 구상 지식을 가지려 했기 때문에 다운캐스팅이 이루어졌다.
+그래서 복잡한 내부를 모르는 채 추상화에게 떠밀도록 <strong>Don`t Ask(Hollywood 원칙)</strong> 를 이용해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrontEnd</span> <span class="kd">implements</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Library</span> <span class="n">library</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">paper</span><span class="o">.</span><span class="na">setData</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">makeFrontEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">setLanguage</span><span class="o">(</span><span class="nc">Language</span> <span class="n">language</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">language</span> <span class="o">=</span> <span class="n">language</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">setLibrary</span><span class="o">(</span><span class="nc">Library</span> <span class="n">library</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">library</span> <span class="o">=</span> <span class="n">library</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>코드는 위와 같이 바뀌었다. 
+<code class="language-plaintext highlighter-rouge">Paper</code> 에게 <code class="language-plaintext highlighter-rouge">Programmer</code> 형으로 <code class="language-plaintext highlighter-rouge">data</code> 받아서 세팅하도록 요구한다.
+<code class="language-plaintext highlighter-rouge">setData</code> 에 <code class="language-plaintext highlighter-rouge">Programmer</code> 로 결정하면 하위형을 다 들어올 수 있는데 이걸 공변이라고 말한다. 
+공변형으로 동작하고 return 값은 부모형으로만 반환하는 반변형으로 작동하게 된다. 
+기존에 원칙을 어겼던 부분을 <code class="language-plaintext highlighter-rouge">Paper</code>에 넣었기 때문에 <strong>LSP</strong>와 <strong>OCP</strong>를 지킬 수 있게 되었다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">getProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">paper</span><span class="o">.</span><span class="na">setData</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="n">paper</span><span class="o">)</span>
+    <span class="o">}</span>
+
+    <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">);</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p>위 코드에서 <code class="language-plaintext highlighter-rouge">makeProgram</code> 의 구조를 보면,
+<code class="language-plaintext highlighter-rouge">Paper</code> 를 이용해서 <code class="language-plaintext highlighter-rouge">setData</code> 를 하는 것은 <code class="language-plaintext highlighter-rouge">frontEnd</code> 와 <code class="language-plaintext highlighter-rouge">backEnd</code> 가 똑같을 것이다.
+<code class="language-plaintext highlighter-rouge">Programmer interface</code> 를 <code class="language-plaintext highlighter-rouge">abstract</code> 클래스로 변경하고 <strong>template method</strong> 로 만들어서 <strong>hook</strong> 으로 바꿔준다. 
+<strong>dry 원칙</strong>때문에 <code class="language-plaintext highlighter-rouge">interface</code> 를 만들었다가 <code class="language-plaintext highlighter-rouge">abstract class</code> 로 바꾸고 <strong>template method</strong> 를 사용하게 된다..</p>
+
+<blockquote>
+  <p>dry 원칙 Don’t Repeat Yourself<br />
+똑같은 일을 두번하지 않는다. 
+중복되는 함수나 코드는 하나의 공통의 콤포넌트에 넣고 사용한다. 
+큰 시스템을 여러 조각으로 나누고 서로 참조한다.</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">FrontEnd</code> 와 <code class="language-plaintext highlighter-rouge">BackEnd Programmer</code> 는 <code class="language-plaintext highlighter-rouge">Paper</code> 의 <code class="language-plaintext highlighter-rouge">setData</code> 같이 사용하기 때문에  <code class="language-plaintext highlighter-rouge">Paper</code>는 어쩔 수 없이 추상형 <code class="language-plaintext highlighter-rouge">Programmer</code> 로 받는다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">programmer</span> <span class="k">instanceof</span> <span class="nc">FrontEnd</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">FrontEnd</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="o">(</span><span class="nc">FrontEnd</span><span class="o">)</span> <span class="n">programmer</span><span class="o">;</span>
+            <span class="n">frontEnd</span><span class="o">.</span><span class="na">setLibrary</span><span class="o">(</span><span class="n">library</span><span class="o">);</span>
+            <span class="n">frontEnd</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">language</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>하지만 <code class="language-plaintext highlighter-rouge">Paper</code> 에게 책임이 주어져도 별 수 없다. 
+<code class="language-plaintext highlighter-rouge">Programmer</code> 입장에서 <strong>LSP</strong> 와 <strong>OCP</strong> 가 지켜진 것 같지만 
+이번에는 <code class="language-plaintext highlighter-rouge">Programmer</code> 가 일으켰던 <code class="language-plaintext highlighter-rouge">Context error</code> 를 <code class="language-plaintext highlighter-rouge">Paper</code> 가 일으키게 된다.
+이게 강타입 언어에서 많이 등장하는 문제다.
+<strong>LSP</strong> 는 증가하는 기능에는 효과적으로 지킬 수 없어서 해결 방법을 모르면 무조건 <strong>다운캐스팅</strong>하게 된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">programmer</span> <span class="k">instanceof</span> <span class="nc">FrontEnd</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">FrontEnd</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="o">(</span><span class="nc">FrontEnd</span><span class="o">)</span> <span class="n">programmer</span><span class="o">;</span>
+            <span class="n">frontEnd</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">frontEndLanguage</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">programmer</span> <span class="k">instanceof</span> <span class="nc">BackEnd</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">BackEnd</span> <span class="n">backEnd</span> <span class="o">=</span> <span class="o">(</span><span class="nc">BackEnd</span><span class="o">)</span> <span class="n">programmer</span><span class="o">;</span>
+            <span class="n">backEnd</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">backEndLanguage</span><span class="o">);</span>
+            <span class="n">backEnd</span><span class="o">.</span><span class="na">setServer</span><span class="o">(</span><span class="n">server</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ServerClient</code> 는 심각하다.
+<code class="language-plaintext highlighter-rouge">ServerClient</code> 는 <code class="language-plaintext highlighter-rouge">Programmer</code> 종류가 두 개이상으로 들어오는데 그때마다 다르게 반응해야 한다.
+이전에 <code class="language-plaintext highlighter-rouge">BackEnd</code> 입장에서 <code class="language-plaintext highlighter-rouge">Paper</code> 와 1:1 관계로 한 종류만 처리하면 됐다. 
+하지만 여기서 <strong>의존성을 역전(관계 역전)</strong> 시켰더니 1:n 관계로 되어 n개에 대한 case 를 처리하는 코드가 된다.
+모든 종류의 프로그래머에게 성립하도록 해야 하므로 책임이 더 많아 졌다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/paper-code.jpg">
+        <img src="/images/study/code-spitz/paper-code.jpg" data-rjs="/images/study/code-spitz/paper-code.jpg" class="zooming" alt="paper-code" />
+    </a>
+    
+    <figcaption>
+        paper-code
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Client</code>은 <code class="language-plaintext highlighter-rouge">programmer</code> 를 받아서 <strong>다운캐스팅</strong>으로 <code class="language-plaintext highlighter-rouge">setData</code> 를 처리했다.
+<code class="language-plaintext highlighter-rouge">BackEnd</code> 개발자의 경우는 처리하지 않게 됐고 그에 다라 모든 경우의 수를 파악하여 처리하기 힘들어졌다.
+우리는 Client 의 setData 작성할 때, 호출 하는 쪽에서 부터 경우의 수를 산정하지 않고 특정 경우에만 동작하도록 코드를 작성한다.
+그래서 위험한 코드가 나오게 되고 <strong>OCP</strong> 나 <strong>LSP</strong> 를 어기게 된다.</p>
+
+<p>class 형 언어는 이런 상황을 유도하게 된다.</p>
+
+<p>이런 상황을 피할 수 있는 방법은 객체의 테스트 코드를 작성하여 어떻게 사용되는지 파악하고 메소드를 작성하는 것이다.
+TDD 의 진실된 의미는 객체를 어떤 측면에서 어떻게 사용되는지 시각적으로 확보하도록 도움을 주는 것이다. 
+결국, 설계에 영향을 미치는게 아니라 method 의 영향을 미치게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/paper-code-with-generic.jpg">
+        <img src="/images/study/code-spitz/paper-code-with-generic.jpg" data-rjs="/images/study/code-spitz/paper-code-with-generic.jpg" class="zooming" alt="paper-code-with-generic" />
+    </a>
+    
+    <figcaption>
+        paper-code-with-generic
+        
+    </figcaption>
+    
+</figure>
+
+<p>이 문제를 해소할 수 있는 것은 <code class="language-plaintext highlighter-rouge">Generic</code> 이다.
+<code class="language-plaintext highlighter-rouge">if</code> 문과의 차이점은 형으로 결정한다는 것이다. 
+<code class="language-plaintext highlighter-rouge">Generic</code>은 추상형을 유지하면서 구상형을 사용자가 결정하게 한다.
+<code class="language-plaintext highlighter-rouge">Generic</code> 을 사용하면 <code class="language-plaintext highlighter-rouge">if instanceof</code> 를 제거할 수 있다.
+그렇게 하면 <code class="language-plaintext highlighter-rouge">Context Error</code>를 <code class="language-plaintext highlighter-rouge">Compile Error</code> 으로 변경해서 일으킬 수 있다.</p>
+
+<p><strong>다운 캐스팅</strong>은 T가 되고 객체의 추상형은 extends 가 된다.
+<strong>다운 캐스팅</strong>을 하면 <strong>OCP</strong> 를 어기게 되지만 여기서는 <strong>업캐스팅</strong>으로 바뀐 것이다.
+T 형을 규정할때 upper bound 를 이용했지만 <code class="language-plaintext highlighter-rouge">instanceof</code> 는 바닥에 있는 bounce bound 이용해서 정의한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span><span class="o">&lt;</span><span class="nc">FrontEnd</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">FrontEnd</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">programmer</span><span class="o">.</span><span class="na">setLibrary</span><span class="o">(</span><span class="n">library</span><span class="o">);</span>
+        <span class="n">programmer</span><span class="o">.</span><span class="na">setLanguage</span><span class="o">(</span><span class="n">language</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Paper</code>에 T형을 받았다면 <code class="language-plaintext highlighter-rouge">Client</code>를 만들때, <code class="language-plaintext highlighter-rouge">Programmer</code> 의 구상 클래스인 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 형을 넘길 수 있다.
+그래서 <code class="language-plaintext highlighter-rouge">instanceof</code> 없이 구상형의 내용을 사용할 수 있게 됐다.</p>
+
+<p>이전 <code class="language-plaintext highlighter-rouge">Client</code> 는 범용이었지만 여기서는 강력하게 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 와 binding 되었고,
+용도가 감소되어 제약 범위 안에서 코드를 작성할 수 있게 되었다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/serverclient-code-with-generic.jpg">
+        <img src="/images/study/code-spitz/serverclient-code-with-generic.jpg" data-rjs="/images/study/code-spitz/serverclient-code-with-generic.jpg" class="zooming" alt="serverclient-code-with-generic" />
+    </a>
+    
+    <figcaption>
+        serverclient-code-with-generic
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Paper</code> 는 여러 <code class="language-plaintext highlighter-rouge">Programmer</code> 가 들어오는 큰 책임을 가져서 문제가 생긴다.
+이전 <code class="language-plaintext highlighter-rouge">Client</code> 는 매핑 되는게 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 한 가지이기 때문에 정확하게 T를 이용할 수 있었다.</p>
+
+<p>그런데 <code class="language-plaintext highlighter-rouge">ServerClient</code> 는 여러 종류의 <code class="language-plaintext highlighter-rouge">Programmer</code> 를 담당했기 때문에 위와 같이 된다.
+조건이 추가 된다고 계속 형을 추가할 수는 없다.</p>
+
+<h2 id="ocp-와-제러닉을-통한-해결">OCP 와 제러닉을 통한 해결</h2>
+
+<p><code class="language-plaintext highlighter-rouge">LSP</code> 를 해결하기 위해 <code class="language-plaintext highlighter-rouge">Generic</code> 을 이용하였으나 좋지 않았으므로 
+<code class="language-plaintext highlighter-rouge">Generic</code> 과 <strong>OCP</strong> 를 결합하여 <strong>Hollywood 원칙</strong>으로 해결한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Paper</span> <span class="o">{</span>
+<span class="o">}</span>
+
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Paper</code> 를 다시 원래대로 돌린다.
+현실 세계의 객체 binding 은 1:1로 이루어지지 않고 1:n, n:n 이루어지는데 여기서도 <code class="language-plaintext highlighter-rouge">Paper</code> 와 <code class="language-plaintext highlighter-rouge">Programmer</code> 는 1:n 관계를 가진다.
+여러개가 들어오는 n 쪽에서 구현을 하면 일반화할 수 없으니 1 을 가지는 쪽에서 구현을 해야 한다.</p>
+
+<p>element 가 collector 를 아는 편보다 collector 가 element 를 아는 것은 여러 원소를 알아야 하므로 불리하다.
+parent 입장에서는 많은 child 를 알아야되서 의존성의 무게가 달라지기 때문이다.</p>
+
+<p>여기서 <code class="language-plaintext highlighter-rouge">Paper</code> 가 <code class="language-plaintext highlighter-rouge">Programmer</code> 다수를 소유하게 되므로 <code class="language-plaintext highlighter-rouge">Paper</code> 보다 <code class="language-plaintext highlighter-rouge">Programmer</code> 가 <code class="language-plaintext highlighter-rouge">Paper</code> 를 알게하는 것이 낫다.</p>
+
+<p>그래서 <code class="language-plaintext highlighter-rouge">Paper</code> 는 다시 <strong>maker interface</strong> 로 돌아온다.
+실제로도 <code class="language-plaintext highlighter-rouge">Paper</code> 는 비슷한 내용의 프로젝트가 존재하지 않기 때문에 추상화를 할 수가 없다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ServerClient</code> 도 원래대로 다시 돌아온다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Programmer</span><span class="o">&lt;</span><span class="no">T</span> <span class="kd">extends</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">getProgram</span><span class="o">(</span><span class="no">T</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">setData</span><span class="o">(</span><span class="n">paper</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">makeProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="no">T</span> <span class="n">paper</span><span class="o">);</span>
+
+    <span class="kd">abstract</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">();</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Programmer</code> 쪽으로 <code class="language-plaintext highlighter-rouge">Paper</code> 가 알도록 수정했으니 <code class="language-plaintext highlighter-rouge">Paper</code>가 아닌 이 객체가 <code class="language-plaintext highlighter-rouge">SetData</code> 책임을 가진다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Programmer</code> 는 추상 클래스니까 <code class="language-plaintext highlighter-rouge">Paper</code> 를 T로 알 수 있고 T 에 대한 처리는 자식에게 맡긴다.</p>
+
+<p>여기서 부모가 <code class="language-plaintext highlighter-rouge">setData</code>를 하고 <code class="language-plaintext highlighter-rouge">makeProgram</code>을 시키고 있는데,
+<strong>don’t ask tell(Hollywood)</strong> 은 템플릿 메소드를 구성하고 있는 부모 자식간 관계에도 똑같이 지켜진다.
+자식클래스가 바뀔때마다 부모클래스가 바뀌는 이유는 상속 때문이 아니라 객체지향 원리를 어겼기 때문이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BackEnd</span><span class="o">&lt;</span><span class="no">T</span> <span class="kd">extends</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">Programmer</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="nc">Server</span> <span class="n">server</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>수 많은 종류의 <code class="language-plaintext highlighter-rouge">BackEnd</code> 개발자가 존재한다.
+<code class="language-plaintext highlighter-rouge">server</code>, <code class="language-plaintext highlighter-rouge">language</code> 는 정해진 후 개발한다는 것만이 공통점이고, <code class="language-plaintext highlighter-rouge">Paper</code> 관점에 따라 <code class="language-plaintext highlighter-rouge">BackEnd</code> 를 다르게 본다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">backend</code> 의 공통 내용은 위 코드 <code class="language-plaintext highlighter-rouge">makeProgram</code>을 구현하고,
+<code class="language-plaintext highlighter-rouge">setData</code> 는 <code class="language-plaintext highlighter-rouge">Paper</code> 의 종류에 따라서 각 구현 클래스에서 <code class="language-plaintext highlighter-rouge">if</code> 처럼 구현되어야 하므로 추상클래스가 된다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Programmer</code> 가 <code class="language-plaintext highlighter-rouge">if</code> 조건을 가지지 않기 위해서 <strong>client</strong> 로 넘긴다.
+<code class="language-plaintext highlighter-rouge">Programmer</code> 가 <code class="language-plaintext highlighter-rouge">Paper</code> 한테 책임을 넘긴 건 협력 관계에 있는 도메인 레이어에게 떠넘기는 것이다.
+같은 책임 레벨을 가지고 있는 레이어는 이 문제를 해결하지 못한다.</p>
+
+<p><strong>LSP</strong> 와 <strong>OCP</strong> 를 회복하는 유일한 방법은 반드시 자신보다 더 <strong>client</strong>쪽으로 밀어내야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="no">T</span> <span class="kd">extends</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">Programmer</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="nc">Library</span> <span class="n">library</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>FrontEnd 도 마찬가지로 수정해준다.</p>
+
+<h2 id="클라이언트의-변화">클라이언트의 변화</h2>
+
+<p>구체적인 상황을 나누는 것을 <strong>client</strong> 이 가져갈수록 <strong>service</strong> 층이 안정화 된다.
+서비스 층이 안정화됐으니 <strong>client</strong> 에서의 할 일이 많아졌지만 역할 책임 모델로 책임을 분산했기 때문에 <strong>client</strong> 가 뭉쳐진 책임을 갖게 되지 않는다.
+코드에 if 를 가져오지 않고 형으로 해결하게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/director-code.jpg">
+        <img src="/images/study/code-spitz/director-code.jpg" data-rjs="/images/study/code-spitz/director-code.jpg" class="zooming" alt="director-code" />
+    </a>
+    
+    <figcaption>
+        director-code
+        
+    </figcaption>
+    
+</figure>
+
+<p>기존에 <code class="language-plaintext highlighter-rouge">Paper</code> 를 처리하는 코드를 보면  <code class="language-plaintext highlighter-rouge">program</code> 을 만든 것을 가지고 <code class="language-plaintext highlighter-rouge">deploy</code> 하는 책임이 있다는 것을 확인하면
+중복적인 코드가 있다는 것을 알 수 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Generic</code> 으로 <code class="language-plaintext highlighter-rouge">Programmer</code> 가 특정 <code class="language-plaintext highlighter-rouge">Paper</code> 만 받아들이도록 제약을 걸었으니 내부의 코드가 바뀐다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Director</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="n">projects</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">projects</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">paper</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">projects</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"no project"</span><span class="o">);</span>
+        <span class="nc">Paper</span> <span class="n">paper</span> <span class="o">=</span> <span class="n">projects</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">ServerClient</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ServerClient</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ServerClient</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="nc">ServerClient</span><span class="o">&gt;()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">ServerClient</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">frontEndLanguage</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+            <span class="nc">Programmer</span> <span class="n">backEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BackEnd</span><span class="o">&lt;</span><span class="nc">ServerClient</span><span class="o">&gt;()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">ServerClient</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">server</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">server</span><span class="o">;</span>
+                    <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">backEndLanguage</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+
+            <span class="n">project</span><span class="o">.</span><span class="na">setFrontEndProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setBackEndProgrammer</span><span class="o">(</span><span class="n">backEnd</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">client</span> <span class="o">=</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">server</span> <span class="o">=</span> <span class="n">backEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">server</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">Client</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Client</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Client</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="nc">Client</span><span class="o">&gt;()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Client</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">language</span><span class="o">;</span>
+                    <span class="n">library</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">library</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deploy</span><span class="o">(</span><span class="nc">String</span> <span class="n">projectName</span><span class="o">,</span> <span class="nc">Program</span><span class="o">...</span> <span class="n">programs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span> 
+
+</code></pre></div></div>
+
+<p>범용적인 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 를 만들지 말고 <code class="language-plaintext highlighter-rouge">ServerClient</code> 만 아는 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 를 만들어야 한다. 
+마찬가지로 <code class="language-plaintext highlighter-rouge">BackEnd</code> 도 <code class="language-plaintext highlighter-rouge">ServerClient</code> 만 알도록 수정해야 한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">if</code> 문에 해당되는 경우의 수만큼의 객체를 만들고, 어떤 객체를 만들어야 할지는 <code class="language-plaintext highlighter-rouge">Director</code> 가 선택해야 한다.</p>
+
+<p>각 <code class="language-plaintext highlighter-rouge">Programmer</code>들이 어떤 <code class="language-plaintext highlighter-rouge">Paper</code>에 대해서 반응할지를 추상화의 레벨에서 말단인 <strong>client</strong> 쪽에 객체에게 밀어낸 것이다.
+가장 말단 객체에게 밀어내야 모든 경우의 수가 객체를 새로 만드는 것으로 해결된다.
+이제 <code class="language-plaintext highlighter-rouge">Director</code> 를 제외한 전구간에서 <strong>LSP</strong> 와 <strong>OCP</strong> 를 어기는 부분이 없어졌다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Director</code> 에서도 <code class="language-plaintext highlighter-rouge">instanceof</code> 가 있는데 n개의 <code class="language-plaintext highlighter-rouge">projects</code> 를 소유하고 있기 때문에 <code class="language-plaintext highlighter-rouge">Director</code> 를 <code class="language-plaintext highlighter-rouge">Generic</code> 으로 해결할 수 없다.
+그러면 의존성 역전을 시켜야 한다.
+Director 가 n개의 Paper 를 갖고 있기 때문에 Director 가 Paper 를 추상화하는 것은 불가능하므로,
+<code class="language-plaintext highlighter-rouge">Paper</code> 가 <code class="language-plaintext highlighter-rouge">Director</code> 에게 서비스를 제공하고 추상화하면 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/director-code-ocp-fail.jpg">
+        <img src="/images/study/code-spitz/director-code-ocp-fail.jpg" data-rjs="/images/study/code-spitz/director-code-ocp-fail.jpg" class="zooming" alt="director-code-ocp-fail" />
+    </a>
+    
+    <figcaption>
+        director-code-ocp-fail
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Director</code> 에서 조차도 <code class="language-plaintext highlighter-rouge">if instanceof</code> 분기를 사용해서 <strong>OCP</strong> 위반을 하고 있다.
+그래서 <strong>client</strong>로 경우의 수만큼 생성하는 방법으로 해결해야 한다.
+빨간 두 영역에서 공통 부분을 추상화 해야한다. 
+<code class="language-plaintext highlighter-rouge">deploy</code> 는 <code class="language-plaintext highlighter-rouge">programs</code> 만 받으면 되는 인터페이스니까 빨간 두 영역이 <code class="language-plaintext highlighter-rouge">programs</code> 만 <code class="language-plaintext highlighter-rouge">return</code> 하면 된다.</p>
+
+<p>그러면 우리는 <code class="language-plaintext highlighter-rouge">Programs</code> 를  <code class="language-plaintext highlighter-rouge">return</code> 하는 일반적인 인터페이스로 <code class="language-plaintext highlighter-rouge">Paper</code> 를 선언할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Program</span><span class="o">[]</span> <span class="nf">run</span><span class="o">();</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Paper</code> 는 결국 인자 없이 <code class="language-plaintext highlighter-rouge">run</code> 을 하면 <code class="language-plaintext highlighter-rouge">Program</code> 을 배열을 준다.
+이 책임이 원래 <code class="language-plaintext highlighter-rouge">Director</code> 가 <code class="language-plaintext highlighter-rouge">Project</code> 를 수행해야 하지만  <code class="language-plaintext highlighter-rouge">Paper</code> 가  프로젝트 수행으로 넘어가버렸다.
+책임 역할 모델에서는 도메인과 일치하지 않게 가장 적당한 객체가 그 역할을 가져간다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그럼 <code class="language-plaintext highlighter-rouge">ServerClient</code> , <code class="language-plaintext highlighter-rouge">Client</code> 는 <code class="language-plaintext highlighter-rouge">Paper</code> 구상클래스가 아니라  <code class="language-plaintext highlighter-rouge">Paper</code> 로 부터 <code class="language-plaintext highlighter-rouge">run</code> 을 다르게 가져갈 수 있는 추상형으로 바뀐다.
+<code class="language-plaintext highlighter-rouge">ServerClient</code> , <code class="language-plaintext highlighter-rouge">Client</code> 의 클래스는 단순히 <code class="language-plaintext highlighter-rouge">abstract</code> 로 변경한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Director</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="n">projects</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">projects</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">paper</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">projects</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"no project"</span><span class="o">);</span>
+        <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">projects</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">).</span><span class="na">run</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deploy</span><span class="o">(</span><span class="nc">String</span> <span class="n">projectName</span><span class="o">,</span> <span class="nc">Program</span><span class="o">...</span> <span class="n">programs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그러면 <code class="language-plaintext highlighter-rouge">Director</code> 는 모든 <strong>LSP</strong>와 <strong>OCP</strong>을 <strong>client</strong> 방향인 <code class="language-plaintext highlighter-rouge">main</code> 까지 밀어냈다.
+객체 지향 설계에 성공했다면 모든 <code class="language-plaintext highlighter-rouge">if case</code> 는 <code class="language-plaintext highlighter-rouge">main</code> 까지 밀어야 하는 것이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Director</span> <span class="n">director</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Director</span><span class="o">();</span>
+        <span class="n">director</span><span class="o">.</span><span class="na">addProject</span><span class="o">(</span><span class="s">"여행사A 프론트 개편"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Client</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="nc">Program</span><span class="o">[]</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">FrontEnd</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="nc">Client</span><span class="o">&gt;()</span> <span class="o">{</span>
+                    <span class="nd">@Override</span>
+                    <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Client</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">library</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">library</span><span class="o">;</span>
+                        <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">language</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">};</span>
+                <span class="n">setProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nc">Program</span><span class="o">[]{</span>
+                        <span class="n">frontEnd</span><span class="o">.</span><span class="na">getProgram</span><span class="o">(</span><span class="k">this</span><span class="o">)</span>
+                <span class="o">};</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="n">director</span><span class="o">.</span><span class="na">runProject</span><span class="o">(</span><span class="s">"여행사A 프론트 개편"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">main</code> 에서 <code class="language-plaintext highlighter-rouge">Client</code> 프로젝트를 만들고 있지만  수용 방법이 <code class="language-plaintext highlighter-rouge">run</code> 방법인  형이 완전 다른 <code class="language-plaintext highlighter-rouge">Client Paper</code> 가 된다.
+전부 새로운 형으로 생성하는 것으로 변경됐다.
+<code class="language-plaintext highlighter-rouge">case</code> 에 맞는 형을 새로 만들면서 <code class="language-plaintext highlighter-rouge">if</code> 를 제거한다.</p>
+
+<p>수행방법을 보면 <code class="language-plaintext highlighter-rouge">frontEnd</code> 한명을 섭외해서 프로그램 받아내서 <code class="language-plaintext highlighter-rouge">deploy</code> 하는 수행방법을 가지고 있고 
+<code class="language-plaintext highlighter-rouge">frontEnd</code> 는 섭외할 때 <code class="language-plaintext highlighter-rouge">setData</code> 대로 세팅하는 <code class="language-plaintext highlighter-rouge">frontEnd</code> 로 섭외해야 한다는 의미이다.
+<code class="language-plaintext highlighter-rouge">main</code> 까지 밀어내는데 성공하면 <code class="language-plaintext highlighter-rouge">Client</code> 나 <code class="language-plaintext highlighter-rouge">FrontEnd</code> 를 DI 해서 사용하면 된다. 
+추상 레이어에서 <strong>DI</strong> 하면 프로그램이 망가지기 때문에 말단인 <code class="language-plaintext highlighter-rouge">main</code>쪽에서 <strong>DI</strong> 를 해야 한다.</p>
+
+<p>원래 <code class="language-plaintext highlighter-rouge">setProgrammer</code> 라는 <code class="language-plaintext highlighter-rouge">interface</code> 는 <code class="language-plaintext highlighter-rouge">Client</code> 가 외부에서 자신의 속성을 변경할 수 있는 메세지를 허용해주기 위해 만든 것인데.
+<code class="language-plaintext highlighter-rouge">Client</code>가 형으로 확장했기 때문에 외부용 메세지가 필요 없게 되어 class 의 은닉성, 보안성이 높아진다.
+사실 원래 <code class="language-plaintext highlighter-rouge">setProgrammer</code>는 전형적인 <code class="language-plaintext highlighter-rouge">setter</code> 로 은닉성이 깨지고 있었다. 
+그런데 객체 지향을 제대로 했다면 <code class="language-plaintext highlighter-rouge">Client</code> 속성에 대해서 외부에서 변경할 필요가 없다.
+본인의 속성이기 때문에 그냥 변경하면 되서 아래 코드로 변경된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Director</span> <span class="n">director</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Director</span><span class="o">();</span>
+        <span class="n">director</span><span class="o">.</span><span class="na">addProject</span><span class="o">(</span><span class="s">"여행사A 프론트 개편"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Client</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="nc">Program</span><span class="o">[]</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">FrontEnd</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="nc">Client</span><span class="o">&gt;()</span> <span class="o">{</span>
+                    <span class="nd">@Override</span>
+                    <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Client</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">library</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">library</span><span class="o">;</span>
+                        <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">language</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">};</span>
+                <span class="c1">// 변경</span>
+                <span class="n">programmer</span> <span class="o">=</span> <span class="n">frontEnd</span><span class="o">;</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nc">Program</span><span class="o">[]{</span>
+                        <span class="n">frontEnd</span><span class="o">.</span><span class="na">getProgram</span><span class="o">(</span><span class="k">this</span><span class="o">)</span>
+                <span class="o">};</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="n">director</span><span class="o">.</span><span class="na">runProject</span><span class="o">(</span><span class="s">"여행사A 프론트 개편"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이전에 <code class="language-plaintext highlighter-rouge">Director</code>이 <code class="language-plaintext highlighter-rouge">setProgrammer</code> 을 이용해서 세팅하는 것보다 <code class="language-plaintext highlighter-rouge">programmer</code> 필드 속성의 은닉성이 높아졌다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+<span class="c1">//    public void setProgrammer(Programmer programmer) {</span>
+<span class="c1">//        this.programmer = programmer;</span>
+<span class="c1">//    }</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>결국, <code class="language-plaintext highlighter-rouge">Client</code> 의 <code class="language-plaintext highlighter-rouge">setProgrammer</code> 인터페이스를 없앴고 <code class="language-plaintext highlighter-rouge">programmer</code> 가 <code class="language-plaintext highlighter-rouge">protected</code> 수준으로 보안이 향상 되었다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">protected</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+<span class="c1">//    public void setBackEndProgrammer(Programmer programmer) {</span>
+<span class="c1">//        this.backEndProgrammer = programmer;</span>
+<span class="c1">//    }</span>
+<span class="c1">//</span>
+<span class="c1">//    public void setFrontEndProgrammer(Programmer programmer) {</span>
+<span class="c1">//        this.frontEndProgrammer = programmer;</span>
+<span class="c1">//    }</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p>마찬가지로 <code class="language-plaintext highlighter-rouge">ServerClient</code> 에서도 보안성이 높아졌기 때문에 은닉성을 깨는 메소드를 제거한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">director</span><span class="o">.</span><span class="na">addProject</span><span class="o">(</span><span class="s">"xx은행 리뉴얼"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">ServerClient</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span><span class="o">[]</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">&lt;</span><span class="nc">ServerClient</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">ServerClient</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">frontEndLanguage</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+
+        <span class="nc">Programmer</span> <span class="n">backEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BackEnd</span><span class="o">&lt;</span><span class="nc">ServerClient</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">ServerClient</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">server</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">server</span><span class="o">;</span>
+                <span class="n">language</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">backEndLanguage</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+
+        <span class="n">frontEndProgrammer</span> <span class="o">=</span> <span class="n">frontEnd</span><span class="o">;</span>
+        <span class="n">backEndProgrammer</span> <span class="o">=</span> <span class="n">backEnd</span><span class="o">;</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">Program</span><span class="o">[]{</span><span class="n">frontEnd</span><span class="o">.</span><span class="na">getProgram</span><span class="o">(</span><span class="k">this</span><span class="o">),</span> <span class="n">backEnd</span><span class="o">.</span><span class="na">getProgram</span><span class="o">(</span><span class="k">this</span><span class="o">)};</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Director</code> 가 추상형이 아니고 구상형이기 때문에 1:n 의 관계가 성립되지 않고 1:1 관계로 되기 때문에
+<code class="language-plaintext highlighter-rouge">instanceof</code> 를 사용할 일이 없어서 <code class="language-plaintext highlighter-rouge">Generic</code> 이 필요 없게 되었다.</p>
+
+<p>만약, <code class="language-plaintext highlighter-rouge">Director</code> 가 <code class="language-plaintext highlighter-rouge">Paper</code> 에 따라 분기되는 추상형이었으면 <code class="language-plaintext highlighter-rouge">Paper</code> 의 <code class="language-plaintext highlighter-rouge">&lt;T extends Director&gt;</code> 형태로 <code class="language-plaintext highlighter-rouge">Generic</code>의 관여가 필요하다.
+그러면 <code class="language-plaintext highlighter-rouge">Paper</code> 가 <code class="language-plaintext highlighter-rouge">Director T</code> 를 받고 <code class="language-plaintext highlighter-rouge">Director T</code> 에 따른 <code class="language-plaintext highlighter-rouge">run</code> 의 로직을 변경해야 하고 다시 경우의 수를 나눠줘야 한다.
+그렇게 되면 위의 코드는 해당 <code class="language-plaintext highlighter-rouge">Director T</code> 에 있는 메소드로 옮겨가게 된다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Generic</code> 을 사용하여  <code class="language-plaintext highlighter-rouge">instanceof if</code> 를 제거할 수 있고 
+객체 지향 방법과 추상형을 이용해서 나머지 <code class="language-plaintext highlighter-rouge">if</code> 를 제거할 수 있었다.
+결국, 두 가지 방법을 결합 하면 모든 케이스의 <code class="language-plaintext highlighter-rouge">if</code> 를 제거할 수 있다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%BD%94%EB%93%9C+%EC%8A%A4%ED%94%BC%EC%B8%A0+Object83+4%ED%9A%8C%EC%B0%A8+%EC%A0%95%EB%A6%AC%20-%20https://devyonghee.github.io/study/2019/09/04/code-spitz-object83-4/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2019/09/04/code-spitz-object83-4/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

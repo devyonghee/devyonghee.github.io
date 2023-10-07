@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [DDD] DDD(Domain Driven Design) 용어 정리</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[DDD] DDD(Domain Driven Design) 용어 정리">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/theory/2023/01/22/ddd-terms-summary/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/theory/2023/01/22/ddd-terms-summary/">
+  <meta name="twitter:title" content="[DDD] DDD(Domain Driven Design) 용어 정리">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[DDD] DDD(Domain Driven Design) 용어 정리</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    January 22, 2023
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      12 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/ddd" title="See all posts with tag 'ddd'">ddd</a>
+    
+      <a href="/tag/domain-driven-design" title="See all posts with tag 'domain-driven-design'">domain-driven-design</a>
+    
+      <a href="/tag/theory" title="See all posts with tag 'theory'">theory</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>DDD(Domain Driven Design, 도메인 주도 설계) 는 도메인을 중심으로 설계하는 방법론이다. <br />
+소프트웨어 개발하면서 방대하고 복잡한 지식으로 인해 어려움이 생기는데, 도메인을 중심으로 설계하면 이 부담을 해소할 수 있다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="도메인-모델-만들기">도메인 모델 만들기</h2>
+
+<p>도메인 모델은 도메인과 관련된 지식을 엄격하게 구성하고 선택적으로 추상화 한 것이다. <br />
+적절한 모델을 통해 정보를 이해하고 해결하고자 하는 문제 자체에 집중할 수 있다.<br />
+DDD 에서는 다음과 같은 세 가지 용도에 따라 모델을 선택하게 된다.</p>
+
+<ol>
+  <li>핵심 설계를 위한 도메인 모델
+    <ul>
+      <li>도메인 모델과 설계 및 구현은 긴밀한 관계를 가짐</li>
+      <li>모델 이해를 근거하여 코드를 해석할 수 있기 때문에 유지보수와 기능 개선에 도움이 됨</li>
+    </ul>
+  </li>
+  <li>팀 구성원들의 중추적인 언어를 위한 도메인 모델
+    <ul>
+      <li>이 모델을 토대로 프로그램 의견을 나눌 수 있음</li>
+      <li>번역 절차가 필요하지 않음</li>
+    </ul>
+  </li>
+  <li>지식의 정수만을 추출하기 위한 도메인 모델
+    <ul>
+      <li>용어를 선택, 개념 분류, 지식들을 연관 시키면서 팀원들의 사고 방식을 담을 수 있음</li>
+      <li>많은 정보를 모델로 만들어서 효과적인 협업 가능</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="domain-도메인">Domain (도메인)</h3>
+
+<ul>
+  <li>소프트웨어로 해결하고자 하는 문제 영역</li>
+  <li>한 도메인은 다시 하위 도메인으로 나누어질 수 있음</li>
+</ul>
+
+<h3 id="domain-model-도메인-모델">Domain Model (도메인 모델)</h3>
+
+<ul>
+  <li>도메인을 개념적으로 표현한 것 (ex. 클래스 다이어그램, 상태 다이어그램, 그래프 등)</li>
+  <li>여러 관계자들이 도메인을 이해하고 공유하는데 도움</li>
+</ul>
+
+<h3 id="ubiquitous-language보편-언어">Ubiquitous Language(보편 언어)</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/ubiquitous-language.png">
+        <img src="/images/theory/ddd-terms-summary/ubiquitous-language.png" data-rjs="/images/theory/ddd-terms-summary/ubiquitous-language.png" class="zooming" alt="전문 용어 교차 지점에 형성된 ubiquitous language" />
+    </a>
+    
+    <figcaption>
+        전문 용어 교차 지점에 형성된 ubiquitous language
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>도메인 모델에 따라 모든 팀원 간의 활동을 연계하는데 사용되는 <strong>공통 언어</strong>
+    <ul>
+      <li>언어가 분열되면 의사소통이 무뎌지고 빈약해지기 때문에 조화가 깨지고, 소프트웨어의 신뢰도가 떨어짐</li>
+    </ul>
+  </li>
+  <li>지속적으로 사용하면 모델의 취약점이 드러나고, 개선이 필요한 지점을 찾을 수 있음</li>
+  <li>의사소통과 코드에 끊임없이 동일한 언어를 적용
+    <ul>
+      <li>도메인 전문가: 도메인을 이해하는데 부자연스럽고 부정확한 용어나 구조에 대해 반대 의사를 표명해야 함</li>
+      <li>개발자: 설계를 어렵게 만드는 모호하거나 불일치 요소를 찾아내야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="모델-주도-설계의-기본-요소">모델 주도 설계의 기본 요소</h2>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/ddd-language-navigation-map.png">
+        <img src="/images/theory/ddd-terms-summary/ddd-language-navigation-map.png" data-rjs="/images/theory/ddd-terms-summary/ddd-language-navigation-map.png" class="zooming" alt="model-driven design 언어 내비게이션 맵" />
+    </a>
+    
+    <figcaption>
+        model-driven design 언어 내비게이션 맵
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<p>내비게이션 맵을 통해 도메인 주도 설계 과정에 사용되는 패턴들이 서로 어떻게 관계를 맺는지 알아본다.</p>
+
+<h3 id="layered-architecture계층형-아키텍처">Layered Architecture(계층형 아키텍처)</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/layered-architecture.png">
+        <img src="/images/theory/ddd-terms-summary/layered-architecture.png" data-rjs="/images/theory/ddd-terms-summary/layered-architecture.png" class="zooming" alt="layered architecture" />
+    </a>
+    
+    <figcaption>
+        layered architecture
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<p>도메인과 관련된 코드가 관련 없는 코드를 통해 널리 확산된다면 도메인에 대해 추론하기 어려워진다.<br />
+복잡한 작업을 처리하는 소프트웨어를 만들기 위해서는 관심사의 분리를 통해 격리를 시켜야 각 설계 요소에 집중할 수 있다.</p>
+
+<p>분리하는 많은 방법들 중에서는 Layered Architecture 가 널리 사용되고 있는데, 대다수는 네 가지 개념적 계층으로 나뉘어진다.</p>
+
+<ul>
+  <li>표현 계층(사용자 인터페이스)
+    <ul>
+      <li>사용자에게 정보를 보여주고 사용자의 명령을 해석하는 계층</li>
+      <li>사람이 아닌 다른 컴퓨터 시스템이 외부 행위자가 될 수 있음</li>
+    </ul>
+  </li>
+  <li>응용 계층(애플리케이션)
+    <ul>
+      <li>소프트웨어가 수행할 작업을 정의하고 도메인 객체가 문제를 해결하는 계층</li>
+      <li>업무상 중요하거나 다른 시스템의 응용 계층과 상호작용</li>
+      <li>업무 규칙이나 지식이 포함되지 않고 얇게 유지되어야 함</li>
+    </ul>
+  </li>
+  <li>도메인 계층
+    <ul>
+      <li>업무 개념, 업무 상황, 업무 규칙을 표현하는 계층</li>
+      <li>업무용 소프트웨어의 핵심 계층</li>
+    </ul>
+  </li>
+  <li>인프라스트럭처 계층
+    <ul>
+      <li>일반화된 기술적 기능 제공 (ex. 메시지 전송, 도메인 영속화, UI 위젯 그리기 등)</li>
+      <li>네 가지 계층에 대한 상호작용 패턴 지원 가능</li>
+      <li>도메인의 구체적인 지식을 포함하지 않아야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="entity엔티티-참조객체">Entity(엔티티, 참조객체)</h3>
+
+<ul>
+  <li>일차적으로 해당 객체의 <strong>식별성</strong>으로 정의한 객체</li>
+  <li>객체의 생명주기 동안 형태와 내용이 바뀔 수 있지만 <strong>연속성</strong>은 유지되어야 함</li>
+  <li>클래스 정의를 단순하게 하고 생명주기의 <strong>연속성</strong>과 <strong>식별성</strong>에 집중</li>
+  <li>특정 속성보다는 정체성에 대해 초점을 맞춰야 함</li>
+  <li>식별 수단은 모델에서 식별성을 구분하는 방법과 일치해야 함
+    <ul>
+      <li>특정 규칙에 따라 생성</li>
+      <li>UUID 사용</li>
+      <li>값 직접 입력</li>
+      <li>일련번호 사용(시퀀스나 DB 자동 증가)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="value-object값-객체">Value Object(값 객체)</h3>
+
+<ul>
+  <li>개념적 <strong>식별성을 갖지 않으면서</strong> 도메인의 서술적 측면을 나타내는 객체
+    <ul>
+      <li>어떤 요소의 속성에만 관심이 있다면 Value Object 로 구분하고 의미와 관련 기능 부여</li>
+    </ul>
+  </li>
+  <li>Value Object 가 Entity 를 참조할 수 있음</li>
+  <li>불변적(immutable)으로 다뤄야 함</li>
+  <li>식별성을 부여하면 안 됨</li>
+  <li>Value Object 간의 양방향 연관관계는 제거해야 함</li>
+</ul>
+
+<h3 id="service서비스">Service(서비스)</h3>
+
+<ul>
+  <li>Entity 나 Value Object 에서 구현하지 못하는 <strong>도메인 연산</strong>
+    <ul>
+      <li>Entity 나 Value Object 의 일부를 구성하는 것이 아님</li>
+    </ul>
+  </li>
+  <li>상태를 캡슐화하지 않음</li>
+  <li>연산의 명칭은 Ubiquitous Language 에서 유래되거나 반영되어야 함</li>
+  <li>서비스는 응용, 도메인, 인프라스트럭처로 여러 계층으로 분할 가능</li>
+</ul>
+
+<h3 id="module모듈-패키지">Module(모듈, 패키지)</h3>
+
+<ul>
+  <li>모듈화를 통해 해당 모듈의 세부사항을 보거나, 모듈 간의 관계를 확인할 수 있음</li>
+  <li>하나의 의사소통 메커니즘
+    <ul>
+      <li>Ubiquitous Language 를 구성하는 것으로 모듈 이름 부여</li>
+    </ul>
+  </li>
+  <li>모듈 간에는 <strong>결합도가 낮아야 함</strong>
+    <ul>
+      <li>사람이 생각할 수 있는 양에 한계가 있음</li>
+      <li>모듈화를 통해 다른 코드로부터 도메인 계층을 분리해야 함</li>
+    </ul>
+  </li>
+  <li>모듈의 내부는 <strong>응집도가 높아야 함</strong>
+    <ul>
+      <li>일관성이 없는 단편적인 생각은 이해가 어려움</li>
+      <li>하나의 개념적 객체를 구현하는 코드는 모두 같은 모듈에 위치</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="aggregate집합체">Aggregate(집합체)</h3>
+
+<ul>
+  <li><strong>데이터 변경의 단위</strong>로 다루는 연관 객체의 모음
+    <ul>
+      <li>일관성 규칙의 경계로 적용</li>
+    </ul>
+  </li>
+  <li>각 Aggregate 는 <strong>루트(root)</strong> 와 <strong>경계(boundary)</strong> 가 존재</li>
+  <li>루트는 Aggregate 마다 하나만 존재하며, 특정 Entity 를 가리킴</li>
+  <li>경계 바깥쪽의 객체는 <strong>루트를 통해서만 참조</strong> 가능
+    <ul>
+      <li>루트를 통해서만 Aggregate 상태 변경 가능</li>
+    </ul>
+  </li>
+  <li>루트는 Value Object 복사본을 다른 객체에 전달할 순 있음</li>
+  <li>루트 Entity 는 전역 식별성을 지니며, 불변식 검사 책임이 있음</li>
+  <li>삭제 연산은 Aggregate 경계 안의 모든 요소를 한 번에 제거해야 함</li>
+</ul>
+
+<h2 id="통찰력을-위한-리팩터링">통찰력을 위한 리팩터링</h2>
+
+<p>리팩터링이란 소프트웨어의 기능을 수정하지 않고 설계를 다시 하는 것이다.<br />
+지속적으로 리팩터링을 수행하려면 설계가 유연하고 명확하여 표현할 수 있어야 한다.</p>
+
+<h3 id="factory-팩토리">Factory (팩토리)</h3>
+
+<ul>
+  <li>객체나 전체 Aggregate 의 복잡한 생성을 캡슐화</li>
+  <li>설계하는 방법으로 팩토리 메서드(factory method), 추상 팩토리(abstract factory), 빌더(builder) 패턴 등이 존재</li>
+  <li>Entity Factory 와 Value Object Factory
+    <ul>
+      <li>Entity Factory: 필요한 필수 속성만 받아들이는 경향이 있음</li>
+      <li>Value Object Factory: 불변젹이므로 최정적인 형태로 만들어짐</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="factory-설계-기본-요건">Factory 설계 기본 요건</h4>
+
+<ol>
+  <li>생성 방법은 <strong>원자적</strong>, <strong>불변식</strong>을 모두 지켜야 함</li>
+  <li>생성하고자 하는 타입으로 추상화 되어야 함 (Factory 패턴)</li>
+</ol>
+
+<h3 id="repository-리파지터리">Repository (리파지터리)</h3>
+
+<ul>
+  <li>특정 타입의 모든 객체를 개념적 집합 (객체 <strong>컬렉션</strong>처럼 동작)</li>
+  <li>데이터에 대한 실제 저장소와 질의 기술을 캡슐화하여 모델에 집중할 수 있게 도와줌
+    <ul>
+      <li>데이터 소스로부터 도메인 설계를 분리</li>
+      <li>저장∙조회∙검색 행위를 캡슐화</li>
+    </ul>
+  </li>
+  <li>영속 객체는 해당 객체의 속성으로 전역적으로 접근할 수 있어야 함</li>
+  <li>직접 접근 해야하는 <strong>Aggregate 루트</strong>에 대해서만 Repository 를 제공
+    <ul>
+      <li>마음대로 데이터베이스 질의를 한다면 도메인 객체와 Aggregate 캡슐화가 깨질 수 있음</li>
+    </ul>
+  </li>
+  <li>질의의 수가 많으면 <strong>Specification(명세)</strong> 기반하여 질의를 수행
+    <ul>
+      <li>Specification: 특정 조건을 만족하는 객체를 찾는데 사용되는 객체</li>
+      <li>Specification 을 이용하면 유연한 질의를 수행 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="factory-와-repository-차이">Factory 와 Repository 차이</h4>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/repository-factory-reconstruction.png">
+        <img src="/images/theory/ddd-terms-summary/repository-factory-reconstruction.png" data-rjs="/images/theory/ddd-terms-summary/repository-factory-reconstruction.png" class="zooming" alt="Repository 는 Factory 를 이용해 존재하는 객체 재구성" />
+    </a>
+    
+    <figcaption>
+        Repository 는 Factory 를 이용해 존재하는 객체 재구성
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/repository-factory-new-object-save.png">
+        <img src="/images/theory/ddd-terms-summary/repository-factory-new-object-save.png" data-rjs="/images/theory/ddd-terms-summary/repository-factory-new-object-save.png" class="zooming" alt="클라이언트는 Repository 를 이용해 객체 저장" />
+    </a>
+    
+    <figcaption>
+        클라이언트는 Repository 를 이용해 객체 저장
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>Factory: 새로운 객체 생성
+    <ul>
+      <li>객체 생애의 초기 단계</li>
+    </ul>
+  </li>
+  <li>Repository: 기존 객체 조회
+    <ul>
+      <li>객체 생애의 중간과 마지막 단계</li>
+      <li>메모리 상에 객체가 존재하고 있는 것처럼 동작</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="specification-명세">Specification (명세)</h3>
+
+<ul>
+  <li>객체가 특정 기준을 만족하는지 판단하는 술어</li>
+  <li>특별한 목적을 위해 술어와 비슷한 명시적인 <strong>Value Object</strong></li>
+  <li>규칙을 <strong>도메인 계층</strong>에 유지할 수 있음</li>
+</ul>
+
+<h4 id="specification-용도">Specification 용도</h4>
+
+<ul>
+  <li>검증(validation)
+    <ul>
+      <li>Specification 의 개념을 가장 직관적으로 설명해주는 방식</li>
+      <li>특정한 조건에 부합하는지 여부를 판단하기 위해 개별 객체 테스트</li>
+    </ul>
+  </li>
+  <li>선택 (질의)
+    <ul>
+      <li>특정한 조건을 기반으로 객체 컬렉션의 일부 선택 (필터링)</li>
+      <li>Specification 에 메서드를 추가하여 질의문(query) 을 캡슐화하여 사용할 수 있음</li>
+    </ul>
+  </li>
+  <li>요청 구축(생성)
+    <ul>
+      <li>명시된 조건을 만조가는 새로운 객체나 객체 집합을 새로 만들거나 재구성</li>
+      <li>존재하지 않는 객체에 대한 기준을 명시</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="유연한-설계를-위한-패턴">유연한 설계를 위한 패턴</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/flexible-design-pattern.png">
+        <img src="/images/theory/ddd-terms-summary/flexible-design-pattern.png" data-rjs="/images/theory/ddd-terms-summary/flexible-design-pattern.png" class="zooming" alt="유연한 설계에 기여하는 패턴" />
+    </a>
+    
+    <figcaption>
+        유연한 설계에 기여하는 패턴
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<h4 id="intention-revealing-interface-의도를-드러내는-인터페이스">Intention-Revealing Interface (의도를 드러내는 인터페이스)</h4>
+
+<ul>
+  <li>설계에 포함된 모든 요소(타입, 메서드, 인자 이름)가 인터페이스를 구성하고, 설계 의도를 드러냄</li>
+  <li>수행 방법이 아닌 결과와 목적만을 표현하도록 클래스와 연산의 이름을 부여 (Ubiquitous Language 용어를 따름)</li>
+  <li>연산을 추가하기 전에 행위에 대한 테스트 우선 작성</li>
+</ul>
+
+<h4 id="side-effect-free-function-부수효과가-없는-함수">Side-Effect-Free Function (부수효과가 없는 함수)</h4>
+
+<ul>
+  <li>함수(function)는 <strong>부수효과를 일으키지 않고 항상 동일한 값 반환</strong></li>
+  <li>명령과 질의를 엄격하게 분리된 다른 연산으로 유지해야 함
+    <ul>
+      <li>변경을 발생시키는 메서드는 데이터를 반환하지 않도록 함</li>
+    </ul>
+  </li>
+  <li>명령과 질의 분리 대신 불변 객체 Value Object 활용할 수 있음</li>
+</ul>
+
+<h4 id="assertion-단언">Assertion (단언)</h4>
+
+<ul>
+  <li>프로그램이 어느 시점에 지녀야 할 정확한 상태를 나타내는 문장</li>
+  <li>자동화된 테스트나 프로그램 코드에 직접 연산의 사후조건과 클래스 및 Aggregate 의 불변식을 표현</li>
+  <li>Assertion 을 의도적으로 추측할 수 있게 하고 응집도 높은 개념을 포함된 모델을 만들어야 함</li>
+</ul>
+
+<h4 id="conceptual-contour-개념적-윤곽">Conceptual Contour (개념적 윤곽)</h4>
+
+<ul>
+  <li>도메인 자체의 근원적인 일관성</li>
+  <li>도메인의 설계 요소(연산, 인터페이스, 클래스, Aggregate) 를 응집력 있는 단위로 분해</li>
+  <li>리팩터링을 통해 변경되는 부분과 변경되지 않는 부분을 중심 축으로 식별하고 분리해야 함</li>
+</ul>
+
+<h4 id="standalone-class-독립형-클래스">Standalone Class (독립형 클래스)</h4>
+
+<ul>
+  <li>무관한 모든 개념을 제거하여 클래스를 독립적(self-contained)으로 유지해야 함 (낮은 결합도)
+    <ul>
+      <li>어떤 것도 참조하지 않은 상태에서 이해하고 테스트가 가능한 클래스</li>
+    </ul>
+  </li>
+  <li>의존성이 증가할수록 설계를 파악하기 어려워져 복잡도가 매우 높아짐</li>
+</ul>
+
+<h4 id="closure-of-operation-연산의-닫힘">Closure Of Operation (연산의 닫힘)</h4>
+
+<ul>
+  <li><strong>반환 타입</strong>과 <strong>인자 타입</strong>이 동일한 연산
+    <ul>
+      <li>구현자(implementer)가 연산에 사용된다면 인자, 반환, 구현자의 타입을 동일하게 정의</li>
+      <li>부차적인 개념을 사용하지 않고도 <strong>고수준의 인터페이스 제공</strong></li>
+    </ul>
+  </li>
+  <li>Value Object 연산을 정의하는데 주로 사용</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="전략적-설계">전략적 설계</h2>
+
+<p>시스템이 복잡해질수록 커다란 모델을 다루고 이해하기 위한 기법이 필요하다.<br />
+전략적 설계는 프로젝트를 교착상태에 빠지지 않고 시스템의 핵심 개념과 비전을 포착할 수 있어야 한다.<br />
+도메인 주도 설계에서는 이 목표를 다루기 위해 컨텍스트, 디스틸레이션, 대규모 구조를 다룬다.</p>
+
+<h3 id="모델의-무결성-유지">모델의 무결성 유지</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png">
+        <img src="/images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png" data-rjs="/images/theory/ddd-terms-summary/integrity-pattern-navigation-map.png" class="zooming" alt="모델 무결성 패턴 네비게이션 맵" />
+    </a>
+    
+    <figcaption>
+        모델 무결성 패턴 네비게이션 맵
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<p>모델의 용어는 언제나 의미가 동일하고, 모순되는 규칙도 없도록 일관성(단일화, unification)을 유지해야 한다.<br />
+하지만 대규모 시스템에서 도메인 모델을 단일화하는 것은 어렵기 때문에 의식적으로 전략을 결정하고 따라야 한다.</p>
+
+<h4 id="bounded-context-제한된-컨텍스트">Bounded Context (제한된 컨텍스트)</h4>
+
+<ul>
+  <li>사용된 용어를 특정한 의미로 의사소통하기 위한 <strong>조건의 집합</strong>
+    <ul>
+      <li>다수의 모델이 한데 섞이면 신뢰성이 떨어지고 이해하기 힘들어짐 (중복된 개념, 허위 동적 언어)</li>
+      <li>특정 모델에 포함된 범위가 정해진 컨텍스트</li>
+    </ul>
+  </li>
+  <li>컨텍스트의 경계를 물리적인 형태(조직, 코드 기반, 데이터베이스 스키마 등)의 관점에서 명시적으로 설정
+    <ul>
+      <li>컨텍스트 경계는 대개 팀 조직의 윤곽을 따라 정해짐</li>
+    </ul>
+  </li>
+  <li>경계 내에서는 모델을 일관된 상태로 유지하고 경계 바깥으로 인해 혼란이 생기지 않아야 함
+    <ul>
+      <li>Bounded Context 간에는 코드를 재사용하지 않아야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="continuous-integration-지속적인-통합">Continuous Integration (지속적인 통합)</h4>
+
+<ul>
+  <li>내부적인 균열을 빠르게 포착하고 정정할 수 있도록 컨텍스트 내의 모든 작업을 병합해서 <strong>일관성을 유지</strong>하는 것</li>
+  <li>하나의 Bounded Context 내에서만 필수적</li>
+  <li>모델 개념의 통합 (통합 방법이 용이해짐)
+    <ul>
+      <li>변화하는 모델을 함께 이해하고 발전하면서 Ubiquitous Language 유지</li>
+    </ul>
+  </li>
+  <li>구현 수준에서의 통합 (유효성과 일관성 입증, 균열 포착)
+    <ul>
+      <li>단계적이고 재생 가능한 병합/빌드</li>
+      <li>자동화된 테스트 스위트</li>
+      <li>수정사항이 통합되지 않은 상태로 존재할 수 있는 시간을 적당히 짧게 유지</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="context-map-컨텍스트-맵">Context Map (컨텍스트 맵)</h4>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/context-map.png">
+        <img src="/images/theory/ddd-terms-summary/context-map.png" data-rjs="/images/theory/ddd-terms-summary/context-map.png" class="zooming" alt="컨텍스트 맵" />
+    </a>
+    
+    <figcaption>
+        컨텍스트 맵
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>서로 다른 컨텍스트 간의 관계를 정의하고 모든 모델 컨텍스트를 아우르는 <strong>전체적인 뷰</strong></li>
+  <li><strong>컨텍스트 간의 번역</strong>에 대한 윤곽을 명확하게 하고 만나는 경계 지점에 대한 공유 정보 강조 필요
+    <ul>
+      <li>Bounded Context 의 명확한 이름을 제공하고 경계 지점의 특성을 명확하게 표현해야 함</li>
+    </ul>
+  </li>
+  <li>다이어그램들이 맵을 가시화하고 의사소통하는 데 유용</li>
+</ul>
+
+<h4 id="shared-kernel-공유-커널">Shared Kernel (공유 커널)</h4>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/shared-kernel.png">
+        <img src="/images/theory/ddd-terms-summary/shared-kernel.png" data-rjs="/images/theory/ddd-terms-summary/shared-kernel.png" class="zooming" alt="공유 커널" />
+    </a>
+    
+    <figcaption>
+        공유 커널
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>공유하기로 한 <strong>도메인 모델의 부분집합</strong>
+    <ul>
+      <li>모델 요소, 연관 코드, 데이터베이스 설계 등이 포함</li>
+      <li>core domain, generic subdomain 의 일부인 경우가 대부분</li>
+    </ul>
+  </li>
+  <li>변경하기 위해서는 다른 팀과의 협업이 필요</li>
+  <li>기능 시스템을 통합할 때는 양 팀에서 작성한 테스트 모두 실행 필요</li>
+  <li>일반적으로 각 팀은 별도의 Kernel 복사본을 변경하고 다른 팀과 통합</li>
+</ul>
+
+<h4 id="customersupplier-development고객공급자-개발-팀">Customer/Supplier development(고객/공급자 개발 팀)</h4>
+
+<ul>
+  <li>두 팀 간에 고객/공급자 관계를 확립 필요
+    <ul>
+      <li>하류 팀이 상류 팀에 대한 고객 역할</li>
+      <li>고객의 요구사항이 가장 중요</li>
+    </ul>
+  </li>
+  <li>인터페이스를 검증하는 인수 테스트 작성 필요
+    <ul>
+      <li>테스트 스위트에 추가하여 상류팀은 자유롭게 코드 변경 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="conformist-준수자">Conformist (준수자)</h4>
+
+<ul>
+  <li>연결되는 지점에서 <strong>상류팀의 도메인 모델</strong>을 그대로 따르는(준수하는) 모델
+    <ul>
+      <li>상류팀의 모델을 준수하여 하류 팀의 설계 형식이 상류 팀에 속박 됨</li>
+    </ul>
+  </li>
+  <li>이상적인 모델을 만드는 것은 어렵지만 <strong>통합은 단순</strong>해짐</li>
+  <li>모델을 공유한다는 점이 shared kernel 과 유사
+    <ul>
+      <li>shared kernel: 밀접하게 조율하는 두 팀 간의 협력관계를 다룸</li>
+      <li>conformist: 협력에 관심 없는 팀과의 통합 문제를 다룸</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="anticorruption-layer-오류-방지-계층">Anticorruption Layer (오류 방지 계층)</h4>
+
+<ul>
+  <li>클라이언트 도메인 모델 측면에서 기능을 제공하는 <strong>격리 계층</strong>
+    <ul>
+      <li>다른 시스템과 상호작용하는 모델로 인해 도메인 모델의 의도가 매몰되는 것을 방지</li>
+    </ul>
+  </li>
+  <li>객체와 행위를 다른 모델과 프로토콜로 변환하기 위한 메커니즘</li>
+  <li>공용 인터페이스는 보통 Service (간혹 Entity) 의 집합으로 표현</li>
+  <li>두 Bounded Context 를 잇는 수단</li>
+</ul>
+
+<h4 id="anticorruption-layer-구현">Anticorruption Layer 구현</h4>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/anticorruption-layer.png">
+        <img src="/images/theory/ddd-terms-summary/anticorruption-layer.png" data-rjs="/images/theory/ddd-terms-summary/anticorruption-layer.png" class="zooming" alt="공유 커널" />
+    </a>
+    
+    <figcaption>
+        공유 커널
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<p>통신 및 전송 메커니즘, Facade, Adapter, 번역기 조합으로 설계</p>
+
+<ul>
+  <li>Facade
+    <ul>
+      <li>한쪽 모델에서 다른 모델로 번역하는 것을 담당</li>
+      <li>하위 시스템에 대한 <strong>클라이언트 접근을 단순</strong>화하는 <strong>인터페이스</strong></li>
+      <li>다른 시스템 모델에 따라 엄격하게 작성해야 함</li>
+    </ul>
+  </li>
+  <li>Adapter
+    <ul>
+      <li>클라이언트에서 구현된 행위를 사용할 수 있게 해주는 <strong>래퍼(wrapper)</strong></li>
+      <li>Facade 에 상응하는 요청을 수행하는 <strong>행위를 구현</strong></li>
+    </ul>
+  </li>
+  <li>번역기
+    <ul>
+      <li>개념 객체나 데이터의 변환</li>
+      <li>Adapter 에 속하는 요소로 상태가 필요 없음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="separate-ways-각자의-길">Separate Ways (각자의 길)</h4>
+
+<ul>
+  <li>Bounded Context 가 <strong>다른 것과 관계를 맺지 않도록 선언</strong>하여 범위 내에서 해결책을 찾음
+    <ul>
+      <li>통합에도 큰 비용이 발생되기 때문에 관계를 끊을 수 있음</li>
+    </ul>
+  </li>
+  <li>통합이 필요해진다면 번역 계층이 필요해질 수 있음</li>
+</ul>
+
+<h4 id="published-language-공표된-언어">Published Language (공표된 언어)</h4>
+
+<ul>
+  <li>Bounded Context <strong>모델 간에 소통되는 공통의 언어</strong></li>
+  <li>필요한 도메인 정보를 표현하는 공유 언어를 공통의 의사소통 매개체로 사용 또는 번역
+    <ul>
+      <li>기존 모델을 직접 번역하면 복잡하고 문서화가 어려움</li>
+    </ul>
+  </li>
+  <li>시스템 간의 상호작용이 많아지면 Published Language 를 갖추고 관계 공식화가 필요</li>
+  <li>Published Language 는 안정적이어야 함
+    <ul>
+      <li>호스트 모델은 리팩토링하면서 자유로이 변경할 수 있어야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="distillation-디스틸레이션">Distillation (디스틸레이션)</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/distillation.png">
+        <img src="/images/theory/ddd-terms-summary/distillation.png" data-rjs="/images/theory/ddd-terms-summary/distillation.png" class="zooming" alt="디스틸레이션 내비게이션 맵" />
+    </a>
+    
+    <figcaption>
+        디스틸레이션 내비게이션 맵
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>혼합된 요소를 분리하여 본질을 더 값지고 유용한 형태로 뽑아내는 과정
+    <ul>
+      <li>도메인 지식과 중요한 우선순위를 추상화</li>
+      <li>모델의 산만한 요소를 없애고 중요한 부분에 집중하게 만듦</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="core-domain-핵심-도메인">Core Domain (핵심 도메인)</h4>
+
+<ul>
+  <li>애플리케이션의 목적에 특유하고 <strong>중심적인 모델</strong>
+    <ul>
+      <li>모델을 요약하고 가치 있고 전문화된 개념을 부각</li>
+    </ul>
+  </li>
+  <li>심층 모델을 찾고 유연한 설계를 개발할 수 있어야 함
+    <ul>
+      <li>Core 는 작게 유지해야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="generic-subdomain-일반-하위-도메인">Generic Subdomain (일반 하위 도메인)</h4>
+
+<ul>
+  <li>응집력 있는 하위 도메인을 식별하여 별도 module 로 분리
+    <ul>
+      <li>전문지식을 전달하지 않고 복잡성을 더하는 <strong>부수적인 요소</strong></li>
+    </ul>
+  </li>
+  <li>core domain 보다 낮은 우선 순위 부여</li>
+  <li>재사용을 목표로 설계하지 않아도 일반적인 개념의 범위 내에서 설계를 유지하는 것은 엄격해야 함</li>
+</ul>
+
+<h4 id="domain-vision-statement-도메인-비전-선언문">Domain Vision Statement (도메인 비전 선언문)</h4>
+
+<ul>
+  <li>Core Domain 을 짧게 기술하고 해당 모델이 가져올 <strong>가치에 대해 작성한 선언문</strong>
+    <ul>
+      <li>약 한페이지 분량이 적당</li>
+      <li>새로운 통찰력을 얻을 때마다 개정 필요</li>
+    </ul>
+  </li>
+  <li>디스틸레이션 과정에서 공통적인 방향으로 향하는 이정표가 될 수 있음</li>
+</ul>
+
+<h4 id="highlighted-core-강조된-핵심">Highlighted Core (강조된 핵심)</h4>
+
+<ul>
+  <li><strong>핵심적인 부분</strong>을 쉽게 파악할 수 있도록 Core Domain 을 더 잘 보이게끔 만드는 과정</li>
+  <li>디스틸레이션 문서 작성 기법
+    <ul>
+      <li>Core Domain 과 Core 의 구성요소 사이에 일어나는 상호작용 기술</li>
+    </ul>
+  </li>
+  <li>표시된 Core 기법
+    <ul>
+      <li>모델 주요 저장소안에 있는 Core Domain 구성 요소에 대해 역할 표시</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="cohesive-mechanism-응집력-있는-메커니즘">Cohesive Mechanism (응집력 있는 메커니즘)</h4>
+
+<ul>
+  <li>응집력이 있는 부분을 뽑아 별도의 경량 프레임워크로 분할해야 함
+    <ul>
+      <li>프레임워크 기능은 Intention-Revealing Interface 로 노출</li>
+    </ul>
+  </li>
+  <li>Generic Subdomain 과 비슷할 수 있지만 도메인 모델과 섞이지 않아야 함
+    <ul>
+      <li>Generic Subdomain: 도메인의 일부 측면을 표현하는 모델 (덜 중요한 Core domain)</li>
+      <li>Cohesive Mechanism: 도메인을 나타내지 않고 일부 문제 해결</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="segregated-core-분리된-핵심">Segregated Core (분리된 핵심)</h4>
+
+<ul>
+  <li><strong>보조적인 역할</strong>로부터 Core의 개념을 분리한 모델</li>
+  <li>일반적이거나 보조적인 역할의 구성요소는 다른 객체로 추출하여 다른 패키지에 배치</li>
+  <li>Core와 다른 코드의 결합도는 감소하고 응집력은 강화됨</li>
+</ul>
+
+<h4 id="abstract-core-추상화된-핵심">Abstract Core (추상화된 핵심)</h4>
+
+<ul>
+  <li>모델의 <strong>근본적인 개념을 식별</strong>하여 클래스, 추상 클래스, 인터페이스로 추출
+    <ul>
+      <li>하위 도메인 간에 참조나 상호작용이 많으면 수평적으로 자르는 것을 고려</li>
+      <li>추상 모델은 컴포넌트 간에 발생하는 상호작용을 표현</li>
+    </ul>
+  </li>
+  <li>추상적이고 전체적인 모델은 자체적인 모듈에 배치</li>
+</ul>
+
+<h3 id="대규모-구조">대규모 구조</h3>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/large-scale-structure.png">
+        <img src="/images/theory/ddd-terms-summary/large-scale-structure.png" data-rjs="/images/theory/ddd-terms-summary/large-scale-structure.png" class="zooming" alt="대규모 구조의 패턴" />
+    </a>
+    
+    <figcaption>
+        대규모 구조의 패턴
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<p>시스템을 깊게 파악하지 않아도 각 부분이 담당하는 역할에 대해 이해할 수 있어야 한다.<br />
+대규모 구조는 시스템을 넓은 시각으로 이해하게끔 돕는 언어로  <br />
+전체적인 관점에서 각 부분을 이해하기 위한 규칙이나 패턴을 고려해본다.</p>
+
+<h4 id="evolving-order-발전하는-질서">Evolving Order (발전하는 질서)</h4>
+
+<ul>
+  <li>발전 과정에서 전혀 다른 구조로도 유연하게 변화할 수 있어야 함
+    <ul>
+      <li>설계 및 모델과 관련된 의사결정이 제약되어서는 안됨</li>
+    </ul>
+  </li>
+  <li>대규모 구조는 어떤 모델을 개발하는데 부자연스러운 제약조건 없이 명확한 시스템을 만들 수 있을 때 적용해야 함</li>
+</ul>
+
+<h4 id="system-metaphor-시스템-은유">System Metaphor (시스템 은유)</h4>
+
+<ul>
+  <li>전체 설계의 중심 주제를 전달하고 이해하는 공유할 수 있는 <strong>은유</strong> (ex. 방화벽)</li>
+  <li>객체 패러다임과 조화를 이루고, 쉽게 이해할 수 있는 대규모 구조</li>
+  <li>구체적인 비유가 유용한 사고를 이끌어 낸다면 대규모 구조로 채택할 수 있음
+    <ul>
+      <li>의사소통 및 개발 촉진</li>
+      <li>Ubiquitous language 로 흡수될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="responsibility-layer-책임-계층">Responsibility Layer (책임 계층)</h4>
+
+<ul>
+  <li><strong>책임 주도 설계</strong>와 <strong>계층화</strong> 원칙이 합쳐친 개념적 계층</li>
+  <li>각 도메인 객체의 책임이 한 계층의 책임안에서 이뤄지는 구조
+    <ul>
+      <li>응집력 강화</li>
+      <li>모듈의 책임을 쉽게 이해할 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="knowledge-level-지식-수준">Knowledge Level (지식 수준)</h4>
+
+<figure>
+    <a href="/images/theory/ddd-terms-summary/knowledge-level.png">
+        <img src="/images/theory/ddd-terms-summary/knowledge-level.png" data-rjs="/images/theory/ddd-terms-summary/knowledge-level.png" class="zooming" alt="지식 수준" />
+    </a>
+    
+    <figcaption>
+        지식 수준
+        
+        (출처: 도메인 주도 설계)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>모델의 <strong>구조와 행위를 서술하고 제약</strong>하는 데 쓸 수 있는 객체 집합
+    <ul>
+      <li>Knowledge Level 은 일반 객체로 만들어야 함</li>
+    </ul>
+  </li>
+  <li>모델의 특정 부분을 클라이언트에게 제공할 때 생기는 문제를 해결</li>
+  <li>모델에서 자기 규정적(self-defining) 측면을 분리하여 제약 조건을 명시적으로 만듦</li>
+</ul>
+
+<h4 id="pluggable-component-framework-착탈식-컴포넌트-프레임워크">Pluggable Component Framework (착탈식 컴포넌트 프레임워크)</h4>
+
+<ul>
+  <li>인터페이스와 상호작용에 대한 Abstract Core 를 정제하고 구현을 자유롭게 대체할 수 있는 프레임워크</li>
+  <li>단점
+    <ul>
+      <li>심층적인 모델이 필요하므로 적용이 힘든 패턴</li>
+      <li>컴포넌트의 프로토콜을 변경하지 않고 Abstract Core 변경 불가 (심층적인 리팩터링이 어려움)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="출처">출처</h2>
+
+<ul>
+  <li>도메인 주도 설계 소프트웨어의 복잡성을 다루는 지혜 / Eric Evans</li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[DDD]+DDD(Domain+Driven+Design)+%EC%9A%A9%EC%96%B4+%EC%A0%95%EB%A6%AC%20-%20https://devyonghee.github.io/theory/2023/01/22/ddd-terms-summary/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/theory/2023/01/22/ddd-terms-summary/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

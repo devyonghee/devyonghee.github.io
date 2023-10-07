@@ -1,0 +1,7 @@
+@startuml
+object bug
+object comment
+
+bug ||--o{ comment
+comment ||--o{ comment
+@enduml

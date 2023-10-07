@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 코드 스피츠 Object83 6회차 정리</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="코드 스피츠 Object83 6회차 정리">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2019/09/16/code-spitz-object83-6/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2019/09/16/code-spitz-object83-6/">
+  <meta name="twitter:title" content="코드 스피츠 Object83 6회차 정리">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>코드 스피츠 Object83 6회차 정리</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 16, 2019
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      14 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/object" title="See all posts with tag 'object'">object</a>
+    
+      <a href="/tag/OOP" title="See all posts with tag 'OOP'">OOP</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>객체망을 구성할 때는 의존성이 양방향이 되지 않도록 하는 것이 중요하다. <br />
+가장 중요한 pattern 은 <strong>abstract factory method pattern</strong>, <strong>command pattern</strong>이다.</p>
+
+<!--more-->
+
+<h2 id="합성과-의존성">합성과 의존성</h2>
+
+<p><strong>객체망</strong>을 구성할 때, <strong>의존성</strong> 없이 객체 망이 될 수 없으므로 그만큼 <strong>의존성 관리</strong>가 중요하다.
+하지만 적절한 <strong>의존성</strong> 관리라는 건 명확하지 않으므로 <strong>의존성</strong>의 방향이 <strong>양방향</strong>으로 되지 않도록 주의 해야 한다.
+<strong>합성</strong>이나 <strong>상속</strong> 할 때 <strong>의존성</strong>의 방향 때문에 많은 문제가 일어난다.
+그래서 이러한 의존성 문제를 해결하는 방법과<br />
+<strong>design pattern</strong> 중 <strong>template method pattern</strong> 과 <strong>strategy pattern</strong> 통해서 합성과 상속의 차이까지 알아본다.</p>
+
+<h3 id="template-method">Template method</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="n">conditions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span> <span class="o">:</span> <span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">condition</span><span class="o">.</span><span class="na">isSatisfiedBy</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">))</span> <span class="k">return</span> <span class="n">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kd">abstract</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">);</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 에 대해서 <strong>Template method pattern</strong> 을 적용했다.
+<code class="language-plaintext highlighter-rouge">calculateFee</code> 가 <code class="language-plaintext highlighter-rouge">Template method</code> 로 작동하면서 <code class="language-plaintext highlighter-rouge">abstract method</code> 를 통해 <code class="language-plaintext highlighter-rouge">hook</code> 을 발생시키고 있다.</p>
+
+<p><strong>Template method pattern</strong> 은 일반적인 상속과 다르게 의존성의 방향이 보다 추상화된 쪽을 역전시키려고 하기 때문에 중요하다.
+일반적인 <strong>상속</strong>을 하면 <strong>의존성의 방향</strong>이 자식이 부모를 가리키게 되면서 의존성이 굉장히 넓게 퍼져서 문제가 나타난다.
+부모 수정의 여파가 모든 자식에게 가기 때문에 일반적인 상속은 사용하면 안된다.</p>
+
+<p>하지만 <strong>Template method pattern</strong> 은 부모와 자식간의 관계를 역전 시킨다.
+부모가 <code class="language-plaintext highlighter-rouge">abstract method</code> 를 <code class="language-plaintext highlighter-rouge">interface</code> 처럼 사용하여 부모가 자식을 알고 있게 되고 자식은 책임만 구현하면 된다.
+자식은 독립된 인터페이스를 구현하고 부모가 자식의 <code class="language-plaintext highlighter-rouge">interface</code> 의존하기 때문에 수정이 서로에게 영향을 미치지 않는다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountPolicy</span> <span class="kd">extends</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">amount</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AmountPolicy</span><span class="o">(</span><span class="nc">Money</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">.</span><span class="na">minus</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><strong>Template method pattern</strong> 을 이용하여 <code class="language-plaintext highlighter-rouge">AmountPolicy</code> 를 만들었다.
+<code class="language-plaintext highlighter-rouge">AmountPolicy</code> 는 <code class="language-plaintext highlighter-rouge">calculateFee</code> 만 구현하고 부모를 전혀 사용하지 않는다.</p>
+
+<p>자식들은 부모의 지식을 함부로 사용하지 않고 미리 확정되어 있는 <strong>protocol</strong> 만을 이용해서 통신을 하고 있고 hollywood 원칙(Tell Don’t Ask)을 지키고 있다. 
+<code class="language-plaintext highlighter-rouge">getter</code> 로 이용해서 어떤 동작을 하지 않고 서로 시키고 있다. 
+자식에서 <code class="language-plaintext highlighter-rouge">private</code> 가 아닌 <code class="language-plaintext highlighter-rouge">protected</code> 로 선언된 부모의 내부 속성이나 <code class="language-plaintext highlighter-rouge">getter</code>, <code class="language-plaintext highlighter-rouge">setter</code> 를 쓰고 있다면 좋지 않은 상속이다.</p>
+
+<p>객체망에서 자식 객체를 생성하면 실제로 부모 객체도 하나의 포인터로 관리될 뿐이지 힙 메모리에 따로 저장된다.
+그래서 별개의 객체라고 생각하고 서로 <code class="language-plaintext highlighter-rouge">interface</code> 로 통신을 해야한다.</p>
+
+<h3 id="strategy">Strategy</h3>
+
+<p><strong>template method pattern</strong> 을 <strong>strategy pattern</strong> 로 변경한다.
+안정화되고 상속층으로 만들어도 될 거 같다면 <strong>template method pattern</strong> 을 사용하고,
+유연하게 더 연결될 수 있을 것 같다면 <strong>strategy pattern</strong> 을 사용한다.
+보통은 <strong>strategy pattern</strong> 으로 시작해서 유연성을 충분히 확보하고  안정화 됐다고 생각하면 <strong>template method pattern</strong> 으로 변경한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="n">conditions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Calculator</span> <span class="n">calculator</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DiscountPolicy</span><span class="o">(</span><span class="nc">Calculator</span> <span class="n">calculator</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">calculator</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span> <span class="o">:</span> <span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">condition</span><span class="o">.</span><span class="na">isSatisfiedBy</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">))</span> <span class="k">return</span> <span class="n">calculator</span><span class="o">.</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p><strong>strategy pattern</strong> 상에서는 합성의 원리를 사용하게 되므로 <code class="language-plaintext highlighter-rouge">calculateFee</code> 를 처리하는 <code class="language-plaintext highlighter-rouge">calculator</code> 를 소유 하게 된다.
+그래서 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 외부 객체의 도움을 받는 단일 클래스가 되었다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountCalculator</span> <span class="kd">implements</span> <span class="nc">Calculator</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">amount</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AmountCalculator</span><span class="o">(</span><span class="nc">Money</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">.</span><span class="na">minus</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">calculator</code> 를 상속받은 <code class="language-plaintext highlighter-rouge">AmountCalculator</code> 가 <code class="language-plaintext highlighter-rouge">calculateFee</code> 라는 <code class="language-plaintext highlighter-rouge">interface</code> 를 구현한다.
+코드는 거의 동일하지만 상속을 이용하지 않고 <code class="language-plaintext highlighter-rouge">interface</code> 로 통신할 뿐이다.
+<strong>template method pattern</strong> 이 하는 일을 정확하게 <strong>strategy pattern</strong> 으로 변경할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountPolicy</span> <span class="kd">extends</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">amount</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AmountPolicy</span><span class="o">(</span><span class="nc">Money</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">.</span><span class="na">minus</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>두가지 <strong>pattern</strong> 을 비교해서 보면 결국, <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 라는 부모는 <code class="language-plaintext highlighter-rouge">Calculator</code> 의 역할을 하고 있었던 것이다.
+즉, <code class="language-plaintext highlighter-rouge">abstract class</code> 를 <code class="language-plaintext highlighter-rouge">interface</code> 처럼 <code class="language-plaintext highlighter-rouge">protocol</code> 로 사용하고 있었던 것이다.
+이처럼 <code class="language-plaintext highlighter-rouge">abstract class</code> 를 <code class="language-plaintext highlighter-rouge">interface</code> 처럼 사용해야 상속을 잘 사용하는 것이고 잘 만들어진 추상 layer 는 <strong>strategy pattern</strong> 로 쉽게 변경할 수 있다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/template-with-strategy1.jpg">
+        <img src="/images/study/code-spitz/template-with-strategy1.jpg" data-rjs="/images/study/code-spitz/template-with-strategy1.jpg" class="zooming" alt="template-with-strategy1" />
+    </a>
+    
+    <figcaption>
+        template-with-strategy1
+        
+    </figcaption>
+    
+</figure>
+
+<p>상속을 사용해서 <strong>template method pattern</strong> 을 사용할 때 장점은 의존성 관계가 단순해진다.
+관계가 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 와 상속 받고 있는 <code class="language-plaintext highlighter-rouge">AmountPolicy</code> 밖에 없고 의존성도 역전 되었다.</p>
+
+<p><strong>strategy pattern</strong> 에서는 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 가 <code class="language-plaintext highlighter-rouge">AmountCalculator</code> 를 직접 모르게 하기 위해서 중간에 <code class="language-plaintext highlighter-rouge">Calculator</code> 를 끼워 넣어 단방향 의존성을 해결 했다.
+<code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 의 무거운 역할이 <code class="language-plaintext highlighter-rouge">Calculator</code> 에게 옮겨지지만 수정이 어려워진다. 
+즉, <code class="language-plaintext highlighter-rouge">interface</code> 에 대한 확신 없이 전략 패턴을 도입하면 여파가 오게 된다.</p>
+
+<p><strong>strategy pattern</strong> 을 쓰면 <strong>template method pattern</strong> 과 굉장히 유사해 보이지만 차이점이 존재한다.
+<strong>strategy pattern</strong> 에서는 <strong>strategy layer</strong> 이라는 것이 생겨서 충격을 흡수함과 동시에 무거워진다.
+<strong>template method pattern</strong>은 추상 메소드에 대한 무게가 생긴다.</p>
+
+<p>처음부터 정립된 domain 을 파악하기 힘들기 때문에 관계도를 분리해서 <strong>strategy layer</strong>가 여파를 흡수하도록 하여 유연성을 확보하고,
+<strong>template method pattern</strong>을 통해서 관계를 단순화 시키고 방향성을 고정시킨다.</p>
+
+<h3 id="template-method--strategy">Template Method &amp; strategy</h3>
+
+<figure>
+    <a href="/images/study/code-spitz/template-with-strategy2.jpg">
+        <img src="/images/study/code-spitz/template-with-strategy2.jpg" data-rjs="/images/study/code-spitz/template-with-strategy2.jpg" class="zooming" alt="template-with-strategy2" />
+    </a>
+    
+    <figcaption>
+        template-with-strategy2
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>template method</strong> 를 사용하게 된다면 <code class="language-plaintext highlighter-rouge">if</code> 를 통해서 원하는 <code class="language-plaintext highlighter-rouge">class</code> 를 선택하는 거에 비해
+<strong>strategy</strong> 은 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code>를 생성하고 합성해야 할 객체를 <code class="language-plaintext highlighter-rouge">if</code> 를 통해서 생성해야 한다.
+<strong>strategy pattern</strong>은 pointer 의 pointer 를 원리를 이용하게 되므로 Runtime 에 언제든지 <code class="language-plaintext highlighter-rouge">Calculator</code> 를 바꿀 수 있지만 <strong>template method pattern</strong> 은 형 자체를 변경해야 한다.</p>
+
+<p>각 pattern 에는 단점이 존재한다. 
+<strong>template method pattern</strong> 은 자식이 중첩 구조인 경우에 조합할 수 있는 경우의 수가 계속 늘어나게 되서 <strong>조합 폭발</strong>이 발생한다.
+상속을 이용해서 세트를 만들었기 때문에 <strong>조합 폭발</strong>이 일어난다.</p>
+
+<p>이에 비해 합성은 Runtime 에 필요한 것들만 넣어주면 되므로 조합 폭발이 일어나지 않지만 의존성이 폭발한다. 
+관계에 대해 알아야 되는 경우의 수만큼 들어오기 때문에 의존성 폭발이 발생한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/template-with-strategy3.jpg">
+        <img src="/images/study/code-spitz/template-with-strategy3.jpg" data-rjs="/images/study/code-spitz/template-with-strategy3.jpg" class="zooming" alt="template-with-strategy3" />
+    </a>
+    
+    <figcaption>
+        template-with-strategy3
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>template method pattern</strong>를 사용해도 상속의 문제가 해결되지 않는다.
+하지만 <strong>strategy pattern</strong>에서의 의존성 폭발은 해결할 수 있다.
+<strong>template method pattern</strong>은 조합 폭발이 일어나는 것이 확정이기 때문에 <strong>strategy pattern</strong> 의 의존성 폭발을 해결 하는 방법을 알아본다.</p>
+
+<h2 id="생성-사용-패턴과-팩토리">생성 사용 패턴과 팩토리</h2>
+
+<p><strong>생성 사용 패턴</strong>이라는 것은 객체를 만들기 위한 코드와 사용하는 코드가 있다는 것이다.
+생명주기도 틀리고 관리하기 힘들기 때문에 이 두 코드를 병행해서 사용하면 안된다.</p>
+
+<h3 id="생성-사용-패턴">생성 사용 패턴</h3>
+
+<figure>
+    <a href="/images/study/code-spitz/create-use-pattern.jpg">
+        <img src="/images/study/code-spitz/create-use-pattern.jpg" data-rjs="/images/study/code-spitz/create-use-pattern.jpg" class="zooming" alt="create-use-pattern" />
+    </a>
+    
+    <figcaption>
+        create-use-pattern
+        
+    </figcaption>
+    
+</figure>
+
+<p>생성 사용 패턴 이용해서 생성 코드와 이용 코드를 구분하고 <strong>client</strong> 쪽으로 밀어내서 <strong>service</strong> 코드를 줄이도록 한다.
+그러면 <strong>client</strong> 에서 <strong>service</strong> 쪽으로 객체를 주입할 수 밖에 없는 일이 생긴다.</p>
+
+<h3 id="injection">Injection</h3>
+
+<figure>
+    <a href="/images/study/code-spitz/discountPolicy-injection.jpg">
+        <img src="/images/study/code-spitz/discountPolicy-injection.jpg" data-rjs="/images/study/code-spitz/discountPolicy-injection.jpg" class="zooming" alt="discountPolicy-injection.jpg" />
+    </a>
+    
+    <figcaption>
+        discountPolicy-injection.jpg
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Calculator</code> 는 바깥쪽에서 주도적으로 주입되었다.
+<strong>Injection</strong>이 좋아 보이지만 바깥쪽에서 강제로 주입 당하고 있기 때문에 독립된 책임과 역할을 가지고 있던 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code>이 제어권을 상실하게 된다.</p>
+
+<h3 id="factory">Factory</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">interface</span> <span class="nc">CalculatorFactory</span> <span class="o">{</span>
+    <span class="nc">Calculator</span> <span class="nf">getCalculator</span><span class="o">();</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그래서 제어권을 역전하기 위해서 <code class="language-plaintext highlighter-rouge">factory</code> 를 만든다.
+이 <code class="language-plaintext highlighter-rouge">factory</code> 는 원할 때 <code class="language-plaintext highlighter-rouge">Calculator</code>를 주는 지연 함수 같은 <code class="language-plaintext highlighter-rouge">interface</code> 가진다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountCalculatorFactory</span> <span class="kd">implements</span> <span class="nc">CalculatorFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">money</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">AmountCalculator</span> <span class="n">cache</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AmountCalculatorFactory</span><span class="o">(</span><span class="nc">Money</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">money</span> <span class="o">=</span> <span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="nc">Calculator</span> <span class="nf">getCalculator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">cache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AmountCalculator</span><span class="o">(</span><span class="n">money</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">cache</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pushed</code> 를 제거하고 객체를 원하는 시점에 특정 동작을 넣기 위해 <code class="language-plaintext highlighter-rouge">factory</code> 를 도입한다.
+<code class="language-plaintext highlighter-rouge">factory</code> 를 구현하고 있는 <code class="language-plaintext highlighter-rouge">AmountCalculatorFactory</code> 를 보면 외부에서 <code class="language-plaintext highlighter-rouge">AmountCalculator</code> 를 원할 때 만들어서 제공하고 있고 내부에서는 <code class="language-plaintext highlighter-rouge">cache</code> 정책도 사용한다.
+게다가, <code class="language-plaintext highlighter-rouge">synchronized</code> 로 선언하여 <strong>multi thread</strong> 에서도 원활하게 동작한다.</p>
+
+<h3 id="lazy-pull">Lazy Pull</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="n">conditions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CalculatorFactory</span> <span class="n">supplier</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DiscountPolicy</span><span class="o">(</span><span class="nc">CalculatorFactory</span> <span class="n">supplier</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">supplier</span> <span class="o">=</span> <span class="n">supplier</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span> <span class="o">:</span> <span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">condition</span><span class="o">.</span><span class="na">isSatisfiedBy</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">supplier</span><span class="o">.</span><span class="na">getCalculator</span><span class="o">().</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 본인이 원할 때 호출할 수 있도록 <code class="language-plaintext highlighter-rouge">factory</code>로 주입 받는다.
+원할 때, <code class="language-plaintext highlighter-rouge">Calculator</code> 를 사용하게 되었지만 pointer 의 pointer 를 사용하고 있기 때문에 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 <code class="language-plaintext highlighter-rouge">Factory</code> 가 어떤 <code class="language-plaintext highlighter-rouge">Calculator</code> 를 주고 있는지는 모르게 된다.
+지연 연산을 통해 <strong>Runtime</strong> 에 다른 <code class="language-plaintext highlighter-rouge">Calculator</code> 를 받을 수 있는 가능성을 갖고 있는 것이다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/lazy-pull1.jpg">
+        <img src="/images/study/code-spitz/lazy-pull1.jpg" data-rjs="/images/study/code-spitz/lazy-pull1.jpg" class="zooming" alt="lazy-pull1" />
+    </a>
+    
+    <figcaption>
+        lazy-pull1
+        
+    </figcaption>
+    
+</figure>
+
+<p>그런데 여기에는 <strong>디미터법칙</strong>을 위반하는 (열차 전복 사고) 문제가 있다.
+<code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 필드나 속성에도 <code class="language-plaintext highlighter-rouge">Calculator</code> 에 대한 정보가 없지만 <code class="language-plaintext highlighter-rouge">Calculator</code> 지식을 사용하고 있다.
+단순하게 객체를 반환하는 <code class="language-plaintext highlighter-rouge">Factory</code> 는 무조건 <strong>디미터의 법칙</strong>을 위반한다.</p>
+
+<p><strong>디미터 법칙</strong> 위반을 해결하기 위해 우리는 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 가 <code class="language-plaintext highlighter-rouge">factory</code> 와 <code class="language-plaintext highlighter-rouge">calculator</code> 를 동시에 알게 하거나 <code class="language-plaintext highlighter-rouge">factory</code> 만 알도록 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/lazy-pull2.jpg">
+        <img src="/images/study/code-spitz/lazy-pull2.jpg" data-rjs="/images/study/code-spitz/lazy-pull2.jpg" class="zooming" alt="lazy-pull2" />
+    </a>
+    
+    <figcaption>
+        lazy-pull2
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 에 지역 변수나 field 에 선언해서 <code class="language-plaintext highlighter-rouge">factory</code> 와 <code class="language-plaintext highlighter-rouge">calculator</code> 를 알게 한다면 위와 같은 관계도를 얻게 된다.
+<code class="language-plaintext highlighter-rouge">Factory</code> 와 <code class="language-plaintext highlighter-rouge">Calculator</code> 추상 클래스와 구상 클래스들 순환 참조가 생긴다. 
+<strong>factory circulation</strong> 영역이 생겨서 양방향 참조가 성립하게 되서 <strong>simple factory</strong> 를 사용하면 안된다.</p>
+
+<h3 id="위임된-팩토리">위임된 팩토리</h3>
+
+<figure>
+    <a href="/images/study/code-spitz/lazy-pull3.jpg">
+        <img src="/images/study/code-spitz/lazy-pull3.jpg" data-rjs="/images/study/code-spitz/lazy-pull3.jpg" class="zooming" alt="lazy-pull3" />
+    </a>
+    
+    <figcaption>
+        lazy-pull3
+        
+    </figcaption>
+    
+</figure>
+
+<p>그래서 <code class="language-plaintext highlighter-rouge">factory</code>에게 책임을 위임해서  <code class="language-plaintext highlighter-rouge">factory</code> 만 알도록 변경한다.
+<code class="language-plaintext highlighter-rouge">calculateFee</code> 자체를 위임한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CalculatorFactory</span> <span class="o">{</span>
+    <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountCalculatorFactory</span> <span class="kd">implements</span> <span class="nc">CalculatorFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">money</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">AmountCalculator</span> <span class="n">cache</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AmountCalculatorFactory</span><span class="o">(</span><span class="nc">Money</span> <span class="n">money</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">money</span> <span class="o">=</span> <span class="n">money</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="nc">Calculator</span> <span class="nf">getCalculator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">cache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AmountCalculator</span><span class="o">(</span><span class="n">money</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">cache</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getCalculator</span><span class="o">().</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Calculator</code> 의 지식이 <code class="language-plaintext highlighter-rouge">factory</code> 안으로 들어가게 되고 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 <code class="language-plaintext highlighter-rouge">factory</code> 만 알 수 있게 된다.
+이것을 <strong>위임된 factory</strong> 라고 한다.
+<strong>순환 참조</strong>가 생기기 때문에 어쩔 수 없이 <strong>위임된 factory pattern</strong> 을 사용해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="n">conditions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">CalculatorFactory</span> <span class="n">supplier</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DiscountPolicy</span><span class="o">(</span><span class="nc">CalculatorFactory</span> <span class="n">supplier</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">supplier</span> <span class="o">=</span> <span class="n">supplier</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span> <span class="o">:</span> <span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">condition</span><span class="o">.</span><span class="na">isSatisfiedBy</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">supplier</span><span class="o">.</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>이렇게 되면 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 코드를 줄일 수 있고 <strong>열차 전복 사고</strong>가 사라지고 <strong>디미터의 법칙</strong>을 지킬 수 있다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/commission-to-factory1.jpg">
+        <img src="/images/study/code-spitz/commission-to-factory1.jpg" data-rjs="/images/study/code-spitz/commission-to-factory1.jpg" class="zooming" alt="commission-to-factory1" />
+    </a>
+    
+    <figcaption>
+        commission-to-factory1
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>위임된 factory</strong>를 사용했는데 <code class="language-plaintext highlighter-rouge">factory</code> 의 <code class="language-plaintext highlighter-rouge">method</code> 가 <code class="language-plaintext highlighter-rouge">Calculator</code> 와 동일하다.
+결국, <strong>위임된 factory</strong>는 구상 <code class="language-plaintext highlighter-rouge">Calculator</code> 자체가 되고 <strong>위임된 factory</strong> 의 <code class="language-plaintext highlighter-rouge">interface</code> 는 <strong>factoring</strong> 하려던 객체의 <code class="language-plaintext highlighter-rouge">interface</code> 와 일치 되는게 정상이다.
+설계 중, 이 사실을 이해하지 못했다면 혼란이 왔을 것이다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/commission-to-factory2.jpg">
+        <img src="/images/study/code-spitz/commission-to-factory2.jpg" data-rjs="/images/study/code-spitz/commission-to-factory2.jpg" class="zooming" alt="commission-to-factory2" />
+    </a>
+    
+    <figcaption>
+        commission-to-factory2
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 도 결국 <code class="language-plaintext highlighter-rouge">factory</code> 를 참고할 필요가 없기 때문에 원래대로 돌아온다.
+<strong>위임된 factory</strong> 은 <code class="language-plaintext highlighter-rouge">factory</code> 가 보이지 않는다는 것이 특징이다. 
+<code class="language-plaintext highlighter-rouge">Calculator</code> 를 위임했기 때문에 <code class="language-plaintext highlighter-rouge">Calculator</code> 와 똑같은 것이다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/commission-to-factory3.jpg">
+        <img src="/images/study/code-spitz/commission-to-factory3.jpg" data-rjs="/images/study/code-spitz/commission-to-factory3.jpg" class="zooming" alt="commission-to-factory3" />
+    </a>
+    
+    <figcaption>
+        commission-to-factory3
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>위임된 factory</strong>로 바꾸면 그림과 같은 관계도가 된다.
+<strong>factory pattern</strong> 을 사용하여 <code class="language-plaintext highlighter-rouge">Calculator</code> 와 <code class="language-plaintext highlighter-rouge">AmountCalculatorFactory</code> 와 <code class="language-plaintext highlighter-rouge">AmountCalculator</code> 가 삼각형을 돌면서 순환참조가 생기는 것 같지만 
+<code class="language-plaintext highlighter-rouge">AmountCalculator</code> 의 역할이 <code class="language-plaintext highlighter-rouge">AmountCalculatorFactory</code> 로 겸하게 되니까 <code class="language-plaintext highlighter-rouge">AmountCalculatorFactory</code> 가 사라지게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/commission-to-factory4.jpg">
+        <img src="/images/study/code-spitz/commission-to-factory4.jpg" data-rjs="/images/study/code-spitz/commission-to-factory4.jpg" class="zooming" alt="commission-to-factory4" />
+    </a>
+    
+    <figcaption>
+        commission-to-factory4
+        
+    </figcaption>
+    
+</figure>
+
+<p>그래서 <strong>위임된 factory pattern</strong> 를 사용하면 한줄만 남게 되면서 순환이 없어진다.</p>
+
+<h2 id="추상-팩토리-메소드-패턴">추상 팩토리 메소드 패턴</h2>
+
+<p><strong>abstract factory method</strong>는 의존성 폭발을 해결하기 위한 <strong>pattern</strong> 이기 때문에 
+ <code class="language-plaintext highlighter-rouge">factory</code> 는 여러 객체를 반환할 수 있는 능력을 갖게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/discountCondition-change.jpg">
+        <img src="/images/study/code-spitz/discountCondition-change.jpg" data-rjs="/images/study/code-spitz/discountCondition-change.jpg" class="zooming" alt="discountCondition-change" />
+    </a>
+    
+    <figcaption>
+        discountCondition-change
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">factory</code> 에게 <code class="language-plaintext highlighter-rouge">DiscountCondition</code> 도 반환하도록 변경하고 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 <code class="language-plaintext highlighter-rouge">factory</code> 만 알도록 한다.
+<code class="language-plaintext highlighter-rouge">factory</code> 에서 공급받는 종류가 2가지가 된다.</p>
+
+<h3 id="discountcondition-위임">DiscountCondition 위임</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PolicyFactory</span> <span class="kd">extends</span> <span class="nc">Calculator</span> <span class="o">{</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="nf">getConditions</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AmountCalculatorFactory</span> <span class="kd">implements</span> <span class="nc">PolicyFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="nc">Money</span> <span class="n">money</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">AmountCalculator</span> <span class="n">cache</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="n">conditions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="nf">AmountCalculatorFactory</span><span class="o">(</span><span class="nc">Money</span> <span class="n">money</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">money</span> <span class="o">=</span> <span class="n">money</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="nc">Calculator</span> <span class="nf">getCalculator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">cache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AmountCalculator</span><span class="o">(</span><span class="n">money</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">cache</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeCondition</span><span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">condition</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getCalculator</span><span class="o">().</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="nf">getConditions</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">conditions</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>여러 가지 객체를 반환했으면 <strong>조합 폭발</strong>이 발생했겠지만 <code class="language-plaintext highlighter-rouge">PolicyFactory</code>는 <code class="language-plaintext highlighter-rouge">Calculator</code> 이면서 <code class="language-plaintext highlighter-rouge">getCondition</code> 만 보내면 되니까 간단하다.
+지금은 <code class="language-plaintext highlighter-rouge">discountPolicy</code> 가 <code class="language-plaintext highlighter-rouge">factory</code> 한개만 알도록 하고 의존성을 <code class="language-plaintext highlighter-rouge">AmountCalculatorFactory</code> 에게 몰아준다. 
+사용 코드와 생성 코드가 나눠지고 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 에는 사용 코드만 남았다.
+<strong>의존성</strong>을 줄이기 위해서 <strong>abstract factory method</strong>을 사용했지만 <strong>열차 전복 사고</strong>를 주의 해야 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/discountPolicy-demeter.jpg">
+        <img src="/images/study/code-spitz/discountPolicy-demeter.jpg" data-rjs="/images/study/code-spitz/discountPolicy-demeter.jpg" class="zooming" alt="discountPolicy-demeter" />
+    </a>
+    
+    <figcaption>
+        discountPolicy-demeter
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">foreach</code> 를 사용하기 때문에 <code class="language-plaintext highlighter-rouge">conditions</code> 에 대한 <code class="language-plaintext highlighter-rouge">iterator method</code> 호출로 <strong>열차 전복 사고</strong>가 내장되어 있다.
+내부에서 <code class="language-plaintext highlighter-rouge">iterator</code> 를 호출하기 때문에 디미터의 법칙을 위반한다.
+게다가 <code class="language-plaintext highlighter-rouge">DiscountCondition</code> 도 모르기 때문에 2중으로 디미터의 법칙을  위반하고 있다.
+<code class="language-plaintext highlighter-rouge">foreach</code> 사용하는 부분을 위임하여 <strong>디미터의 법칙</strong>을 해소한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PolicyFactory</span> <span class="kd">extends</span> <span class="nc">Calculator</span> <span class="o">{</span>
+    <span class="k">default</span> <span class="nc">Money</span> <span class="nf">calculatorFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">DiscountCondition</span> <span class="n">condition</span> <span class="o">:</span> <span class="n">getConditions</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">condition</span><span class="o">.</span><span class="na">isSatisfiedBy</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">))</span> <span class="k">return</span> <span class="n">calculateFee</span><span class="o">(</span><span class="n">fee</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fee</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">DiscountCondition</span><span class="o">&gt;</span> <span class="nf">getConditions</span><span class="o">();</span>
+<span class="o">}</span>
+ 
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Policy</code>의 공통 로직을 <code class="language-plaintext highlighter-rouge">factory</code> 에 위임하기 때문에 <code class="language-plaintext highlighter-rouge">interface</code> 에서 <code class="language-plaintext highlighter-rouge">default method</code> 로 구현한다. 
+<code class="language-plaintext highlighter-rouge">Factory</code> 는 <code class="language-plaintext highlighter-rouge">Condition</code> 을 알고 있었기 때문에 <strong>디미터의 원칙</strong>을 지킬 수 있고 <code class="language-plaintext highlighter-rouge">template method</code> 를 사용하게 되었다.
+<code class="language-plaintext highlighter-rouge">template method</code> 에서 2가지 <code class="language-plaintext highlighter-rouge">hook</code> 을  사용 하는데 <code class="language-plaintext highlighter-rouge">Factory</code>에 조합 폭발이 미뤄진 것이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DiscountPolicy</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">PolicyFactory</span> <span class="n">factory</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DiscountPolicy</span><span class="o">(</span><span class="nc">PolicyFactory</span> <span class="n">factory</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">factory</span> <span class="o">=</span> <span class="n">factory</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateFee</span><span class="o">(</span><span class="nc">Screening</span> <span class="n">screening</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">,</span> <span class="nc">Money</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">factory</span><span class="o">.</span><span class="na">calculateFee</span><span class="o">(</span><span class="n">screening</span><span class="o">,</span> <span class="n">count</span><span class="o">,</span> <span class="n">fee</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그래서 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 결국 <code class="language-plaintext highlighter-rouge">factory</code> 를 받아서 <code class="language-plaintext highlighter-rouge">calculateFee</code> 를 위임한다.
+<code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 가 <code class="language-plaintext highlighter-rouge">factory</code>로부터 <code class="language-plaintext highlighter-rouge">conditions</code> 와 <code class="language-plaintext highlighter-rouge">calculator</code> 를 공급 받았다면 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 모든 지식을 알게 되고 결국 의존성만 생기게 된다.
+<code class="language-plaintext highlighter-rouge">factory</code> 에 대한 의존성만 남겨두려면 <code class="language-plaintext highlighter-rouge">factory</code> 쪽으로 로직이 이동할 수 밖에 없다.
+공통되서 옮긴게 아니라 <code class="language-plaintext highlighter-rouge">conditions</code> 와 <code class="language-plaintext highlighter-rouge">calculator</code> 의 의존성을 <code class="language-plaintext highlighter-rouge">factory</code> 로 옮기기 위한 것이다.
+결국, <strong>abstract factory method pattern</strong> 조차도 <strong>위임된 factory pattern</strong> 로 되는 것이다.
+<code class="language-plaintext highlighter-rouge">factory</code>의 <code class="language-plaintext highlighter-rouge">default method</code> 에는 의존성 폭발이 생기지만 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 는 보호되어 변화가 없으니까 <code class="language-plaintext highlighter-rouge">DiscountPolicy</code> 을 의존하는 객체들은 안전해진다.
+그래서 한 객체에 의존하는 객체가 있으면 그 객체 부터 확정 짓고 작업을 해야 한다.</p>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%BD%94%EB%93%9C+%EC%8A%A4%ED%94%BC%EC%B8%A0+Object83+6%ED%9A%8C%EC%B0%A8+%EC%A0%95%EB%A6%AC%20-%20https://devyonghee.github.io/study/2019/09/16/code-spitz-object83-6/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2019/09/16/code-spitz-object83-6/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

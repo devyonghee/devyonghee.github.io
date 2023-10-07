@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Study] 운영체제 아주 쉬운 세가지 이야기 1~2장</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 1~2장">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2022/11/07/operation-system-three-easy-pieces-1-2/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2022/11/07/operation-system-three-easy-pieces-1-2/">
+  <meta name="twitter:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 1~2장">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Study] 운영체제 아주 쉬운 세가지 이야기 1~2장</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    November 7, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/operation-system" title="See all posts with tag 'operation-system'">operation-system</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>운영체제 아주 쉬운 세가지 이야기 책에 대한 스터디를 진행한다.<br />
+이 글에서는 가상화에 대해 다룬 1장부터 2장까지의 내용을 정리한다.</p>
+
+<!--more-->
+
+<h2 id="1장-이-책에-관한-대화">1장. 이 책에 관한 대화</h2>
+
+<p>이 책에서는 운영체제의 세부 주제 중 <br />
+다음 세 개의 주제와 이와 관련하여 운영체제의 동작에 대해 소개한다.</p>
+
+<ul>
+  <li>가상화</li>
+  <li>병행성</li>
+  <li>영속성</li>
+</ul>
+
+<h2 id="2장-운영체제-개요">2장. 운영체제 개요</h2>
+
+<p>프로그램은 명령어를 초당 수백만 번 <strong>반입(fetch)</strong>, <strong>해석(decode)</strong>, <strong>실행(execute)</strong> 한다. <br />
+이러한 프로그램을 쉽게 실행, 프로그램 간 메모리 공유, 장치와 상호작용을 도와주는 등 다양한 일을 하는 소프트웨어가 바로 <strong>운영체제(operating system, OS)</strong> 다.</p>
+
+<p>위와 같은 일을 하기 위해 운영체제는 물리적인 자원을 가상 형태의 자원을 생성한다.
+이 기법을 <strong>가상화(vitualization)</strong> 라고 하며, 이러한 이유로 가상 머신(virtual machine)이라고 불리기도 한다. 
+가상화를 통해 프로그램들이 CPU 를 공유하여, 동시에 실행하고 각자 명령어와 데이터를 접근할 수 있게 한다.
+이러한 이유로 운영체제를 자원 관리자(resource manager) 라고도 한다.</p>
+
+<p>프로그램 실행, 메모리 할당, 파일 접근 같은 가상 머신과 관련된 요청을 처리하기 위해 운영체제에서 <strong>시스템 콜</strong>을 제공한다.</p>
+
+<h3 id="21장-cpu-가상화">2.1장 CPU 가상화</h3>
+
+<p>운영체제가 CPU 를 무한 개의 CPU 가 존재하는 것처럼 환상(illusion)을 만들어 여러 프로그램을 실행하는 것을 CPU 가상화(virtualizing the CPU)라고 한다.<br />
+여러 프로그램 중 실행되는 프로그램을 정하는 것은 운영체제 정책(policy)에 따라 달라진다.</p>
+
+<h3 id="22-메모리-가상화">2.2 메모리 가상화</h3>
+
+<p>컴퓨터에서의 물리 메모리(physical memory) 모델은 바이트 배열로 사용하기 위해서는 주소(address)와 데이터가 필요하다.<br />
+물리 메모리 공간은 공유 자원이지만 한 프로그램의 메모리 연산은 다른 프로그램의 주소 공간에 영향을 주지 않는다.</p>
+
+<p>운영체제가 <strong>메모리 가상화(virtualizing memory)</strong> 를 하기 때문인데,
+이로 인해 각 프로세스는 자신만의 <strong>가상 주소 공간(virtual address space)</strong> 가지게 된다.<br />
+운영체제는 이 가상 주소 공간을 컴퓨터의 물리 메모리로 매핑을 해준다.</p>
+
+<h3 id="23-병행성">2.3 병행성</h3>
+
+<p><strong>병행성(concurrency)</strong> 은 프로그램이 한 번에 많은 일을 할 때 발생되는 문제들을 가리킬 때 사용된다.<br />
+병행성 문제는 운영체제 뿐만 아니라 멀티 쓰레드 프로그램에도 동일하게 발생된다.</p>
+
+<p>멀티 쓰레드 프로그램에서 각 쓰레드가 공유하고 있는 값을 동시에 변경하려고 한다면 예상치 못한 결과가 나올 것이다.<br />
+이러한 이유는 레지스터 탑재, 레지스터 값 계산, 레지스터 값을 다시 메모리에 저장하는 등의 
+명령어가 <strong>원자적(atomically)</strong> 으로(한 번에 모두) 실행되지 않기 때문에 발생된다.</p>
+
+<h3 id="24-영속성">2.4 영속성</h3>
+
+<p>DRAM 과 같은 장치는 휘발성(volatile) 방식으로 저장하기 때문에 고장나거나 전원이 꺼지면 데이터가 손실된다.<br />
+데이터를 영속적 저장하기 위해서는 하드웨어와 소프트웨어가 필요하다.</p>
+
+<ul>
+  <li>하드웨어 (입력/출력 혹은 I/O 장치형태로 제공)
+    <ul>
+      <li>SSD(solid-state drives)</li>
+      <li>하드 드라이브(hard drive)</li>
+    </ul>
+  </li>
+  <li>소프트웨어
+    <ul>
+      <li>파일 시스템(file system)
+        <ul>
+          <li>디스크 관리 용도</li>
+          <li>응용프로그램들이 요청한 쓰기 요청을 모아서 한번에 처리 (성능 향상)</li>
+          <li>요청 내용이 기록되기 전에 손실되지 않도록 <strong>저널링(journaling)</strong> 이나 <strong>쓰기-시-복사(Copy-On-Write)</strong> 기법 사용 (쓰기 명령들 간에 기록 순서 강제 보장)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="25-설계-목표">2.5 설계 목표</h3>
+
+<p>운영체제의 역할은 간단하게 정리하면 다음과 같다.</p>
+
+<ul>
+  <li>CPU, 메모리, 디스크와 같은 물리 자원을 가상화(virtualize)</li>
+  <li>병행성 문제 처리</li>
+  <li>파일을 영속적으로 저장</li>
+</ul>
+
+<p>이런 시스템을 구현하기 위해서는 몇 가지 목표가 필요하다.</p>
+
+<ul>
+  <li>시스템을 편리하고 사용하기 쉽게 만드는 데 필요한 개념(abstraction)들 정의
+    <ul>
+      <li>추상화를 통해 큰 프로그램을 이해하기 쉽게 나누어 구현 가능</li>
+    </ul>
+  </li>
+  <li>오버헤드를 최소화(minimize the overhead)
+    <ul>
+      <li>시간이나 공간을 최소로 하는 해결책을 찾음</li>
+    </ul>
+  </li>
+  <li>운영체제와 응용 프로그램 간의 보호
+    <ul>
+      <li>프로그램의 악의적이거나 의도치 않은 행위를 피해주지 않는 것을 보장</li>
+      <li>프로세스를 다른 프로세스로부터 고립(isolation)</li>
+    </ul>
+  </li>
+  <li>운영체제는 계속 실행되어야 함
+    <ul>
+      <li>운영체제가 실패하면 모든 응용프로그램도 실패하게 되므로 높은 수준의 신뢰성(reliability) 제공</li>
+    </ul>
+  </li>
+  <li>이외에도 에너지-효율성(energy-efficiency), 보안(security), 이동성(mobility) 목표를 지향</li>
+</ul>
+
+<h3 id="26-배경-소개">2.6 배경 소개</h3>
+
+<h4 id="초창기-운영체제-단순-라이브러리">초창기 운영체제: 단순 라이브러리</h4>
+
+<p>초창기에는 기본적으로 자주 사용되는 함수들을 모아 놓은 라이브러리<br />
+작업들이 준비되면 컴퓨터 관리자가 일괄 처리(batch) 진행</p>
+
+<h4 id="라이브러리를-넘어서-보호">라이브러리를 넘어서 보호</h4>
+
+<figure>
+    <a href="/images/study/operating-system/system-call.png">
+        <img src="/images/study/operating-system/system-call.png" data-rjs="/images/study/operating-system/system-call.png" class="zooming" alt="system call" />
+    </a>
+    
+    <figcaption>
+        system call
+        
+    </figcaption>
+    
+</figure>
+
+<p>운영체제를 파일 시스템과 같은 라이브러리 형태로 구현하면 
+모든 응용프로그램이 디스크를 읽을 수 있기 때문에 개인정보 보호가 불가능하다.</p>
+
+<p>이 방안으로 <strong>시스템 콜</strong>이라는 기능이 발명되었다.<br />
+운영체제와 일반 라이브러리가 구분되어 운영체제 코드를 실행하기 위해서는 정해직 규칙에 따라 제어 가능한 과정을 거치게 된다.</p>
+
+<p>시스템 콜은 운영체제에게 제어를 넘기기 때문에 <strong>하드웨어 특권 수준(hardware privilege level)</strong> 을 상향 조정한다.<br />
+사용자 응용 프로그램은 <strong>사용자 모드(user mode)</strong> 상태에서 실행되며, 시스템 콜은 <strong>trap</strong> 이라는 하드웨어 명령어를 이용해 호출한다.<br />
+하드웨어는 <strong>트랩 핸들러(trap handler)</strong> 함수에게 제어권을 넘기고 <strong>커널 모드(kernel mode)</strong> 로 격상시킨다.<br />
+커널 모드에서는 하드웨어를 자유롭게 접근할 수 있으며, 서비스를 완료하면 <strong>return-from-trap</strong> 특수 명령어로 제어권을 다시 사용자에게 넘긴다.</p>
+
+<h4 id="멀티프로그래밍-시대">멀티프로그래밍 시대</h4>
+
+<p>컴퓨터 자원을 효율적으로 활용하기 위해 멀티프로그래밍(multiprogramming) 기법이 대중화 되었다.<br />
+멀티프로그래밍을 활용하면서 메모리 보호 문제(memory protection)가 발생하게 됐고 병행성(concurrency) 문제에 대한 이해가 중요하다.</p>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Study]+%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C+%EC%95%84%EC%A3%BC+%EC%89%AC%EC%9A%B4+%EC%84%B8%EA%B0%80%25E...%20-%20https://devyonghee.github.io/study/2022/11/07/operation-system-three-easy-pieces-1-2/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2022/11/07/operation-system-three-easy-pieces-1-2/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

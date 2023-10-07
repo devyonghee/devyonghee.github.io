@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter17. 리액티브 프로그래밍</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter17. 리액티브 프로그래밍">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/09/08/modern-java-in-action-chapter17/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/09/08/modern-java-in-action-chapter17/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter17. 리액티브 프로그래밍">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter17. 리액티브 프로그래밍</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 8, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      10 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 17장에서는 리액티브 프로그래밍에 대해 소개하고 있다.<br />
+리액티브 프로그래밍이란 무엇인지 어떻게 동작하는지 자세히 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="171-리액티브-매니패스토">17.1 리액티브 매니패스토</h2>
+
+<p>리액티브 애플리케이션과 시스템 개발의 핵심 원칙</p>
+
+<ul>
+  <li>반응성(responsive)
+    <ul>
+      <li>리액티브 시스템은 빠르고 일정하고 예상할 수 있는 반응 시간을 제공하여 사용자 기대치를 가질 수 있음</li>
+    </ul>
+  </li>
+  <li>회복성(resilient)
+    <ul>
+      <li>컴포넌트 실행 복제, 여러 컴포넌트의 시간과 공간 분리, 비동기적으로 작업을 다른 컴포넌트에 위임 등 회복성을 위한 다양한 기법 제공</li>
+    </ul>
+  </li>
+  <li>탄력성(elastic)
+    <ul>
+      <li>무서운 작업 부하가 발생되면 자동으로 관련 컴포넌트에 할당된 자원 수를 늘림</li>
+    </ul>
+  </li>
+  <li>메시지 주도(Message-driven)
+    <ul>
+      <li>비동기 메시지를 전달해 컴포넌트 끼리의 통신이 이루어짐(컴포넌트의 경계가 명확해져 회복성과 탄력성 지원)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="애플리케이션-수준의-리액티브">애플리케이션 수준의 리액티브</h3>
+
+<p>리액티브 프로그래밍은 비동기로 작업을 수행하는 것이 주요 기능이다.<br />
+리액티브 프레임워크와 라이브러리는 스레드를 퓨처, 액터, 콜백을 발생시키는 이벤트 루프 등과 처리할 이벤트를 변환하고 관리하여 CPU 사용률을 극대화할 수 있다.</p>
+
+<p>이 기술을 이용하여 동기, 비동기 애플리케이션 구현의 추상 수준을 높일 수 있다.<br />
+그래서 멀티스레드 문제를 직접 처리하지 않아도 되기 때문에 비즈니스 요구사항에 집중할 수 있다.</p>
+
+<h3 id="시스템-수준의-리액티브">시스템 수준의 리액티브</h3>
+
+<p>리액티브 시스템은 일관적인, 회복할 수 있는 플랫폼을 구성할 수 있게 도와주는 소프트웨어 아키텍처다.</p>
+
+<ul>
+  <li>리액티브 애플리케이션
+    <ul>
+      <li>비교적 짧은 시간 동안 유지되는 데이터 스트림에 기반한 연산 수행</li>
+      <li>이벤트 주도</li>
+    </ul>
+  </li>
+  <li>리액티브 시스템
+    <ul>
+      <li>애플리케이션을 조립하고 상호소통 조절</li>
+      <li>메시지 주도
+        <ul>
+          <li>회복성: 컴포넌트에서 장애를 고립시켜 제공 (결함 허용 능력, fault-tolerance)</li>
+          <li>탄력성: 위치 투명성, 컴포넌트가 수신자의 위치에 상관없이 다른 서비스와 통신 가능 (확장 가능)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="172-리액티브-스트림과-플로-api">17.2 리액티브 스트림과 플로 API</h2>
+
+<p>리액티브 프로그래밍은 리액티브 스트림을 사용하는 프로그래밍이다.<br />
+리액티브 스트림은 블록하지 않는 역압력을 전제하여 비동기 데이터를 순서대로 처리하는 표준 기술이다.</p>
+
+<p>역압력은 이벤트가 제공되는 속도보다 느린 속도로 소비되면서 문제가 발생되지 않도록 보장하는 장치다.<br />
+부하가 발생한 컴포넌트는 다음 정보들을 업스트림 발행자에게 알릴 수 있어야 한다.</p>
+<ul>
+  <li>이벤트 발생 속도를 늦추라는 알림</li>
+  <li>수신할 수 있는 이벤트의 양</li>
+  <li>기존 데이터를 처리하는데 걸리는 시간</li>
+</ul>
+
+<h3 id="flow-클래스-소개">Flow 클래스 소개</h3>
+
+<p><a href="https://www.reactive-streams.org">리액티브 스트림 프로젝트</a>에서는 리액티브 스트림이 제공해야 하는 최소 기능 집합을 네 개의 관련 인터페이스로 정의했다.</p>
+
+<ul>
+  <li>Publisher
+    <ul>
+      <li>항목 발행(이벤트 제공)</li>
+    </ul>
+  </li>
+  <li>Subscriber
+    <ul>
+      <li>발행된 항목을 한 개씩 또는 여러 항목 소비</li>
+      <li>자신을 이벤트의 리스너로 등록 가능</li>
+    </ul>
+  </li>
+  <li>Subscription
+    <ul>
+      <li>소비되는 과정을 관리 (Publisher 와 Subscriber 사이의 제어 흐름, 역압력 관리)</li>
+    </ul>
+  </li>
+  <li>Processor
+    <ul>
+      <li>Publisher, Subscriber 상속</li>
+      <li>Publisher 를 구독하고 수신한 데이터를 가공해 다시 제공</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Subscription</span> <span class="n">s</span><span class="o">);</span>  <span class="c1">// 처음 호출</span>
+    <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>                  <span class="c1">// 여러번 호출 가능</span>
+    <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">);</span>         <span class="c1">// 장애 발생된 경우 호출</span>
+    <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>                 <span class="c1">// 더 이상의 데이터가 없고 종료됨</span>
+<span class="o">}</span>
+<span class="c1">//  이벤트들은 다음 순서대로 메소드를 호출하여 발행되어야 한다.</span>
+<span class="c1">//  onSubscribe onNext* (onError | onComplete)?</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>              <span class="c1">// 정의된 개수의 이하의 요소만 전달 가능  </span>
+    <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>                     <span class="c1">// 종료 시그널</span>
+<span class="o">}</span> 
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/flow-api-sequence.png">
+        <img src="/images/book/modern-java-in-action/flow-api-sequence.png" data-rjs="/images/book/modern-java-in-action/flow-api-sequence.png" class="zooming" alt="리액티브 애플리케이션의 생명주기" />
+    </a>
+    
+    <figcaption>
+        리액티브 애플리케이션의 생명주기
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<h3 id="첫번째-리액티브-애플리케이션-만들기">첫번째 리액티브 애플리케이션 만들기</h3>
+
+<p>리액티브 애플리케이션을 개발하면서 네 개의 인터페이스가 어떻게 동작하는지 확인한다.</p>
+
+<ul>
+  <li>TempInfo: 원격 온도계를 흉내</li>
+  <li>TempSubscriber: 레포트를 관찰하면서 각 도시에 설치된 센서에서 보고한 온도 스트림 출력</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">celsiusTemperatures</span><span class="o">(</span><span class="s">"new York"</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="k">new</span> <span class="nc">TempSubscriber</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Publisher</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="nf">celsiusTemperatures</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">subscriber</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">TempProcessor</span> <span class="n">processor</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TempProcessor</span><span class="o">();</span>
+            <span class="n">processor</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">subscriber</span><span class="o">);</span>
+            <span class="n">processor</span><span class="o">.</span><span class="na">onSubscribe</span><span class="o">(</span><span class="k">new</span> <span class="nc">TempSubscription</span><span class="o">(</span><span class="n">processor</span><span class="o">,</span> <span class="n">town</span><span class="o">));</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// 보고된 온도를 전달</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TempInfo</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Random</span> <span class="n">random</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Random</span><span class="o">();</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">town</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">temp</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">TempInfo</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">,</span> <span class="kt">int</span> <span class="n">temp</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">town</span> <span class="o">=</span> <span class="n">town</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">TempInfo</span> <span class="nf">fetch</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 10분의 1확률로 온도 조회 실패</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">random</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"error"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">TempInfo</span><span class="o">(</span><span class="n">town</span><span class="o">,</span> <span class="n">random</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">100</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">town</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">town</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">temp</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">temp</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">" : "</span><span class="o">,</span> <span class="n">town</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">temp</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="c1">// 전달한 온도를 출력하고 새 레포트 요청</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TempSubscriber</span> <span class="kd">implements</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Subscriber</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Subscription</span> <span class="n">subscription</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Flow</span><span class="o">.</span><span class="na">Subscription</span> <span class="n">subscription</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">subscription</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">;</span>
+        <span class="n">subscription</span><span class="o">.</span><span class="na">request</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="nc">TempInfo</span> <span class="n">tempInfo</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">tempInfo</span><span class="o">);</span>
+        <span class="n">subscription</span><span class="o">.</span><span class="na">request</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Done"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+
+<span class="c1">// 도시의 온도 전송</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TempSubscription</span> <span class="kd">implements</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Subscription</span> <span class="o">{</span>
+
+    <span class="c1">// 재귀호출을 하기 때문에 StackOverflowError 방지를 위해 사용</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">ExecutorService</span> <span class="n">executor</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">town</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">TempSubscription</span><span class="o">(</span><span class="nc">Flow</span><span class="o">.</span><span class="na">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">,</span> <span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">subscriber</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">town</span> <span class="o">=</span> <span class="n">town</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">executor</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">subscriber</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="nc">TempInfo</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">town</span><span class="o">));</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">subscriber</span><span class="o">.</span><span class="na">onError</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">cancel</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">subscriber</span><span class="o">.</span><span class="na">onComplete</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+
+<span class="c1">// 화씨로 제공된 데이터를 섭씨로 변환해 다시 방출</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TempProcessor</span> <span class="kd">implements</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Processor</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">,</span> <span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">Flow</span><span class="o">.</span><span class="na">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Flow</span><span class="o">.</span><span class="na">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">subscriber</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="nc">TempInfo</span> <span class="n">temp</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">subscriber</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="k">new</span> <span class="nc">TempInfo</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">town</span><span class="o">(),</span>
+                <span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">temp</span><span class="o">()</span> <span class="o">-</span> <span class="mi">32</span><span class="o">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">9</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Flow</span><span class="o">.</span><span class="na">Subscription</span> <span class="n">subscription</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">subscriber</span><span class="o">.</span><span class="na">onSubscribe</span><span class="o">(</span><span class="n">subscription</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">subscriber</span><span class="o">.</span><span class="na">onError</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">subscriber</span><span class="o">.</span><span class="na">onComplete</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="173-리액티브-라이브러리-rxjava-사용하기">17.3 리액티브 라이브러리 RxJava 사용하기</h3>
+
+<p>RxJava 는 넷플릭스의 Reactive Extensions(Rx) 프로젝트의 일부로 시작됐다.
+RxJava 에는 이벤트 스트림을 두 가지 구현 클래스로 제공한다.</p>
+
+<ul>
+  <li>io.reactivex.Flowable
+    <ul>
+      <li>리액티브 당김 기반 역압력 기능(request 메서드) 포함</li>
+    </ul>
+  </li>
+  <li>io.reactivex.Observable
+    <ul>
+      <li>역압력을 지원하지 않음</li>
+      <li>단순한 프로그램, 마우스 움직임 같은 사용자 인터페이스 이벤트에 적합</li>
+    </ul>
+  </li>
+</ul>
+
+<p>RxJava 의 리액티브 스트림의 구현을 이용하여 온도 보고 시스템을 정의한다.</p>
+
+<h3 id="observable-만들고-사용하기">Observable 만들고 사용하기</h3>
+
+<p>팩토리 메서드를 통해 간단하게 <code class="language-plaintext highlighter-rouge">Observable</code> 을 만들 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">strings</span> <span class="o">=</span> <span class="nc">Observable</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"first"</span><span class="o">,</span> <span class="s">"second"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Observable</code> 구독자는 <code class="language-plaintext highlighter-rouge">onNext("first")</code>, <code class="language-plaintext highlighter-rouge">onNext("second")</code>, <code class="language-plaintext highlighter-rouge">onComplete()</code> 순서대로 메시지를 받는다.</p>
+
+<p>실시간으로 상호작용하면서 지정된 속도로 이벤트를 방출하기 위해서는 다음과 같이 사용한다.<br />
+0에서 시작해 1초간격으로 long 형식의 값을 무한으로 증가시키며 값을 방출한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">onePerSec</span> <span class="o">=</span> <span class="nc">Observable</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>RxJava에서 <code class="language-plaintext highlighter-rouge">Observable</code> 은 <code class="language-plaintext highlighter-rouge">Publisher</code> 역할을 하며, <code class="language-plaintext highlighter-rouge">Observer</code>는 <code class="language-plaintext highlighter-rouge">Subscriber</code> 인터페이스 역할을 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Observer</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Disposable</span> <span class="n">d</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">// 데몬 스레드에서 실행되기 때문에 실행 코드가 없으면 바로 종료됨</span>
+<span class="n">onePerSec</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">TempInfo</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">"New York"</span><span class="o">)));</span>
+<span class="c1">// 현재 스레드에서 콜백을 호출</span>
+<span class="n">onePerSec</span><span class="o">.</span><span class="na">blockingSubscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">TempInfo</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">"New York"</span><span class="o">)));</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Observable</code> 는 <code class="language-plaintext highlighter-rouge">onError</code> 같은 에러 관리 기능이 없으므로 예외 처리를 따로 추가한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="n">observable</span> <span class="o">=</span> <span class="n">getTemperature</span><span class="o">(</span><span class="s">"New York"</span><span class="o">);</span>
+        <span class="n">observable</span><span class="o">.</span><span class="na">blockingSubscribe</span><span class="o">(</span><span class="k">new</span> <span class="nc">TempObserver</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="nf">getTemperature</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Observable</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">emitter</span> <span class="o">-&gt;</span>
+            <span class="nc">Observable</span><span class="o">.</span><span class="na">interval</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+                      <span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                          <span class="c1">// 옵저버가 폐기되지 않았으면 작업 수행</span>
+                          <span class="k">if</span><span class="o">(!</span><span class="n">emitter</span><span class="o">.</span><span class="na">isDisposed</span><span class="o">())</span> <span class="o">{</span>
+                              <span class="c1">// 온도 5번 보고 했으면 완료하고 스트림 종료</span>
+                              <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="o">)</span> <span class="o">{</span>
+                                  <span class="n">emitter</span><span class="o">.</span><span class="na">onComplete</span><span class="o">();</span>
+                              <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                                  <span class="k">try</span> <span class="o">{</span>
+                                      <span class="n">emitter</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="nc">TempInfo</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">town</span><span class="o">));</span>
+                                  <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                                      <span class="c1">// 에러가 발생하면 Observer에 알림</span>
+                                      <span class="n">emitter</span><span class="o">.</span><span class="na">onError</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+                                  <span class="o">}</span>
+                              <span class="o">}</span>
+                          <span class="o">}</span>
+                      <span class="o">});</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TempObserver</span> <span class="kd">implements</span> <span class="nc">Observer</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Done!"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Got problem: "</span> <span class="o">+</span> <span class="n">throwable</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Disposable</span> <span class="n">disposable</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="nc">TempInfo</span> <span class="n">tempInfo</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">tempInfo</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// RxJava 의 기본 Emitter </span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Emitter</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwble</span> <span class="n">t</span><span class="o">);</span>
+    <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="observable-을-변환하고-합치기">Observable 을 변환하고 합치기</h3>
+
+<p>위에서 <code class="language-plaintext highlighter-rouge">Processor</code> 를 이용하여 화씨를 섭씨로 변경했다.<br />
+RxJava 라이브러리의 함수 <code class="language-plaintext highlighter-rouge">map</code>(요소 변환), <code class="language-plaintext highlighter-rouge">merge</code>(두 개 이상의 방출한 이벤트를 합침), <code class="language-plaintext highlighter-rouge">filter</code>(조건) 을 이용하여 기능을 추가한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="nf">getCelsiusTemperature</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">getTemperature</span><span class="o">(</span><span class="n">town</span><span class="o">)</span>
+               <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">temp</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">TempInfo</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">town</span><span class="o">(),</span> <span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">temp</span><span class="o">()</span> <span class="o">-</span> <span class="mi">32</span><span class="o">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">9</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="nf">getNegativeTemperature</span><span class="o">(</span><span class="nc">String</span> <span class="n">town</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">getCelsiusTemperature</span><span class="o">(</span><span class="n">town</span><span class="o">)</span>
+               <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">temp</span> <span class="o">-&gt;</span> <span class="n">temp</span><span class="o">.</span><span class="na">temp</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Observable</span><span class="o">&lt;</span><span class="nc">TempInfo</span><span class="o">&gt;</span> <span class="nf">getCelsiusTemperatures</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">towns</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Observable</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">towns</span><span class="o">)</span>
+                                  <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">TempObservable:</span><span class="o">:</span><span class="n">getCelsiusTemperature</span><span class="o">)</span>
+                                  <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">toList</span><span class="o">()));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter17.+%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%25...%20-%20https://devyonghee.github.io/book/2022/09/08/modern-java-in-action-chapter17/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/09/08/modern-java-in-action-chapter17/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

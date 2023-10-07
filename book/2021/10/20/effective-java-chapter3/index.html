@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 이펙티브 자바 Chapter3. 모든 객체의 공통 메서드</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="이펙티브 자바 Chapter3. 모든 객체의 공통 메서드">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2021/10/20/effective-java-chapter3/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2021/10/20/effective-java-chapter3/">
+  <meta name="twitter:title" content="이펙티브 자바 Chapter3. 모든 객체의 공통 메서드">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>이펙티브 자바 Chapter3. 모든 객체의 공통 메서드</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    October 20, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/effective-java" title="See all posts with tag 'effective-java'">effective-java</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>이펙티브 자바 3장에서는 <code class="language-plaintext highlighter-rouge">Object</code> 메서드들 정의에 대해 소개하고 있다. <br />
+모든 클래스는 일반 규약에 맞춰 재정의 해야하는데 어떻게 재정의 해야하는지 알아본다.</p>
+
+<!--more-->
+
+<h2 id="아이템10-equals는-일반-규약을-지켜-재정의하라">아이템10. <code class="language-plaintext highlighter-rouge">equals</code>는 일반 규약을 지켜 재정의하라</h2>
+
+<p><code class="language-plaintext highlighter-rouge">equals</code>는 논리적 동치성 검사가 필요하지만 상위 클래스가 재정의하지 않았을 경우 재정의  <br />
+구글의 <code class="language-plaintext highlighter-rouge">AutoValue</code> or IDE 기능 활용</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">equals</code> 구현 방법
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">==</code> 연산자로 자기 자신인지 확인 (성능 최적화용)</li>
+      <li><code class="language-plaintext highlighter-rouge">instanceof</code> 연산자로 타입 확인 (<code class="language-plaintext highlighter-rouge">null</code>도 체크됨)</li>
+      <li>올바른 타입으로 형변환</li>
+      <li>대응되는 핵심 필드 비교</li>
+    </ol>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">equals</code> 규약 (어기면 다른 객체에서의 동작을 예상하지 못함)
+    <ul>
+      <li>반사성 : 객체는 자기 자신과 같음</li>
+      <li>대칭성 : 두 객체가 서로에 대한 동치 여부가 같음</li>
+      <li>추이성 : <code class="language-plaintext highlighter-rouge">x.equals(y)</code>, <code class="language-plaintext highlighter-rouge">y.equals(z)</code> 라면 <code class="language-plaintext highlighter-rouge">x.equals(z)</code></li>
+      <li>일관성 : 두 불변 객체는 같으면 영원히 같음</li>
+      <li>null-아님 : 모든 객체는 <code class="language-plaintext highlighter-rouge">null</code>과 같지 않음</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">equals</code> 재정의가 필요없는 경우
+    <ul>
+      <li>각 인스턴스가 모두 고유한 경우</li>
+      <li>논리적 동치성이 필요 없는 경우</li>
+      <li>상위 클래스에서 재정의했는데 하위에서도 맞는 경우</li>
+      <li>클래스가 <code class="language-plaintext highlighter-rouge">private</code>, <code class="language-plaintext highlighter-rouge">package-private</code>면서 <code class="language-plaintext highlighter-rouge">equals</code> 호출이 필요없는 경우</li>
+      <li>값이 같은 인스턴스가 2개 이상 만들어지지 않을 경우 (ex. Enum)</li>
+    </ul>
+  </li>
+  <li>주의 사항
+    <ul>
+      <li>기본 타입 <code class="language-plaintext highlighter-rouge">==</code>, 참조 타입 <code class="language-plaintext highlighter-rouge">equals</code>, <code class="language-plaintext highlighter-rouge">float</code>은 <code class="language-plaintext highlighter-rouge">Float.compare</code>, <code class="language-plaintext highlighter-rouge">double</code>은 <code class="language-plaintext highlighter-rouge">Double.compare</code> 으로 필드 비교</li>
+      <li>성능을 위해 다를 가능성이 크거나 <strong>비용이 저렴한</strong> 필드 우선 비교</li>
+      <li>복잡한 필드를 가진 클래스의 경우 필드의 <strong>표준형</strong>을 저장</li>
+      <li><code class="language-plaintext highlighter-rouge">equals</code> 재정의할 때, 반드시 <code class="language-plaintext highlighter-rouge">hashCode</code>도 재정의</li>
+      <li>반드시 <code class="language-plaintext highlighter-rouge">Object</code> 타입을 매개변수로 받아야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템11-equals를-재정의하려거든-hashcode도-재정의하라">아이템11. <code class="language-plaintext highlighter-rouge">equals</code>를 재정의하려거든 <code class="language-plaintext highlighter-rouge">hashCode</code>도 재정의하라</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">hashCode</code> 규약
+    <ul>
+      <li>정보가 변경되지 않는 한, 항상 일관된 값 반환</li>
+      <li>두 객체가 <code class="language-plaintext highlighter-rouge">equals</code>로 같다면, <code class="language-plaintext highlighter-rouge">hashCode</code>도 같은 값 반환 (가장 중요)</li>
+      <li><code class="language-plaintext highlighter-rouge">equals</code>로 다르다고 해도 <code class="language-plaintext highlighter-rouge">hashCode</code>도 같을 필요는 없음</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">hashCode</code> 작성 요령
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">int</code>변수 <code class="language-plaintext highlighter-rouge">result</code>로 선언하고 첫 비교 필드의 해시코드로 초기화</li>
+      <li>기본필드 <code class="language-plaintext highlighter-rouge">Type.hashCode(f)</code>, 참조 타입 <code class="language-plaintext highlighter-rouge">hashCode</code> 재귀 호출, <code class="language-plaintext highlighter-rouge">null</code>은 0, 배열은 <code class="language-plaintext highlighter-rouge">Arrays.hashCode</code>으로 해시코드 계산</li>
+      <li>계산된 해시코드 <code class="language-plaintext highlighter-rouge">result</code> 할당</li>
+      <li><code class="language-plaintext highlighter-rouge">result</code> 반환</li>
+    </ol>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">hashCode</code> 주의
+    <ul>
+      <li>핵심필드를 생략하면 안됨</li>
+      <li>생성 규칙을 클라이언트가 의지하지 않도록 자세히 공표하면 안됨</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템12-tostring을-항상-재정의하라">아이템12. <code class="language-plaintext highlighter-rouge">toString</code>을 항상 재정의하라</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Obejct</code>의 기본 <code class="language-plaintext highlighter-rouge">toString</code>은 아무것도 알려주지 않는다.<br />
+재정의하여 디버깅하기 쉽도록 한다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">toString</code> 권장 사항
+    <ul>
+      <li>간결하고 사람이 읽기 쉬운 형태의 정보를 제공</li>
+      <li>객체의 모든 주요 정보 반환</li>
+      <li>반환 값의 포맷을 문서화할지 결정 (포맷이 정해지면 변경이 어려움)</li>
+      <li>포맷 명시하거나 안해거나 의도를 명확하게 표현</li>
+      <li><code class="language-plaintext highlighter-rouge">toString</code> 반환 값에 포함된 정보를 얻는 API 명시</li>
+      <li>하위 클래스들에 공유해야하는 문자열이 있다면 추상클래스도 재정의</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">toString</code> 재정의가 필요 없는 경우
+    <ul>
+      <li>정적 유틸리티 클래스</li>
+      <li>열거 타입</li>
+      <li>상위클래스에서 알맞게 재정의</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템13-clone-재정의는-주의해서-진행하라">아이템13. <code class="language-plaintext highlighter-rouge">clone</code> 재정의는 주의해서 진행하라</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">clone</code> 문제
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">clone</code> 메서드는 <code class="language-plaintext highlighter-rouge">super.clone</code> 호출하고 내부 객체 필드는 재귀적으로 호출(스택 오버플로 위험)</li>
+      <li><code class="language-plaintext highlighter-rouge">final</code> 한정자를 제거해야할 수 있음</li>
+      <li>적절한 동기화 처리 필요</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">clone</code> 대안
+    <ul>
+      <li>복사 생성자 -&gt; 변환 생성자(conversion constructor)</li>
+      <li>복사 팩터리 -&gt; 변환 팩터리(conversion factory)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-14-comparable을-구현할지-고려하라">아이템 14. <code class="language-plaintext highlighter-rouge">Comparable</code>을 구현할지 고려하라</h2>
+
+<p>순서가 명확한 값 클래스를 작성한다면 반드시 <code class="language-plaintext highlighter-rouge">Comparable</code> 구현</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">compareTo</code> 규약
+    <ul>
+      <li>두 객체를 바꿔 비교해도 예상한 결과가 나와야 함</li>
+      <li>추이성 → <code class="language-plaintext highlighter-rouge">x.compareTo(y) &gt; 0</code>, <code class="language-plaintext highlighter-rouge">y.compareTo(z) &gt; 0</code> 라면 <code class="language-plaintext highlighter-rouge">x.compareTo(z) &gt; 0</code></li>
+      <li>크기가 같은 객체들끼리 비교하면 항상 같아야 함</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">compareTo</code> 권장
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">&lt;</code>,<code class="language-plaintext highlighter-rouge">&gt;</code> 연산자 대신 기본 타입 클래스의 정적 <code class="language-plaintext highlighter-rouge">compare</code> 메서드 사용</li>
+      <li><code class="language-plaintext highlighter-rouge">Comparator</code> 인터페이스가 제공하는 메서드 사용</li>
+    </ul>
+  </li>
+</ul>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C+%EC%9E%90%EB%B0%94+Chapter3.+%EB%AA%A8%EB%93%A0+%EA%B0%9D%EC%B2%B4%EC%25...%20-%20https://devyonghee.github.io/book/2021/10/20/effective-java-chapter3/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2021/10/20/effective-java-chapter3/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

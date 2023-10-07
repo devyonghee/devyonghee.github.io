@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 이펙티브 자바 Chapter4. 클래스와 인터페이스</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="이펙티브 자바 Chapter4. 클래스와 인터페이스">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2021/10/21/effective-java-chapter4/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2021/10/21/effective-java-chapter4/">
+  <meta name="twitter:title" content="이펙티브 자바 Chapter4. 클래스와 인터페이스">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>이펙티브 자바 Chapter4. 클래스와 인터페이스</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    October 21, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      5 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/effective-java" title="See all posts with tag 'effective-java'">effective-java</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>이펙티브 자바 4장에서는 클래스와 인터페이스 설계 요소에 대해 설명하고 있다. <br />
+견고하고 유연한 코드를 위해 자세하게 알아보도록 한다.</p>
+
+<!--more-->
+
+<h2 id="아이템15-클래스와-멤버의-접근-권한을-최소화하라">아이템15. 클래스와 멤버의 접근 권한을 최소화하라</h2>
+
+<p>모든 클래스와 멤버의 접근성을 가능한한 좁혀야 함 (정보 은닉 핵심)<br />
+외부에서 쓸 이유가 없다면 ￿<code class="language-plaintext highlighter-rouge">package-private</code> 선언</p>
+
+<ul>
+  <li>권장 사항
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">public</code> 클래스의 어떠한 필드도 <code class="language-plaintext highlighter-rouge">public</code> 이면 안됨 (가변 필드를 가진 클래스는 스레드 안전하지 않음)</li>
+      <li><code class="language-plaintext highlighter-rouge">public static final</code> 배열 필드나 이를 반환하는 메서드 제공하면 안됨 (불변 리스트 or 복사본 반환 사용)</li>
+    </ul>
+  </li>
+  <li><strong>정보 은닉</strong> 장점
+    <ul>
+      <li>여러 컴포넌트 병렬 개발로 속도 향상</li>
+      <li>컴포넌트 교체 부담 감소, 빠른 디버깅으로 관리 비용 하락</li>
+      <li>다른 컴포넌트 영향없이 해당 컴포넌트만 최적화 가능</li>
+      <li>새로운 환경에서도 유용하게 쓰일 수 있어 재상용성 증가</li>
+      <li>개변 컴포넌트 동작 검증 가능하여 큰 시스템 제작 난이도 감소</li>
+    </ul>
+  </li>
+  <li>접근 범위
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">private</code> : 멤버를 선언한 톱레벨 클래스에서만 접근</li>
+      <li><code class="language-plaintext highlighter-rouge">package-private</code> : 소속된 패키지 안의 모든 클래스에서 접근 (명시하지 않으면 적)</li>
+      <li><code class="language-plaintext highlighter-rouge">protected</code> : <code class="language-plaintext highlighter-rouge">package-private</code> 포함, 하위 클래스에서도 접근</li>
+      <li><code class="language-plaintext highlighter-rouge">private</code> : 모든 곳에서 접근</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템16-public클래스에서는-public필드가-아닌-접근자-메서드를-사용하라">아이템16. <code class="language-plaintext highlighter-rouge">public</code>클래스에서는 <code class="language-plaintext highlighter-rouge">public</code>필드가 아닌 접근자 메서드를 사용하라</h2>
+
+<p>패키지 바깥에서 접근할 수 있으면 접근자를 제공
+<code class="language-plaintext highlighter-rouge">package-private</code>, <code class="language-plaintext highlighter-rouge">private</code> 클래스라면 데이터 필드 노출해도 문제 없음</p>
+
+<p><br /></p>
+
+<h2 id="아이템17-변경-가능성을-최소화하라">아이템17. 변경 가능성을 최소화하라</h2>
+
+<p><strong>클래스</strong>는 필요한 경우가 아니라면 <strong>불변</strong> 
+불변으로 만들 수 없다면 변경 부분을 <strong>최소한</strong>으로</p>
+
+<ul>
+  <li>불변 클래스 규칙
+    <ul>
+      <li>객체 상태 변경 메서드 제공금지</li>
+      <li>클래스 확장 금지(<code class="language-plaintext highlighter-rouge">final</code> 클래스 선언)</li>
+      <li>모든 필드 <code class="language-plaintext highlighter-rouge">final</code> 선언</li>
+      <li>모든 필드 <code class="language-plaintext highlighter-rouge">private</code> 선언</li>
+      <li>내부 가변 컴포넌트에 접근 방지</li>
+    </ul>
+  </li>
+  <li>불변 객체 장점
+    <ul>
+      <li>객체가 단순</li>
+      <li>스레드 안전, 동기화 필요 없음</li>
+      <li>불변 객체끼리 내부데이터 공유 가능</li>
+      <li>실패 원자성(메서드 예외 발생해도 객체는 유효) 제공</li>
+    </ul>
+  </li>
+  <li>불변 객체는 값이 다르면 독립 객체 생성해야 한다는 단점 존재 (중간 단계에서 쓰고 버려지는 객체 발생)
+    <ul>
+      <li>다단계 연산들을 예측하여 기본 기능 제공</li>
+      <li>가변 동반 클래스를 <code class="language-plaintext highlighter-rouge">public</code>으로 제공(ex. <code class="language-plaintext highlighter-rouge">StringBuilder</code>)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템18-상속보다는-컴포지션을-사용하라">아이템18. 상속보다는 컴포지션을 사용하라</h2>
+
+<blockquote>
+  <p>이번 아이템은 인터페이스 상속과 무관</p>
+</blockquote>
+
+<p>확장 대신 <code class="language-plaintext highlighter-rouge">private</code> 필드로 <strong>인스턴스 참조</strong> 사용(composition; 컴포지션)<br />
+기존 클래스의 대응 메서드를 호출하는 방식을 <strong>forwarding</strong> 방식이라고 하며, 새 클래스의 메서드는 <strong>forwarding method</strong></p>
+
+<p><strong>상속</strong>은 정말 <strong>하위 타입인 상황</strong>에서만 사용</p>
+
+<ul>
+  <li>상속 단점
+    <ul>
+      <li>캡슐화가 깨짐</li>
+      <li>상위 클래스 메서드 다시 구현이 어렵고, 오류가 나거나 성능이 떨어질 수 있음</li>
+      <li>하위 클래스에서 콜렉션에 허용되지 않는 원소를 추가</li>
+      <li>하위 클래스 반환타입이 다르면 컴파일 불가능</li>
+      <li>불변식을 해칠 수 있음</li>
+    </ul>
+  </li>
+  <li>컴포지션
+    <ul>
+      <li>인터페이스 활용으로 설계가 견고하고 유연</li>
+      <li>래퍼클래스 : 다른 인스턴스를 감싸고 있음</li>
+      <li>데코레이터 패턴 : 기능을 덧씌움</li>
+      <li>컴포지션과 전달의 조합은 넓은 의미로 위임</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="아이템-19-상속을-고려해-설계하고-문서화하라-그러지-않았다면-상속을-금지하라">아이템 19. 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라</h2>
+
+<p>내부적으로 어떻게 이용되고 있는지 문서화(Implementation Requirements)가 되어 있어야 함<br />
+Implementation Requirements 절은 <code class="language-plaintext highlighter-rouge">@implSpec</code> 태그를 붙이면 자바독 도구가 생성</p>
+
+<ul>
+  <li>효율적인 하위 클래스를 만들려면 내부동작 과정 중 훅을 선별하여 <code class="language-plaintext highlighter-rouge">protected</code> 메서드 형태로 공개</li>
+  <li>상속용 클래스의 생성자는 재정의 가능 메서드를 호출하면 안됨 (초기화 전에 메서드가 호출될 수 있음)</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">clone</code>, <code class="language-plaintext highlighter-rouge">readObject</code> 메서드는 생성자와 비슷한 역할, 재정의 가능 메서드를 호출하면 안됨</p>
+  </li>
+  <li>상속 금지
+    <ul>
+      <li>클래스를 <code class="language-plaintext highlighter-rouge">final</code> 선언</li>
+      <li>모든 생성자를 <code class="language-plaintext highlighter-rouge">private</code> or <code class="language-plaintext highlighter-rouge">package-private</code> 선언, 정적 팩토리 메서드 이용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-20-추상-클래스보다는-인터페이스를-우선하라">아이템 20. 추상 클래스보다는 인터페이스를 우선하라</h2>
+
+<blockquote>
+  <p>믹스인: 주된 타입 이외에 특정 선택정 행위를 제공 (ex. Comparable)</p>
+</blockquote>
+
+<ul>
+  <li>자바는 단일 상속만 지원되므로 추상 클래스 방식은 큰 제약</li>
+  <li>인터페이스는 기존 클래스에도 쉽게 구현 가능</li>
+  <li>인터페이스는 믹스인(mixin) 정의에 안성맞춤</li>
+  <li>인터페이스는 계층구조가 없는 타입 프레임워크(ex. SingerSongWriter) 만들 수 있음 (클래스로 만든다면 조합 폭발 발생)</li>
+  <li>래퍼 클래스를 이용하면 안전하게 기능 향상 가능 (추상 클래스에서 기능 추가하려면 상속뿐)</li>
+  <li>디폴트 메서드를 제공한다면 <code class="language-plaintext highlighter-rouge">@implSpec</code> 태그로 문서화</li>
+  <li>인터페이스와 추상 골격 구현(skeletal implementation)으로 두 가지 장점을 모두 취할 수도 있음 (ex. <code class="language-plaintext highlighter-rouge">AbstractCollection</code>, <code class="language-plaintext highlighter-rouge">AbstractSet</code>…)
+    <ul>
+      <li>관례상 골격 구현 클래스의 이름은 <code class="language-plaintext highlighter-rouge">Abstract{인터페이스 명}</code></li>
+    </ul>
+  </li>
+  <li>골격 구현 대신 단순 구현(simple implementation)도 가능 (골격 구현과 다르게 추상클래스가 아님 ex.<code class="language-plaintext highlighter-rouge">SimpleEntry</code>)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-21-인터페이스는-구현하는-쪽을-생각해-설계하라">아이템 21. 인터페이스는 구현하는 쪽을 생각해 설계하라</h2>
+
+<p>디폴트 메서드로 새 메서드를 추가하는 일은 필요한 경우가 아니라면 피해야 함<br />
+새로운 인터페이스 생성을 추천</p>
+
+<ul>
+  <li>모든 상황에서 불변식을 해치지 않고 디폴트 메서드 작성은 쉽지 않음 (ex. 멀티 스레드 환경)
+    <ul>
+      <li>디폴트 메서드로 런타임 에러 발생 가능, 충돌 우려</li>
+      <li>인터페이스 설계에는 세심한 주의</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-22-인터페이스는-타입을-정의하는-용도로만-사용하라">아이템 22. 인터페이스는 타입을 정의하는 용도로만 사용하라</h2>
+
+<ul>
+  <li>인터페이스는 구현한 클래스의 타입 역할로만 사용해야 함
+    <ul>
+      <li>잘못된 예: 상수 인터페이스 (메서드 없이 상수만 선언, ex. <code class="language-plaintext highlighter-rouge">ObjectStreamConstants</code>)</li>
+    </ul>
+  </li>
+  <li>상수 공개 방법
+    <ul>
+      <li>연관된 클래스나 인터페이스 자체에 추가 (ex. <code class="language-plaintext highlighter-rouge">Integer.MIN_VALUE</code>, <code class="language-plaintext highlighter-rouge">Double.MAX_VALUE</code>)</li>
+      <li>열거 타입</li>
+      <li>인스턴스화가 불가능한 유틸리티 클래스</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-23-태그-달린-클래스보다는-클래스-계층구조를-활용하라">아이템 23. 태그 달린 클래스보다는 클래스 계층구조를 활용하라</h2>
+
+<ul>
+  <li>태그 달린 클래스 단점
+    <ul>
+      <li><strong>장황</strong> : 쓸 데 없이 비교하는 코드가 많음</li>
+      <li><strong>오류</strong> : 엉뚱한 필드로 초기화하면 런타임 중 에러</li>
+      <li><strong>비효율</strong> : 새로운 의미를 추가할 때마다 처리 코드 필요, 타입만으로 현재의 의미 파악이 어려움</li>
+    </ul>
+  </li>
+  <li>클래스 계층 구조 변경 방법
+    <ol>
+      <li>계층구조의 루트가 될 추상 클래스 정의</li>
+      <li>태그에 따라 동작이 달라지는 메서드들을 추상 메서드로 선언</li>
+      <li>동작이 일정한 메서드들과 공통 데이터 필드를 루트 클래스에 추가</li>
+      <li>루트 클래스를 확장한 구체 클래스를 의미별로 정의</li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-24-멤버-클래스는-되도록-static으로-만들라">아이템 24. 멤버 클래스는 되도록 <code class="language-plaintext highlighter-rouge">static</code>으로 만들라</h2>
+
+<blockquote>
+  <p>정적 멤버 클래스<br />
+다른 클래스 안에 선언되고 바깥 클래스의 <code class="language-plaintext highlighter-rouge">private</code> 멤버에 접근 가능. 이외에는 일반 클래스와 동일</p>
+</blockquote>
+
+<p>중첩 클래스의 인스턴스가 바깥 인스턴스와 <strong>독립적</strong>으로 존재할 수 있다면 정적 멤버 클래스이어야 함 (비정적 멤버 클래스를 생성하려면 바깥 인스턴스가 필요)
+중첩 클래스로는 <strong>정적 멤버 클래스</strong>, <strong>멤버 클래스</strong>, <strong>익명 클래스</strong>, <strong>지역 클래스</strong></p>
+
+<ul>
+  <li>비정적 멤버 클래스
+    <ul>
+      <li>인스턴스 안에 만들어져 메모리 공간 차지</li>
+      <li>생성 시간이 더 걸림</li>
+      <li>어댑터를 정의할 때 자주 사용 (ex. <code class="language-plaintext highlighter-rouge">ArrayList.Itr</code>)</li>
+      <li>가비지 컬렉터가 바깥 클래스의 인스턴스를 수거하지 못하는 메모리 누수 발생 가능</li>
+    </ul>
+  </li>
+  <li>정적 멤버 클래스
+    <ul>
+      <li>바깥 클래스가 표현하는 객체의 한 부분을 나타낼 때 사용</li>
+    </ul>
+  </li>
+  <li>익명 클래스
+    <ul>
+      <li>바깥 클래스의 멤버가 아님</li>
+      <li>어디서든 쓰이는 시점에 선언과 동시에 인스턴스 생성</li>
+      <li>비정적인 문맥에서만 바깥 클래스의 인스턴스 참조</li>
+      <li>정적 멤버 선언 불가</li>
+      <li><code class="language-plaintext highlighter-rouge">instanceof</code> 또는 클래스 이름이 필요한 작업 불가</li>
+      <li>여러 인터페이스 구현 및 구현과 동시에 상속이 불가</li>
+      <li>짧지 않으면 가독성 하락</li>
+      <li>정적 팩토리 메소드 구현이나 람다로 자주 사용</li>
+    </ul>
+  </li>
+  <li>지역 클래스
+    <ul>
+      <li>어디서든 선언 가능, 유효 범위가 지역변수와 동일</li>
+      <li>반복해서 사용 가능</li>
+      <li>정적 멤버 선언 불가</li>
+      <li>짧지 않으면 가독성 하락</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="아이템-25-톱레벨-클래스는-한-파일에-하나만-담으라">아이템 25. 톱레벨 클래스는 한 파일에 하나만 담으라</h2>
+
+<p>컴파일 순서에 따라 어느 것을 사용할지 달라질 수 있는 위험<br />
+→ 굳이 톱레벨 클래스를 한 파일에 담고싶다면 <strong>정적 멤버 클래스</strong> 사용</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C+%EC%9E%90%EB%B0%94+Chapter4.+%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80+%EC%25...%20-%20https://devyonghee.github.io/book/2021/10/21/effective-java-chapter4/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2021/10/21/effective-java-chapter4/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

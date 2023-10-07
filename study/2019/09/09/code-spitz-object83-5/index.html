@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | 코드 스피츠 Object83 5회차 정리</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="코드 스피츠 Object83 5회차 정리">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2019/09/09/code-spitz-object83-5/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2019/09/09/code-spitz-object83-5/">
+  <meta name="twitter:title" content="코드 스피츠 Object83 5회차 정리">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>코드 스피츠 Object83 5회차 정리</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 9, 2019
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      12 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/object" title="See all posts with tag 'object'">object</a>
+    
+      <a href="/tag/OOP" title="See all posts with tag 'OOP'">OOP</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>절차대로 프로그램을 쪼개거나 데이터를 기준으로 추상화를 하면 로직이 쉽게 오염될 수 있다.  <br />
+데이터가 없는 상태에서 객체 지향 추상화를 하고 type으로 구분한다.</p>
+
+<!--more-->
+
+<h2 id="분해">분해</h2>
+
+<p>프로그래밍적으로 독립된 부품들을 조립해서 만들어진 결과물을 <strong>composition</strong> 상태로 만들어졌다고 한다.
+<strong>composition</strong> 상태에서의 부품들은 변하지 않는 속성이 있어서 각자의 가치가 있다.
+하지만, <strong>assemble</strong> 상태에서의 부품들은 속성이 없기 때문에 조립한 결과에서만 가치가 생긴다.<br />
+소프트웨어가 격리, 모듈화가 잘되있다면 <strong>composition</strong> 이라고 하지만, 얽혀있는 상태라면 <strong>assemble</strong> 로 되어 있다고 한다.
+도메인을 파악하는 과정은 시간순으로 이뤄지기 때문에 잘 격리되지 않고 <strong>assemble</strong> 상태로 만들어지게 된다.</p>
+
+<p><strong>decomposition</strong> 을 통해서 <strong>composition</strong> 상태로 만들어 <strong>복잡성 폭발</strong>을 해결해야 한다.
+그래서 이번에는 복잡한 현실 세계를 어떻게 <strong>decomposition</strong> 할 것인가를 설명한다.</p>
+
+<p>책에서는 3가지 분해 방법이 나온다.</p>
+
+<h2 id="1-functional-decomposition-기능적으로-분해">1. Functional decomposition (기능적으로 분해)</h2>
+<blockquote>
+  <p>여기서의 <strong>Functional</strong> 은 수학적인 용어이기 때문에 기능적인이라는 뜻만이 아니라 함수를 이라고 해석해도 무방</p>
+</blockquote>
+
+<h3 id="flow-chart-기법">Flow chart 기법</h3>
+
+<p>하나의 <strong>flow</strong> 로 이루어졌다고 생각해서 프로그램을 쪼갤 수 있다고 생각하기 때문에 <strong>Function decomposition</strong> 이 일어난다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition1.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition1.jpg" data-rjs="/images/study/code-spitz/functional-decomposition1.jpg" class="zooming" alt="functional-decomposition1" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition1
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>주황색 상태</strong>를 처리하기 위한 <strong>flow</strong> 가 있고 다음 단계까지도 <strong>주황색 상태</strong>를 가공하려고 한다. 
+여기서 말하는 상태들은 <strong>flow</strong> 바깥쪽에 존재하는 전역 변수이다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition2.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition2.jpg" data-rjs="/images/study/code-spitz/functional-decomposition2.jpg" class="zooming" alt="functional-decomposition2" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition2
+        
+    </figcaption>
+    
+</figure>
+
+<p>하지만 두번째 단계에서 <strong>하늘색 상태</strong>가 필요한 것을 알게 됐고 처음부터 <strong>하늘색 상태</strong>가 필요하다고 생각한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition3.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition3.jpg" data-rjs="/images/study/code-spitz/functional-decomposition3.jpg" class="zooming" alt="functional-decomposition3" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition3
+        
+    </figcaption>
+    
+</figure>
+
+<p>이 하늘색 상태는 2단계에서 사용하려고 할 때 생성 되는게 아니라 처음부터 존재했어야 되므로 1단계에도 추가된다.
+그럼, 이 <strong>flow</strong> 는 기반된 상태가 달라졌기 때문에 <strong>오염</strong>돼서 처음부터 다시 만들어야 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition4.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition4.jpg" data-rjs="/images/study/code-spitz/functional-decomposition4.jpg" class="zooming" alt="functional-decomposition4" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition4
+        
+    </figcaption>
+    
+</figure>
+
+<p>더 나아가, <strong>flow</strong> 를 처리하면서 분기를 해야 되는 것을 알았고 특정 조건 <strong>초록색 상태</strong>에 따라 처리를 하도록 한다.
+이 <strong>초록색 데이터</strong>는 분기에만 사용되고 다른 곳에서는 사용되지 않기 때문에 <strong>scope</strong> 를 이용해서 변수의 유효범위를 정할 수 있다. 
+scope 는 flow 시스템상에서로직을 전체를 검토하지 않도록 해주기 때문에 
+초록색 상태는 <strong>scope</strong> 를 벗어날 때 존재하지 않기 때문에 앞의 단계를 고칠 필요가 없다.
+이러한 장점으로 <strong>scope</strong> 를 짧게 선언하고 되도록이면 빨리 라이프사이클을 끝나게 만들어야 한다.</p>
+
+<p>이어서, 최종 단계 작업을 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition5.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition5.jpg" data-rjs="/images/study/code-spitz/functional-decomposition5.jpg" class="zooming" alt="functional-decomposition5" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition5
+        
+    </figcaption>
+    
+</figure>
+
+<p>근데 빨간생 상태가 필요하다는 것을 여기서 깨달았고</p>
+
+<figure>
+    <a href="/images/study/code-spitz/functional-decomposition6.jpg">
+        <img src="/images/study/code-spitz/functional-decomposition6.jpg" data-rjs="/images/study/code-spitz/functional-decomposition6.jpg" class="zooming" alt="functional-decomposition6" />
+    </a>
+    
+    <figcaption>
+        functional-decomposition6
+        
+    </figcaption>
+    
+</figure>
+
+<p>결국 제일 처음부터 빨간색을 선언하게 되고 결국 모든게 빨간색으로 된다.</p>
+
+<h2 id="2-abstract-data-type-추상-데이터-타입">2. Abstract Data Type (추상 데이터 타입)</h2>
+
+<figure>
+    <a href="/images/study/code-spitz/abstract-data-type1.jpg">
+        <img src="/images/study/code-spitz/abstract-data-type1.jpg" data-rjs="/images/study/code-spitz/abstract-data-type1.jpg" class="zooming" alt="abstract-data-type1" />
+    </a>
+    
+    <figcaption>
+        abstract-data-type1
+        
+    </figcaption>
+    
+</figure>
+
+<p>이전까지 절차와 절차에 필요한 데이터를 깨닫는 과정이었지만 <strong>ADT(Abstract Data Type)</strong> 부터 <strong>데이터</strong>를 기준으로 판단한다. 
+flow 시스템에서는 특정 동작에 해당 되는 데이터만 유추하기 때문에 마지막에 떠오르게 된지만 
+<strong>ADT(Abstract Data Type)</strong> 부터는 데이터에 따라 해야 될 동작들을 정리한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/abstract-data-type2.jpg">
+        <img src="/images/study/code-spitz/abstract-data-type2.jpg" data-rjs="/images/study/code-spitz/abstract-data-type2.jpg" class="zooming" alt="abstract-data-type2" />
+    </a>
+    
+    <figcaption>
+        abstract-data-type2
+        
+    </figcaption>
+    
+</figure>
+
+<p>데이터의 차이점만 있고 <strong>flow</strong> 내부 동작의 공통점을 추상화의 단계에서 인식할 수 있다라면 위 그림과 같이 묶일 수 있다.
+이 안에 <code class="language-plaintext highlighter-rouge">if</code> 문이나 <code class="language-plaintext highlighter-rouge">switch</code> 를 통해 <strong>case</strong> 상태를 수용한다면 코드 응집성이 높아져서 관리하기가 편해진다
+도메인 지식을 모아 둘 수 있다는 것이 장점이지만 case 를 늘일때마다 코드의 양이 증가 된다. 
+바깥쪽에서는 하나의 형으로 인식하고 내부에서는 복잡한 로직을 감춰서 좋을 수 있다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/abstract-data-type3.jpg">
+        <img src="/images/study/code-spitz/abstract-data-type3.jpg" data-rjs="/images/study/code-spitz/abstract-data-type3.jpg" class="zooming" alt="abstract-data-type3" />
+    </a>
+    
+    <figcaption>
+        abstract-data-type3
+        
+    </figcaption>
+    
+</figure>
+
+<p>모든 종류의 상태를 수용하고 있으므로 내부에서 다 해결할 수 있다.
+버그의 양도 적고, 코드도 짧고, 외부의 영향도 없고, 기능을 늘리기가 굉장히 쉽다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/abstract-data-type4.jpg">
+        <img src="/images/study/code-spitz/abstract-data-type4.jpg" data-rjs="/images/study/code-spitz/abstract-data-type4.jpg" class="zooming" alt="abstract-data-type4" />
+    </a>
+    
+    <figcaption>
+        abstract-data-type4
+        
+    </figcaption>
+    
+</figure>
+
+<p>하지만 새로운 유형의 데이터가 추가되면 전체 클래스가 파기되고 모든 메소드의 코드를 수정해야 한다.
+이렇게 기능이 추가되거나 변화가 없다라면 장점 존재하기 때문에 이 책에서도 상태가 안정화 됐다면 <strong>ADT</strong> 도 나쁘지 않은 선택이라고 한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/abstract-data-type5.jpg">
+        <img src="/images/study/code-spitz/abstract-data-type5.jpg" data-rjs="/images/study/code-spitz/abstract-data-type5.jpg" class="zooming" alt="abstract-data-type5" />
+    </a>
+    
+    <figcaption>
+        abstract-data-type5
+        
+    </figcaption>
+    
+</figure>
+
+<p>하지만 초록색 상태일 때만 해당되는 기능을 추가한다면 ADT 로는 해결할 수 없다.
+즉, <strong>ADT</strong>는</p>
+<ol>
+  <li>상태가 확정되어야 한다.</li>
+  <li>모든 메소드가 가용한 상태 전체를 커버하는 메소드들로만 구성되어야 한다.
+이 두가지를 만족해야 성립된다.
+<strong>ADT</strong> 를 사용할 수 있는 상황은 굉장히 제한적이다.</li>
+</ol>
+
+<h2 id="3-object-oriented">3. Object Oriented</h2>
+
+<figure>
+    <a href="/images/study/code-spitz/object-oriented1.jpg">
+        <img src="/images/study/code-spitz/object-oriented1.jpg" data-rjs="/images/study/code-spitz/object-oriented1.jpg" class="zooming" alt="object-oriented1" />
+    </a>
+    
+    <figcaption>
+        object-oriented1
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>객체 지향</strong>의 사고방식에서는 상태가 없는 수준에서 추상화를 하고 상태에 따라 상속 구조를 변경하면서 형을 더 만든다.
+<strong>ADT</strong> 는 상태에 따라서 형을 줄어 들지만 <strong>객체 지향</strong>에서는 증가한다.
+심지어, 상태 따라 생성된 형을 통합하는 <strong>추상형</strong>도 필요하다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/object-oriented2.jpg">
+        <img src="/images/study/code-spitz/object-oriented2.jpg" data-rjs="/images/study/code-spitz/object-oriented2.jpg" class="zooming" alt="object-oriented2" />
+    </a>
+    
+    <figcaption>
+        object-oriented2
+        
+    </figcaption>
+    
+</figure>
+
+<p>여파를 끼치지 않고 초록색에 필요한 코드만 만들 수 있게 됐다.
+상태별로 if 문으로 관리하던 것에 비해, 지금은 상태만큼 객체의 클래스 형만 만들면 된다.
+<code class="language-plaintext highlighter-rouge">if</code> 가 많으면 <strong>복잡성 폭발</strong>이 발생 되는데 이 <strong>복잡성 폭발</strong>을 제거하기 위해 <strong>oop</strong> 를 사용한다.
+<code class="language-plaintext highlighter-rouge">if</code> 에 해당되는 <strong>case</strong> 만큼의 객체를 만들어서 <strong>client</strong> 쪽으로 <code class="language-plaintext highlighter-rouge">if</code> 를 밀어내는 것이 객체지향이다.
+<code class="language-plaintext highlighter-rouge">theater</code> 에서 <code class="language-plaintext highlighter-rouge">movie</code> 는 원래 2단 <code class="language-plaintext highlighter-rouge">if</code> 였을 텐데 <code class="language-plaintext highlighter-rouge">policy</code> 를 소유하고 <code class="language-plaintext highlighter-rouge">policy</code> 가 <code class="language-plaintext highlighter-rouge">condition</code> 을 가지는 것으로 전략 객체로 바뀐것이다.</p>
+
+<p><strong>객체 지향</strong>은 상태가 추가될 때는 쉽지만 기능이 추가되면 다같이 변경된다. 
+그래서 <strong>객체 지향</strong>일 때 위험한 것이 <strong>성급한 추상화</strong>이다.
+<strong>추상화</strong>가 제대로 되어 있지 않을 때, 상태를 늘리려고 하면 안된다.</p>
+
+<p>이런 <strong>성급한 추상화</strong>를 피하는 방법은 <strong>추상화</strong>를 정규하게 만드는 동안에는 확인 할 수 있는 <strong>case</strong> 만 <strong>구상 클래스</strong>를 만드는 것이다.
+그래서 <strong>kotlin</strong> 같은 경우, 상속 범위를 한정 짓고 구상 클래스의 범위를 제한하는 <strong>shield class</strong> 을 이용한다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/object-oriented3.jpg">
+        <img src="/images/study/code-spitz/object-oriented3.jpg" data-rjs="/images/study/code-spitz/object-oriented3.jpg" class="zooming" alt="object-oriented3" />
+    </a>
+    
+    <figcaption>
+        object-oriented3
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>oop</strong>에서 초록색 상태에서만 필요한 메소드가 추가됐을 때,
+<strong>추상 클래스</strong>로 인식하고 있다면 <strong>리스코프 치환원칙</strong>에 의해서 이 메소드를 사용할 수 있는 방법은 제한적이다.
+언어마다 이 문제를 해결할 수 있는 방법은 존재겠지만 <strong>java</strong> 에서는 <code class="language-plaintext highlighter-rouge">generic</code> 을 이용하면 가능하다.</p>
+
+<h2 id="개발자의-세계-adt">개발자의 세계 ADT</h2>
+
+<p>프로젝트가 진행되면서 자연스럽게 기능이 확장되거나 형이 확장되기 때문에 ADT 는 현실에서 거의 사용할 수 없다. 
+우리는 습관적으로 ADT 로 코드를 짜기 때문에 ADT 를 인식하기가 힘들다. 
+그래서 객체 지향과 ADT 의 차이점을 인식하기 위해 개발자의 세계를 ADT 버전으로 만든다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/programmer-world.jpg">
+        <img src="/images/study/code-spitz/programmer-world.jpg" data-rjs="/images/study/code-spitz/programmer-world.jpg" class="zooming" alt="programmer-world" />
+    </a>
+    
+    <figcaption>
+        programmer-world
+        
+    </figcaption>
+    
+</figure>
+
+<p>이전에 했던 개발자의 세계는 객체 지향을 통해 코드의 변화를 형으로 나누고 있다. 
+<code class="language-plaintext highlighter-rouge">if</code> 에 대한 <strong>case</strong> 만큼 형으로 치환하게 됐으므로 형이 증가하게 된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Paper</span> <span class="o">{}</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ServerClient</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="kd">implements</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>전에 만들었던 <code class="language-plaintext highlighter-rouge">Paper</code> <code class="language-plaintext highlighter-rouge">interface</code> 를 확장해서 <code class="language-plaintext highlighter-rouge">Client</code> 와 <code class="language-plaintext highlighter-rouge">ServerClient</code> 를 만들었다.
+이걸 ADT 로 합친다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Paper</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Paper</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isClient</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">isClient</span> <span class="o">=</span> <span class="n">isClient</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">isClient</span><span class="o">;</span>
+
+    <span class="nc">Library</span> <span class="n">library</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Library</span><span class="o">(</span><span class="s">"vueJS"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">language</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotilinJS"</span><span class="o">);</span>
+    <span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Server</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">backEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"java"</span><span class="o">);</span>
+    <span class="nc">Language</span> <span class="n">frontEndLanguage</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Language</span><span class="o">(</span><span class="s">"kotlinJS"</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">backEndProgrammer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Programmer</span> <span class="n">frontEndProgrammer</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isClient</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">programmer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBackEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">isClient</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">backEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFrontEndProgrammer</span><span class="o">(</span><span class="nc">Programmer</span> <span class="n">programmer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">isClient</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">frontEndProgrammer</span> <span class="o">=</span> <span class="n">programmer</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Client</code> 와 <code class="language-plaintext highlighter-rouge">ServerClient</code> 를 <code class="language-plaintext highlighter-rouge">Paper</code> 로 통합했다.
+<code class="language-plaintext highlighter-rouge">Paper</code> <code class="language-plaintext highlighter-rouge">interface</code> 에 많은 <code class="language-plaintext highlighter-rouge">method</code> 가 있었다면 로직으로 통합했어야 하지만 
+<code class="language-plaintext highlighter-rouge">interface</code>에 <code class="language-plaintext highlighter-rouge">method</code>가 하나도 없었기 때문에 <code class="language-plaintext highlighter-rouge">Client</code> 와 <code class="language-plaintext highlighter-rouge">ServerClient</code> 전체를 복사해온다.</p>
+
+<p>모든 상태를 소유할수 있도록 하고 <strong>flag</strong> 에 따라 분기를 나누게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/paper-adt.jpg">
+        <img src="/images/study/code-spitz/paper-adt.jpg" data-rjs="/images/study/code-spitz/paper-adt.jpg" class="zooming" alt="paper-adt" />
+    </a>
+    
+    <figcaption>
+        paper-adt
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>flag</strong> 변수에 대한 여파로 코드는 내부의 모든 상태를  커버할 수 있도록 변경해야 한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">method</code> 들은 모든 객체에 대해 동작 해야 하지만
+코드를 보면 <code class="language-plaintext highlighter-rouge">setBackEndProgrammer</code> 와 <code class="language-plaintext highlighter-rouge">setFrontEndProgrammer</code> 는 <code class="language-plaintext highlighter-rouge">ServerClient</code> 일 때, <code class="language-plaintext highlighter-rouge">setProgrammer</code> 는 <code class="language-plaintext highlighter-rouge">Client</code> 일때만 작동한다.
+암묵적으로 작동해야 할 상태가 정해져 있는게  ADT 의 문제이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrontEnd</span> <span class="kd">implements</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Library</span> <span class="n">library</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">Client</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Client</span> <span class="n">pb</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Client</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="n">language</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="na">language</span><span class="o">;</span>
+            <span class="n">library</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="na">library</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">makeFrontEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BackEnd</span> <span class="kd">implements</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Server</span> <span class="n">server</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">language</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">ServerClient</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ServerClient</span> <span class="n">pa</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ServerClient</span><span class="o">)</span> <span class="n">paper</span><span class="o">;</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="na">server</span><span class="o">;</span>
+            <span class="n">language</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="na">backEndLanguage</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nf">makeFrontEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Programmer</code>에서 <code class="language-plaintext highlighter-rouge">Paper</code> 는 이제 하나로 통합되었기 때문에 <code class="language-plaintext highlighter-rouge">FrontEnd</code>, <code class="language-plaintext highlighter-rouge">BackEnd</code> 에서 <code class="language-plaintext highlighter-rouge">instanceof</code> 같은 코드는 제거 되었다.
+이제 <code class="language-plaintext highlighter-rouge">FrontEnd</code>, <code class="language-plaintext highlighter-rouge">BackEnd</code> 도 <code class="language-plaintext highlighter-rouge">Programmer</code> 로 통합한다. 
+<code class="language-plaintext highlighter-rouge">Paper</code> 에서는 <code class="language-plaintext highlighter-rouge">operation</code> 이 없었지만 <code class="language-plaintext highlighter-rouge">makeProgram</code> 도 통합 해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Programmer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Programmer</span><span class="o">(</span><span class="nc">Boolean</span> <span class="n">isFrontEnd</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">isFrontEnd</span> <span class="o">=</span> <span class="n">isFrontEnd</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">isFrontEnd</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">frontLanguage</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Library</span> <span class="n">frontLibrary</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Server</span> <span class="n">server</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Language</span> <span class="n">backEndLanguage</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">Program</span> <span class="nf">makeProgram</span><span class="o">(</span><span class="nc">Paper</span> <span class="n">paper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isFrontEnd</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">frontLanguage</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">getFrontEndLanguage</span><span class="o">();</span>
+            <span class="n">frontLibrary</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">getFrontEndLibrary</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">server</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">getServer</span><span class="o">();</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">backEndLanguage</span> <span class="o">=</span> <span class="n">paper</span><span class="o">.</span><span class="na">getBackEndLanguage</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">isFrontEnd</span> <span class="o">?</span> <span class="n">makeFrontEndProgram</span><span class="o">()</span> <span class="o">:</span> <span class="n">makeBackEndProgram</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeFrontEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Program</span> <span class="nf">makeBackEndProgram</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Program</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>통합해보면 <code class="language-plaintext highlighter-rouge">Programmer</code> 는 <code class="language-plaintext highlighter-rouge">isFrontEnd</code> 를 통해 2가지 상태로 나눠진다.</p>
+
+<p>원래  <code class="language-plaintext highlighter-rouge">FrontEnd</code> 와 <code class="language-plaintext highlighter-rouge">BackEnd</code>에는 같은 변수명 <code class="language-plaintext highlighter-rouge">language</code>이 있었는데 통합하면서 이름 충돌이 발생한다.
+이름 충돌 해소를 위해 모든 부분을 수정한다.
+통합하면서 <code class="language-plaintext highlighter-rouge">language</code> 라는 변수명은 이제 사용할 수 없고 <code class="language-plaintext highlighter-rouge">frontEnd</code> 와 <code class="language-plaintext highlighter-rouge">backEnd</code> 로 나눠서 사용해야 한다.</p>
+
+<p>추상화 할 때, 추상화의 크기가 다르면 단계가 맞지 않아서 인식하기 힘들다.
+그래서 <strong>추상화 layer</strong> 가 중요하다. 
+<code class="language-plaintext highlighter-rouge">man</code> 과 <code class="language-plaintext highlighter-rouge">frontEnd</code> 가 아닌 <code class="language-plaintext highlighter-rouge">frontEnd</code> 와 <code class="language-plaintext highlighter-rouge">backEnd</code> 로 해야 <strong>추상화 layer</strong>가 맞는 것이다.
+위 코드에서 <code class="language-plaintext highlighter-rouge">frontLanguage</code>, <code class="language-plaintext highlighter-rouge">backEndLanguage</code> 라고 했는데 <code class="language-plaintext highlighter-rouge">library</code> 로 한다면 <strong>추상화 layer</strong>가 맞지 않는 것이다.
+그래서 <code class="language-plaintext highlighter-rouge">frontEndLibrary</code> 로 바꿔줘야 한다.
+<strong>ADT</strong> 는 시간순으로 상태가 추가될 때마다 이름 충돌로 인해 전부 나눠지게 되고 평소에 이름을 길게 짓게 되는 것이 문제다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/programmer-adt.jpg">
+        <img src="/images/study/code-spitz/programmer-adt.jpg" data-rjs="/images/study/code-spitz/programmer-adt.jpg" class="zooming" alt="programmer-adt" />
+    </a>
+    
+    <figcaption>
+        programmer-adt
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">boolean</code> 을 통해 모든 개발자를 통합한 추상형을 만들었다.
+원래는 두개의 함수로 나눠져 있던게 이제는 if 를 통해서 하나의 함수로 모여져 <strong>지식의 통합</strong>이 발생했다.
+모든 경우의 수가 보이게 되긴 했지만 문제가 생긴다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">frontLanguage</code> 와 <code class="language-plaintext highlighter-rouge">frontLibrary</code>, <code class="language-plaintext highlighter-rouge">server</code> 와 <code class="language-plaintext highlighter-rouge">backEndLanguage</code> 모두 <code class="language-plaintext highlighter-rouge">Paper</code>를 통해서 정한다.
+<strong>ADT</strong> 는 형끼리 결합할 수 없는 것이 두번째 문제이다. 
+본인 상태를 사용해서 분리하고 상태를 감추기 때문에 <strong>ADT 연쇄</strong> 로 인해 <code class="language-plaintext highlighter-rouge">Paper</code> 도 구분할 수 없으므로 통합 메소드를 통해 불러올 수 밖에 없다.
+<code class="language-plaintext highlighter-rouge">Paper</code> 의 상태는 신경쓰지 않고 <code class="language-plaintext highlighter-rouge">Programmer</code> 상태가 <code class="language-plaintext highlighter-rouge">frontEnd</code> 라면 <code class="language-plaintext highlighter-rouge">Paper</code> 에게 <code class="language-plaintext highlighter-rouge">frontEndLanguage</code> 를 요청하는 <strong>getter</strong> 추상메소드를 만들게 된다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/paper-adt-getter.jpg">
+        <img src="/images/study/code-spitz/paper-adt-getter.jpg" data-rjs="/images/study/code-spitz/paper-adt-getter.jpg" class="zooming" alt="paper-adt-getter" />
+    </a>
+    
+    <figcaption>
+        paper-adt-getter
+        
+    </figcaption>
+    
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">Paper</code> 의 기능을 확장하면 위 코드와 같이 만들어진다.
+<code class="language-plaintext highlighter-rouge">method</code> 들은 다시 <code class="language-plaintext highlighter-rouge">isClient</code> 에 따라 달라진다.
+원래는 모든 상태를 커버하는 함수들이 만들어져야 하지만 <code class="language-plaintext highlighter-rouge">server</code> 와 <code class="language-plaintext highlighter-rouge">client</code> 에서 동작하는 코드가 구분된다. 
+그래서 형이 확정되고 변화가 없어도 <strong>ADT</strong> 를 사용하면 안된다.
+작성한 <strong>method</strong> 가 비대칭으로 작동한다면 이미 <strong>ADT</strong> 로 짠 것이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Director</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Paper</span><span class="o">&gt;</span> <span class="n">projects</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">Paper</span> <span class="n">paper</span><span class="o">){</span><span class="n">projects</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">paper</span><span class="o">);}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runProject</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(!</span><span class="n">projects</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"no project"</span><span class="o">);</span>
+        <span class="nc">Paper</span> <span class="n">paper</span> <span class="o">=</span> <span class="n">projects</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">ServerClient</span><span class="o">){</span>
+            <span class="nc">ServerClient</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ServerClient</span><span class="o">)</span><span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">(),</span> <span class="n">backEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BackEnd</span><span class="o">();</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setFrontEndProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setBackEndProgrammer</span><span class="o">(</span><span class="n">backEnd</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">client</span> <span class="o">=</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="nc">Program</span> <span class="n">server</span> <span class="o">=</span> <span class="n">backEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">client</span><span class="o">,</span> <span class="n">server</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">paper</span> <span class="k">instanceof</span> <span class="nc">Client</span><span class="o">){</span>
+            <span class="nc">Client</span> <span class="n">project</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Client</span><span class="o">)</span><span class="n">paper</span><span class="o">;</span>
+            <span class="nc">Programmer</span> <span class="n">frontEnd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontEnd</span><span class="o">();</span>
+            <span class="n">project</span><span class="o">.</span><span class="na">setProgrammer</span><span class="o">(</span><span class="n">frontEnd</span><span class="o">);</span>
+            <span class="n">deploy</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">frontEnd</span><span class="o">.</span><span class="na">makeProgram</span><span class="o">(</span><span class="n">project</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">deploy</span><span class="o">(</span><span class="nc">String</span> <span class="n">projectName</span><span class="o">,</span> <span class="nc">Program</span><span class="o">...</span><span class="na">programs</span><span class="o">){}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>이전 Director 에서는 Paper 의 형에 따라서 동작이 다르다.</p>
+
+<figure>
+    <a href="/images/study/code-spitz/director-adt.jpg">
+        <img src="/images/study/code-spitz/director-adt.jpg" data-rjs="/images/study/code-spitz/director-adt.jpg" class="zooming" alt="director-adt" />
+    </a>
+    
+    <figcaption>
+        director-adt
+        
+    </figcaption>
+    
+</figure>
+
+<p><strong>ADT</strong> 로 바꾸면 코드가 많이 달라지진 않지만 <code class="language-plaintext highlighter-rouge">Director</code> 에서 접근하려면 반드시 <code class="language-plaintext highlighter-rouge">Paper</code> 의 내부를 확인할 수 밖에 없다.
+특정 <code class="language-plaintext highlighter-rouge">Director</code> 마다 이 코드가 달라질 수 있으므로 <code class="language-plaintext highlighter-rouge">Paper</code> 로 옮길 수도 없다.
+<code class="language-plaintext highlighter-rouge">Paper</code> 의 상태를 노출하지 않고서는 경우에 따른 코드를 분리할 수가 없는 것이다.
+그러면 <strong>ADT</strong> 의 진짜 목적이었던 내부형을 캡슐화하는 것도 어기게 된다.
+내부에서  <strong>ADT</strong> 를 사용하면 추상화 되어 있을 것 같지만 <strong>ADT</strong> 를 활용해서 작동하는 <code class="language-plaintext highlighter-rouge">setter</code> 를 만들면 <strong>ADT</strong> 의 내부는 노출될 수 밖에 없다.</p>
+
+<h3 id="adt-의-폐단"><strong>ADT</strong> 의 폐단</h3>
+
+<ol>
+  <li>캡슐화 실패</li>
+  <li>데이터 은닉 실패</li>
+  <li>context 가 일치하지 않는 getter 양산</li>
+  <li>본인의 상태 추상화 실패</li>
+</ol>
+
+<p>결국, <strong>ADT</strong> 는 폐단이 많기 때문에 어떠한 경우에도 사용하면 안된다.
+이 책에서는 기능이 안정화 됐다면 <strong>ADT</strong> 도 쓸만하다고 했지만 객체간 통신에 참여하는 순간 성립하지 않는다.
+<strong>oop</strong> 가 완화 시켜줄 순 있지만 <strong>ADT</strong> 끼리 있으면 단점은 더욱 심해진다. 
+결국엔 전부 oop 로 만들어야 한다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=%EC%BD%94%EB%93%9C+%EC%8A%A4%ED%94%BC%EC%B8%A0+Object83+5%ED%9A%8C%EC%B0%A8+%EC%A0%95%EB%A6%AC%20-%20https://devyonghee.github.io/study/2019/09/09/code-spitz-object83-5/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2019/09/09/code-spitz-object83-5/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

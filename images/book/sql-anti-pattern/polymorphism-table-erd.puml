@@ -1,0 +1,27 @@
+@startuml
+object Bug {
+}
+
+object FeatureRequest{
+}
+
+object Comment {
+}
+
+object User {
+}
+
+object Order {
+}
+
+object Address{
+}
+
+Comment }o--|| Bug
+Comment }o--|| FeatureRequest
+
+Address }o--|| User
+Address }o--|| Order
+
+
+@enduml

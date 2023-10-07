@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter7. 병렬 데이터 처리와 성능</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter7. 병렬 데이터 처리와 성능">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter7. 병렬 데이터 처리와 성능">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter7. 병렬 데이터 처리와 성능</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 26, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      7 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 7장에서는 스트림 병렬 처리에 대해서 소개하고 있다.<br />
+스트림으로 얼마나 쉽게 병렬로 처리하는지 포크/조인 프레임워크와 어떤 관계가 있는지 살펴본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="71-병렬-스트림">7.1 병렬 스트림</h2>
+
+<p>컬렉션에 <code class="language-plaintext highlighter-rouge">parallelStream</code> 을 호출하면 병렬 스트림(parallel stream) 을 생성할 수 있다.<br />
+병렬 스트림을 이용하면 각 멀티코어 프로세서가 일을 처리하도록 할당할 수 있다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">parallel</code> 메서드를 호출하면 병렬 스트림으로 변환 (병렬로 수행한다는 불리언 플래그가 설정)</li>
+  <li>반대로 <code class="language-plaintext highlighter-rouge">sequential</code> 호출하면 순차 스트림으로 변환</li>
+  <li>상황에 따라 병렬화를 하는 것보다 적절한 자료구조를 선택하는 것이 중요(오토 박싱, 언박싱 등의 오버헤드 주의)</li>
+  <li>코어간 데이터 전송 시간보다 오래 걸리는 작업만 병렬로 수행하는 것이 바람직</li>
+</ul>
+
+<h3 id="병렬-스트림-효과적으로-사용하기">병렬 스트림 효과적으로 사용하기</h3>
+
+<ul>
+  <li>확신이 서지 않으면 직접 측정하라
+    <ul>
+      <li>언제나 병렬 스트림이 빠르지 않기 때문에, 어느 것이 좋은지 모르겠다면 직접 성능을 측정하는 것이 바람직하다.</li>
+    </ul>
+  </li>
+  <li>박싱을 주의하라
+    <ul>
+      <li>자동 박싱과 언박싱은 성능을 크게 저하시킨다.</li>
+      <li>가능하면 기본형 특화 스트림을 이용하자</li>
+    </ul>
+  </li>
+  <li>순차 스트림보다 병렬 스트림에서 성능이 떨어지는 연산이 있다
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">list</code>, <code class="language-plaintext highlighter-rouge">findFirst</code> 처럼 요소의 순서에 의존하는 연산은 병렬 스트림에서 비용이 크다.</li>
+      <li>요소의 순서가 상관 없다면 <code class="language-plaintext highlighter-rouge">unordered</code> 로 비정렬된 스트림을 얻고 <code class="language-plaintext highlighter-rouge">limit</code>을 호출하는 것이 효율적이다.</li>
+    </ul>
+  </li>
+  <li>스트림에서 수행하는 전체 파이프라인 연산 비용을 고려하라
+    <ul>
+      <li>전체 처리 비용이 N(요소 수) * Q(처리 비용) 일 때, Q 가 높아지면 병렬 스트림으로 성능을 개선할 수 있는 가능성이 있다.</li>
+    </ul>
+  </li>
+  <li>소량의 데이터에서는 병렬 스트림이 도움 되지 않는다.
+    <ul>
+      <li>병렬화 과정에서 생기는 부가 비용이 클 수 있다.</li>
+    </ul>
+  </li>
+  <li>자료구조가 적절한지 확인하라.
+    <ul>
+      <li>분할할 때 <code class="language-plaintext highlighter-rouge">LinkedList</code> 은 모든 요소 탐색, <code class="language-plaintext highlighter-rouge">ArrayList</code> 은 탐색하지 않고도 가능하기 때문에 <code class="language-plaintext highlighter-rouge">ArrayList</code>이 더 효율적</li>
+    </ul>
+  </li>
+  <li>중간 연산이 스트림의 특성을 어떻게 바꾸는지에 따라 분해 과정의 성능이 달라질 수 있음
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">SIZED</code> 스트림은 정확히 같은 크기의 스트림으로 분할할 수 있어서 효율적으로 병렬 처리 가능</li>
+      <li>필터 연산이 존재하면 길이를 예측할 수 없어서 효과적으로 병렬 처리가 가능한지 알 수 없음</li>
+    </ul>
+  </li>
+  <li>최종 연산의 병합 과정 비용을 살펴보라
+    <ul>
+      <li>병합 과정의 비용이 비싸다면 오히려 병렬 스트림으로 얻은 이익이 상쇄될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="72-포크조인-프레임워크">7.2 포크/조인 프레임워크</h2>
+
+<p>포크/조인 프레임워크는 병렬화할 수 있는 작업을 재귀적으로 작업을 분할하고 각 결과를 합쳐서 전체 결과를 가져오도록 설계되었다.
+스레드 풀을 이용하려면 <code class="language-plaintext highlighter-rouge">RecursiveTask&lt;R&gt;</code>, <code class="language-plaintext highlighter-rouge">RecursiveAction</code>(결과가 없는 경우) 을 상속받아 다음 추상 메서드를 구현해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">protected</span> <span class="kd">abstract</span> <span class="no">R</span> <span class="nf">compute</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>다음은 포크/조인 프레임워크를 이용해 병렬 합계를 수행하는 예시 코드다.<br />
+일반적으로 <code class="language-plaintext highlighter-rouge">ForkJoinPool</code> 은 애플리케이션에서 한 번만 인스턴스화해서 싱글턴으로 저장해서 재사용한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// RecursiveTask 를 상속받아 포크/조인 프레임워크에서 사용할 태스크 생성</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ForkJoinSumCalculator</span> <span class="kd">extends</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">concurrent</span><span class="o">.</span><span class="na">RecursiveTask</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+
+     <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span><span class="o">[]</span> <span class="n">numbers</span><span class="o">;</span>
+     <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">start</span><span class="o">;</span>
+     <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">end</span><span class="o">;</span>
+     <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="no">THRESHOLD</span> <span class="o">=</span> <span class="mi">10_000</span><span class="o">;</span>
+     
+     <span class="kd">public</span> <span class="nf">ForkJoinSumCalculator</span><span class="o">(</span><span class="kt">long</span><span class="o">[]</span> <span class="n">numbers</span><span class="o">)</span> <span class="o">{</span>
+         <span class="k">this</span><span class="o">(</span><span class="n">numbers</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">numbers</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+     <span class="o">}</span>
+     
+     <span class="kd">private</span> <span class="nf">ForkJoinSumCalculator</span><span class="o">(</span><span class="kt">long</span><span class="o">[]</span> <span class="n">numbers</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span><span class="o">)</span> <span class="o">{</span>
+         <span class="k">this</span><span class="o">.</span><span class="na">numbers</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">;</span>
+         <span class="k">this</span><span class="o">.</span><span class="na">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">;</span>
+         <span class="k">this</span><span class="o">.</span><span class="na">end</span> <span class="o">=</span> <span class="n">end</span><span class="o">;</span>
+     <span class="o">}</span>
+     
+     <span class="c1">// ForkJoinPool 에 전달되면 실행되는 메서드</span>
+     <span class="nd">@Override</span>
+     <span class="kd">protected</span> <span class="nc">Long</span> <span class="nf">compute</span><span class="o">()</span> <span class="o">{</span>
+         <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="o">;</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="no">THRESHOLD</span><span class="o">)</span> <span class="o">{</span>
+             <span class="k">return</span> <span class="nf">computeSequentially</span><span class="o">();</span> <span class="c1">// 기준값 이하라면 결과 계산</span>
+         <span class="o">}</span>
+         
+         <span class="c1">// 배열의 절반씩 더하도록 서브태스크들 생성</span>
+         <span class="nc">ForkJoinSumCalculator</span> <span class="n">leftTask</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ForkJoinSumCalculator</span><span class="o">(</span><span class="n">numbers</span><span class="o">,</span> <span class="n">start</span><span class="o">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="o">);</span> 
+         <span class="n">leftTask</span><span class="o">.</span><span class="na">fork</span><span class="o">();</span>  <span class="c1">// ForkJoinPool 의 다른 스레드로 생성한 태스크를 비동기로 실행</span>
+         <span class="nc">ForkJoinSumCalculator</span> <span class="n">rightTask</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ForkJoinSumCalculator</span><span class="o">(</span><span class="n">numbers</span><span class="o">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span> <span class="n">end</span><span class="o">);</span>
+         <span class="nc">Long</span> <span class="n">rightResult</span> <span class="o">=</span> <span class="n">rightTask</span><span class="o">.</span><span class="na">compute</span><span class="o">();</span> <span class="c1">// 두번째 서브태스크를 동기 실행, 분할이 일어날 수 있음</span>
+         <span class="nc">Long</span> <span class="n">rightResult</span> <span class="o">=</span> <span class="n">leftTask</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>  <span class="c1">// 첫번째 서브태스크의 결과를 가져오거나 대기</span>
+         <span class="k">return</span> <span class="n">leftResult</span> <span class="o">+</span> <span class="n">rightResult</span><span class="o">;</span>
+     <span class="o">}</span>
+     
+     <span class="kd">private</span> <span class="kt">long</span> <span class="nf">computeSequentially</span><span class="o">()</span> <span class="o">{</span>
+         <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+         <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">start</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">end</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+             <span class="n">sum</span> <span class="o">+=</span> <span class="n">numbers</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+         <span class="o">}</span>
+         <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+     <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// 사용 코드</span>
+<span class="kt">long</span><span class="o">[]</span> <span class="n">numbers</span> <span class="o">=</span> <span class="nc">LongStream</span><span class="o">.</span><span class="na">rangeClosed</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">n</span><span class="o">).</span><span class="na">toArrray</span><span class="o">();</span>
+<span class="nc">ForkJoinTask</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ForkJoinSumCalculator</span><span class="o">(</span><span class="n">numbers</span><span class="o">);</span> 
+<span class="k">new</span> <span class="nf">ForkJoinPool</span><span class="o">().</span><span class="na">invoke</span><span class="o">(</span><span class="n">task</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="포크조인-프레임워크-제대로-사용하는-방법">포크/조인 프레임워크 제대로 사용하는 방법</h3>
+
+<ul>
+  <li>두 서브태스크가 모두 시작된 다음에 <code class="language-plaintext highlighter-rouge">join</code> 을 호출해야 한다.
+    <ul>
+      <li>각 서브태스크가 다른 태스크를 기다리게 된다면 기존보다 느리고 복잡해진다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">RecursiveTask</code> 내에서 <code class="language-plaintext highlighter-rouge">ForkJoinPool</code> 의 <code class="language-plaintext highlighter-rouge">invoke</code> 을 호출하면 안된다.
+    <ul>
+      <li>순차 코드에서 병렬 계산을 시작할 때만 <code class="language-plaintext highlighter-rouge">invoke</code> 사용</li>
+    </ul>
+  </li>
+  <li>서브태스크에 <code class="language-plaintext highlighter-rouge">fork</code> 메서드를 호출해서 <code class="language-plaintext highlighter-rouge">ForkJoinPool</code>의 일정을 조절할 수 있다.
+    <ul>
+      <li>모두 <code class="language-plaintext highlighter-rouge">fork</code> 호출하는 것보다 한쪽은 <code class="language-plaintext highlighter-rouge">compute</code>를 호출하는 것이 효율적이다. (같은 스레드를 재사용하므로 오버헤드를 피할 수 있음)</li>
+    </ul>
+  </li>
+  <li>포크/조인 프레임워크를 이용하는 병렬 계산은 디버깅하기 어렵다.
+    <ul>
+      <li>다른 스레드에서 <code class="language-plaintext highlighter-rouge">compute</code>를 호출하므로 스택 트레이스가 도움되지 않음</li>
+    </ul>
+  </li>
+  <li>포크/조인 프레임워크를 사용하는 것이 반드시 빠른 것은 아니다.
+    <ul>
+      <li>여러 번 프로그램을 실행하여 성능을 측정해봐야 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="작업-훔치기">작업 훔치기</h3>
+
+<ul>
+  <li>기준을 찾기 위해서는 기준값을 바꿔보면서 실행하는 것이 가장 좋은 방법이다.</li>
+  <li>코어 개수와 상관없이 태스크를 적절한 크기로 분할하여 포킹하는 것이 바람직하다.
+    <ul>
+      <li>코어 개수만큼 병렬화하면 다양한 이유(비효율적인 분할 기법, 디스크 접근 속도 저하, 외부 서비스 협력 과정 등)로 지연이 생길 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>위와 같은 문제들을 포크/조인 프레임워크에서는 작업 훔치기(work stealing)라는 기법으로 해결한다.</p>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/fork-join-framework-work-stealing.png">
+        <img src="/images/book/modern-java-in-action/fork-join-framework-work-stealing.png" data-rjs="/images/book/modern-java-in-action/fork-join-framework-work-stealing.png" class="zooming" alt="fork join framework work stealing" />
+    </a>
+    
+    <figcaption>
+        fork join framework work stealing
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>이 기법으로 <code class="language-plaintext highlighter-rouge">ForkJoinPool</code> 모든 스레드를 공정하게 분할한다.</li>
+  <li>작업이 끝나도 유휴 상태로 바뀌지 않고 큐의 헤드에서 다른 태스크를 가져와 처리</li>
+</ul>
+
+<h2 id="73-spliterator-인터페이스">7.3 Spliterator 인터페이스</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Spliterator</code> 는 자바 8에서 제공하는 새로운 인터페이스로 병렬 작업에 특화되어 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">publid</span> <span class="kd">interface</span> <span class="nc">Spliterator</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span> 
+    <span class="c1">// 탐색해야 할 요소가 남아있으면 참</span>
+    <span class="kt">boolean</span> <span class="nf">tryAdvance</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">action</span><span class="o">);</span>
+    <span class="c1">// 일부 요소를 분할해서 두번째 Spliterator 를 생성하는 메서드</span>
+    <span class="c1">// null 이 반활 될 때까지 새로운 Spliterator 생성</span>
+    <span class="nc">Spliterator</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">trySplit</span><span class="o">();</span>
+    <span class="c1">// 메서드로 탐색해야 할 요소 수</span>
+    <span class="kt">long</span> <span class="nf">estimateSize</span><span class="o">();</span>
+    <span class="c1">// Spliterator 특성 집합을 포함하는 int 반환</span>
+    <span class="kt">int</span> <span class="nf">characteristics</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="spliterator-특성">Spliterator 특성</h3>
+
+<ul>
+  <li>ORDERED
+    <ul>
+      <li>리스트 처럼 정해진 순서가 있음</li>
+    </ul>
+  </li>
+  <li>DISTINCT
+    <ul>
+      <li>x, y 두 요소를 방문했을 때 <code class="language-plaintext highlighter-rouge">x.equals(y) == false</code></li>
+    </ul>
+  </li>
+  <li>SORTED
+    <ul>
+      <li>탐색된 요소는 정렬 순서를 따름</li>
+    </ul>
+  </li>
+  <li>SIZED
+    <ul>
+      <li>크기가 알려진 소스를 생성하여 <code class="language-plaintext highlighter-rouge">estimateSize</code> 은 정확한 값을 반환</li>
+    </ul>
+  </li>
+  <li>NON-NULL
+    <ul>
+      <li>탐색하는 모든 요소는 null 이 아님</li>
+    </ul>
+  </li>
+  <li>IMMUTABLE
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Spliterator</code> 의 소스는 불변 (추가, 삭제, 수정 불가)</li>
+    </ul>
+  </li>
+  <li>CONCURRENT
+    <ul>
+      <li>동기화 없이 여러 스레드에서 동시에 수정 가능</li>
+    </ul>
+  </li>
+  <li>SUBSIZED
+    <ul>
+      <li>분할되는 모든 <code class="language-plaintext highlighter-rouge">Spliterator</code>은 SIZED 특성을 가짐</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="단어-수-계산-예시">단어 수 계산 예시</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">WordCounterSpliterator</span> <span class="kd">implements</span> <span class="nc">Spliterator</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">string</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">currentChar</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">WordCounterSpliterator</span><span class="o">(</span><span class="nc">String</span> <span class="n">string</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">tryAdvance</span><span class="o">(</span><span class="nc">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Character</span><span class="o">&gt;</span> <span class="n">action</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="n">action</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">string</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">currentChar</span><span class="o">++));</span>   <span class="c1">// 현재 문자 소비</span>
+        <span class="k">return</span> <span class="n">currentChar</span> <span class="o">&lt;</span> <span class="n">string</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>    <span class="c1">// 소비할 문자 남아있는지 확인</span>
+    <span class="o">}</span>
+    <span class="c1">// 반복될 자료구조를 분할하는 메서드</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Spliterator</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">&gt;</span> <span class="nf">trySplit</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">currentSize</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">-</span> <span class="n">currentChar</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">currentSize</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// 순차 처리 가능할 정도로 작아졌으므로 null 반환</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">splitPos</span> <span class="o">=</span> <span class="n">currentSize</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">currentChar</span><span class="o">;</span> <span class="n">splitPos</span> <span class="o">&lt;</span> <span class="n">string</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">splitPos</span><span class="o">++)</span> <span class="o">{</span> 
+            <span class="k">if</span><span class="o">(</span><span class="nc">Character</span><span class="o">.</span><span class="na">isWhitespace</span><span class="o">(</span><span class="n">string</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">splitPos</span><span class="o">)))</span> <span class="o">{</span>
+                <span class="nc">Spliterator</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">&gt;</span> <span class="n">spliterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordCounterSpliterator</span><span class="o">(</span><span class="n">string</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">currentChar</span><span class="o">,</span> <span class="n">splitPos</span><span class="o">));</span>
+                <span class="n">currentChar</span> <span class="o">=</span> <span class="n">splitPos</span><span class="o">;</span>
+                <span class="k">return</span> <span class="n">spliterator</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">estimateSize</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">-</span> <span class="n">currentChar</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">characteristics</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="no">ORDERED</span> <span class="o">+</span> <span class="no">SIZED</span> <span class="o">+</span> <span class="no">SUBSIZED</span> <span class="o">+</span> <span class="no">NON_NULL</span> <span class="o">+</span> <span class="no">IMMUTABLE</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Spliterator</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">&gt;</span> <span class="n">spliterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordCounterSpliterator</span><span class="o">(</span><span class="no">SENTENCE</span><span class="o">);</span>
+<span class="nc">Stream</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">&gt;</span> <span class="n">stream</span> <span class="o">=</span> <span class="nc">StreamSupport</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">spliterator</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>  <span class="c1">// 두 번째 불리언 인수는 병렬 스트림 생성 여부</span>
+</code></pre></div></div>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter7.+%EB%B3%91%EB%A0%AC+%EB%8D%B0%EC%9D%B4%ED%84%B0+%EC%B2%98%EB%A6%AC%EC%25...%20-%20https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

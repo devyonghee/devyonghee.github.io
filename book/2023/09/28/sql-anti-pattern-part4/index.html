@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [SQL AntiPattern] 4부 애플리케이션 개발 안티패턴</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[SQL AntiPattern] 4부 애플리케이션 개발 안티패턴">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2023/09/28/sql-anti-pattern-part4/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2023/09/28/sql-anti-pattern-part4/">
+  <meta name="twitter:title" content="[SQL AntiPattern] 4부 애플리케이션 개발 안티패턴">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[SQL AntiPattern] 4부 애플리케이션 개발 안티패턴</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 28, 2023
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      11 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/sql anti pattern" title="See all posts with tag 'sql anti pattern'">sql anti pattern</a>
+    
+      <a href="/tag/database" title="See all posts with tag 'database'">database</a>
+    
+      <a href="/tag/sql" title="See all posts with tag 'sql'">sql</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>SQL 을 효과적으로 활용하기 위해 SQL AntiPattern 의 내용을 정리한다.<br />
+4부에서는 애플리케이션에서 SQL 을 다루는 방법에 대해 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="20장-읽을-수-있는-패스워드-패스워드를-복구하거나-재설정하기">20장 읽을 수 있는 패스워드: 패스워드를 복구하거나 재설정하기</h2>
+
+<p>대부분 사용자가 패스워드를 잊어버린 경우, 
+이메일 피드백을 통해 패스워드를 복구하거나 재설정하는 기능을 제공한다.</p>
+
+<h3 id="안티패턴-패스워드를-평문으로-저장하기">안티패턴: 패스워드를 평문으로 저장하기</h3>
+
+<p>패스워드를 평문으로 담은 이메일로 제공해준다면, 
+심각한 보안 결함이 되고 접근 권한을 제공해줄 수 있기 때문에 위험하다.</p>
+
+<ul>
+  <li><strong>패스워드 저장</strong>
+    <ul>
+      <li>패스워드를 평문으로 저장하거나 평문 상태로 전달하면 안전하지 않음</li>
+      <li>해커가 네트워크 패킷을 가로채 SQL 문 확인 가능</li>
+      <li>데이터베이스 서버에서 접근 권한을 제공해줄 수 있음</li>
+      <li>백업 데이터를 읽을 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>패스워드 인증</strong>
+    <ul>
+      <li>패스워드가 평문으로 저장되어 있으면 평문으로 비교 수행</li>
+      <li>공격자에게 패스워드가 노출될 위험이 있음</li>
+    </ul>
+  </li>
+  <li><strong>이메일로 패스워드 보내기</strong>
+    <ul>
+      <li>이메일은 해커가 가로채거나, 로깅, 저장할 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우">사용이 합당한 경우</h4>
+
+<ul>
+  <li>애플리케이션이 다른 서드파티 서비스에 접근해야 하는 경우</li>
+  <li>인트라넷 애플리케이션인 경우</li>
+</ul>
+
+<h3 id="해법-패스워드의-소금-친-해시-값을-저장한다">해법: 패스워드의 소금 친 해시 값을 저장한다</h3>
+
+<ul>
+  <li><strong>해시 함수 이해하기</strong>
+    <ul>
+      <li>일방향 해시 함수로 패스워드 부호화(encode)
+        <ul>
+          <li>ex) SHA-256 알고리즘을 사용하면 문자열 길이가 항상 같음</li>
+        </ul>
+      </li>
+      <li>역을 구하기 어려움</li>
+    </ul>
+  </li>
+  <li><strong>SQL 에서 해시 사용하기</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">SHA2()</code> 함수를 사용해 해시 값을 생성</li>
+      <li>해시 함수가 리턴할 수 없는 값(16진수가 아닌 값)으로 변경하면 계정을 잠글 수 있음
+        <ul>
+          <li>ex) <code class="language-plaintext highlighter-rouge">noaccess</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>해시에 소금 추가하기</strong>
+    <ul>
+      <li>소금(salt): 일방향 함수의 입력값에 덧붙이는 랜덤비트</li>
+      <li>해시 값을 구하기 전에 패스워드에 덧붙이는 무의미한 바이트열임 (8바이트면 충분)</li>
+      <li>데이터베이스에서 해커가 해시 값과 비교하여 찾을 수 없도록 임의아 값을 추가</li>
+    </ul>
+  </li>
+  <li><strong>SQL 에서 패스워드 숨기기</strong>
+    <ul>
+      <li>네트워크 패킷 또는 SQL 로그 파일을 가로챈다면 패스워드가 노출될 수 있음</li>
+      <li>애플리케이션 코드에서 해시 값을 계산해 SQL 에서 활용</li>
+      <li>브라우저와 웹 애플리케이션 서버에서는 HTTPS 같은 보안 프로토콜 사용</li>
+    </ul>
+  </li>
+  <li><strong>패스워드 복구가 아닌 패스워드 재설정 사용하기</strong>
+    <ul>
+      <li>해시 값이 저장되어 있으므로 복구 불가능</li>
+      <li>이메일로 패스워드 대신 임시 패스워드를 보냄
+        <ul>
+          <li>짧은 시간이 지나면 만료시킬 수 있음</li>
+        </ul>
+      </li>
+      <li>아이디에 유일한 토큰을 할당하여 이메일로 보내 패스워드 재설정</li>
+    </ul>
+  </li>
+  <li>안전한 암호학 기술
+    <ul>
+      <li>PBKDF2: 키 강화 표준</li>
+      <li>Bcrypt: 적응성 해시 함수 구현</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="21장-sql-인젝션-동적-sql-쿼리-작성하기">21장 SQL 인젝션: 동적 SQL 쿼리 작성하기</h2>
+
+<p>쿼리 문자열과 애플리케이션 변수를 섞어 SQL 문자열로 만드는 것을 동적 SQL(dynamic SQL) 이라고 한다.<br />
+안전하게 동적 SQL 을 만드는 방법에 대해 알아본다.</p>
+
+<h3 id="안티패턴-검증되지-않은-입력을-코드로-실행하기">안티패턴: 검증되지 않은 입력을 코드로 실행하기</h3>
+
+<p>SQL 인젝션: 어떤 내용을 SQL 쿼리 문자열에 삽입하여 쿼리의 동작을 의도와 다르게 수정하는 것</p>
+
+<ul>
+  <li><strong>사고는 발생할 것이다</strong>
+    <ul>
+      <li>이름에 <code class="language-plaintext highlighter-rouge">'</code> 이 포함되면 의도하지 않은 형태로 바뀔 수 있음</li>
+      <li>의도하지 않은 동작이 실행될 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>최고의 웹 보안 위협</strong>
+    <ul>
+      <li>SQL 문이 파싱되기 전에 동적인 부분을 삽입하면 SQL 인젝션 위험이 있음</li>
+    </ul>
+  </li>
+  <li><strong>치료를 위한 탐구</strong>
+    <ul>
+      <li>값을 이스케이프하기
+        <ul>
+          <li>따옴표 문자를 두 개 또는 역슬래시를 추가하여 문자 리터럴로 변경</li>
+          <li>문자열 삽입하기 전에 애플리케이션 데이터를 변환</li>
+        </ul>
+      </li>
+      <li>쿼리 파라미터
+        <ul>
+          <li>동적 값 삽입 대신 쿼리를 만들 때 파라미터 자리를 미리 정의하여 실행할 때 값 제공</li>
+          <li>이스케이프할 필요도 없고 이스케이프 함수의 결함을 고려하지 않아도 됨</li>
+          <li>보편적인 해결 방법은 될 수 없음
+            <ul>
+              <li>값의 목록을 하나의 파라미터로 전달 불가능</li>
+              <li>테이블 이름은 파라미터로 전달 불가능</li>
+              <li>컬럼 이름을 파라미터로 전달 불가능</li>
+              <li>SQL 키뤄드를 파라미터로 전달 불가능</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>저장 프로시저
+        <ul>
+          <li>보통 고정된 SQL 을 포함하며, 프로시저 정의할 때 파싱</li>
+          <li>애플리케이션 코드에서 동적 SQL 사용하는 것처럼 위험함</li>
+        </ul>
+      </li>
+      <li>데이터 접근 프레임워크
+        <ul>
+          <li>어떤 프레임워크든 안전한 SQL 코드만 작성하도록 강제 불가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-1">사용이 합당한 경우</h4>
+
+<ul>
+  <li>있을 수 없음</li>
+  <li>코드를 방어적으로 작성해야 함</li>
+</ul>
+
+<h3 id="해법-아무도-믿지-마라">해법: 아무도 믿지 마라</h3>
+
+<ul>
+  <li><strong>입력 값 필터링</strong>
+    <ul>
+      <li>입력에 대해 유효하지 않은 문자 모두 제거
+        <ul>
+          <li>정수가 필요하다면, 정수에 맞는 내용만 사용</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>파라미터를 통한 값 전달</strong>
+    <ul>
+      <li>쿼리의 동적 부분이 단순한 값이라면 SQL 표현과 파라미터 분리 필요</li>
+    </ul>
+  </li>
+  <li><strong>동적 값 인용하기</strong>
+    <ul>
+      <li>쿼리 파라미터 사용으로 옵티마이저의 인덱스 사용이 잘못될 수 있음</li>
+      <li>특별한 경우 SQL 문제 해당 값을 직접 삽입하는 것이 나을 수 있음
+        <ul>
+          <li>성숙된 문자열 인용 함수를 사용하여 방어적으로 작성</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>사용자의 입력을 코드와 격리하기</strong>
+    <ul>
+      <li>요청 파라미터로 미리 값을 정의하여 SQL 쿼리에 사용
+        <ul>
+          <li>ex) 정렬 목록 또는 방향의 리스트를 정의 (<code class="language-plaintext highlighter-rouge">up</code> =&gt; <code class="language-plaintext highlighter-rouge">ASC</code>, <code class="language-plaintext highlighter-rouge">down</code> =&gt; <code class="language-plaintext highlighter-rouge">DESC</code>)</li>
+        </ul>
+      </li>
+      <li>사용자의 입력을 SQL 쿼리와 직접 엮지 않아 안전</li>
+      <li>SQL의 어느 부분이든 동적으로 생성 가능</li>
+      <li>사용자의 입력이 유효한지 검증 가능</li>
+      <li>쿼리의 내용을 사용자 인터페이스에서 분리</li>
+    </ul>
+  </li>
+  <li><strong>코드 검토를 함께할 동료 구하기</strong>
+    <ul>
+      <li>SQL 인젝션 위험에 익숙한 동료에게 검사</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="22장-가상키-편집증-데이터-정돈하기">22장 가상키 편집증: 데이터 정돈하기</h2>
+
+<p>수열 중간에 숫자가 몇 개 빠지면 불편한 것은 데이터베이스 기술에 대한 이해나 확인이 부족한 것이 보통이다.</p>
+
+<h3 id="안티패턴-모든-틈-메우기">안티패턴: 모든 틈 메우기</h3>
+
+<ul>
+  <li><strong>시퀀스에서 벗어난 번호 할당하기</strong>
+    <ul>
+      <li>새로운 행에 키 값을 할당할 때 사용되지 않은 첫번째 값을 사용하고 싶을 수 있음
+        <ul>
+          <li>동시성 문제 발생될 수 있음</li>
+        </ul>
+      </li>
+      <li>비효율적이며 에러가 발생될 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>기존 행의 번호를 다시 매기기</strong>
+    <ul>
+      <li>기존 행에 대한 키 값을 업데이트해 틈을 메우고 연속적으로 만들 수 있음
+        <ul>
+          <li>사용되지 않은 키 값을 찾아야 함</li>
+          <li>PK 값을 재할당하기 위해 <code class="language-plaintext highlighter-rouge">UPDATE</code> 문 실행 필요</li>
+          <li>동시성 문제 발생될 수 있음</li>
+          <li>외래키가 있다면 제약조건을 비활성화하고 자식 행까지 업데이트 필요</li>
+        </ul>
+      </li>
+      <li>업데이트해도 디폴트 가상키 생성기를 사용하면 틈이 메워지지 않음</li>
+    </ul>
+  </li>
+  <li><strong>데이터 불일치 만들기</strong>
+    <ul>
+      <li>PK 를 재사용하는 것을 위험함</li>
+      <li>가상키에 빈 값이 있다고 재할당하면 안됨</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-2">사용이 합당한 경우</h4>
+
+<ul>
+  <li>가상키 값을 바꿔야할 이유는 없음</li>
+  <li>PK 칼럼의 값이 의미를 가진다면 자연키임</li>
+</ul>
+
+<h3 id="해법-극복하라">해법: 극복하라</h3>
+
+<p>행을 식별하는 데 연속적인 숫자일 필요는 없음</p>
+
+<ul>
+  <li><strong>행에 번호 매기기</strong>
+    <ul>
+      <li>행 번호는 PK 와 대응되는 것이 아님</li>
+      <li>페이지 처리하는데 유용</li>
+      <li><code class="language-plaintext highlighter-rouge">ROW_NUMBER()</code> 윈도 함수를 사용하면 쿼리 결과 집합에 대한 연속된 번호 확인 가능</li>
+    </ul>
+  </li>
+  <li><strong>GUID 사용하기</strong>
+    <ul>
+      <li>GUID(Global Unique Identifier): 128비트 의사난수로 32자리 16진수</li>
+      <li>장점
+        <ul>
+          <li>중복 걱정없이 동시에 가상키 생성 가능</li>
+          <li>틈에 대한 불평이 없음</li>
+        </ul>
+      </li>
+      <li>단점
+        <ul>
+          <li>키 값이 길어짐</li>
+          <li>값이 랜덤하여 패턴 추론이 어렵고, 큰 값이 최근 행을 나타내지 않음</li>
+          <li>공간도 많이 차지하고 속도도 느림</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>가장 중요한 문제</strong>
+    <ul>
+      <li>데이터베이스를 정리를 해결하기 위해서는 커뮤티케이션도 중요
+        <ul>
+          <li>기술 설명</li>
+          <li>비용을 명확하게 함</li>
+          <li>자연키 사용하기</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="23장-나쁜-것-안-보기-코드를-적게-작성하기">23장 나쁜 것 안 보기: 코드를 적게 작성하기</h2>
+
+<p>간결한 코드를 작성해야 하는 이유</p>
+
+<ul>
+  <li>작동하는 애플리케이션 코딩을 빨리 끝낼 수 있음</li>
+  <li>테스트화, 문서화, 동료 검토할 코드 양 감소</li>
+  <li>코드양이 적으면 버그도 적음</li>
+</ul>
+
+<h3 id="안티패턴-짚-없이-벽돌-만들기">안티패턴: 짚 없이 벽돌 만들기</h3>
+
+<ul>
+  <li><strong>진단 없는 진료</strong>
+    <ul>
+      <li>함수로부터 리턴된 상태값 체크 필요
+        <ul>
+          <li>ex) db 커넥션, 잘못된 쿼리 등</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>읽기간 행</strong>
+    <ul>
+      <li>SQL 쿼리를 문자열로 생성하는 애플리케이션 코드를 보는 것은 매우 어려움</li>
+      <li>디버깅할 때, SQL 자체를 보고 판단하는 것이 빠름</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-3">사용이 합당한 경우</h4>
+
+<ul>
+  <li>에러에 대해 할 것이 없다면 에러 검사 생략 가능</li>
+  <li>예외를 던져 호출 스택의 위로 전달될 수 있도록 함</li>
+</ul>
+
+<h3 id="해법-에러에서-우아하게-복구하기">해법: 에러에서 우아하게 복구하기</h3>
+
+<ul>
+  <li><strong>리듬 유지하기</strong>
+    <ul>
+      <li>API 호출 후 리턴 상태나 예외 확인</li>
+      <li>에러가 발생할 수 있는 모든 호출에 대해 상태 확인</li>
+    </ul>
+  </li>
+  <li><strong>스텝 되짚기</strong>
+    <ul>
+      <li>API 메서드의 인수에서 SQL 쿼리를 만들지 말고 변수를 사용해서 만들기
+        <ul>
+          <li>변수 값 확인할 수 있음</li>
+        </ul>
+      </li>
+      <li>SQL 을 따로 출력하도록 함
+        <ul>
+          <li>ORM 프레임워크를 사용하면 디버깅이 복잡해질 수 있음</li>
+        </ul>
+      </li>
+      <li>SQL 쿼리를 HTML 주석으로 출력하면 안됨
+        <ul>
+          <li>해커가 데이터베이스 구조를 파악할 수 있음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="24장-외교적-면책특권-관례-따르기">24장 외교적 면책특권: 관례 따르기</h2>
+
+<p>좋은 소프트웨어 공학적 습관</p>
+
+<ul>
+  <li>Subversion 이나 Git 같은 버전 관리 도구로 코드 관리</li>
+  <li>자동화된 단위 테스트나 기능 테스트 개발하고 실행</li>
+  <li>요구사항과 구현 전략 기록하기 위해 명세서, 문서, 코드 주석 작성</li>
+</ul>
+
+<h3 id="안티패턴-sql을-2등-시민으로-만들기">안티패턴: SQL을 2등 시민으로 만들기</h3>
+
+<p>애플리케이션 코드에서 따르는 개발 관례를 데이터베이스 코드에는 면제된다고 생각한다.<br />
+이 책에서는 이러한 안티패턴을 ‘외교적 면책특권’이라 한다.<br />
+데이터베이스는 애플리케이션의 기초로 품질이 중요하므로 좋은 관례를 따라야 한다.</p>
+
+<h4 id="사용이-합당한-경우-4">사용이 합당한 경우</h4>
+
+<ul>
+  <li>한 번 이상 사용할 모든 코드에 대해 문서화, 테스트, 소드 관리를 해야 함</li>
+  <li>임시적인 코드
+    <ul>
+      <li>사용 후에 바로 지우기</li>
+      <li>최소한 코드의 목적이나 사용방법 정도의 간단한 기록 남기기</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="해법-초당적-품질-문화-확립">해법: 초당적 품질 문화 확립</h3>
+
+<p>소프트웨어 공학의 전체 생명주기 수행</p>
+
+<ol>
+  <li>프로젝트 요구사항을 문서로 명확하게 명세</li>
+  <li>요구사항에 대한 솔루션을 설계하고 개발</li>
+  <li>솔루션이 요구사항에 맞는지 검토하고 테스트</li>
+</ol>
+
+<ul>
+  <li><strong>증거1: 문서화</strong>
+    <ul>
+      <li>ERD(Entity-Relationship Diagram)
+        <ul>
+          <li>테이블과 테이블 사이의 관계를 나타내는 ERD</li>
+          <li>데이터베이스가 복잡하고 많으면 여러 개의 다이어그램으로 분해</li>
+        </ul>
+      </li>
+      <li>테이블, 칼럼, 뷰
+        <ul>
+          <li>색인 테이블, 교차 테이블, 종속 테이블 같은 테이블 정보</li>
+          <li>컬럼의 값의 의미</li>
+          <li>뷰를 생성해야 하는 이유, 어디에 사용되는지, 업데이트가 가능 여부</li>
+        </ul>
+      </li>
+      <li>관계
+        <ul>
+          <li>참조 정합성 제약조건의 의도 설명 필요</li>
+          <li>암묵적 관계인 경우 관계가 있는지조차 파악이 어려움</li>
+        </ul>
+      </li>
+      <li>트리거
+        <ul>
+          <li>구현된 비즈니스 규칙 정보
+            <ul>
+              <li>ex) 데이터 검증, 데이터 변환, 데이터베이스 변경 로깅 등</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>저장 프로시저
+        <ul>
+          <li>해결하고자 하는 문제</li>
+          <li>데이터 변경 여부</li>
+          <li>입력과 출력 데이터 타입</li>
+        </ul>
+      </li>
+      <li>SQL 보안
+        <ul>
+          <li>애플리케이션에서 사용하기 위해 정의한 계정 정보</li>
+          <li>각 계정이 가지고 있는 접근 권한, 역할</li>
+        </ul>
+      </li>
+      <li>데이터베이스 기반 구조
+        <ul>
+          <li>사용하는 DBMS 제품 이름 및 버전</li>
+          <li>데이터베이스 서버 호스트 네임</li>
+          <li>데이터베이스 서버 개수</li>
+          <li>리클리케이션, 클러스터, 프록시 사용 여부</li>
+          <li>커넥션 옵션, 네트워크, 포트, 백업 정책</li>
+        </ul>
+      </li>
+      <li>객체-관계 매핑
+        <ul>
+          <li>구현된 비즈니스 규칙 정보</li>
+          <li>데이터 유효성 검증, 데이터 변환, 로깅, 캐싱, 프로파일링 기술 방식</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>증거의 흔적: 소스 코드 제어</strong>
+    <ul>
+      <li>데이터 정의 스크립트
+        <ul>
+          <li>데이터베이스 객체를 정의하는 SQL 문을 포함한 스크림트 실행 방법 제공</li>
+        </ul>
+      </li>
+      <li>트리거와 프로시저
+        <ul>
+          <li>프로젝트 코드의 일부로 생각하고 관리</li>
+        </ul>
+      </li>
+      <li>부트스트랩 데이터
+        <ul>
+          <li>색인 테이블에 초기 상태가 필요할 수 있으므로 데이터 보관</li>
+        </ul>
+      </li>
+      <li>ERD와 문서
+        <ul>
+          <li>데이터베이스 요구사항, 구현, 애플리케이션과의 통합 기술</li>
+        </ul>
+      </li>
+      <li>DBA 스크립트
+        <ul>
+          <li>애플리케이션 밖에서 실행되는 데이터 처리 작업 코드도 애플리케이션 코드와 같이 관리</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>입증 책임: 테스트</strong>
+    <ul>
+      <li>테이블, 컬럼, 뷰
+        <ul>
+          <li>테이블과 뷰가 실제 존재 여부 확인</li>
+        </ul>
+      </li>
+      <li>제약조건
+        <ul>
+          <li>제약조건 때문에 에러가 발생할 <code class="language-plaintext highlighter-rouge">INSERT</code>, <code class="language-plaintext highlighter-rouge">UPDATE</code>, <code class="language-plaintext highlighter-rouge">DELETE</code> 문 실행 확인</li>
+        </ul>
+      </li>
+      <li>트리거
+        <ul>
+          <li>강제 실행하여 시나리오 테스트</li>
+        </ul>
+      </li>
+      <li>저장 프로시저
+        <ul>
+          <li>단위 테스트와 비슷하게 테스트 실행</li>
+        </ul>
+      </li>
+      <li>부트스트랩 데이터
+        <ul>
+          <li>쿼리를 통해 초기 데이터가 존재하는지 검증</li>
+        </ul>
+      </li>
+      <li>쿼리
+        <ul>
+          <li>테스트 환경에서 쿼리 실행</li>
+        </ul>
+      </li>
+      <li>ORM 클래스
+        <ul>
+          <li>애플리케이션과 비슷하게 테스트 필요</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>담당 건수: 여러 브랜치에서 작업하기</strong>
+    <ul>
+      <li>이상적으로 애플리케이션 리비전마다 별도의 데이터베이스 인스턴스 생성하는 것이 좋음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="25장-마법의-콩-mvc에서-모델-단순화하기">25장 마법의 콩: MVC에서 모델 단순화하기</h2>
+
+<p>개발 기간을 줄일 수 있다면, 소프트웨어를 개발하는 비용도 줄어든다.<br />
+MVC 아키텍처를 사용하면 애플리케이션의 관심사를 분리할 수 있다.</p>
+
+<ul>
+  <li>컨트롤러
+    <ul>
+      <li>사용자 입력 받기, 응답할 작업 정의, 모델로 작업 위임, 결과를 뷰</li>
+    </ul>
+  </li>
+  <li>모델
+    <ul>
+      <li>애플리케이션의 중심</li>
+      <li>입력 값 검증, 비즈니스 로직, 데이터베이스와 상호작용</li>
+    </ul>
+  </li>
+  <li>뷰
+    <ul>
+      <li>사용자 인터페이스에 정보 표시</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="안티패턴-액티브-레코드인-모델">안티패턴: 액티브 레코드인 모델</h3>
+
+<blockquote>
+  <p>액티브 레코드: 모델 객체의 필드를 데이터베이스에 있는 테이블 하나의 컬럼과 매핑하는 디자인 패턴</p>
+</blockquote>
+
+<p>MVC 애플리케이션에서 모든 모델 클래스가 액티브 레코드 클래스를 상속하는 것은 좋지 않음</p>
+
+<ul>
+  <li><strong>액티브 레코드는 모델을 스키마와 결합시킨다</strong>
+    <ul>
+      <li>액티브 레코드 클래스는 데이터베이스의 테이블 하나 또는 뷰를 표현</li>
+      <li>새로운 구조의 데이터를 표현하기 위해서는 모델 클래스, 애플리케이션 코드도 함께 수정 필요</li>
+    </ul>
+  </li>
+  <li><strong>액티브 레코드는 CRUD 함수를 노출시킨다</strong>
+    <ul>
+      <li>의도치 않은 용도로 액티브 레코드 클래스의 CRUD 함수를 사용할 수 있음</li>
+    </ul>
+  </li>
+  <li><strong>액티브 레코드는 빈약한 도메인 모델을 조장한다</strong>
+    <ul>
+      <li>빈약한 도메인 모델(anemic domain model)
+        <ul>
+          <li>모델을 단순한 데이터 접근 객체로 취급하여 비즈니스 로직이 모델 외부에 존재, 동작 응집도 낮아짐</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>마법의 콩은 단위 테스트가 어렵다</strong>
+    <ul>
+      <li>모델 테스트
+        <ul>
+          <li>데이터 접근과 분리해 모델의 동작 테스트가 어려움</li>
+          <li>데이터베이스 픽스처를 사용하면 데이터베이스가 필요해지고, 준비 작업고 정리 작접이 느려짐</li>
+        </ul>
+      </li>
+      <li>뷰 테스트
+        <ul>
+          <li>렌더링한 후 HTML 을 파싱해 특정 요소를 찾는 코드 실행 필요</li>
+        </ul>
+      </li>
+      <li>컨트롤러 테스트
+        <ul>
+          <li>가짜 HTTP 요청 생성 필요</li>
+          <li>HTTP 응답을 골라내야 함</li>
+          <li>비즈니스 로직을 테스트하는 데 많은 설정 코드가 필요해지고, 테스트 실행이 느려짐</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="사용이-합당한-경우-5">사용이 합당한 경우</h4>
+
+<ul>
+  <li>액티브 레코드 디자인 패턴은 문제는 없음</li>
+  <li>모델을 DAO 와 동일하게 정의하여 단순화 가능</li>
+  <li>프로토타입(prototype) 만드는 경우
+    <ul>
+      <li>코드를 빨리 작성하는 것이 유지보수 하는 것보다 중요한 경우</li>
+      <li>기술적 부채를 탕감하기 위한 리팩토링 시간 확보 필요</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="해법-액티브-레코드를-가지는-모델">해법: 액티브 레코드를 가지는 모델</h3>
+
+<ul>
+  <li><strong>모델 이해하기</strong>
+    <ul>
+      <li>정보 전문가
+        <ul>
+          <li>어떤 동작에 책임이 있는 객체는 동작을 수행하는 데 필요한 모든 데이터를 가지고 있어야 함</li>
+          <li>모델과 액티브 레코드와 같은 DAO 사이의 관계는 HAS-A(집합연관) 여야 함</li>
+        </ul>
+      </li>
+      <li>창조자
+        <ul>
+          <li>모델이 데이터를 데이터베이스에 저장하는 방법은 내부 구현 상세여야 함</li>
+          <li>컨트롤러와 뷰는 데이터베이스 상호작용하는 방법을 알 필요 없음</li>
+        </ul>
+      </li>
+      <li>낮은 결합도
+        <ul>
+          <li>논리적으로 독립적인 코드 블록 분리</li>
+          <li>클래스의 구현을 변경할 수 있는 유연성</li>
+        </ul>
+      </li>
+      <li>높은 응집도
+        <ul>
+          <li>도메인 모델 클래스의 인터페이스는 의도된 사용법을 반영해야 함</li>
+          <li>데이터베이스의 물리적 구조나 CRUD 동작을 반영하면 안됨</li>
+        </ul>
+      </li>
+      <li>도메인 모델 동작하게 하기
+        <ul>
+          <li>모델은 애플리케이션을 위한 비즈니스 로직 구현하는 곳
+            <ul>
+              <li>애플리케이션에서 도메인의 객체지향적 표현</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>간단한 객체 테스트하기</strong>
+    <ul>
+      <li>모델을 DAO 에서 분리하면 DAO 의 스텁(stub) 과 목(mock)을 생성해 단위 테스트 가능</li>
+    </ul>
+  </li>
+  <li><strong>땅으로 내려오기</strong>
+    <ul>
+      <li>객체지향 설계 원칙을 공부하면 생산적으로 데이터 접근 객체 사용 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="부록-정규화-규칙">부록: 정규화 규칙</h2>
+
+<h3 id="관계형의-뜻">관계형의 뜻</h3>
+
+<p>관계형(relational) 이라는 용어는 테이블 사이의 관계를 뜻하는 게 아니라,<br />
+테이블 자체 또는 테이블과 컬럼 사이의 관계를 뜻한다.</p>
+
+<p>테이블 정규화를 하기 전에 적절한 관계인지 몇 가지 조건을 만족하는지 확인해야 한다.</p>
+
+<ul>
+  <li><strong>행은 위아래 순서를 가지지 않는다</strong>
+    <ul>
+      <li>순서를 고려하지 않는다면 행의 집합은 동일해야 함</li>
+    </ul>
+  </li>
+  <li><strong>컬럼은 좌우 순서를 가지지 않는다</strong>
+    <ul>
+      <li>컬럼에 대한 위치 의미를 두면 안됨 (19장 암묵적 컬럼과 연관)</li>
+    </ul>
+  </li>
+  <li><strong>중복 행은 허용되지 않는다</strong>
+    <ul>
+      <li>다른 행과 구분할 수 있어야 하고 개별 행에 접근할 수 있어야 함 (PK 제약 조건)</li>
+      <li>모든 컬럼은 하나의 타입과 값만을 가져야 함 안티 패턴
+        <ul>
+          <li>안티 패턴 ex) EAV 테이블</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>행은 숨은 컴포넌트를 갖지 않는다</strong>
+    <ul>
+      <li>컬럼은 데이터 값을 포함하며, 행 ID나 객체 ID 같은 스토리지 지시자를 갖지 않음
+        <ul>
+          <li>안티 패턴 ex) 가상키 편집증</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="정규화에-대한-미신">정규화에 대한 미신</h3>
+
+<ul>
+  <li>정규화는 데이터베이스를 느리게 만듦
+    <ul>
+      <li>쿼리에 대해 엄청 큰 비용이 발생될 수 있음</li>
+    </ul>
+  </li>
+  <li>정규화에서는 데이터를 자식 테이블로 분리하고 참조
+    <ul>
+      <li>편의, 성능, 효율성을 위해 사용할 수 있지만 정규화와 관련된 내용은 아님</li>
+    </ul>
+  </li>
+  <li>정규화는 EAV 설계에서와 같이 속성을 최대한 분리하는 것
+    <ul>
+      <li>위와 다르게 정규화는 읽기 편하고 쿼리하기 편하게 만들어 줌</li>
+    </ul>
+  </li>
+  <li>제 3정규형 이상으로 정규화할 필요는 없음
+    <ul>
+      <li>제 4정규형부터 위배되면 잠재적으로 데이터 손실을 초래할 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="정규화란">정규화란?</h3>
+
+<p>정규화의 목표</p>
+
+<ul>
+  <li>이해할 수 있는 방법으로 실셰계 표현</li>
+  <li>중복 저장, 데이터 이상 또는 모순 생기는 것을 방지</li>
+  <li>정합성 지원</li>
+</ul>
+
+<h3 id="정규화의-단계">정규화의 단계</h3>
+
+<figure>
+    <a href="/images/book/sql-anti-pattern/normalization-step.png">
+        <img src="/images/book/sql-anti-pattern/normalization-step.png" data-rjs="/images/book/sql-anti-pattern/normalization-step.png" class="zooming" alt="normalization step" />
+    </a>
+    
+    <figcaption>
+        normalization step
+        
+        (출처: SQL AntiPattern)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>제1 정규형
+    <ul>
+      <li>테이블이 관계여야 함</li>
+      <li>테이블이 반복 그룹을 가지지 않아야 함
+        <ul>
+          <li>한 행이 여러 개의 값을 가지지 않음</li>
+        </ul>
+      </li>
+      <li>안티패턴
+        <ul>
+          <li>무단횡단: 여러 값이 들어가는 경우</li>
+          <li>다중 칼럼 속성: 같은 도메인의 여러 값이 여러 컬럼에 걸치는 경우</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>제2 정규형
+    <ul>
+      <li>특정 컬럼이 복합 PK 의 일부에 의해 결정되지 않아야 함
+        <ul>
+          <li>완전 함수 종속 만족</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>제3 정규형
+    <ul>
+      <li>복합 PK 일부와 관계 없이 일부 컬럼이 특정 컬럼에 결정되지 않아야 함
+        <ul>
+          <li>이행적 종속 제거</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>보이스-코드 정규형(BCNF, Boyce-Codd Normal Form)
+    <ul>
+      <li>제3 정규형보다 조금 강력한 버전</li>
+      <li>키 칼럼을 포함한 모든 속성은 키에 종속이어야 함</li>
+    </ul>
+  </li>
+  <li>제4 정규형
+    <ul>
+      <li>다치 종속 제거
+        <ul>
+          <li>관계 없는 독립적인 값들이 같은 컬럼에 종속되는 경우 다치 종속</li>
+          <li>ex) 여러 개의 다대다 관계를 하나의 교차 테이블로 나타내려할 때 위반</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>제5 정규형
+    <ul>
+      <li>보이스-코드 정규형의 조건 만족</li>
+      <li>조인 종속 제거
+        <ul>
+          <li>조인 종속: 분해했다가 다시 조인했을 때 분해하기 전과 동일한 경우</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>도메인-키 정규형(DKNF, Domain-Key Normal Form)
+    <ul>
+      <li>테이블의 모든 제약조건은 테이블 도메인 제약조건과 키 제약조건의 논리적 결과</li>
+    </ul>
+  </li>
+  <li>제6 정규형
+    <ul>
+      <li>모든 조인 종속성 제거 추구</li>
+    </ul>
+  </li>
+</ul>
+
+<p>관련 코드는 <a href="https://github.com/devyonghee/sql-anti-pattern-study">깃허브</a> 참고</p>
+
+<h2 id="출처">출처</h2>
+<ul>
+  <li>SQL AntiPatterns</li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[SQL+AntiPattern]+4%EB%B6%80+%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98+%EA%B0%9C%EB%B0%9C+...%20-%20https://devyonghee.github.io/book/2023/09/28/sql-anti-pattern-part4/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2023/09/28/sql-anti-pattern-part4/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

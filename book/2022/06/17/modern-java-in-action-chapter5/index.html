@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter5. 스트림 활용</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter5. 스트림 활용">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/06/17/modern-java-in-action-chapter5/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/06/17/modern-java-in-action-chapter5/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter5. 스트림 활용">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter5. 스트림 활용</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    June 17, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      5 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 5장에서는 스트림 활용하는 방법에 대해 소개한다.<br />
+스트림 API 가 지원하는 연산들에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="51-필터링">5.1 필터링</h2>
+
+<p>스트림 요소를 선택하는 방법</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">filter</code> 메서드
+    <ul>
+      <li>전체 스트림을 반복</li>
+      <li><code class="language-plaintext highlighter-rouge">Predicate&lt;T&gt;</code> 를 인수로 받아 일치하는 모든 요소를 포함하는 스트림 반환</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">distinct</code> 메서드
+    <ul>
+      <li>고유 요소 필터링, 중복 제거 (<code class="language-plaintext highlighter-rouge">hashCode</code>, <code class="language-plaintext highlighter-rouge">equals</code> 로 결정)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="52-스트림-슬라이싱-자바-9">5.2 스트림 슬라이싱 (자바 9)</h2>
+
+<p>스트림 요소를 선택하거나 스킵하는 방법</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">takeWhile</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Predicate&lt;T&gt;</code> 를 인수로 받아 일치하는 요소들을 포함한 스트림 반환</li>
+      <li><code class="language-plaintext highlighter-rouge">filter</code> 와 다르게 정렬된 리스트를 대상으로 하여 일치하지 않는 경우 반복 작업을 중단</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">dropWhile</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">takeWhile</code> 와 반대로 처음으로 일치하지 않는 지점까지의 이전 요소들을 제거하고 남은 모든 요소 반환</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">limit(n)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">long</code> 타입을 인수로 받아 요소 n 개 반환</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">skip(n)</code>
+    <ul>
+      <li>처음 <code class="language-plaintext highlighter-rouge">n</code> 개 요소를 제외한 스트림을 제외한 스트림 반환</li>
+      <li>주어진 <code class="language-plaintext highlighter-rouge">n</code> 이 요소의 갯수보다 크면 빈 스트림 반환</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="53-매핑">5.3 매핑</h2>
+
+<p>특정 객체에서 특정 데이터를 선택하는 기능</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">map</code>
+    <ul>
+      <li>함수를 인수로 받아 각 요소에 적용. 그 결과는 새로운 요소로 매핑된다.</li>
+      <li>다른 <code class="language-plaintext highlighter-rouge">map</code> 메서드와 연결(chaining) 가능</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">flatMap</code>
+    <ul>
+      <li>스트림의 각 요소들을 다른 스트림으로 만들어서 하나의 스트림으로 연결</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="54-검색과-매칭">5.4 검색과 매칭</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">anyMatch</code>
+    <ul>
+      <li>적어도 한 요소가 주어진 <code class="language-plaintext highlighter-rouge">Predicate</code> 와 일치하는지 확인</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">allMatch</code>
+    <ul>
+      <li>모든 요소가 주어진 <code class="language-plaintext highlighter-rouge">Predicate</code> 와 일치하는지 확인</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">noneMatch</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">allMatch</code> 와 반대 연산</li>
+      <li>주어진 <code class="language-plaintext highlighter-rouge">Predicate</code> 와 일치하는 요소가 없는지 확인</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">findAny</code>
+    <ul>
+      <li>현재 스트림에서 임의의 요소 반환</li>
+      <li>다른 스트림 연산과 연결해서 사용 가능</li>
+      <li><code class="language-plaintext highlighter-rouge">Optional</code> 반환</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">findFirst</code>
+    <ul>
+      <li>논리적인 아이템 순서로 정렬된 데이터의 첫번째 요소 반환</li>
+      <li><code class="language-plaintext highlighter-rouge">Optional</code> 반환</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>쇼트서킷 평가</p>
+
+  <p>자바의 &amp;&amp;, || 와 같은 연산<br />
+전체 스트림을 처리하지 않아도 결과 반환 가능<br />
+원하는 요소를 찾으면 즉시 결과 반환<br />
+ex) allMatch, noneMatch, findFirst, findAny, limit…</p>
+</blockquote>
+
+<h3 id="optional"><code class="language-plaintext highlighter-rouge">Optional</code></h3>
+
+<ul>
+  <li>값의 존재 여부를 표현하는 컨테이너 클래스</li>
+  <li>에러를 일으킬 수 있는 <code class="language-plaintext highlighter-rouge">null</code> 대신 사용</li>
+  <li>값의 유무에 따라 처리를 강제하는 기능 제공
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">isPresent()</code> : 값이 존재하면 참(<code class="language-plaintext highlighter-rouge">true</code>), 없으면 거짓(<code class="language-plaintext highlighter-rouge">false</code>) 반환</li>
+      <li><code class="language-plaintext highlighter-rouge">ifPresent(Consumer&lt;T&gt; block)</code> : 값이 존재하면 주어진 블록 실행</li>
+      <li><code class="language-plaintext highlighter-rouge">T get()</code> : 값이 존재하면 값 반환, 없으면 <code class="language-plaintext highlighter-rouge">NoSuchElementException</code> 발생</li>
+      <li><code class="language-plaintext highlighter-rouge">T orElse(T other)</code>: 값이 존재하면 값 반환, 없으면 기본값(<code class="language-plaintext highlighter-rouge">other</code>) 반환</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="55-리듀싱">5.5 리듀싱</h2>
+
+<p>스트림의 모든 요소를 반복적으로 처리하여 값으로 도출하는 연산 (종이를 작은 조각이 될 때까지 접는 것과 비슷해서 폴드라고도 부름)</p>
+
+<p>리듀스 인수</p>
+<ul>
+  <li>초깃값
+    <ul>
+      <li>스트림에 요소가 없는 경우가 있기 때문에 초깃값이 없으면 <code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code> 반환</li>
+    </ul>
+  </li>
+  <li>
+    <p>스트림의 두 요소를 합쳐서 하나의 값으로 만드는 데 사용할 람다</p>
+  </li>
+  <li>예시
+    <ul>
+      <li>요소의 합
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">numbers.stream().reduce(0, (a, b) -&gt; a + b);</code>
+            <ul>
+              <li>초깃값 0</li>
+              <li>람다 표현식으로 두 요소를 합함</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>최댓값 최솟값
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">numbers.stream().reduce(Integer::max);</code></li>
+          <li><code class="language-plaintext highlighter-rouge">numbers.stream().reduce(Integer::min);</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>연산</th>
+      <th>형식</th>
+      <th>반환 형식</th>
+      <th>함수형 인터페이스 형식</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>filter</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>distinct</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>takeWhile</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>dropWhile</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>skip</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>long</td>
+    </tr>
+    <tr>
+      <td>limit</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>long</td>
+    </tr>
+    <tr>
+      <td>map</td>
+      <td>중간 연산</td>
+      <td>Stream<R></R></td>
+      <td>Function&lt;T, R&gt;</td>
+    </tr>
+    <tr>
+      <td>flatMap</td>
+      <td>중간 연산</td>
+      <td>Stream<R></R></td>
+      <td>Function&lt;T, Stream<R>&gt;</R></td>
+    </tr>
+    <tr>
+      <td>sorted</td>
+      <td>중간 연산</td>
+      <td>Stream<T></T></td>
+      <td>Comparator<T></T></td>
+    </tr>
+    <tr>
+      <td>anyMatch</td>
+      <td>최종 연산</td>
+      <td>boolean</td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>noneMatch</td>
+      <td>최종 연산</td>
+      <td>boolean</td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>allMatch</td>
+      <td>최종 연산</td>
+      <td>boolean</td>
+      <td>Predicate<T></T></td>
+    </tr>
+    <tr>
+      <td>findAny</td>
+      <td>최종 연산</td>
+      <td>Optional<T></T></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>findFirst</td>
+      <td>최종 연산</td>
+      <td>Optional<T></T></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>forEach</td>
+      <td>최종 연산</td>
+      <td>void</td>
+      <td>Consumer<T></T></td>
+    </tr>
+    <tr>
+      <td>collect</td>
+      <td>최종 연산</td>
+      <td>R</td>
+      <td>Collector&lt;T, A, R&gt;</td>
+    </tr>
+    <tr>
+      <td>reduce</td>
+      <td>최종 연산</td>
+      <td>Optional<T></T></td>
+      <td>BinaryOperator<T></T></td>
+    </tr>
+    <tr>
+      <td>count</td>
+      <td>최종 연산</td>
+      <td>long</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="57-숫자형-스트림">5.7 숫자형 스트림</h2>
+
+<p>스트림 API 에는 박싱 비용을 피하고 효율적으로 처리할 수 있도록 3가지 기본형 특화 스트림(primitive stream specialization)을 제공한다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">IntStream</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DoubleStream</code></li>
+  <li><code class="language-plaintext highlighter-rouge">LongSteam</code></li>
+</ul>
+
+<h3 id="기본형-특화-스트림">기본형 특화 스트림</h3>
+
+<ul>
+  <li>숫자 스트림으로 매핑
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mapToInt</code></li>
+      <li><code class="language-plaintext highlighter-rouge">mapToDouble</code></li>
+      <li><code class="language-plaintext highlighter-rouge">mapToLong</code></li>
+    </ul>
+  </li>
+  <li>객체 스트림으로 복원
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">boxed</code>
+        <ul>
+          <li>특화 스트림을 일반스트림으로 변환</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>기본값: Optional 기본형 특화 스트림 버전
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">OptionalInt</code></li>
+      <li><code class="language-plaintext highlighter-rouge">OptionalDouble</code></li>
+      <li><code class="language-plaintext highlighter-rouge">OptionalLong</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="숫자-범위">숫자 범위</h3>
+
+<p><code class="language-plaintext highlighter-rouge">IntStream</code>, <code class="language-plaintext highlighter-rouge">LongStream</code> 에서의 <code class="language-plaintext highlighter-rouge">range</code>, <code class="language-plaintext highlighter-rouge">rangeClosed</code> 정적 메서드로 특정 범위의 숫자를 이용할 수 있다.<br />
+두 메서드 모두 첫번째 인수로 시작값, 두번째 인수로 종료값을 받는다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">range</code>
+    <ul>
+      <li>종료값이 포함되지 않음</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">rangeClosed</code>
+    <ul>
+      <li>종료값이 결과에 포함</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="58-스트림-만들기">5.8 스트림 만들기</h2>
+
+<ul>
+  <li>값으로 스트림 만들기
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Stream.of(T... values)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">Stream.empty()</code> (빈 스트림)</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">null</code> 이 될 수 있는 스트림 (자바 9 추가)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Stream.ofNullable(T t)</code> (<code class="language-plaintext highlighter-rouge">null</code> 이라면 빈 스트림)</li>
+    </ul>
+  </li>
+  <li>배열로 스트림 만들기
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Arrays.stream(array)</code> (기본형도 가능)</li>
+    </ul>
+  </li>
+  <li>파일로 스트림 만들기
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Files.lines</code>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Stream</code> 은 <code class="language-plaintext highlighter-rouge">AutoCloseable</code> 인터페이스를 구현하고 있으므로 <code class="language-plaintext highlighter-rouge">try</code> 블록 내 자원은 자동으로 관리</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>함수로 무한 스트림 만들기
+    <ul>
+      <li>요청할 때마다 값을 생성</li>
+      <li>끝이 없으므로 <strong>무한 스트림</strong>(infinite stream) 또는 <strong>언바운드 스트림</strong>(unbounded stream) 이라고 표현</li>
+      <li>무한한 값이 출력되지 않도록 보통 <code class="language-plaintext highlighter-rouge">limit(n)</code> 메서드를 사용</li>
+      <li><code class="language-plaintext highlighter-rouge">Stream.iterate</code>
+        <ul>
+          <li>초깃값과 람다(<code class="language-plaintext highlighter-rouge">UnaryOperator&lt;T&gt;</code>)를 인수로 받아 연속적으로 값을 생성</li>
+          <li>자바 9 에서는 <code class="language-plaintext highlighter-rouge">Predicate</code> 도 추가로 받아 언제까지 수행할 것인지 지정 가능</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">Stream.generate</code>
+        <ul>
+          <li>연속적이지 않은 새로운 값을 계속 생성 가능 (<code class="language-plaintext highlighter-rouge">Supplier&lt;T&gt;</code>을 인수로 받음)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter5.+%EC%8A%A4%ED%8A%B8%EB%A6%BC+%ED%99%9C%EC%9A%A9%20-%20https://devyonghee.github.io/book/2022/06/17/modern-java-in-action-chapter5/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/06/17/modern-java-in-action-chapter5/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

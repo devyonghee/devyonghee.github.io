@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter13. 디폴트 메서드</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter13. 디폴트 메서드">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/07/18/modern-java-in-action-chapter13/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/07/18/modern-java-in-action-chapter13/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter13. 디폴트 메서드">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter13. 디폴트 메서드</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    July 18, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      5 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 13장에서는 디폴트 메서드에 대해 소개하고 있다. <br />
+디폴트 메서드가 무엇인지, 기존의 문제를 어떻게 디폴트 메서드를 이용하여 어떻게 해결하는지 알아본다.</p>
+
+<!--more-->
+
+<p>기존에는 인터페이스가 변경되면 상속받은 모든 클래스의 수정이 필요했다.   <br />
+하지만 자바 8에서는 인터페이스 내부의 정적 메서드, 기본 구현을 제공하는 디폴트 메서드로 이 문제를 해결했다.<br />
+디폴트 메서드를 이용하면 기본 구현을 그대로 상속하므로 호환성을 유지하면서 라이브러리를 자유롭게 변경할 수 있다.<br />
+또한 디폴트 메서드는 다중 상속 동작이라는 유연성을 제공해주기 때문에 유용하게 사용할 수 있다.</p>
+
+<p><br /></p>
+
+<h2 id="131-변화하는-api">13.1 변화하는 API</h2>
+
+<p>예제를 통해 릴리즈된 인터페이스가 수정되었을 때 발생되는 문제에 대해 자세히 알아본다.</p>
+
+<h3 id="버전-1">버전 1</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Resizable</span> <span class="kd">extends</span> <span class="nc">Drawable</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="nf">getWidth</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="nf">getHeight</span><span class="o">();</span>
+  <span class="kt">void</span> <span class="nf">setWidth</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">setHeight</span><span class="o">(</span><span class="kt">int</span> <span class="n">height</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">setAbsoluteSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">,</span> <span class="kt">int</span> <span class="n">height</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">// implments</span>
+<span class="kd">public</span> <span class="nc">Ellipse</span> <span class="kd">implements</span> <span class="nc">Resizeable</span> <span class="o">{</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="버전-2">버전 2</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Resizable</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="nf">getWidth</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="nf">getHeight</span><span class="o">();</span>
+  <span class="kt">void</span> <span class="nf">setWidth</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">setHeight</span><span class="o">(</span><span class="kt">int</span> <span class="n">height</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">setAbsoluteSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">,</span> <span class="kt">int</span> <span class="n">height</span><span class="o">);</span>
+  <span class="c1">// 신규 메서드</span>
+  <span class="kt">void</span> <span class="nf">setRelativeSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">wFactor</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hFactor</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>새로운 메서드가 추가되면 바이너리 호환성(추가된 메서드를 호출하지 않으면 잘 동작)은 유지 된다.
+하지만 다음과 같은 문제들이 발생된다.</p>
+
+<ul>
+  <li>메서드를 사용한다면 <code class="language-plaintext highlighter-rouge">AbstractMethodError</code> 런타임 에러가 발생</li>
+  <li>애플리케이션을 재빌드하면 컴파일 에러 발생</li>
+</ul>
+
+<p>이를 해결하기 위해 예전 버전과 새로운 버전을 직접 관리하는 방법도 있지만 다음과 같은 문제가 있다.</p>
+
+<ul>
+  <li>라이브러리 관리 복잡</li>
+  <li>사용자는 같은 코드에 두가지 라이브러리를 모두 사용해야 함</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="132-디폴트-메서드란-무엇인가">13.2 디폴트 메서드란 무엇인가?</h2>
+
+<p>디폴트 메서드는 호환성을 유지하하면서 API를 변경할 수 있는 자바 8의 새로운 기능이다.<br />
+<code class="language-plaintext highlighter-rouge">default</code> 키워드로 시작하며, 인터페이스를 구현한 클래스에서 구현하지 않은 메서드가 존재하면 인터페이스 자체에서 제공하게 된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Size</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="nf">size</span><span class="o">();</span>
+    <span class="k">default</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// Fix Resizable</span>
+<span class="k">default</span> <span class="kt">void</span> <span class="nf">setRelativeSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">wFactor</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hFactor</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">setAbsoluteSize</span><span class="o">(</span><span class="n">getWidth</span><span class="o">()</span> <span class="o">/</span> <span class="n">wFactor</span><span class="o">,</span> <span class="n">getHeight</span><span class="o">()</span> <span class="o">/</span> <span class="n">hFactor</span><span class="o">);</span>
+<span class="o">}</span> 
+</code></pre></div></div>
+
+<h3 id="추상-클래스와-인터페이스-차이">추상 클래스와 인터페이스 차이</h3>
+
+<ul>
+  <li>추상 클래스
+    <ul>
+      <li>클래스가 하나의 추상 클래스만 상속 가능</li>
+      <li>인스턴스 변수로 공통 상태를 가짐</li>
+    </ul>
+  </li>
+  <li>인터페이스
+    <ul>
+      <li>클래스가 여러 개 인터페이스 구현 가능</li>
+      <li>인스턴스 변수를 가질 수 없음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="133-디폴트-메서드-활용-패턴">13.3 디폴트 메서드 활용 패턴</h2>
+
+<p>디폴트 메서드를 활용하는 방식 선택형 메서드, 동작 다중 상속을 소개한다.</p>
+
+<h3 id="선택형-메서드optional-method">선택형 메서드(optional method)</h3>
+
+<p>클래스에서 메서드의 기능이 필요없는 경우, 디폴트 메서드를 이용하면 기본 구현을 제공할 수 있으므로 클래스에서 빈 구현을 제공할 필요가 없다.<br />
+자바 8의 <code class="language-plaintext highlighter-rouge">Iterator</code> 인터페이스는 <code class="language-plaintext highlighter-rouge">remove</code> 메서드를 다음과 같이 정의한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">();</span>
+    <span class="no">T</span> <span class="nf">next</span><span class="o">();</span>
+    <span class="k">default</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="동작-다중-상속multiple-inheritance-of-behavior">동작 다중 상속(multiple inheritance of behavior)</h3>
+
+<p>디폴트 메서드를 이용하면 동작 다중 상속 기능 구현이 가능해서 기존 코드를 재사용할 수 있다. <br />
+또한 디폴트 메서드 덕분에 인터페이스를 직접 수정할 수 있게 되었고 구현하는 모든 클래스도 자동으로 변경한 코드를 상속받는다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">AbstractList</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span>
+    <span class="kd">implements</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;,</span> <span class="nc">RandomAccess</span><span class="o">,</span> <span class="nc">Cloneable</span><span class="o">,</span> <span class="nc">Serializable</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="134-해석-규칙">13.4 해석 규칙</h2>
+
+<p>인터페이스는 다중 상속이 가능하다. <br />
+만약 같은 시그니처를 갖는 디폴트 메서드를 상속받는 경우 자바 컴파일러가 충돌을 어떻게 해결하는지 알아본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="k">default</span> <span class="kt">void</span> <span class="nf">hello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello from A"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">B</span> <span class="kd">extends</span> <span class="no">A</span> <span class="o">{</span>
+    <span class="k">default</span> <span class="kt">void</span> <span class="nf">hello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello from B"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">C</span> <span class="kd">implements</span> <span class="no">B</span><span class="o">,</span> <span class="no">A</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="nf">C</span><span class="o">().</span><span class="na">hello</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="세가지-규칙">세가지 규칙</h3>
+
+<ol>
+  <li>클래스가 항상 이긴다.
+    <ul>
+      <li>클래스나 슈퍼클래스에서 정의한 메서드가 디폴트 메서드보다 우선권을 가진다.</li>
+    </ul>
+  </li>
+  <li>1번 규칙 이외의 상황에서는 서브 인터페이스가 이긴다.
+    <ul>
+      <li>상속관계를 갖는 인터페이스에서 같은 시그니처를 갖는 메서드를 정의할 때는 서브 인터페이스가 이긴다. (B 가 A 를 상속받으며 B 우선)</li>
+    </ul>
+  </li>
+  <li>여러 인터페이스를 상속받는 클래스가 명시적으로 호출
+    <ul>
+      <li>디폴트 메서드의 우선순위가 정해지지 않았으면 클래스가 명시적으로 디폴트 메서드를 오버라이드하고 호출해야 한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="디폴트-메서드를-제공하는-서브-인터페이스가-이긴다">디폴트 메서드를 제공하는 서브 인터페이스가 이긴다</h3>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/default-method-subinterface.png">
+        <img src="/images/book/modern-java-in-action/default-method-subinterface.png" data-rjs="/images/book/modern-java-in-action/default-method-subinterface.png" class="zooming" alt="default method" />
+    </a>
+    
+    <figcaption>
+        default method
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<p>위에서 작성한 코드 예제의 UML 다이어그램을 살펴보면 위와 같다.<br />
+2번 규칙에 의해 서브 인터페이스가 이긴다고 했으므로 “Hello from B” 가 출력된다.</p>
+
+<h3 id="충돌-그리고-명시적인-문제-해결">충돌 그리고 명시적인 문제 해결</h3>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/multi-interface.png">
+        <img src="/images/book/modern-java-in-action/multi-interface.png" data-rjs="/images/book/modern-java-in-action/multi-interface.png" class="zooming" alt="default method" />
+    </a>
+    
+    <figcaption>
+        default method
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<p>위와 같이 B가 A 를 상속 받는 상황이 아니라면 2번 규칙이 적용될 수 없다.<br />
+이런 경우에는 자바 컴파일러는 “Error: class C inherits unrelated defaults for hello() from types B and A” 에러가 발생된다.<br />
+메서드를 구별할 방법이 없으므로 명시적으로 호출을 해줘야 한다. 
+자바 8에서는 <code class="language-plaintext highlighter-rouge">X.super.m(...)</code> 형태의 문법을 제공한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">C</span> <span class="kd">implements</span> <span class="no">B</span><span class="o">,</span> <span class="no">A</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">hello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="no">B</span><span class="o">.</span><span class="na">super</span><span class="o">.</span><span class="na">hello</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="다이아몬드-문제">다이아몬드 문제</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">A</span> <span class="o">{</span>
+    <span class="k">default</span> <span class="kt">void</span> <span class="nf">hello</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello from A"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">B</span> <span class="kd">extends</span> <span class="no">A</span> <span class="o">{</span> <span class="o">}</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">C</span> <span class="kd">extends</span> <span class="no">A</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">hello</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">D</span> <span class="kd">implements</span> <span class="no">B</span><span class="o">,</span> <span class="no">C</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="nf">D</span><span class="o">().</span><span class="na">hello</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위와 같은 상황에서는 C 는 A를 상속받으므로 A의 디폴트 메소드보다 우선권을 가진다.<br />
+그러므로 컴파일 에러가 발생되며, 클래스 D 는 어떤 hello 메서드를 사용할지 명시적으로 해결해야 한다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter13.+%EB%94%94%ED%8F%B4%ED%8A%B8+%EB%A9%94%EC%84%9C%EB%93%9C%20-%20https://devyonghee.github.io/book/2022/07/18/modern-java-in-action-chapter13/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/07/18/modern-java-in-action-chapter13/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

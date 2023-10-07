@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Design Pattern] 템플릿 메소드 패턴(Template Method Pattern)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Design Pattern] 템플릿 메소드 패턴(Template Method Pattern)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/code/2022/10/21/template-method-pattern/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/code/2022/10/21/template-method-pattern/">
+  <meta name="twitter:title" content="[Design Pattern] 템플릿 메소드 패턴(Template Method Pattern)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Design Pattern] 템플릿 메소드 패턴(Template Method Pattern)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    October 21, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      4 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/design-pattern" title="See all posts with tag 'design-pattern'">design-pattern</a>
+    
+      <a href="/tag/template-method-pattern" title="See all posts with tag 'template-method-pattern'">template-method-pattern</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>템플릿 메소드 패턴(Template Method Pattern)은 특정 작업 일부분을 서브 클래스로 위임하는 패턴이다.<br />
+GoF(Gang of Four) Design Pattern 에서 행위(behavioral) 패턴에 속하는 패턴이다.</p>
+
+<!--more-->
+
+<p>템플릿 메소드 패턴(Template Method Pattern)은 서브 클래스에서 특정 로직을 구현하여 골격을 정의한다.<br />
+이 패턴을 이용하면 로직의 일부분을 캡슐화하여 구조를 변경하지 않고 특정 단계를 구현할 수 있다.</p>
+
+<p>전체적인 구조를 상위 클래스에서 정의하면서, <br />
+동작이 다른 부분을 하위 클래스에서 구현하기 때문에 전체적인 구조를 재사용하는데 용이하다.</p>
+
+<h2 id="구조">구조</h2>
+
+<figure>
+    <a href="/images/code/template-method-pattern/structure.png">
+        <img src="/images/code/template-method-pattern/structure.png" data-rjs="/images/code/template-method-pattern/structure.png" class="zooming" alt="template method pattern" />
+    </a>
+    
+    <figcaption>
+        template method pattern
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>AbstractClass
+    <ul>
+      <li>템플릿 메서드를 정의하는 클래스</li>
+      <li>하위 클래스에서 수행 할 공통 알고리즘 정의</li>
+      <li>하위 클래스에서 구현되어야 하는 기능을 추상 메서드로 정의</li>
+    </ul>
+  </li>
+  <li>ConcreteClass
+    <ul>
+      <li>추상 메서드를 구현하는 클래스</li>
+      <li>상위 클래스에서 정의된 알고리즘에 구현된 메서드가 적절하게 수행</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="장점">장점</h2>
+
+<ul>
+  <li>추상 클래스에서 공통된 코드를 정의하므로 중복 코드 제거 가능</li>
+  <li>하위 클래스는 자신의 로직만 구현하면 되므로 관리가 용이</li>
+  <li>새로운 로직이 필요해면 새로운 클래스를 정의하면 되므로 확장이 용이</li>
+</ul>
+
+<h2 id="단점">단점</h2>
+
+<ul>
+  <li>많은 클래스가 생성될 수 있음</li>
+  <li>자식 클래스에서 부모 클래스를 상속받고 있기 때문에 의존성이 발생</li>
+</ul>
+
+<h2 id="구현">구현</h2>
+
+<h3 id="일반">일반</h3>
+
+<h4 id="abstractclass">AbstractClass</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CaffeineBeverage</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="kt">void</span> <span class="nf">prepareRecipe</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">boilWater</span><span class="o">();</span>
+        <span class="n">brew</span><span class="o">();</span>
+        <span class="n">pourInCup</span><span class="o">();</span>
+        <span class="n">addCondiments</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">brew</span><span class="o">();</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">();</span>
+
+    <span class="kt">void</span> <span class="nf">boilWater</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Boiling water"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">pourInCup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pouring into cup"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span> 
+</code></pre></div></div>
+
+<h4 id="concreteclass">ConcreteClass</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Coffee</span> <span class="kd">extends</span> <span class="nc">CaffeineBeverage</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">brew</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Dripping Coffee through filter"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Adding Sugar and Milk"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tea</span> <span class="kd">extends</span> <span class="nc">CaffeineBeverage</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">brew</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Steeping the tea"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Adding Lemon"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="후크hook-활용">후크(hook) 활용</h3>
+
+<h4 id="abstractclass-1">AbstractClass</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CaffeineBeverageWithHook</span> <span class="o">{</span>
+
+    <span class="kd">final</span> <span class="kt">void</span> <span class="nf">prepareRecipe</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">boilWater</span><span class="o">();</span>
+        <span class="n">brew</span><span class="o">();</span>
+        <span class="n">pourInCup</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">customerWantsCondiments</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">addCondiments</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+     <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">brew</span><span class="o">();</span>
+
+     <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">();</span>
+
+    <span class="kt">void</span> <span class="nf">boilWater</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Boiling water"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">pourInCup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pouring into cup"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">boolean</span> <span class="nf">customerWantsCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="concreteclass-1">ConcreteClass</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CoffeeWithHook</span> <span class="kd">extends</span> <span class="nc">CaffeineBeverageWithHook</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Scanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">brew</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Dripping Coffee through filter"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Adding Sugar and Milk"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">customerWantsCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">userInput</span><span class="o">().</span><span class="na">toLowerCase</span><span class="o">().</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"y"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">userInput</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"Would you like milk and sugar with your coffee (y/n)? "</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">ofNullable</span><span class="o">(</span><span class="n">scanner</span><span class="o">.</span><span class="na">next</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="s">"no"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TeaWithHook</span> <span class="kd">extends</span> <span class="nc">CaffeineBeverageWithHook</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Scanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">brew</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Steeping the tea"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">addCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Adding Lemon"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">customerWantsCondiments</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">userInput</span><span class="o">().</span><span class="na">toLowerCase</span><span class="o">().</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"y"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">userInput</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"Would you like lemon with your tea (y/n)?"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">ofNullable</span><span class="o">(</span><span class="n">scanner</span><span class="o">.</span><span class="na">next</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="s">"no"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>전체 코드는 <a href="https://github.com/devyonghee/design-pattern-java/tree/master/templatemethod">깃허브 레포지토리</a> 참고</p>
+
+<h2 id="출처">출처</h2>
+
+<ul>
+  <li>Head First Design Patterns</li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Design+Pattern]+%ED%85%9C%ED%94%8C%EB%A6%BF+%EB%A9%94%EC%86%8C%EB%93%9C+%ED%8C%A8%ED%84%B4(Template+...%20-%20https://devyonghee.github.io/code/2022/10/21/template-method-pattern/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/code/2022/10/21/template-method-pattern/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

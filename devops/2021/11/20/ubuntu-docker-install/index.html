@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | Docker / Docker-compose 설치하기 (ubuntu)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Docker / Docker-compose 설치하기 (ubuntu)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/devops/2021/11/20/ubuntu-docker-install/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/devops/2021/11/20/ubuntu-docker-install/">
+  <meta name="twitter:title" content="Docker / Docker-compose 설치하기 (ubuntu)">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>Docker / Docker-compose 설치하기 (ubuntu)</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    November 20, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      2 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/ubuntu" title="See all posts with tag 'ubuntu'">ubuntu</a>
+    
+      <a href="/tag/docker" title="See all posts with tag 'docker'">docker</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>ubuntu 에서 docker 와 docker-compose 설치하는 방법에 대해 알아본다.</p>
+
+<!--more-->
+
+<p>apt 패키지 관리자를 이용하여 docker 를 설치한다.</p>
+
+<h3 id="1-설치하기-전-준비">1. 설치하기 전 준비</h3>
+<ul>
+  <li>이전 버전 도커 삭제
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get remove docker docker-engine docker.io containerd runc
+</code></pre></div>    </div>
+  </li>
+  <li>패키지 업데이트
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+</code></pre></div>    </div>
+    <p><br /></p>
+  </li>
+</ul>
+
+<h3 id="2-docker-관련-패키지-설치">2. docker 관련 패키지 설치</h3>
+<p>y 옵션은 어떤 질문이 나오면 항상 y를 입력해주기 위해 추가했다.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> apt-transport-https ca-certificates curl software-properties-common
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="3-gpg-key-추가">3. GPG key 추가</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg | <span class="nb">sudo </span>apt-key add - 
+</code></pre></div></div>
+
+<p>키가 추가되었는지 확인하려면</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-key fingerprint 0EBFCD88
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="4-docker-repository-추가">4. docker repository 추가</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/ubuntu </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> stable"</span>
+<span class="nb">sudo </span>apt-get update
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="5-docker-엔진-설치">5. docker 엔진 설치</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get <span class="nb">install</span> <span class="nt">-y</span> docker-ce
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="6-docker-그룹-추가">6. docker 그룹 추가</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker <span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span>
+newgrp docker
+</code></pre></div></div>
+<p><br /></p>
+
+<h3 id="7-docker-compose-설치">7. docker-compose 설치</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>curl <span class="nt">-L</span> <span class="s2">"https://github.com/docker/compose/releases/download/1.23.2/docker-compose-</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-s</span><span class="si">)</span><span class="s2">-</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="si">)</span><span class="s2">"</span> <span class="nt">-o</span> /usr/local/bin/docker-compose
+<span class="nb">chmod</span> +x /usr/local/bin/docker-compose
+<span class="nb">ln</span> <span class="nt">-s</span> /usr/local/bin/docker-compose /usr/bin/docker-compose
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="다음-명령어로-한번에-설치하자">다음 명령어로 한번에 설치하자</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> apt-transport-https ca-certificates curl software-properties-common <span class="o">&amp;&amp;</span> <span class="se">\</span>
+curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg | <span class="nb">sudo </span>apt-key add - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/ubuntu </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> stable"</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> docker-ce <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker <span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+newgrp docker  <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo </span>curl <span class="nt">-L</span> <span class="s2">"https://github.com/docker/compose/releases/download/1.23.2/docker-compose-</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-s</span><span class="si">)</span><span class="s2">-</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="si">)</span><span class="s2">"</span> <span class="nt">-o</span> /usr/local/bin/docker-compose <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo chmod</span> +x /usr/local/bin/docker-compose <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">sudo ln</span> <span class="nt">-s</span> /usr/local/bin/docker-compose /usr/bin/docker-compose
+</code></pre></div></div>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=Docker+/+Docker-compose+%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0+(ubuntu)%20-%20https://devyonghee.github.io/devops/2021/11/20/ubuntu-docker-install/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/devops/2021/11/20/ubuntu-docker-install/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

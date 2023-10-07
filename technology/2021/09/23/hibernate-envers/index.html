@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | hibernate envers 이용해서 변경 데이터 기록하기</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="hibernate envers 이용해서 변경 데이터 기록하기">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/technology/2021/09/23/hibernate-envers/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/technology/2021/09/23/hibernate-envers/">
+  <meta name="twitter:title" content="hibernate envers 이용해서 변경 데이터 기록하기">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>hibernate envers 이용해서 변경 데이터 기록하기</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 23, 2021
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/hibernate" title="See all posts with tag 'hibernate'">hibernate</a>
+    
+      <a href="/tag/jpa" title="See all posts with tag 'jpa'">jpa</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>envers 모듈은 entity 객체 데이터에 대해 변경을 감지하고 기록해주는 편리한 모델이다.
+데이터에 대한 이력들을 신경쓰지 않고 편리하게 버저닝하고 기록하고 싶을 때 아주 유용하다.</p>
+
+<!--more-->
+
+<p>현재 프로젝트를 진행하면서 중요한 데이터를 다루다보니 변경이 있을 때마다 기록이 필요했다.
+별도의 history 테이블도 같이 생성하고 Create, Update, Delete 시에 데이터를 추가하는 로직이 필요했다.
+하지만 이런 로직이 많아질수록 entity의 코드는 복잡해지고 관리가 힘들어진다.</p>
+
+<p>이러한 문제는 envers를 도입하면서 쉽게 해결할 수 있었다. 
+envers 모듈은 hibernate와 같이 동작하며, hibernate annotation 또는 entity manager가 반드시 필요하다. 
+jpa 환경에서도 동작이 가능하기 때문에 매우 편리하다.<br />
+그렇다면 envers를 설정하고 사용하는 방법을 자세하게 알아보도록 하겠다.</p>
+
+<h2 id="0-프로젝트-세팅">0. 프로젝트 세팅</h2>
+<p>envers 를 본격적으로 추가하기전 프로젝트부터 세팅하도록 한다.<br />
+docker-compose 를 이용해서 mysql db 를 준비했다.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">database</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:5.7</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">3306:3306</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./database/:/var/lib/mysql/</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">library</span>
+      <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+</code></pre></div></div>
+
+<p>spring boot 세팅은 다음과 같이 했다. ddl 은 작성하기 번거로우니 간단하게 <code class="language-plaintext highlighter-rouge">create-drop</code> 옵션을 이용했다.</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">datasource</span><span class="pi">:</span>
+    <span class="na">driver-class-name</span><span class="pi">:</span> <span class="s">com.mysql.cj.jdbc.Driver</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">password</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">jdbc:mysql://localhost:3306/library</span>
+  <span class="na">jpa</span><span class="pi">:</span>
+    <span class="na">show-sql</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">hibernate</span><span class="pi">:</span>
+      <span class="na">ddl-auto</span><span class="pi">:</span> <span class="s">create-drop</span>
+</code></pre></div></div>
+
+<h2 id="1-evners-의존성-추가">1. evners 의존성 추가</h2>
+
+<h3 id="gradle">gradle</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'org.hibernate:hibernate-envers'
+</code></pre></div></div>
+<h3 id="maven">maven</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-envers&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<h2 id="2-audited-애노테이션-추가">2. <code class="language-plaintext highlighter-rouge">@Audited</code> 애노테이션 추가</h2>
+
+<p>데이터 기록이 필요한 Entity 에 <code class="language-plaintext highlighter-rouge">@Audited</code> 를 추가한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Entity
+@Audited
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    private String title;
+
+    @Column
+    private int price;
+
+    @Column
+    private String content;
+}
+</code></pre></div></div>
+
+<p>만약 기록이 필요없는 데이터가 있다면 다음과 같이 해당 필드에 <code class="language-plaintext highlighter-rouge">@NotAudited</code>를 추가해주도록 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="nd">@Audited</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Book</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="n">strategy</span> <span class="o">=</span> <span class="nc">GenerationType</span><span class="o">.</span><span class="na">IDENTITY</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+    <span class="nd">@Column</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span>
+
+    <span class="nd">@Column</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">price</span><span class="o">;</span>
+
+    <span class="nd">@Column</span>
+    <span class="nd">@NotAudited</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">content</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="3-application-실행-db-확인">3. application 실행, db 확인</h2>
+
+<p>애플리케이션을 실행해보면 db 에 다음과 같은 테이블 2개가 생성이 된다.</p>
+
+<figure>
+    <a href="/images/technology/hibernate-envers/tables.png">
+        <img src="/images/technology/hibernate-envers/tables.png" data-rjs="/images/technology/hibernate-envers/tables.png" class="zooming" alt="hibernate-envers-tables" />
+    </a>
+    
+    <figcaption>
+        hibernate-envers-tables
+        
+    </figcaption>
+    
+</figure>
+
+<p>book_aud 테이블은 book 에서 <code class="language-plaintext highlighter-rouge">rev</code>와 <code class="language-plaintext highlighter-rouge">revtype</code> 컬럼이 추가가 된 테이블이며, 나머지 컬럼은 모두 <code class="language-plaintext highlighter-rouge">nullable</code> 한 상태이다.<br />
+<code class="language-plaintext highlighter-rouge">revinfo</code> 는 언제 데이터가 생성 및 변경되었는지 시간을 저장하는 테이블이다.</p>
+
+<blockquote>
+  <p>rev(revision): 수정 번호 <br />
+revtype(revision type): 생성(0), 변경(1), 삭제(2)</p>
+</blockquote>
+
+<p>실제로 book entity 를 생성, 변경, 삭제하면 다음과 같이 데이터가 들어가게 된다.</p>
+
+<figure>
+    <a href="/images/technology/hibernate-envers/insert-update-delete.png">
+        <img src="/images/technology/hibernate-envers/insert-update-delete.png" data-rjs="/images/technology/hibernate-envers/insert-update-delete.png" class="zooming" alt="hibernate-envers-tables" />
+    </a>
+    
+    <figcaption>
+        hibernate-envers-tables
+        
+    </figcaption>
+    
+</figure>
+
+<p>여기서 주목할 점은 delete 할 경우 데이터가 모두 null 로 들어간다는 점이다.
+마지막 삭제 전 데이터를 그대로 저장하고 싶다면 다음과 같은 옵션을 추가해주도록 한다.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jpa</span><span class="pi">:</span>
+    <span class="na">properties</span><span class="pi">:</span>
+      <span class="na">org</span><span class="pi">:</span>
+        <span class="na">hibernate</span><span class="pi">:</span>
+          <span class="na">envers</span><span class="pi">:</span>
+            <span class="na">store_data_at_delete</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>위 옵션을 추가하면 삭제할 때 <code class="language-plaintext highlighter-rouge">null</code>로 들어가던 데이터가 마지막에 남아있던 데이터로 들어가게 된다.</p>
+
+<figure>
+    <a href="/images/technology/hibernate-envers/store-delete.png">
+        <img src="/images/technology/hibernate-envers/store-delete.png" data-rjs="/images/technology/hibernate-envers/store-delete.png" class="zooming" alt="hibernate-envers-tables" />
+    </a>
+    
+    <figcaption>
+        hibernate-envers-tables
+        
+    </figcaption>
+    
+</figure>
+
+<p>더 자세한 envers 옵션을 알고 싶다면 이곳 <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#envers-configuration" target="\_blank">envers 설정</a>
+을 참고하도록 한다.</p>
+
+<p><a href="https://github.com/devyonghee/envers-practice" target="\_blank">테스트 코드</a></p>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=hibernate+envers+%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C+%EB%B3%80%EA%B2%BD+%EB%8D%B0%EC%9D%B4%ED%84%B0+%EA%B8...%20-%20https://devyonghee.github.io/technology/2021/09/23/hibernate-envers/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/technology/2021/09/23/hibernate-envers/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

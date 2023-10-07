@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Modern Java in Action] Chapter15. CompletableFuture 와 리액티브 프로그래밍 컨셉의 기초</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Modern Java in Action] Chapter15. CompletableFuture 와 리액티브 프로그래밍 컨셉의 기초">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/book/2022/08/04/modern-java-in-action-chapter15/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/book/2022/08/04/modern-java-in-action-chapter15/">
+  <meta name="twitter:title" content="[Modern Java in Action] Chapter15. CompletableFuture 와 리액티브 프로그래밍 컨셉의 기초">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Modern Java in Action] Chapter15. CompletableFuture 와 리액티브 프로그래밍 컨셉의 기초</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    August 4, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      13 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/moder java in action" title="See all posts with tag 'moder java in action'">moder java in action</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>모던 자바 인 액션 15장에서는 동시성 API 에 대해 소개하고 있다. <br />
+CompletableFuture 와 리팩티브 프로그래밍에 대해 자세히 알아본다.</p>
+
+<!--more-->
+
+<p>소프트웨어 개발 방법을 뒤집는 추세 2가지</p>
+
+<ol>
+  <li>멀티코어 프로세서 발전
+    <ul>
+      <li>멀티 코어 프로세서 활용하면서 애플리케이션 속도 개선</li>
+    </ul>
+  </li>
+  <li>인터넷 서비스를 이용하는 애플리케이션 증가
+    <ul>
+      <li>거대한 애플리케이션 대신 작은 애플리케이션 서비스로 나눔</li>
+    </ul>
+  </li>
+</ol>
+
+<p>이러한 추세로 서비스간의 상호 작용이 많아지면서 응답을 기다리는 동안 연산이 블록 되거나 CPU 클록 사이클 자원이 낭비된다. <br />
+그래서 자바에서는 연산 자원 낭비를 피하기 위해 다음 두 가지를 제공한다.</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">CompletableFuture</code> (자바 8 추가)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Future</code> 인터페이스의 구현체</li>
+    </ul>
+  </li>
+  <li>플로 API (자바 9 추가)
+    <ul>
+      <li>리액티브 프로그래밍 개념</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="151-동시성을-구현하는-자바-지원의-진화">15.1 동시성을 구현하는 자바 지원의 진화</h2>
+
+<p>멀티코어 CPU 에서 효과적으로 프래그래밍 가능성이 커지면서 동시성 지원이 제공되기 시작하였다.</p>
+
+<ul>
+  <li>자바 5
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ExecutorService</code> 인터페이스 제공 (<code class="language-plaintext highlighter-rouge">ExecutorServices</code>는 <code class="language-plaintext highlighter-rouge">Runnable</code>, <code class="language-plaintext highlighter-rouge">Callable</code> 둘 다 실행 가능)</li>
+      <li><code class="language-plaintext highlighter-rouge">Callable&lt;T&gt;</code>, <code class="language-plaintext highlighter-rouge">Future&lt;T&gt;</code>, 제네릭 등 제공</li>
+    </ul>
+  </li>
+  <li>자바 7
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">java.util.concurrent.RecursiveTask</code> 추가 (분할 정복 알고리즘의 포크/조인 구현 지원)</li>
+    </ul>
+  </li>
+  <li>자바 8
+    <ul>
+      <li>스트림과 람다 지원에 기반한 병렬 프로세싱</li>
+      <li><code class="language-plaintext highlighter-rouge">Future</code>를 조합하는 기능인 <code class="language-plaintext highlighter-rouge">CompletableFuture</code> 추가</li>
+    </ul>
+  </li>
+  <li>자바 9
+    <ul>
+      <li>리액티브 프로그래밍인 발행-구독 프로토콜(<code class="language-plaintext highlighter-rouge">java.util.concurrent.Flow</code>) 지원 (명시적인 비동기 프로그래밍)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스레드와-높은-수준의-추상화">스레드와 높은 수준의 추상화</h3>
+
+<p>멀티코어 환경을 효율적으로 다루기 위해서는 스레드의 도움이 필요하다.<br />
+하지만 일반적인 외부 반복처리로 스레드를 다루면 성가시고 에러가 발생하기 쉽다.<br />
+반대로 병렬 스트림 반복(내부 반복)을 이용하면 병렬성을 쉽게 달성할 수 있다.</p>
+
+<p>이렇듯 스트림과 같이 <code class="language-plaintext highlighter-rouge">RecursiveTask</code>, <code class="language-plaintext highlighter-rouge">ExecutorService</code> 를 이용하면 복잡성도 줄어들고 효율적으로 활용할 수 있다.</p>
+
+<h3 id="executor와-스레드-풀">Executor와 스레드 풀</h3>
+
+<h4 id="스레드의-문제">스레드의 문제</h4>
+
+<ul>
+  <li>운영체제 스레드에 직접 접근하기 때문에 비용이 비쌈</li>
+  <li>운영체제 스레드가 제한적임
+    <ul>
+      <li>스레드 수를 초과하면 예상치 못한 방식으로 크래시 될 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p>위와 같은 문제로 다양한 기기에서 실행할 수 있는 프로그램이라면 하드웨어 스레드 개수를 추측하지 않는 것이 좋다.</p>
+
+<h4 id="스레드-풀-그리고-스레드-풀이-더-좋은-이유">스레드 풀 그리고 스레드 풀이 더 좋은 이유</h4>
+
+<p>자바 <code class="language-plaintext highlighter-rouge">ExecutorService</code> 는 태스크를 제출하고 결과를 수집할 수 있는 인터페이스를 제공한다.<br />
+다음 팩토리 메서드를 통해 스레드 풀을 만들 수 있다.<br />
+이 메서드는 워커 스레드라 불리는 <code class="language-plaintext highlighter-rouge">ExecutorService</code>를 만들고 스레드 풀에 저장한다.<br />
+먼저 온 순서대로 태스크를 먼저 실행하고 종료되면 스레드를 풀로 반환한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>이 방식을 이용하면 다음과 같은 장점들이 존재한다.</p>
+<ul>
+  <li>하드웨어에 맞는 수의 태스크 유지</li>
+  <li>수 천개의 태스크를 오버헤드 없이 처리 가능</li>
+  <li>큐의 크기 조정, 거부 정책, 태스크 종류에 따른 우선 순위 조정 등 다양한 설정</li>
+</ul>
+
+<h4 id="스레드-풀-그리고-스레드-풀이-나쁜-이유">스레드 풀 그리고 스레드 풀이 나쁜 이유</h4>
+
+<p>스레드 풀을 사용할 때는 다음과 같은 사항들을 주의해야 한다.</p>
+
+<ul>
+  <li>k 스레드를 가진 스레드 풀은 오직 k 만큼만 동시 실행 가능 (초과로 제출된 태스크는 큐에 저장)
+    <ul>
+      <li>잠을 자거나, I/O 대기, 네트워크 연결을 기다리면 워커 스레드가 아무 작업을 안함</li>
+      <li>블록할 수 있는 태스크는 스레드 풀에 제줄하지 않는 것이 좋음</li>
+    </ul>
+  </li>
+  <li>프로그램을 종료하기 전에 모든 스레드 풀을 종료 해야함
+    <ul>
+      <li>다른 태스크 제출을 기다리면서 종료되지 않은 상태일 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스레드의-다른-추상화-중첩되지-않은-메서드-호출">스레드의 다른 추상화: 중첩되지 않은 메서드 호출</h3>
+
+<p><a href="https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/">7장(병렬 스트림 처리와 포크/조인 프레임)</a>에서 
+소개한 동시성은 메서드 호출안에서 시작되면 작업이 끝나기만을 기다렸다. (엄격한 포크/조인)<br />
+내부 호출이 아닌 외부 호출에서 종료하도록 하는 여유로운 방식도 비교적 안전하다.</p>
+
+<p>15장에서는 스레드가 생성되고 메서드를 벗어나 계속 실행되는 비동기 메서드에 대해 소개한다. 
+그러나 비동기 메서드는 다음과 같은 위험성이 존재한다.</p>
+<ul>
+  <li>스레드 실행은 다음의 코드와 동시에 실행되므로 데이터 경쟁 문제가 일어나지 않도록 주의</li>
+  <li>실행중인 스레드가 종료되지 않고 <code class="language-plaintext highlighter-rouge">main()</code> 메서드 반환되는 경우 다음과 같은 방법들이 존재하지만 안전하지 않음
+    <ul>
+      <li>애플리케이션이 종료되지 않고 모든 스레드가 실행이 끝날 때가지 대기
+        <ul>
+          <li>종료 못한 스레드 때문에 애플리케이션이 크래스될 수 있음</li>
+        </ul>
+      </li>
+      <li>종료되지 않은 스레드를 강제종료
+        <ul>
+          <li>작업이 중단되면서 데이터 일관성 파괴 가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>자바 스레드는 <code class="language-plaintext highlighter-rouge">setDaemon()</code>으로 데몬과 비데몬으로 구분 가능하다.</p>
+<ul>
+  <li>데몬
+    <ul>
+      <li>애플리케이션이 종료될 때 강제 종료됨 (데이터 일관성을 파괴하지 않는 동작을 수행할 때 유용)</li>
+    </ul>
+  </li>
+  <li>비데몬
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">main()</code> 메서드가 모든 비데몬 스레드가 종료될 때까지 기다림</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="152-동기-api-와-비동기-api">15.2 동기 API 와 비동기 API</h2>
+
+<p><a href="https://devyonghee.github.io/book/2022/06/26/modern-java-in-action-chapter7/">7장(병렬 스트림 처리와 포크/조인 프레임)</a>에서는 
+자바 8 스트림의 <code class="language-plaintext highlighter-rouge">parallel()</code> 메서드로 복잡한 스레드 작업없이 병렬 처리가 가능했다.
+하지만 루프 기반 이외에 별도의 스레드로 병렬성을 사용한다면 다음과 같이 코드가 복잡해진다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1337</span><span class="o">;</span>
+<span class="nc">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Result</span><span class="o">();</span>
+
+<span class="nc">Thread</span> <span class="n">t1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span><span class="n">result</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">);});</span>
+<span class="nc">Thread</span> <span class="n">t2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span><span class="n">result</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">);});</span>
+
+<span class="n">t1</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="n">t2</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="n">t1</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>
+<span class="n">t2</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">left</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ExecutorService</code> 로 스레드 풀을 설정한다면 코드는 다음처럼 변경된다.<br />
+하지만 이 코드 역시 <code class="language-plaintext highlighter-rouge">submit</code> 메서드 호출같이 불필요한 코드가 발생된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1337</span><span class="o">;</span>
+<span class="nc">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">));</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">));</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">y</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">+</span> <span class="n">z</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="n">executorService</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>위와 같은 문제는 다음 두가지 비동기 API 로 해결이 가능하다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CompletableFuture</code>(자바 8)</li>
+  <li><code class="language-plaintext highlighter-rouge">java.util.concurrent.Flow</code>(자바 9)</li>
+</ul>
+
+<h3 id="future-형식-api">Future 형식 API</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Future</code> 을 사용하면 코드는 다음과 같이 변경된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">f</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">);</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">g</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">);</span>
+
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">y</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">+</span> <span class="n">z</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h3 id="리액티브-형식-api">리액티브 형식 API</h3>
+
+<p>인수로 람다를 전달해서 결과를 반환하는 것이 아니라 결과가 준비되면 이를 람다로 호출하는 태스크를 만든다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1337</span><span class="o">;</span>
+<span class="nc">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Result</span><span class="o">();</span>
+
+<span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">result</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">y</span><span class="o">;</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">left</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+<span class="o">});</span>
+
+<span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="o">(</span><span class="kt">int</span> <span class="n">z</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">result</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">z</span><span class="o">;</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">left</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<p>하지만 이러한 방식은 락을 사용하지 않아 값을 두번 출력할 수 있고 두 피연산자가 <code class="language-plaintext highlighter-rouge">println</code> 이 호출 되기전에 업데이트 될 수도 있다. <br />
+이러한 문제는 다음 두 가지 방법으로 보완할 수 있다.</p>
+
+<ul>
+  <li>if-then-else 를 이용해 적절한 락을 이용해 두 콜백이 호출되었는지 확인하고 <code class="language-plaintext highlighter-rouge">println</code> 호출</li>
+  <li>리액티브 형식의 API 는 일련의 이벤트에 반응하도록 설계되었으므로, 한 결과가 필요하면 <code class="language-plaintext highlighter-rouge">Future</code> 이용하는 것이 적절</li>
+</ul>
+
+<h3 id="잠자기그리고-기타-블로킹-동작는-해로운-것으로-간주">잠자기(그리고 기타 블로킹 동작)는 해로운 것으로 간주</h3>
+
+<p>어떤 일이 일정 속도로 제한되어 일어나는 상황을 만들 때 <code class="language-plaintext highlighter-rouge">sleep()</code> 메서드를 사용할 수 있다.<br />
+하지만 이렇게 잠자는 스레드는 시스템 자원을 점유하게 되기 때문에 문제가 심각해진다.<br />
+잠자는 스레드뿐만 아니라 블록 동작도 동일하다.</p>
+
+<p>블록 동작은 다음 두가지로 구분될 수 있다.</p>
+<ul>
+  <li>다른 태스크가 동작 완료하기를 기다리는 동작
+    <ul>
+      <li>ex) <code class="language-plaintext highlighter-rouge">Future</code>에 <code class="language-plaintext highlighter-rouge">get()</code> 호출</li>
+    </ul>
+  </li>
+  <li>외부 상호작용을 기다리는 동작
+    <ul>
+      <li>ex) 데이터베이스 읽기, 키보드 입력</li>
+    </ul>
+  </li>
+</ul>
+
+<p>다음 두 코드를 비교해본다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 코드 A</span>
+<span class="n">work1</span><span class="o">();</span>
+<span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">10000</span><span class="o">);</span>
+<span class="n">work2</span><span class="o">();</span>
+
+<span class="c1">// 코드 B</span>
+<span class="nc">ScheduledExecutorService</span> <span class="n">scheduledExecutorService</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newScheduledThreadPool</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> 
+<span class="n">work</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="c1">// work1() 이 끝난 다음 10초 뒤에 work2() 를 개별 태스크로 스케줄함</span>
+<span class="n">scheduledExecutorService</span><span class="o">.</span><span class="na">schedule</span><span class="o">(</span><span class="nl">Example:</span><span class="o">:</span><span class="n">work2</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+<span class="n">scheduledExecutorService</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>코드 A와 B 는 같은 동작을 수행하지만 A는 자는 동안 스레드 자원을 점유하는 반면 B 는 다른 작업이 실행될 수 있도록 허용한다.<br />
+그렇기 때문에 코드 B 가 더 좋다.</p>
+
+<h3 id="현실성-확인">현실성 확인</h3>
+
+<p>동시 실행되는 태스크로 설계해서 블록할 수 있는 모든 동작을 비동기 호출로 구현한다면 하드웨어를 최대한 활용할 수 있다.<br />
+하지만 현실적으로 <code class="language-plaintext highlighter-rouge">모든 것은 비동기</code>라는 설계 원칙을 어겨야 한다.<br />
+유익을 얻을 수 있는 상황을 찾아보고 개선된 API 를 사용해는 것을 권장한다.</p>
+
+<h3 id="비동기-api-에서-예외는-어떻게-처리하는가">비동기 API 에서 예외는 어떻게 처리하는가?</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CompleteFuture</code>
+    <ul>
+      <li>예외에서 회복할 수 있도록 <code class="language-plaintext highlighter-rouge">exceptionally()</code> 같은 메서드 제공</li>
+    </ul>
+  </li>
+  <li>리액티브 형식의 비동기 API
+    <ul>
+      <li>예외가 발생했을 때 실행할 콜백을 만들어 인터페이스 변경
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">f</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">dealWithResult</span><span class="o">,</span> <span class="nc">Consumer</span><span class="o">&lt;</span><span class="nc">Throwable</span><span class="o">&gt;</span> <span class="n">dealWithException</span><span class="o">);</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>자바 9 플로 API
+    <ul>
+      <li>여러 콜백을 한 객체로 감싼다.
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">onComplete</span><span class="o">()</span>  <span class="c1">// 값을 다 소진하거나 에러가 발생해서 더 이상 처리할 데이터가 없을 때</span>
+<span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span>  <span class="c1">// 도중에 에러가 발생했을 때</span>
+<span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">item</span><span class="o">)</span> <span class="c1">// 값이 있을 때</span>
+<span class="c1">// 코드는 다음과 같이 변경</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">);</span>
+<span class="n">s</span><span class="o">.</span><span class="na">onError</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="153-박스와-채널-모델">15.3 박스와 채널 모델</h2>
+
+<figure>
+    <a href="/images/book/modern-java-in-action/simple-box-channel-model.png">
+        <img src="/images/book/modern-java-in-action/simple-box-channel-model.png" data-rjs="/images/book/modern-java-in-action/simple-box-channel-model.png" class="zooming" alt="간단한 박스와 채널 다이어그램" />
+    </a>
+    
+    <figcaption>
+        간단한 박스와 채널 다이어그램
+        
+        (출처: 모던 자바 인 액션)
+        
+    </figcaption>
+    
+</figure>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="n">p</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">q1</span><span class="o">(</span><span class="n">t</span><span class="o">));</span>
+<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">q2</span><span class="o">(</span><span class="n">t</span><span class="o">));</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">r</span><span class="o">(</span><span class="n">a1</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="n">a2</span><span class="o">.</span><span class="na">get</span><span class="o">()));</span>
+</code></pre></div></div>
+
+<p>박스와 채널 모델은 동시성 모델을 잘설계하고 개념화한 그림이다.<br />
+박스와 채널 모델을 이용하면 생각과 코드를 구조화하여 대규모 시스템 구현의 추상화 수준을 높일 수 있다.<br />
+박스로 원하는 연산을 표현하면 손으로 코딩한 결과보다 더 효율적일 것이다.</p>
+
+<p>위 모든 함수를 <code class="language-plaintext highlighter-rouge">Future</code> 로 감싸면 병렬성을 극대화할 수 있다.<br />
+하지만 시스템이 커지고 많은 박스와 채널 다이어그램이 등장하게 된다면 태스크가 <code class="language-plaintext highlighter-rouge">get()</code> 메서드를 호출하여 기다리는 상태가 될 수 있다.<br />
+결국 병렬성을 제대로 활용하지 못하거나 데드락에 걸릴 수 있는데, 
+이러한 문제는 자바 8 의 <code class="language-plaintext highlighter-rouge">CompletableFure</code> 와 콤비네이터(combinators)를 이용하여 해결한다.</p>
+
+<p><br /></p>
+
+<h2 id="154-completablefuture-와-콤비네이터를-이용한-동시성">15.4 CompletableFuture 와 콤비네이터를 이용한 동시성</h2>
+
+<p>자바 8에서는 <code class="language-plaintext highlighter-rouge">Future</code> 인터페이스의 구현체인 <code class="language-plaintext highlighter-rouge">CompletableFuture</code>를 이용해 <code class="language-plaintext highlighter-rouge">Future</code> 를 조합할 수 있게 되었다.  <br />
+<code class="language-plaintext highlighter-rouge">CompletableFuture</code> 는 다음과 같은 이유로 <code class="language-plaintext highlighter-rouge">Completable</code> 단어가 사용되었다.</p>
+
+<ul>
+  <li>실행 코드 없이 <code class="language-plaintext highlighter-rouge">Future</code> 생성 허용</li>
+  <li><code class="language-plaintext highlighter-rouge">complete()</code> 메서드로 다른 스레드가 이를 완료 가능</li>
+  <li><code class="language-plaintext highlighter-rouge">get()</code>으로 값을 얻을 수 있음</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">CompletableFuture&lt;T&gt;</code> 의 <code class="language-plaintext highlighter-rouge">thenCombine</code> 메서드를 사용하면 동작 조합이 가능하다. <br />
+이 동작 조합을 이용하면 다른 프로레싱을 기다리는 자원 낭비 문제를 해결할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">V</span><span class="o">&gt;</span> <span class="nf">thenCombine</span><span class="o">(</span><span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="no">U</span><span class="o">&gt;</span> <span class="n">other</span><span class="o">,</span> <span class="nc">BiFunction</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">U</span><span class="o">,</span> <span class="no">V</span><span class="o">&gt;</span> <span class="n">fn</span><span class="o">)</span>
+<span class="c1">// 예시 사용 코드</span>
+<span class="nc">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1337</span><span class="o">;</span>
+
+<span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CompletableFuture</span><span class="o">&lt;&gt;();</span>
+<span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CompletableFuture</span><span class="o">&lt;&gt;();</span>
+<span class="nc">CompletableFuture</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">thenCombine</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">z</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="o">);</span>
+<span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="o">.</span><span class="na">complete</span><span class="o">(</span><span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+<span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="o">.</span><span class="na">complete</span><span class="o">(</span><span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="n">executorService</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>이처럼 <code class="language-plaintext highlighter-rouge">thenCombine</code> 을 이용하면 <code class="language-plaintext highlighter-rouge">f(x)</code>, <code class="language-plaintext highlighter-rouge">g(x)</code> 이 끝나야 덧셈 계산이 실행된다.</p>
+
+<p><br /></p>
+
+<h2 id="155-발행-구독-그리고-리액티브-프로그래밍">15.5 발행-구독 그리고 리액티브 프로그래밍</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Future</code> 는 한 번만 실행하여 결과를 제공한다.  <br />
+하지만 리액티브 프로그래밍은 시간이 흐르면서 여러 결과를 제공한다. (ex. HTTP 요청을 기다리는 리스너 객체)<br />
+자바 9에서는 <code class="language-plaintext highlighter-rouge">java.util.concurrent.Flow</code> 의 인터페이스에 발행-구독 모델을 적용해 리액티브 프로그래밍을 제공한다.<br />
+Flow API 는 다음 세가지로 정리할 수 있다.</p>
+
+<ul>
+  <li>구독자가 구독할 수 있는 발행자</li>
+  <li>이 연결을 구독(subscription)이라 한다.</li>
+  <li>이 연결을 이용해 메시지(또는 이벤트)를 전송</li>
+</ul>
+
+<h3 id="두-플로를-합치는-예제">두 플로를 합치는 예제</h3>
+
+<p>이벤트가 발생했을 때 다른 곳에서 구독할 수 있도록 <code class="language-plaintext highlighter-rouge">Publisher&lt;T&gt;</code> 인터페이스를 정의한다.<br />
+이 인터페이스의 인수에는 통신할 구독자를 받는다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이제 정보를 전달할 수 있도록 <code class="language-plaintext highlighter-rouge">Subscriber&lt;T&gt;</code> 인터페이스를 정의한다.<br />
+구현자가 필요한대로 이 메서드를 구현할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이 두 개념을 합쳐서 이벤트를 구독하면서 반응할 수 있는 <code class="language-plaintext highlighter-rouge">Cell</code> 을 구현한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">class</span> <span class="nc">SimpleCell</span> <span class="kd">implements</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;,</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span> 
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Subscriber</span><span class="o">&gt;</span> <span class="n">subsribers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    
+    <span class="kd">public</span> <span class="nf">SimpleCell</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="o">(</span><span class="nc">Subscriber</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">subscribers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">subscriber</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 구독한 셀에 새 값이 생겼을 때 값을 갱신</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">+</span> <span class="s">":"</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+        <span class="n">notifyAllSubscribers</span><span class="o">();</span>  <span class="c1">// 값 갱신을 알림</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">notifyAllSubscribers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 새 값이 있다고 구독자들에게 알림</span>
+        <span class="n">subscribers</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">subscriber</span> <span class="o">-&gt;</span> <span class="n">subsriber</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">value</span><span class="o">));</span>
+    <span class="o">}</span>        
+<span class="o">}</span>
+<span class="c1">// 사용예시</span>
+<span class="nc">SimpleCell</span> <span class="n">c3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleCell</span><span class="o">(</span><span class="s">"C3"</span><span class="o">);</span>
+<span class="nc">SimpleCell</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleCell</span><span class="o">(</span><span class="s">"C2"</span><span class="o">);</span>
+<span class="nc">SimplcCell</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleCell</span><span class="o">(</span><span class="s">"C1"</span><span class="o">);</span>
+
+<span class="n">c1</span><span class="o">.</span><span class="na">subsribe</span><span class="o">(</span><span class="n">c3</span><span class="o">);</span>
+
+<span class="n">c1</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span> <span class="c1">// C1:10, C3:10</span>
+<span class="n">c2</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span> <span class="c1">// C2:20</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">C3=C1+C2</code> 연산을 할 수 있는 클래스를 구현해본다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ArithmeticCell</span> <span class="kd">extends</span> <span class="nc">SimpleCell</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">left</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">right</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">ArithmeticCell</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLeft</span><span class="o">(</span><span class="kt">int</span> <span class="n">left</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">left</span><span class="o">;</span>
+        <span class="n">onNext</span><span class="o">(</span><span class="n">left</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setRight</span><span class="o">(</span><span class="kt">int</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">right</span><span class="o">;</span>
+        <span class="n">onNext</span><span class="o">(</span><span class="n">right</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// 사용예시</span>
+<span class="nc">ArithmeticCell</span> <span class="n">c3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArithmeticCell</span><span class="o">(</span><span class="s">"C3"</span><span class="o">);</span>
+<span class="nc">SimpleCell</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleCell</span><span class="o">(</span><span class="s">"C2"</span><span class="o">);</span>
+<span class="nc">SimpleCell</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleCell</span><span class="o">(</span><span class="s">"C1"</span><span class="o">);</span>
+
+<span class="n">c1</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nl">c3:</span><span class="o">:</span><span class="n">setLeft</span><span class="o">);</span>
+<span class="n">c2</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="nl">c3:</span><span class="o">:</span><span class="n">setRight</span><span class="o">);</span>
+
+<span class="n">c1</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>  <span class="c1">// C1:10, C3:10</span>
+<span class="n">c2</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>  <span class="c1">// C2:20, C3:30</span>
+<span class="n">c1</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="mi">15</span><span class="o">);</span>  <span class="c1">// C1:15, C3:25</span>
+</code></pre></div></div>
+
+<p>자바 9 <code class="language-plaintext highlighter-rouge">Flow</code> Api의 <code class="language-plaintext highlighter-rouge">Subscriber</code> 에서는 <code class="language-plaintext highlighter-rouge">onNext</code> 이벤트 외에도  <br />
+데이터 흐름에서 예외가 발생하거나 종료되었을 때를 위해 <code class="language-plaintext highlighter-rouge">onError</code> 와 <code class="language-plaintext highlighter-rouge">onComplete</code> 를 지원한다.</p>
+
+<p>간단하지만 <code class="language-plaintext highlighter-rouge">Flow</code> 인터페이스를 복잡하게 만든 두가지 기능은 압력과 역압력이다.<br />
+스레드 활용하기 위해서는 이 기능들은 필수다.</p>
+
+<p>매우 빠른 속도로 이벤트가 발생하여 매초마다 수천 개의 메시지가 <code class="language-plaintext highlighter-rouge">onNext</code> 로 전달되는 상황을 압력이라고 한다.<br />
+이런 상황에서는 출구로 추가될 이벤트를 제한하는 역압력 기능이 필요하다.</p>
+
+<h3 id="역압력">역압력</h3>
+
+<p>정보의 흐름 속도를 역압력으로 제어(<code class="language-plaintext highlighter-rouge">Subscriber</code> -&gt; <code class="language-plaintext highlighter-rouge">Publisher</code> 정보 요청)할 필요가 있을 수 있다.<br />
+그래서 자바 9 Flow API 의 <code class="language-plaintext highlighter-rouge">Subcrier</code> 인터페이스는 다음 메서드를 포함한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="nc">Subscription</span> <span class="n">subscription</span><span class="o">);</span>
+
+<span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>
+    <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Publisher</code> 는 <code class="language-plaintext highlighter-rouge">Subscription</code> 객체를 만들어 <code class="language-plaintext highlighter-rouge">Subscriber</code> 에 전달하면,<br />
+<code class="language-plaintext highlighter-rouge">Subscriber</code> 는 이를 이용해 <code class="language-plaintext highlighter-rouge">Publisher</code> 에 정보를 보낼 수 있다.</p>
+
+<h3 id="실제-역압력의-간단한-형태">실제 역압력의 간단한 형태</h3>
+
+<p>한 번에 한 개의 이벤트를 처리하도록 발행-구독 연결을 구성하려면 다음과 같은 작업이 필요하다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Subscriber</code> 가 <code class="language-plaintext highlighter-rouge">onSubscribe</code>로 전달된 <code class="language-plaintext highlighter-rouge">Subscription</code> 객체를 <code class="language-plaintext highlighter-rouge">subscription</code> 같은 필드에 저장</li>
+  <li><code class="language-plaintext highlighter-rouge">Subscriber</code> 가 수많은 이벤트를 받지 않도록 <code class="language-plaintext highlighter-rouge">onSubscribe</code>, <code class="language-plaintext highlighter-rouge">onNext</code>, <code class="language-plaintext highlighter-rouge">onError</code> 의 마지막 동작에 <code class="language-plaintext highlighter-rouge">channel.request(1)</code> 을 추가해 한 이벤트만 요청</li>
+  <li>요청을 보낸 채널에만 <code class="language-plaintext highlighter-rouge">onNext</code>, <code class="language-plaintext highlighter-rouge">onError</code> 이벤트를 보내도록 <code class="language-plaintext highlighter-rouge">Publisher</code> 의 <code class="language-plaintext highlighter-rouge">notifyAllSubscribers</code> 코드 변경</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="156-리액티브-시스템-vs-리액티브-프로그래밍">15.6 리액티브 시스템 vs 리액티브 프로그래밍</h2>
+
+<p>리액티브 시스템은 런타임 환경이 변화에 대응하도록 아키텍처가 설계된 프로그램이다.<br />
+리액티브 시스템에는 다음과 같이 3가지 속성이 존재한다.</p>
+
+<ul>
+  <li>반응성(responsive): 응답을 지연하지 않고 실시간으로 입력에 반응</li>
+  <li>회복성(resilient): 한 컴포넌트의 실패로 전체 시스템이 실패하지 않음</li>
+  <li>탄력성(elastic): 작업 부하에 맞게 적응하며 작업을 효율적으로 처리함</li>
+</ul>
+
+<p>여러가지 방법이 있지만 <code class="language-plaintext highlighter-rouge">Flow</code> 인터페이스에서 제공하는 리액티브 프로그래밍 형식을 이용하면 이 속성을 구현할 수 있다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Modern+Java+in+Action]+Chapter15.+CompletableFuture+%EC%99%80+%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C+%ED...%20-%20https://devyonghee.github.io/book/2022/08/04/modern-java-in-action-chapter15/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/book/2022/08/04/modern-java-in-action-chapter15/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

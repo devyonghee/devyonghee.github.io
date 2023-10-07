@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [Study] 운영체제 아주 쉬운 세가지 이야기 3장~6장</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 3장~6장">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/study/2022/11/10/operation-system-three-easy-pieces-3-6/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/study/2022/11/10/operation-system-three-easy-pieces-3-6/">
+  <meta name="twitter:title" content="[Study] 운영체제 아주 쉬운 세가지 이야기 3장~6장">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[Study] 운영체제 아주 쉬운 세가지 이야기 3장~6장</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    November 10, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      7 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/study" title="See all posts with tag 'study'">study</a>
+    
+      <a href="/tag/book" title="See all posts with tag 'book'">book</a>
+    
+      <a href="/tag/operation-system" title="See all posts with tag 'operation-system'">operation-system</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>운영체제 아주 쉬운 세가지 이야기 책에 대한 스터디를 진행한다.<br />
+이 글에서는 가상화에 대해 다룬 3장부터 6장까지의 내용을 정리한다.</p>
+
+<!--more-->
+
+<h2 id="3장-가상화에-관한-대화">3장. 가상화에 관한 대화</h2>
+
+<p>대표적으로 자원인 CPU 로 예를 든다. <br />
+가상화는 한 개 또는 소수의 CPU 를 각 응용 프로그램에게 여러 개의 CPU인 것처럼 보이도록 한다.</p>
+
+<h2 id="4장-프로세스-개념">4장. 프로세스 개념</h2>
+
+<ul>
+  <li>프로세스
+    <ul>
+      <li>실행 중인 프로그램</li>
+    </ul>
+  </li>
+  <li>프로그램
+    <ul>
+      <li>디스크 상에 존재하며, 실행을 위한 명령어와 정적 데이터의 묶음</li>
+    </ul>
+  </li>
+  <li>시분할(time sharing) 기법
+    <ul>
+      <li>한 프로세스를 중단하고 다른 프로세스를 실행하는 작업을 반복하며 CPU를 가상화</li>
+      <li>사용자는 CPU가 있는지 신경쓰지 않아도 프로그램을 동시에 실행 가능</li>
+      <li>CPU 를 공유하기 때문에 프로세스의 성능은 낮아짐</li>
+      <li>어떤 프로그램을 실행할지는 운영체제의 <strong>스케줄링 정책(scheduling policy)</strong> 에 의해 결정</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="41-프로세스의-개념">4.1 프로세스의 개념</h3>
+
+<p>프로세스는 실행 중인 프로그램이다.<br />
+프로세스의 하드웨어 상태 중 중요한 구성 요소는 메모리와 레지스터다.</p>
+
+<ul>
+  <li>메모리(주소 공간, address space)
+    <ul>
+      <li>명령어 저장</li>
+      <li>읽고 쓰는 데이터 저장</li>
+    </ul>
+  </li>
+  <li>레지스터
+    <ul>
+      <li>많은 명령어들이 레지스터를 읽거나 갱신</li>
+      <li><strong>프로그램 카운터(program counter, PC)</strong> = <strong>명령어 포인터(instruction pointer, IP)</strong>
+        <ul>
+          <li>어느 명령어가 실행 중인지 알려줌</li>
+        </ul>
+      </li>
+      <li><strong>스택 포인터(stack pointer)</strong> 와 <strong>프레임 포인터(frame pointer)</strong>
+        <ul>
+          <li>함수의 변수와 리턴 주소를 저장하는 스택을 관리</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="42-프로세스-api">4.2 프로세스 API</h3>
+
+<ul>
+  <li>생성 (Create)
+    <ul>
+      <li>새로운 프로세스를 생성하는 인터페이스</li>
+    </ul>
+  </li>
+  <li>제거 (Destroy)
+    <ul>
+      <li>프로제스를 강제로 제거하는 인터페이스</li>
+    </ul>
+  </li>
+  <li>대기 (Wait)
+    <ul>
+      <li>어떤 프로세스의 실행 중지를 기다리는 인터페이스</li>
+    </ul>
+  </li>
+  <li>각종 제어(Miscellaneous Control)
+    <ul>
+      <li>여러 가지 제어 기능 제공 (ex. 프로세스 일지정지, 재개, 다시 시작)</li>
+    </ul>
+  </li>
+  <li>상태(Status)
+    <ul>
+      <li>상태 정보를 얻어내는 인터페이스</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="43-프로세스-생성">4.3 프로세스 생성</h3>
+
+<figure>
+    <a href="/images/study/operating-system/program-process.png">
+        <img src="/images/study/operating-system/program-process.png" data-rjs="/images/study/operating-system/program-process.png" class="zooming" alt="프로그램에서 프로세스" />
+    </a>
+    
+    <figcaption>
+        프로그램에서 프로세스
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li>운영체제는 프로그램 코드와 정적 데이터(static data) 를 메모리, 프로세스의 주소공간에 <strong>탑재(load)</strong>
+    <ul>
+      <li>디스크의 코드와 정적 데이터 바이트를 읽어서 메모리에 저장</li>
+      <li>현대 운영체제는 <strong>필요한 부분</strong>만 메모리에 탑재, <strong>페이징(paging)</strong> 과 <strong>스와핑(swapping)</strong> 동작 이해 필요</li>
+    </ul>
+  </li>
+  <li>특정 크기의 메모리 공간이 프로그램에 <strong>스택(run-time stack)</strong> 용도로 할당
+    <ul>
+      <li>지역 변수, 함수 인자, 리턴 주소 등을 저장하기 위한 용도</li>
+    </ul>
+  </li>
+  <li><strong>힙(heap)</strong> 을 위한 메모리 영역 할당
+    <ul>
+      <li>동적으로 할당된 데이터를 저장하기 위한 용도</li>
+      <li>연결 리스트, 해시 테이블, 트리 등 크기가 가변적인 자료 구조를 위해 사용</li>
+    </ul>
+  </li>
+  <li>입출력과 관계된 초기화 작업 수행</li>
+  <li>프로그램 실행을 위한 준비(프로그램의 시작 지점, entry point)</li>
+  <li>CPU 를 새로 생성된 프로세스에게 넘기고 실행</li>
+</ol>
+
+<h3 id="44-프로세스-상태">4.4 프로세스 상태</h3>
+
+<figure>
+    <a href="/images/study/operating-system/process-state-transition.png">
+        <img src="/images/study/operating-system/process-state-transition.png" data-rjs="/images/study/operating-system/process-state-transition.png" class="zooming" alt="프로세스 상태 전이" />
+    </a>
+    
+    <figcaption>
+        프로세스 상태 전이
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>실행(Running)
+    <ul>
+      <li>프로세서에서 실행 중 (명령어를 실행 중)</li>
+    </ul>
+  </li>
+  <li>준비(Ready)
+    <ul>
+      <li>실행할 준비가 되어있지만 운영체제가 다른 프로세스를 실행하는 등의 이유로 대기</li>
+    </ul>
+  </li>
+  <li>대기(Blocked)
+    <ul>
+      <li>다른 사건을 기다리는 동안 프로세스의 수행을 중단 (ex. 디스크에 대한 입출력)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이외에도 다른 상태들도 존재</p>
+
+<ul>
+  <li>초기 상태 (initial)
+    <ul>
+      <li>프로세스가 완전히 생성되기 전까지의 상태</li>
+    </ul>
+  </li>
+  <li>최종 (final) 상태 = 좀비(zombie) 상태
+    <ul>
+      <li>프로세스는 종료되었지만 사용하던 자원들이 반납되지 않은 상태</li>
+      <li>부모(parent) 프로세스가 성공적으로 실행을 마쳤는지 파악하는 데 유용</li>
+      <li>부모 프로세스는 자식 프로세스의 종료를 대기하는 시스템 콜 호출 (ex. <code class="language-plaintext highlighter-rouge">wait()</code>)</li>
+    </ul>
+  </li>
+</ul>
+
+<figure>
+    <a href="/images/study/operating-system/usage-cpu-with-io.png">
+        <img src="/images/study/operating-system/usage-cpu-with-io.png" data-rjs="/images/study/operating-system/usage-cpu-with-io.png" class="zooming" alt="CPU 이용과 입출력 작업 할 때" />
+    </a>
+    
+    <figcaption>
+        CPU 이용과 입출력 작업 할 때
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li>Process0 에서 입출력을 요청하고 작업이 완료되기를 기다리면서 대기 상태로 전이</li>
+  <li>운영체제는 Process0 이 CPU 를 사용하지 않는 것을 감지하고 Process1 실행</li>
+  <li>Process1 이 실행되는 동안 Process0 은 준비 상태</li>
+  <li>Process1 종료 후, Process0 실행되어 종료</li>
+</ol>
+
+<h3 id="45-자료구조">4.5 자료구조</h3>
+
+<p>운영체제도 일종의 프로그램으로 다양한 정보를 유지하기 위해 자료 구조를 소유</p>
+
+<ul>
+  <li>프로세스 리스트
+    <ul>
+      <li>프로세스 상태를 파악하기 위한 리스트</li>
+    </ul>
+  </li>
+  <li>레지스터 문맥(register context) 자료구조
+    <ul>
+      <li>프로세스가 중단되었을 때 프로세스의 레지스터 값 저장</li>
+      <li>레지스터 값을 복원하여 프로세스 실행 재개 (문맥 교환, context switch)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="5장-프로세스-api">5장. 프로세스 API</h2>
+
+<p>Unix 시스템의 프로세스 생성에 관해 소개한다.</p>
+
+<h3 id="51-fork-시스템-콜">5.1 fork() 시스템 콜</h3>
+
+<p><code class="language-plaintext highlighter-rouge">fork()</code> 프로세스 생성에 사용되는 시스템 콜</p>
+
+<ul>
+  <li>일반적으로 생성한 프로세스는 <strong>부모</strong> 프로세스, 새로 생성된 프로세스는 <strong>자식</strong> 프로세스</li>
+  <li>자식 프로세스는 자신의 주소공간, 레지스터, PC 값을 가짐 (부모 프로세스와 다름)</li>
+  <li><code class="language-plaintext highlighter-rouge">fork()</code> 반환 값
+    <ul>
+      <li>부모 프로세스: 자식 프로세스 PID(process identifier)</li>
+      <li>자식 프로세스: 0</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="52-wait-시스템-콜">5.2 wait() 시스템 콜</h3>
+
+<p>부모 프로세스가 자식 프로세스의 종료를 대기하는 시스템 콜</p>
+
+<h3 id="53-exec-시스템-콜">5.3 exec() 시스템 콜</h3>
+
+<p>자기 자신이 아닌 다른 프로그램을 실행<br />
+새로운 프로세스를 생성하는 것이 아닌 현재 실행 중인 프로그램을 다른 프로그램으로 대체</p>
+
+<p><code class="language-plaintext highlighter-rouge">fork()</code> : 자신의 복사본을 생성하여 실행
+<code class="language-plaintext highlighter-rouge">exec()</code> : 복사본이 아닌 다른 프로그램을 실행</p>
+
+<h4 id="exec-실행-과정">exec() 실행 과정</h4>
+
+<ol>
+  <li>실행 파일의 이름과 인자가 주어지면 코드와 정적 데이터를 읽어 현재 실행중인 프로세스의 코드 세그멘트와 정적 데이터 부분을 덮어 쓰기</li>
+  <li>힙과 스택 및 프로그램 다른 주소 공간들로 초기화</li>
+  <li>프로세스의 인자를 전달하여 프로그램 실행</li>
+</ol>
+
+<h3 id="54-왜-이런-api를">5.4 왜 이런 API를?</h3>
+
+<p>Unix 의 쉘(사용자 프로그램)을 구현하기 위해서는 <code class="language-plaintext highlighter-rouge">fork()</code> 와 <code class="language-plaintext highlighter-rouge">exec()</code> 분리가 필요  <br />
+그래야 쉘이 <code class="language-plaintext highlighter-rouge">fork()</code> 를 호출하고 <code class="language-plaintext highlighter-rouge">exec()</code> 호출하기 전에 코드를 실행할 수 있다.<br />
+그래서 쉘은 많은 유용한 일을 쉽게 할 수 있다.</p>
+
+<h3 id="55-프로세스-제어와-사용자">5.5 프로세스 제어와 사용자</h3>
+
+<p>Unix 시스템에는 <code class="language-plaintext highlighter-rouge">fork()</code>, <code class="language-plaintext highlighter-rouge">exec()</code>, 및 <code class="language-plaintext highlighter-rouge">wait()</code> 외에도 많은 프로세스 인터페이스가 있다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">kill()</code> 시스템 콜
+    <ul>
+      <li>프로세스에게 멈추거나 끝내기와 같은 시그널(signal)을 보내는 데 사용</li>
+      <li>대부분 단축키 설정 되어 있음
+        <ul>
+          <li>control-c : INGINT(인터럽트) 시그널로 종료시키는 단축키</li>
+          <li>control-z : SIGSTP(멈춤) 시그널로 실행 도중에 프로세스 멈춤</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">signal()</code> 시스템 콜
+    <ul>
+      <li>외부 사건을 프로세스에게 전달</li>
+      <li>개별 프로세스 또는 그룹 단위로 시그널을 받거나 처리</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="56-유용한-도구들">5.6 유용한 도구들</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ps</code>
+    <ul>
+      <li>어떤 프로세스가 실행 중인지 알아보기 위해 사용</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">top</code>
+    <ul>
+      <li>시스템에 존재하는 프로세스와 그 프로세스가 CPU 및 자원들을 얼마나 사용하는지 알아보기 위해 사용</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">kill</code>
+    <ul>
+      <li>프로세스에 임의의 시그널을 보낼 때 사용</li>
+    </ul>
+  </li>
+  <li>MenuMeter 를 Macintosh 의 toolbar 에 실행시키면 CPU 이용률 점검 가능</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="6장-제한적-직접-실행-원리limited-direct-execution">6장. 제한적 직접 실행 원리(Limited Direct Execution)</h2>
+
+<p>운영체제는 CPU 시간을 나누어 씀으로써 가상화를 구현한다.<br />
+하지만 가상화 기법을 구현하기 위해서는 다음과 같은 문제점을 해결해야 한다.</p>
+
+<ul>
+  <li>성능 저하
+    <ul>
+      <li>시스템에 과도한 오버헤드를 주지 않아야 함</li>
+    </ul>
+  </li>
+  <li>제어 문제
+    <ul>
+      <li>운영체제가 자원 관리의 책임자로 제어권을 유지해야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="61-기본-원리-제한적-직접-실행">6.1 기본 원리: 제한적 직접 실행</h3>
+
+<h4 id="제한적-직접-실행limited-direct-execution">제한적 직접 실행(Limited Direct Execution)</h4>
+
+<ul>
+  <li>
+    <p>운영체제 개발자들은 프로그램을 빠르게 시작하기 위해 개발</p>
+  </li>
+  <li>CPU 상에서 직접 프로그램을 실행
+    <ul>
+      <li>운영체제가 프로세스 목록에 해당 프로세스 항목을 만들고 메모리에 할당, 코드를 디스크에서 탑재하고 진입점을 찾아 코드 실행</li>
+    </ul>
+  </li>
+  <li>CPU 를 가상화하면서 몇 가지 문제가 발생
+    <ul>
+      <li>프로그램이 운영체제가 원치않는 일을 할 수 있음</li>
+      <li>어떻게 프로그램의 실행을 중단하고 다른 프로세스로 전환할 것인가 (어떻게 시분할 기법을 구현할 것인가)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="62-문제점-1-제한된-연산">6.2 문제점 1: 제한된 연산</h3>
+
+<p>기본적으로 프로그램이 하드웨어 CPU 에서 실행되기 때문에 빠르게 실행된다. <br />
+하지만 프로세스에서 디스크 입출력이나 시스템 자원 추가 할당 같은 특수한 연산을 수행하길 원한다면 문제가 발생한다.</p>
+
+<p>이러한 문제 때문에 실행되는 코드를 제한하는 <strong>사용자 모드(user mode)</strong> 가 도입되었다.<br />
+이와 대비되는 모드로 <strong>커널 모드(kernel mode)</strong> 에서는 운영체제의 중요한 코드들이 실행된다.</p>
+
+<h4 id="사용자-프로세스에서-특권-명령어-실행-과정">사용자 프로세스에서 특권 명령어 실행 과정</h4>
+
+<figure>
+    <a href="/images/study/operating-system/system-call.png">
+        <img src="/images/study/operating-system/system-call.png" data-rjs="/images/study/operating-system/system-call.png" class="zooming" alt="system call" />
+    </a>
+    
+    <figcaption>
+        system call
+        
+    </figcaption>
+    
+</figure>
+
+<ol>
+  <li>하드웨어는 특권 명령어를 실행하기 위해서 사용자 프로세스에게 <strong>시스템 콜</strong>을 제공</li>
+  <li>시스템 콜을 실행하기 위해 프로그램은 <strong>trap</strong> 명령어를 실행</li>
+  <li><strong>trap</strong> 명령어로 특권 수준을 <strong>커널 모드</strong>로 <strong>상향 조정</strong>하고 요청한 작업을 처리
+    <ul>
+      <li>프로세스의 필요한 레지스터들(ex. 프로그램 카운터, 플래그) <strong>커널 스택</strong>에 저장</li>
+    </ul>
+  </li>
+  <li>처리가 완료되면 <strong>return-from-trap</strong> 명령어를 호출하여 특권 수준을 하향 조정 및 사용자 프로그램으로 반환
+    <ul>
+      <li><strong>커널 스택</strong>에서 팝(pop) 하여 사용자 모드 다시 시행</li>
+    </ul>
+  </li>
+</ol>
+
+<p>커널은 부팅 시에 <strong>트랩 테이블(trap table)</strong> 만들어 시스템을 통제한다.<br />
+컴퓨터가 부트될 때 커널 모드에서 동작하여 특정 명령어로 하드웨어에게 <strong>트랩 핸들러(trap handler)</strong> 의 위치를 알려준다.
+하드웨어는 이 위치를 저장하고 있다가 시스템 콜의 고유 번호를 통해 처리가 가능하다.</p>
+
+<figure>
+    <a href="/images/study/operating-system/limited-direct-execution.png">
+        <img src="/images/study/operating-system/limited-direct-execution.png" data-rjs="/images/study/operating-system/limited-direct-execution.png" class="zooming" alt="limited direct execution" />
+    </a>
+    
+    <figcaption>
+        limited direct execution
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<h3 id="63-문제점-2-프로세스-간-전환">6.3 문제점 2: 프로세스 간 전환</h3>
+
+<p>직접 실행의 두 번째 문제는 프로제스의 전환이다.</p>
+
+<h4 id="협조-방식-시스템-콜-호출시-까지-대기">협조 방식: 시스템 콜 호출시 까지 대기</h4>
+
+<p><strong>협조(cooperative)</strong> 방식은 각 사용자 프로세스가 비정상적인 행동은 하지 않을 것으로 가정<br />
+CPU를 장기간 사용하는 프로세스들이 다른 프로세스가 사용할 수 있도록 주기적으로 CPU 를 반납할 것이라 믿음</p>
+
+<ul>
+  <li>협조 방식을 사용하는 운영체제는 <code class="language-plaintext highlighter-rouge">yield</code> 시스템 콜로 다른 프로세스에세 CPU 를 할당할 수 있는 기회 제공</li>
+  <li>응용 프로그램이 비정상적인 행동을 하면 트랩이 일어나 CPU 획득하여 해당 프로세스 종료</li>
+  <li>협조 방식의 스케줄링 시스템은 근본적으로 수동
+    <ul>
+      <li>시스템 콜 호출을 기다리거나 불법적인 연산을 대기</li>
+      <li>프로세스가 무한 루프에 빠져서 시스템 콜을 호출할 수 없으면 문제 발생</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="비협조-방식-운영체제가-제어권-확보">비협조 방식: 운영체제가 제어권 확보</h4>
+
+<p><strong>비협조 방식</strong>은 <strong>타이머 인터럽트(timer interrupt)</strong> 로 프로세스를 중단하고 <strong>인터럽트 핸들러(interrupt handler)</strong> 를 실행<br />
+인터럽트 핸들러는 운영체제의 일부로 <br />
+인터럽트를 처리하는 과정에서 실행중인 프로세스를 중단하고 운영체제에게 CPU 제어권을 넘겨 필요한 작업을 수행</p>
+
+<h4 id="문맥의-저장과-복원">문맥의 저장과 복원</h4>
+
+<p>운영체제의 <strong>스케줄러(scheduler)</strong> 는 실행중인 프로세스를 계속 실행할 지, 전환할 지를 결정한다.<br />
+프로세스 전환을 결정하면 운영체제는 문맥 교환(context switch) 코드를 실행한다.<br />
+문맥 교환은 실행 중인 프로세스의 레지스터 값들을 커널 스택 같은 곳에 저장하고 실행될 프로세스의 레지스터 값을 복원하는 것이다.</p>
+
+<figure>
+    <a href="/images/study/operating-system/limited-direct-execution-timer-interrupt.png">
+        <img src="/images/study/operating-system/limited-direct-execution-timer-interrupt.png" data-rjs="/images/study/operating-system/limited-direct-execution-timer-interrupt.png" class="zooming" alt="limited direct execution timer interrupt.png" />
+    </a>
+    
+    <figcaption>
+        limited direct execution timer interrupt.png
+        
+        (출처: 운영체제 아주 쉬운 세가지 이야기)
+        
+    </figcaption>
+    
+</figure>
+
+<h3 id="64-병행실행으로-인한-문제">6.4 병행실행으로 인한 문제</h3>
+
+<p>인터럽트나 트랩을 처리하는 도중에 다른 인터럽트가 발생할 때 주의가 필요하다.<br />
+간단한 해결책으로 인터럽트를 처리하는 동안에는 <strong>인터럽트를 불능화</strong> 하는 것이다.<br />
+하지만 이러한 기법은 인터럽트를 장기화 불능화하는 경우 손실되는 인터럽트가 발생될 수 있어서 신중하게 사용해야 한다.</p>
+
+<p>운영체제는 커널 내부의 자료 구조들이 <strong>락(lock)</strong> 으로 보호되기 때문에 내부에서 다수의 작업들이 동시에 진행되는 것이 가능하다.<br />
+하지만 구성과 작동이 매우 복잡해지고 이 때문에 문제점과 버그들이 발생한다.</p>
+
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[Study]+%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C+%EC%95%84%EC%A3%BC+%EC%89%AC%EC%9A%B4+%EC%84%B8%EA%B0%80%25E...%20-%20https://devyonghee.github.io/study/2022/11/10/operation-system-three-easy-pieces-3-6/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/study/2022/11/10/operation-system-three-easy-pieces-3-6/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

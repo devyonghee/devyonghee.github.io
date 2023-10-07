@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>devyonghee blog | [컴퓨터] CISC 와 RISC 정의와 차이점</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="[컴퓨터] CISC 와 RISC 정의와 차이점">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devyonghee.github.io/theory/2022/09/27/CISC-RISC/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="devyonghee blog">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://devyonghee.github.io/theory/2022/09/27/CISC-RISC/">
+  <meta name="twitter:title" content="[컴퓨터] CISC 와 RISC 정의와 차이점">
+  <meta name="twitter:description" content="">
+
+  
+    <meta name="google-site-verification" content="1DbhSO778Ec8l_4qztuQgVDcPhc_ya64RGP-nwD_bj0" />
+  
+
+  
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+  
+
+  <link href="https://devyonghee.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="devyonghee blog Last 10 blog posts" />
+  <link rel="stylesheet" type="text/css" href="/css/fonts.css">
+
+
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  
+
+    
+      <link rel="stylesheet" type="text/css" title="light" id="light" href="/css/light.css">
+      <link rel="stylesheet" type="text/css" title="dark" id="dark" href="/css/dark.css" disabled="false">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="devyonghee blog">devyonghee blog</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/icons/about.svg#icon-about"
+       xlink:href="/icons/about.svg#icon-about">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+
+    
+    <li>
+      <a href="/tags" title="Tags">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon-tag">
+  <use href="/icons/tag.svg#icon-tag"
+       xlink:href="/icons/tag.svg#icon-tag">
+  </use>
+</svg>
+
+      </a>
+    </li>
+    
+
+    
+    
+    
+    
+      <li>
+        <a href="https://github.com/devyonghee" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/icons/github.svg#icon-github"
+       xlink:href="/icons/github.svg#icon-github">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <li>
+        <a href="mailto:devyonghee@gmail.com" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-email">
+  <use href="/icons/email.svg#icon-email"
+       xlink:href="/icons/email.svg#icon-email">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="/feed.xml" rel="noreferrer noopener" target="_blank" title="RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-rss">
+  <use href="/icons/rss.svg#icon-rss"
+       xlink:href="/icons/rss.svg#icon-rss">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a id="toggleBtn" title="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-theme">
+  <use href="/icons/theme.svg#icon-theme"
+       xlink:href="/icons/theme.svg#icon-theme">
+  </use>
+</svg>
+
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>[컴퓨터] CISC 와 RISC 정의와 차이점</h1>
+            <p></p>
+            <div class="article-list-footer">
+  <span class="article-list-date">
+    September 27, 2022
+  </span>
+  <span class="article-list-divider">-</span>
+  <span class="article-list-minutes">
+    
+    
+      3 minute read
+    
+  </span>
+  <span class="article-list-divider">-</span>
+  <div class="article-list-tags">
+    
+      <a href="/tag/computer" title="See all posts with tag 'computer'">computer</a>
+    
+      <a href="/tag/cpu" title="See all posts with tag 'cpu'">cpu</a>
+    
+      <a href="/tag/cisc" title="See all posts with tag 'cisc'">cisc</a>
+    
+      <a href="/tag/risc" title="See all posts with tag 'risc'">risc</a>
+    
+  </div>
+</div>
+          </header>
+
+          <div class="article-content">
+            <p>CPU 는 메모리의 명령어들을 읽어와서 실행하는 장치이다.<br />
+하지만 이러한 명령어들은 구조와 원리는 비슷하지만 CPU 마다 차이가 있다.</p>
+
+<!--more-->
+
+<p><br /></p>
+
+<h2 id="isa-instruction-set-architecture">ISA (Instruction Set Architecture)</h2>
+
+<p>CPU 가 인식, 해석, 실행할 수 있는 <strong>명령어들의 모음</strong>을 명령어 집합(instruction set) 또는 명령어 집합 구조(instruction set architecture, ISA) 라고 한다.</p>
+
+<figure>
+    <a href="/images/theory/cisc-risc/instruction-set-architecture.png">
+        <img src="/images/theory/cisc-risc/instruction-set-architecture.png" data-rjs="/images/theory/cisc-risc/instruction-set-architecture.png" class="zooming" alt="instruction set architecture" />
+    </a>
+    
+    <figcaption>
+        instruction set architecture
+        
+    </figcaption>
+    
+</figure>
+
+<ul>
+  <li>소프트웨어와 하드웨어 사이의 인터페이스</li>
+  <li>ISA 에 따라 명령어 해석 방식, 레지스터 사용 종류와 개수, 메모리 관리 방법 등이 달라질 수 있음</li>
+  <li>CPU 마다 ISA 가 다를 수 있음
+    <ul>
+      <li>ISA 가 다르면 CPU 서로 명령어를 이해할 수 없음</li>
+    </ul>
+  </li>
+  <li>ISA 를 물리적으로 구현하는 방법을 마이크로 아키텍처(microarchitecture) 라고 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cisc-complex-instruction-set-computer">CISC (Complex Instruction Set Computer)</h2>
+
+<p>CISC 는 Complex Instruction Set Computer 의 약자로 그대로 해석하면 ‘복잡한 명령어 집합을 활용하는 컴퓨터(CPU)’다.<br />
+CISC 는 명령어의 형태와 크기가 다양해서 명령어의 길이가 가변적이다.  <br />
+대표적으로 x86과 그 확장판인 x86-64 가 존재한다.</p>
+
+<h3 id="장점">장점</h3>
+
+<ul>
+  <li>복합적이고 명령어가 많아 호환성이 좋음</li>
+  <li>강력한 명렁어 활용으로 명령어 몇 개만으로 수행 가능
+    <ul>
+      <li>메모리 공간 절약 가능</li>
+    </ul>
+  </li>
+  <li>가변 길이 명령어를 사용하므로 마이크로코드 구현이 비교적 편함</li>
+</ul>
+
+<h3 id="단점">단점</h3>
+
+<ul>
+  <li>멸여어가 복잡하고 다양한 기능을 제공하여 실행 시간이 일정하지 않음
+    <ul>
+      <li>한 명령어가 여러 클럭 주기가 필요하고 규격화 되어 있지 않아 파이프라인이 효율적으로 처리 불가</li>
+      <li>속도가 느림</li>
+      <li>전력 소모가 많음</li>
+    </ul>
+  </li>
+  <li>구조가 복잡해서 설계가 어려움</li>
+  <li>대다수의 복잡한 명령어는 사용 빈도가 낮음</li>
+  <li>메모리 성능이 좋아지면서 장점들의 의미가 없어짐</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="risc-reduced-instruction-set-computer">RISC (Reduced Instruction Set Computer)</h2>
+
+<p>RISC 는 Reduced Instruction Set Computer 의 약자로 CISC 보다 명령어 종류가 적다. (CISC 보다 많은 명령어들로 실행)
+명령어는 짧은 형태의 고정 길이로 규격화 되어 있어 1클럭 내외로 실행되는 것을 지향한다.<br />
+대표적으로 ARM(Advanced RISC Machine) ISA 가 있다.</p>
+
+<h3 id="장점-1">장점</h3>
+
+<ul>
+  <li>메모리 접근 명령어는 load / store 두 개로 단순화, 최소화
+    <ul>
+      <li>레지스터 적극 활용하여 하드웨어 구조가 단순해지고 레이턴시를 낮아짐</li>
+      <li>명령어 낭비 감소</li>
+    </ul>
+  </li>
+  <li>명령어가 1클럭 내외 실행되어 파이프라이닝에 최적화</li>
+  <li>명령어 길이가 정해져있어서 해석 속도가 빠름</li>
+  <li>전력 소모가 적음</li>
+</ul>
+
+<h3 id="단점-1">단점</h3>
+
+<ul>
+  <li>명령어가 하드웨어적으로 호환성이 낮음</li>
+  <li>많은 레지스터 필요</li>
+  <li>명령어 길이가 제약되어 명령의 점프 불가</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="비교">비교</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">CISC (Complex Instruction Set Computer)</th>
+      <th style="text-align: center">RISC (Reduced Instruction Set Computer)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">복잡하고 다양한 명령어</td>
+      <td style="text-align: center">단순하고 적은 명령어</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">가변 길이 명령어</td>
+      <td style="text-align: center">고정 길이 명령어</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">다양한 주소 지정 방식</td>
+      <td style="text-align: center">적은 주소 지정 방식</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">실행되는 명령어 수가 적음</td>
+      <td style="text-align: center">실행되는 명령어 수가 많음</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">명령어가 여러 클럭에 걸쳐 실행</td>
+      <td style="text-align: center">명령어가 1 클럭 내외에 실행</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">파이프라이닝 어려움</td>
+      <td style="text-align: center">파이프 라이닝 쉬움</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">적은 레지스터 필요</td>
+      <td style="text-align: center">많은 레지스터 필요</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">느린 처리속도</td>
+      <td style="text-align: center">빠른 처리속도</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">많은 전력 소모</td>
+      <td style="text-align: center">적은 전력 소모</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">복잡한 하드웨어 구조</td>
+      <td style="text-align: center">단순한 하드웨어 구조</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="출처">출처</h2>
+
+<ul>
+  <li>혼자 공부하는 컴퓨터 구조 + 운영체제</li>
+  <li><a href="https://velog.io/@apphia39/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0ISA-CISC-vs.-RISC">https://velog.io/@apphia39/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0ISA-CISC-vs.-RISC</a></li>
+  <li>[https://ko.wikipedia.org/wiki/%EB%AA%85%EB%A0%B9%EC%96%B4<em>%EC%A7%91%ED%95%A9](https://ko.wikipedia.org/wiki/%EB%AA%85%EB%A0%B9%EC%96%B4</em>%EC%A7%91%ED%95%A9)</li>
+  <li><a href="https://velog.io/@kjw2298/CISC-RISC-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%B0%A8%EC%9D%B4">https://velog.io/@kjw2298/CISC-RISC-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%B0%A8%EC%9D%B4</a></li>
+  <li><a href="https://cooling.tistory.com/19">https://cooling.tistory.com/19</a></li>
+  <li><a href="https://namu.wiki/w/CISC">https://namu.wiki/w/CISC</a></li>
+</ul>
+
+          </div>
+          <div class="article-share">
+            
+            
+            <a href="https://twitter.com/home?status=[%EC%BB%B4%ED%93%A8%ED%84%B0]+CISC+%EC%99%80+RISC+%EC%A0%95%EC%9D%98%EC%99%80+%EC%B0%A8%EC%9D%B4%EC%A0%90%20-%20https://devyonghee.github.io/theory/2022/09/27/CISC-RISC/" title="Share on Twitter" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6 -18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6 0.8 15 2.5 22.1 -80.5-4-151.9-42.6-199.6-101.3 -8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7C67 210.7 52 206.3 39 199c0 0.4 0 0.8 0 1.2 0 47 33.4 86.1 77.7 95 -8.1 2.2-16.7 3.4-25.5 3.4 -6.2 0-12.3-0.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3 -33.1 26-74.9 41.5-120.3 41.5 -7.8 0-15.5-0.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-0.1-8.4-0.3-12.5C462.6 146 479 129 492 109.5z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://devyonghee.github.io/theory/2022/09/27/CISC-RISC/" title="Share on Facebook" rel="noreferrer noopener" target="_blank">
+              <svg viewBox="0 0 512 512"><path d="M288 192v-38.1c0-17.2 3.8-25.9 30.5-25.9H352V64h-55.9c-68.5 0-91.1 31.4-91.1 85.3V192h-45v64h45v192h83V256h56.4l7.6-64H288z"/></svg>
+            </a>
+          </div>
+          
+            <script src="https://utteranc.es/client.js"
+                    repo="devyonghee/devyonghee.github.io"
+                    issue-term="pathname"
+                    theme="preferred-color-scheme"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+          
+        </article>
+        <footer class="footer scrollappear">
+  <p>
+    Chalk is a high quality, completely customizable, performant and 100% free
+    blog template for Jekyll built by
+    <a href="/about" title="About me">Nielsen Ramon</a>. Download it <a href="https://github.com/nielsenramon/chalk" rel="noreferrer noopener" target="_blank" title="Download Chalk">here</a>.
+  </p>
+</footer>
+
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PS3PZYZ6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7PS3PZYZ6');
+  </script>
+
+
+  <script src="/javascripts/application.f8aad56336bbc2752062.js"></script>
+
+
+  <script src="/javascripts/scrollappear.964ae3fd7af0dfd85a7e.js"></script>
+
+
+
+
+  <script src="/javascripts/themetoggle.b54b8a02c0c26756418e.js"></script>
+
+</body>
+</html>

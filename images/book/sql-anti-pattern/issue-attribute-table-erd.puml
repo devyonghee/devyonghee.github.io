@@ -1,0 +1,7 @@
+@startuml
+object Issue
+object IssueAttribute
+
+Issue ||--o{ IssueAttribute
+
+@enduml
