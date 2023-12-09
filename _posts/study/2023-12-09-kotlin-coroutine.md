@@ -49,6 +49,30 @@ implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 - 중단함수에서는 `coroutineContext` 을 통해 접근 가능
 - 개별적으로 생성하기 위해서는 `CoroutineConext.Element` 를 구현하고 컴패니언 객체를 키로 사용
 
+### Job
+
+Job 은 수명을 가지고 있으며 취소 가능한 컨텍스트
+
+**Job 상태**
+
+| 상태                   | isActive | isCompleted | isCanceled |
+|----------------------|----------|-------------|------------|
+| New (지연 시작될 때 시작 상태) | false    | false       | false      |
+| Active (시작 상태 기본값)   | true     | false       | false      |
+| Completing (일시적인 상태) | true     | false       | false      |
+| Cancelling (일시적인 상태) | false    | false       | true       |
+| Cancelled (최종상태)     | false    | true        | true       |
+| Completed (최종 상태)    | false    | true        | false      |
+
+- `launch` 의 반환 타입 `Job`
+- `async` 의 반환 타입은 `Job` 인터페이스를 구현한 `Deffered<T>`
+- `Job` 은 코루틴 컨텍스트로 `coroutineCotext[Job]` 또는 확장 프로퍼티(`CoroutineContext.job`) 로 접근 가능
+- `join` 메서드를 사용하여 마지막 상태 도달까지 기다릴 수 있음
+- `Job()` 팩토리 함수를 통해 생성 가능 
+  - `CompleteableJob` 타입 반환
+    - `complete(): Boolean` - 잡을 완료하는 데 사용, 호출하면 새로운 코루틴 시작 불가
+    - `completeExceptionally(exception: Throwble): Boolean` - 인자로 받은 예외로 잡을 완료 시킴
+
 
 ## 출처
 - 코틀린 코루틴
