@@ -72,6 +72,17 @@ Job 은 수명을 가지고 있으며 취소 가능한 컨텍스트
   - `CompleteableJob` 타입 반환
     - `complete(): Boolean` - 잡을 완료하는 데 사용, 호출하면 새로운 코루틴 시작 불가
     - `completeExceptionally(exception: Throwble): Boolean` - 인자로 받은 예외로 잡을 완료 시킴
+- 취소 기능 (`cacnel` 메서드)
+  - 호출한 코루틴은 첫 번째 중단점에서 잡을 끝냄
+  - 자식 잡도 같이 취소 되며 부모는 영향을 받지 않음
+  - 잡이 취소되면 `Cancelling` 되었다가 `Cancelled` 상태로 변경
+  - `join` 을 호출하지 않으면 경쟁 상태가 될 수 있음 (이러한 이유로 `cancelAndJoin` 확장함수 제공)
+  - 취소된 이후 중단 함수 호출이 필요한 경우(ex. 데이터베이스 롤백) `withContext` 사용
+  - 취소된 이후 자원 해제를 위해서는 `invokeOnCompletion` 메서드 호출
+  - 중단점이 없는데 CPU, 시간 집약적인 연산이 있는 경우
+    - 연산 사이에 `yield` 호출
+    - 잡의 상태를 확인하여 연산 중단 (`isActive` 프로퍼티 사용 또는 `ensureActive()` 호출)
+   
 
 
 ## 출처
