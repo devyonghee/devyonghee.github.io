@@ -22,6 +22,35 @@ implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
   - `GlobalScope` 객체에서 호출도 가능하지만 현업세서는 사용 지양
   - 중단 함수에서 스코프 처리는 `coroutineScope` 함수 사용이 바람직함
 
+### 코루틴 스코프 함수
+
+**코루틴 빌더 vs 코루틴 스코프 함수**
+
+| 코루틴 빌더                          | 코루틴 스코프 함수                                                |
+|---------------------------------|-----------------------------------------------------------|
+| launch, async, produce          | coroutineScope, supervisorScope, withContext, withTimeout |
+| CoroutineScope 확장 함수            | 중단 함수                                                     |
+| CoroutineScope 리시버의 코루틴 컨텍스트 사용 | 중단 함수의 컨티뉴에이션 객체가 가진 코루틴 컨텍스트 사용                          |
+| 예외는 Job 을 통해 부모로 전파             | 일반 함수와 같은 방식으로 예외 던짐                                      |
+| 비동기인 코루틴 시작                     | 코루틴 빌더가 호출된 곳에서 코루틴 시작                                    |
+
+- `coroutineScope`
+  - 스코프를 시작하는 중단 함수
+  - 부모로부터 컨텍스트를 상속받음
+  - 자신의 작업을 끝내기 전까지 모든 자식을 기다림
+  - 새로운 코루틴을 생성하지만 새로운 코루틴이 끝날 때까지 대기
+    - 작업을 동시에 시작하지 않음
+- `withContext`
+  - `coroutineScope` 와 다르게 스코프의 컨텍스트 변경 가능
+- `supervisorScope`
+  - `coroutineScope` 와 다르게 `Job` 을 `SupervisorJob` 으로 오버라이딩하기 때문에 자식 코루틴이 예외를 던지더라도 취소되지 않음
+  - `withContext(SupervisorJob())` 은 여전히 자식들 또한 취소가 되므로 대신 사용될 순 없음 
+- `withTimeout`
+  - 실행하는 람다식의 시간 제한이 있음 (시간 제한이 매우 크다면 `coroutineScope` 와 동일)
+  - 테스트하는 경우 유용
+  - `CancellationException` 의 서브타입인 `TimeoutCancellationException` 을 던짐
+  - 타임아웃이 초과되면 예외 대신 `null` 을 반환하는 함수 `withTimeoutOrNull` 도 있음 
+
 ### 코루틴 빌더
 - `luanch`
   - 호출되자마자 즉시 코루틴 실행
