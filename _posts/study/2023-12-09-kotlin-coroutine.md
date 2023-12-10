@@ -112,7 +112,25 @@ Job 은 수명을 가지고 있으며 취소 가능한 컨텍스트
     - 연산 사이에 `yield` 호출
     - 잡의 상태를 확인하여 연산 중단 (`isActive` 프로퍼티 사용 또는 `ensureActive()` 호출)
    
+### 디스패처
 
+- 디스패처를 설정하지 않으면 `Dispatchers.Default`
+  - 코드가 실행되는 컴퓨터의 CPU 개수와 동일한 수의 스레드 풀을 가짐
+  - 같은 시간에 특정 수 이상의 스레드 사용을 제한하고 싶다면 `Dispatchers.Default.limitedParallelism` 메서드 사용
+- 메인 스레드에서 코루틴을 실행하려면 `Dispatchers.Main`
+  - 단위 테스트에서 메인 디스패처를 정의해서 사용하고 싶다면 `Dispatchers.setMain(dispatcher)` 으로 정의
+- 파일을 읽고 쓰는 경우, 블로킹 함수를 호출하는 경우 같이 I/O 연산으로 블로킹할 때 `Dispatchers.IO` 사용
+  - 같은 시간에 50개가 넘는 스레드 사용 가능
+- 정해진 수의 스레드 풀을 가진 디스패처
+  - `Executors.newFixedThreadPool(NUMBER).asCoroutineDispatcher()`
+- 싱글스레드로 제한된 디스패처
+  - 하나의 스레드만 가지고 있어서 작업이 순차적으로 처리
+  - 선언 방법
+    - `Executors.newSingleThreadExecutor().asCoroutineDispatcher()`
+      - 스레드 하나를 액티브한 상태로 유지해야 함
+      - 더 이상 사용되지 않을 때는 스레드를 반드시 닫아야 함
+    - `Dispatchers.Default.limitedParallelism(1)`
+      - 최근에 사용하는 방식
 
 ## 출처
 - 코틀린 코루틴
